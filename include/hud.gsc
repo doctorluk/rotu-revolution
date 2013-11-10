@@ -45,9 +45,9 @@ glowMessage(label, text, glowcolor, duration, speed, size, sound, height)
 	self thread scripts\gamemodes\_hud::glowMessage(label, text, glowcolor, duration, speed, size, sound, height);
 }
 
-timer(time, label, glowcolor, text)
+timer(time, label, glowcolor, text, value)
 {
-	thread scripts\gamemodes\_hud::timer(time, label, glowcolor, text);
+	thread scripts\gamemodes\_hud::timer(time, label, glowcolor, text, value);
 }
 
 fadeout(time)
@@ -64,9 +64,9 @@ fadein(time, alpha)
 	self.alpha = 0;
 	self fadeOverTime( time );
 	if (!isdefined(alpha))
-	alpha = 1;
+		self.alpha = 1;
 	else
-	alpha = alpha;
+		self.alpha = alpha;
 }
 
 fontPulseInit()
