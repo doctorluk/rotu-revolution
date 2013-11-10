@@ -667,7 +667,7 @@ watchThrowable()
 			c4 thread playC4Effects();
 		}
 		else if(weapname == "frag_grenade_mp")
-			self playsound("throw_grenade"+randomint(8));
+			self playsound("throw_grenade");
 	}
 }
 

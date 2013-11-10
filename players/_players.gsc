@@ -203,7 +203,7 @@ Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon,
 	self updateHealthHud(0);
 	
 	// Play down-sound
-	self playsound( "self_down"+randomint(5) );
+	self playsound( "self_down" );
 	// self iprintln("Playing DOWN sound");
 	
 	weaponslist = self getweaponslist();
@@ -437,7 +437,7 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 		iDamage = int(iDamage * self.incdammod);
 		
 		if(isDefined(self.lastHurtTime) && (self.lastHurtTime < (getTime() - 1000) ) && iDamage < self.health ){
-			self playsound("self_hurt"+randomint(9));
+			self playsound("self_hurt");
 			// self iprintln("Playing HURT sound");
 			self.lastHurtTime = getTime();
 		}
@@ -1432,7 +1432,7 @@ revive(by)
 		self setActionSlot( 4, "weapon", self.actionslotweapons[0] );
 	
 	if(isDefined(by))
-		self playsound("self_thanks_revived"+randomint(6));
+		self playsound("self_thanks_revived");
 	wait .05;
 	self switchtoweapon(self.lastStandWeapon);
 }

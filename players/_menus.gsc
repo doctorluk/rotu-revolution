@@ -229,18 +229,16 @@ onMenuResponse()
 					break;
 				if(self.isDown)
 					modifier = "_down";
-				ran = randomint(5);
 				self sayteam("^5I need a medic!");
-				self playsound("need_medic" + modifier + ran);
+				self playsound("need_medic" + modifier);
 				self.antispamtime = gettime();
 				break;
 
 			case "2":
 				if(time - self.antispamtime < 3000)
 					break;
-				ran = randomint(7);
 				self sayteam("^5I need ammo!");
-				self playsound("need_ammo"+ran);
+				self playsound("need_ammo");
 				self.antispamtime = gettime();
 				break;
 			}

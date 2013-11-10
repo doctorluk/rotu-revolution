@@ -252,7 +252,7 @@ disableEffects(){
 	// else
 		// iprintlnbold("Turret does not wait!");
 	
-	self playsound( "turret_broken"+randomint(2) );
+	self playsound( "turret_broken" );
 	self createEffectEntity(level.turret_broken, self.fireTag);
 	self moveDisabledPosition();
 	self thread enableAgain();

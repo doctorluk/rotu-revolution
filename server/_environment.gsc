@@ -150,18 +150,15 @@ lightningFX()
 	while(1)
 	{
 		if (level.playerspawns == "")
-		spawn = getRandomTdmSpawn();
+			spawn = getRandomTdmSpawn();
 		else
-		spawn = getRandomEntity(level.playerspawns);
+			spawn = getRandomEntity(level.playerspawns);
 		playfx(level.lighting_fx, spawn.origin);
-		r = randomint(4);
-		for (i=0; i<level.players.size; i++)
-		{
-			if (r==0)
-			level.players[i] playlocalsound("amb_thunder1");
-			if (r==1)
-			level.players[i] playlocalsound("amb_thunder2");
-		}
+		r = randomint(2);
+		if ( r == 0 )
+			for (i=0; i<level.players.size; i++)
+				level.players[i] playlocalsound("amb_thunder");
+
 		wait 1 + randomfloat(2);
 	}
 	

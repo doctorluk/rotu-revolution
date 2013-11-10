@@ -561,9 +561,9 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	corpse = self scripts\bots\_types::onCorpse(self.type);
 	
 	if (self.soundType == "zombie")
-		self playsound("zom_death"+randomint(5));
+		self playsound("zom_death");
 	else if(self.soundType == "dog")
-		self playsound("dog_death"+randomint(5));
+		self playsound("dog_death");
 		
 	if(!self doSplatter(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration)){
 		if (corpse > 0)
