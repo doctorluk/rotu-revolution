@@ -504,13 +504,11 @@ MEDIC_PRIMARY(ability)
 	{
 		case "AB1":
 			self giveWeapon( "helicopter_mp" );
-			self setWeaponAmmoClip( "helicopter_mp", 0 );
+			self giveMaxAmmo( "helicopter_mp" );
 			self setActionSlot( 3, "weapon", "helicopter_mp" ); // Actionslot [5]
 			self.medkitTime = 12;
 			self.medkitHealing = 25;
 			self thread watchMedkits();
-			self thread restoreKit(level.special["medkit"]["recharge_time"]);
-			self thread restoreKit(level.special["medkit"]["recharge_time"]);
 		break;
 		case "AB2":
 			self loadSpecialAbility("aura");
@@ -622,12 +620,11 @@ ENGINEER_PRIMARY(ability)
 	{
 		case "AB1":
 			self giveWeapon( "m14_reflex_mp" );
-			self setWeaponAmmoClip( "m14_reflex_mp", 0 );
+			self giveMaxAmmo( "m14_reflex_mp" );
 			self setActionSlot( 3, "weapon", "m14_reflex_mp" ); // Actionslot [5]
 			self.ammoboxTime = 15;
 			self.ammoboxRestoration = 25;
 			self thread watchAmmobox();
-			self thread restoreKit(level.special["ammo"]["recharge_time"]);
 		break;
 		case "AB2":
 			self loadSpecialAbility("ammo");
