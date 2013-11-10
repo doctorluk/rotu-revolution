@@ -537,8 +537,8 @@ getAmbientForType(type)
 	{
 		case "burning":
 		return "ambient_inferno";
-		case "zombie":
-		return "zom_ambient"+randomint(4);
+		case "normal":
+		return "zom_ambient";
 		case "toxic":
 		return "ambient_toxic";
 		case "scary":
@@ -553,9 +553,9 @@ getAmbientForType(type)
 		return "ambient_boss";
 		case "dog":
 		thread playSoundOnAllPlayers("dog_howl");
-		return "zom_ambient"+randomint(4);
+		return "zom_ambient";
 		default:
-		return "zom_ambient"+randomint(4);
+		return "zom_ambient";
 	}
 }
 
@@ -810,9 +810,12 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 				{
 					if (sWeapon == "c4_mp" || sWeapon == "frag_grenade_mp" || sMeansOfDeath == "MOD_MELEE" || sWeapon == "claymore_mp")
 					{
-						if (sMeansOfDeath == "MOD_MELEE")
-						iDamage = int(iDamage*.75);
-						eAttacker scripts\players\_players::incUpgradePoints(5*level.dvar["game_rewardscale"]);
+						if (sMeansOfDeath == "MOD_MELEE"){
+							iDamage = int( iDamage * 0.5 );
+							eAttacker scripts\players\_players::incUpgradePoints( 1 * level.dvar["game_rewardscale"] );
+						}
+						else
+							eAttacker scripts\players\_players::incUpgradePoints( 5 * level.dvar["game_rewardscale"] );
 						level.bossDamageDone += idamage;
 						newval = int(level.bossDamageDone*100/level.bossDamageToDo);
 						if (newval > 100)
