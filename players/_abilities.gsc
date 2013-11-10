@@ -13,6 +13,7 @@
 
 #include scripts\include\hud;
 #include scripts\include\data;
+#include scripts\include\useful;
 #include common_scripts\utility;
 init()
 {
