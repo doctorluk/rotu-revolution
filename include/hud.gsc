@@ -47,7 +47,7 @@ glowMessage(label, text, glowcolor, duration, speed, size, sound, height)
 
 timer(time, label, glowcolor, text, value)
 {
-	thread scripts\gamemodes\_hud::timer(time, label, glowcolor, text, value);
+	thread scripts\gamemodes\_hud::timer(time, label, glowcolor, text, undefined, value);
 }
 
 fadeout(time)
