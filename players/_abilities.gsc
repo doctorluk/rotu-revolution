@@ -50,6 +50,8 @@ loadAbilityStats()
 	
 	level.special["ammo"]["recharge_time"] = 60;
 	
+	level.special["medkit"]["recharge_time"] = 60;
+	
 	level.special["monkey_bomb"]["recharge_time"] = 65;
 	
 	level.special_quickescape_duration = 6;
@@ -754,8 +756,8 @@ watchMedkits()
 			kit.master = self;
 			kit thread beMedkit( self.medkitTime, self.medkitHealing);
 			kit thread kitFX();
-			self thread restoreKit(50);
-			self playsound("take_medkit"+randomint(7));
+			self thread restoreKit(level.special["medkit"]["recharge_time"]);
+			self playsound("take_medkit");
 			//self thread watchMedkits();
 		}
 	}
@@ -775,7 +777,7 @@ watchAmmobox()
 			kit.master = self;
 			kit thread beAmmobox( self.ammoboxTime );
 			self thread restoreAmmobox(60);
-			self playsound("take_ammo"+randomint(6));
+			self playsound("take_ammo");
 		}
 	}
 }
@@ -837,7 +839,7 @@ beAmmobox(time)
 {
 	old = self.origin;
 	wait 0.1;
-	while(1){
+	while( isDefined(self) ){
 		if(old != self.origin){
 			old = self.origin;
 			wait 0.1;
@@ -845,13 +847,20 @@ beAmmobox(time)
 		else
 			break;
 	}
+	if( !isDefined(self) ) return;
+	
 	self thread scripts\gamemodes\_hud::createHeadiconKits(self.origin+(0,0,15), "icon_ammobox_placed", 0.5); // 2D Icon above the ammobox
+	self thread scripts\gamemodes\_hud::createRadarIcon("icon_ammobox_radar"); // Radar Icon
+	
 	wait 1;
 	for (i=0; i<time; i++)
 	{
+		if( !isDefined(self.master) || !isReallyPlaying(self.master) ) break;
+		
 		for (ii=0; ii<level.players.size; ii++)
 		{
 			player = level.players[ii];
+			if( !isReallyPlaying(player) ) continue;
 			if (distance(self.origin, player.origin) < 120)
 			{
 				if (!player.isDown)
@@ -867,9 +876,10 @@ beAmmobox(time)
 
 beMedkit(time, heal)
 {
+	self endon("death");
 	old = self.origin;
 	wait 0.1;
-	while(1){
+	while( 1 ){
 		if(old != self.origin){
 			old = self.origin;
 			wait 0.1;
@@ -877,13 +887,19 @@ beMedkit(time, heal)
 		else
 			break;
 	}
+	if( !isDefined(self) || !isDefined(self.master) ) return;
+	
 	self thread scripts\gamemodes\_hud::createHeadiconKits(self.origin+(0,0,15), "icon_medkit_placed", 0.5); // 2D Icon above the medkit
+	self thread scripts\gamemodes\_hud::createRadarIcon("icon_medkit_radar"); // Radar Icon
+	
 	wait 1;
 	for (i=0; i<time; i++)
 	{
+		if( !isDefined(self.master) || !isReallyPlaying(self.master) ) break;
 		for (ii=0; ii<level.players.size; ii++)
 		{
 			player = level.players[ii];
+			if( !isReallyPlaying(player) ) continue;
 			if (distance(self.origin, player.origin) < 120)
 			{
 				if (player.health < player.maxhealth && !player.isDown)
@@ -1105,10 +1121,10 @@ watchSpecialAbility()
 		else
 			i = 0;
 			
-		if(i >= 30)
+		if(i >= 10)
 			self thread onSpecialAbility();
 			
-		wait 0.05;
+		wait 0.1;
 	}
 }
 
@@ -1186,6 +1202,7 @@ specialAura(time)
 	healObject.healing = self.auraHealing;
 	healObject.master = self;	
 	healObject thread healObjectHeal(time);
+	self playsound("aura_spawn");
 }
 
 spawnHealFX( groundpoint, fx )
