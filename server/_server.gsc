@@ -13,7 +13,7 @@
 
 init()
 {
-	setdvar("developer_script", 1);
+	setdvar("developer_script", 0);
 	thread scripts\server\_settings::init();
 	thread scripts\server\_ranks::init();
 	thread scripts\server\_welcome::init();
@@ -31,10 +31,10 @@ init()
 // General information broadcast
 broadcastVersion(){
 	level endon("game_ended");
-	level.rotuVersion = "RotU-Revolution Alpha 0.1.56.2 (19:42 24.10.2013)";
-	level.rotuVersion_short = "RotU-R Alpha 0.1.56.2_DEBUG_MODE (19:42 24.10.2013)";
-	level.rotuVersion_hostname = "RotU-Revolution 0.1.56.2-alpha";
-	level.rotuVersion_hostname_short = "0.1.56.2-alpha";
+	level.rotuVersion = "RotU-Revolution Alpha 0.1.57 (20:05 10.11.2013)";
+	level.rotuVersion_short = "RotU-R Alpha 0.1.57 (20:05 10.11.2013)";
+	level.rotuVersion_hostname = "RotU-Revolution 0.1.57-alpha";
+	level.rotuVersion_hostname_short = "0.1.57-alpha";
 	while(1){
 		iprintln("^2This Server is running ^1" + level.rotuVersion);
 		iprintln("^2Please report bugs at ^3PuffyForum.com");

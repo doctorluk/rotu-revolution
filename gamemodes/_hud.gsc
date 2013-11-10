@@ -6,6 +6,7 @@ init()
 	level.waveHUD = 0;
 	level.waveHUD_Killed = 0;
 	level.waveHUD_Total = 0;
+	level.objects = [];
 	
 	level.globalHUD = 0;
 	
