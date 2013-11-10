@@ -1,0 +1,1 @@
+level.wp[i] = Array containing all availabe waypoints placed on the current map
