@@ -40,6 +40,11 @@ loadConfig()
 	level.availableSpecialWaves[level.availableSpecialWaves.size] = "scary";
 	level.availableSpecialWaves[level.availableSpecialWaves.size] = "tank";
 	level.availableSpecialWaves[level.availableSpecialWaves.size] = "grouped";
+	
+	level.announceNormal = [];
+	level.announceNormal[level.announceNormal.size] = &"ZOMBIE_NEWWAVE0";
+	level.announceNormal[level.announceNormal.size] = &"ZOMBIE_NEWWAVE1";
+	level.announceNormal[level.announceNormal.size] = &"ZOMBIE_NEWWAVE2";
 	// if (level.survMode == "special")
 	// {
 		// level.specialWaves = [];
@@ -481,9 +486,14 @@ startRegularWave()
 			iprintln(revives + " Players have been auto-^2revived^7!");
 	}
 	
-	timer(level.dvar["surv_timeout"], &"ZOMBIE_NEWWAVEIN", (.2,.7,0));
-	
-	wait level.dvar["surv_timeout"] + 2;
+	if(level.currentWave == 1 && level.dvar["surv_timeout_firstwave"] > 0){
+		timer(level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"], &"ZOMBIE_NEWWAVEIN", (.2,.7,0), undefined, level.currentWave);
+		wait level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"] + 2;
+	}
+	else{
+		timer(level.dvar["surv_timeout"], &"ZOMBIE_NEWWAVEIN", (.2,.7,0), undefined, level.currentWave);
+		wait level.dvar["surv_timeout"] + 2;
+	}
 	announceMessage(&"ZOMBIE_NEWWAVE", level.waveSize, (.2,.7,0), 4, 95);
 	wait 5;
 	level.ambient = "zom_ambient"+randomint(5);
@@ -529,11 +539,14 @@ startSpecialWave(type)
 	// level.waveSize = 1;
 	// level.waveSize = 100;
 	level.waveProgress = 0;
-	timer(level.dvar["surv_timeout"], &"ZOMBIE_NEWWAVEIN" , (.7,.2,0));
-	//announceMessage(&"ZOMBIE_NEWSPECIALWAVE", "dogs", (.7,0,0), 4, 95);
-	
-	
-	wait level.dvar["surv_timeout"] + 2;
+	if(level.currentWave == 1 && level.dvar["surv_timeout_firstwave"] > 0){
+		timer(level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"], &"ZOMBIE_NEWWAVEIN", (.7,.2,0), undefined, level.currentWave);
+		wait level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"] + 2;
+	}
+	else{
+		timer(level.dvar["surv_timeout"], &"ZOMBIE_NEWWAVEIN", (.7,.2,0), undefined, level.currentWave);
+		wait level.dvar["surv_timeout"] + 2;
+	}
 	scripts\bots\_types::preWave(type);
 	
 	level.ambient = scripts\bots\_types::getAmbientForType(type);
