@@ -688,6 +688,7 @@ onSpawn(type)
 			level.bossStatus = 0;
 			level.bossOverlay = overlayMessage(&"ZOMBIE_BOSS_EXPLOSIVES0", "", (1,0,0));
 			level.bossOverlay setvalue(0);
+			level.bossOverlay fadein(1);
 			level.bossDamageDone = 0;
 			level.bossDamageDoneReal = 0;
 			level.bossDamageToDo = level.activePlayers * 1200;
