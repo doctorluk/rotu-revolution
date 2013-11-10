@@ -1390,9 +1390,9 @@ zomMelee(bDoDamage)
 		if(bDoDamage)
 			self zomDoDamage(70);
 		if(self.type != "dog")
-		self zomSound(0, "zom_attack", randomint(10));
+		self zomSound(0, "zom_attack");
 		else
-		self zomSound(0, "dog_attack", randomint(4));
+		self zomSound(0, "dog_attack");
 	}
 	// wait .6;
 	wait 1.1;
@@ -1608,29 +1608,29 @@ zomGroan()
 		{
 			if (self.alertLevel == 0 && soundtype == "dog")
 			{
-				self zomSound(randomfloat(.5), soundtype + "_" + "idle", randomint(4));
+				self zomSound(randomfloat(.5), soundtype + "_" + "idle");
 			}
 			else if (self.alertLevel < 200)
 			{
 				if(soundtype == "zom")
-					self zomSound(randomfloat(.5), soundtype + "_" + "walk", randomint(7));
+					self zomSound(randomfloat(.5), soundtype + "_" + "walk");
 			}
 			else if(soundtype == "zom")
 			{
-				self zomSound(randomfloat(.5), "zom_run", randomint(5));
+				self zomSound(randomfloat(.5), "zom_run");
 			}
 		}
 		wait 3 + randomfloat(3);
 	}
 }
 
-zomSound(delay, sound, random)
+zomSound(delay, sound)
 {
 	if (delay > 0) {
 		self endon("death");
 		wait delay;
 	}
-	sound = sound + random;
+	sound = sound;
 	if (isalive(self))
 	self playSound( sound );
 }

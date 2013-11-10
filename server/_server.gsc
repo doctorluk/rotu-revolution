@@ -31,8 +31,8 @@ init()
 // General information broadcast
 broadcastVersion(){
 	level endon("game_ended");
-	level.rotuVersion = "RotU-Revolution Alpha 0.1.57 (20:05 10.11.2013)";
-	level.rotuVersion_short = "RotU-R Alpha 0.1.57 (20:05 10.11.2013)";
+	level.rotuVersion = "RotU-Revolution Alpha 0.1.57 (00:41 11.11.2013)";
+	level.rotuVersion_short = "RotU-R Alpha 0.1.57 (00:41 11.11.2013)";
 	level.rotuVersion_hostname = "RotU-Revolution 0.1.57-alpha";
 	level.rotuVersion_hostname_short = "0.1.57-alpha";
 	while(1){
