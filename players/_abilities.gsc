@@ -627,7 +627,7 @@ ENGINEER_PRIMARY(ability)
 			self.ammoboxTime = 15;
 			self.ammoboxRestoration = 25;
 			self thread watchAmmobox();
-			self thread restoreKit(level.special["ammo"]["recharge_time"]);
+			self thread restoreAmmobox(level.special["ammo"]["recharge_time"]);
 		break;
 		case "AB2":
 			self loadSpecialAbility("ammo");
@@ -780,7 +780,7 @@ watchAmmobox()
 		{
 			kit.master = self;
 			kit thread beAmmobox( self.ammoboxTime );
-			self thread restoreAmmobox(60);
+			self thread restoreAmmobox(level.special["ammo"]["recharge_time"]);
 			self playsound("take_ammo");
 		}
 	}
