@@ -686,7 +686,7 @@ onSpawn(type)
 			break;
 		case "boss":
 			level.bossStatus = 0;
-			level.bossOverlay = overlayMessage(&"ZOMBIE_BOSS_EXPLOSIVES", "", (1,0,0));
+			level.bossOverlay = overlayMessage(&"ZOMBIE_BOSS_EXPLOSIVES0", "", (1,0,0));
 			level.bossOverlay setvalue(0);
 			level.bossDamageDone = 0;
 			level.bossDamageDoneReal = 0;
@@ -856,7 +856,7 @@ nextBossStatus(status)
 			level.bossOverlay destroy();
 			level.bossStatus = 1;
 			level.bossDamageDone = 0;
-			newoverlay = overlayMessage(&"ZOMBIE_BOSS_KNIFE", "", (0,1,0));
+			newoverlay = overlayMessage(&"ZOMBIE_BOSS_KNIFE0", "", (0,1,0));
 			level.bossOverlay = newoverlay;
 			level.bossOverlay setvalue(0);
 		}

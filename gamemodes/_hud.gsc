@@ -21,8 +21,8 @@ precache()
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER0");
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER1");
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER2");
-	precachestring(&"ZOMBIE_BOSS_EXPLOSIVES");
-	precachestring(&"ZOMBIE_BOSS_KNIFE");
+	precachestring(&"ZOMBIE_BOSS_EXPLOSIVES0");
+	precachestring(&"ZOMBIE_BOSS_KNIFE0");
 	precachestring(&"ZOMBIE_DAMMOD");
 	precachestring(&"ZOMBIE_AVAILABLE_SKILLPOINTS");
 	precachestring(&"ZOMBIE_SURV_LEFT");
