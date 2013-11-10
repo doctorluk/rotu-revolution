@@ -15,7 +15,7 @@ init()
 precache()
 {
 	precachestring(&"ZOMBIE_STREAK");
-	precachestring(&"ZOMBIE_NEWWAVE");
+	precachestring(&"ZOMBIE_NEWWAVE0");
 	precachestring(&"ZOMBIE_SCARYWAVE");
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER0");
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER1");
@@ -315,7 +315,7 @@ progressBar(time)
 	
 }
 
-timer(time, label, glowcolor, text, height)
+timer(time, label, glowcolor, text, height, value)
 {
 	level endon("game_ended");
 	level.globalHUD = 1;
@@ -359,7 +359,9 @@ timer(time, label, glowcolor, text, height)
 	hud_timertext.glowColor = glowcolor;
 	hud_timertext.label = label;
 	if (isdefined(text))
-	hud_timertext setText(text);
+		hud_timertext setText(text);
+	if(isDefined(value))
+		hud_timertext setValue(int(value));
 	
 	hud_timertext FadeOverTime(1);
 	hud_timertext.alpha = 1;
