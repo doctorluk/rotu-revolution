@@ -92,6 +92,7 @@ loadSettings()
 	dvarFloat(	"surv",			"revivetime",	3,		0.25,	30);
 	dvarInt(	"surv", 		"wavesystem",			2,		0,		2);
 	dvarInt(	"surv", 		"timeout",	 			30,		2,		120);
+	dvarInt(	"surv", 		"timeout_firstwave",	30,		0,		60);
 	dvarString(	"surv",			"defaultmode",			"waves_special");
 	dvarString(	"surv",			"weaponmode",			"upgrade"); //wawzombies or upgrade
 	dvarString(	"surv",			"waw_spawnprimary",		"none");
