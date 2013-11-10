@@ -15,6 +15,7 @@
 #include scripts\include\entities;
 #include scripts\include\physics;
 #include scripts\include\hud;
+#include scripts\include\useful;
 init()
 {
 	precache();
