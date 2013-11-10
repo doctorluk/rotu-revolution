@@ -589,7 +589,7 @@ displayCredits(){
 	wait 0.5;
 	thread showCredit("Bipo", "credit", 1.5, 100);
 	wait 0.5;
-	thread showCredit("-R Development:", "credit", 1.4, 80);
+	thread showCredit("REVOLUTION Development:", "credit", 1.4, 80);
 	wait 0.5;
 	thread showCredit("Luk", "credit", 1.5, 100);
 	wait 0.5;
@@ -679,9 +679,9 @@ displayStats(){
 	}
 	thread showCredit("", "stats", 1.4, 0, "center");
 	thread showCredit("", "stats", 1.4, 0, "center");
-	thread showCredit("This map lasted " + convertTime(level.gameEndTime - level.startTime), "stats", 1.4, 0, "center", backgroundColour);
+	thread showCredit("This map lasted " + convertTime(level.gameEndTime - level.startTime), "stats", 1.4, 0, "center", (0.8,0,0));
 	wait 0.5;
-	thread showCredit("Zombies harmed: " + level.killedZombies, "stats", 1.4, 0, "center", backgroundColour);
+	thread showCredit("Zombies harmed: " + level.killedZombies, "stats", 1.4, 0, "center", (0.8,0,0));
 	wait 0.5;
 	thread showCredit(level.rotuVersion, "stats", 1.4, 0, "center", (0.8,0,0));
 }
