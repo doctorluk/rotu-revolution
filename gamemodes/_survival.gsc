@@ -494,7 +494,7 @@ startRegularWave()
 		timer(level.dvar["surv_timeout"], &"ZOMBIE_NEWWAVEIN", (.2,.7,0), undefined, level.currentWave);
 		wait level.dvar["surv_timeout"] + 2;
 	}
-	announceMessage(&"ZOMBIE_NEWWAVE", level.waveSize, (.2,.7,0), 4, 95);
+	announceMessage(&"ZOMBIE_NEWWAVE0", level.waveSize, (.2,.7,0), 4, 95);
 	wait 5;
 	level.ambient = "zom_ambient"+randomint(5);
 	scripts\server\_environment::setAmbient(level.ambient);
