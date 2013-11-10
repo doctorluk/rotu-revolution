@@ -49,6 +49,33 @@ precache()
 	precacheShader("progress_bar_fill");
 	precacheshader("hud_weapons");
 	precacheshader("hud_ammo");
+	
+	precacheShader("icon_ammobox_radar");
+	precacheShader("icon_medkit_radar");
+}
+
+createRadarIcon( shader ){
+	// id = level.objectID;
+	if(level.objects.size >= 16) return;
+	for(i = 0; i < level.objects.size; i++)
+		if( !isDefined(level.objects[i]) )
+			break;
+			
+	self.id = i;
+	level.objects[i] = self;
+	
+	Objective_Add( self.id, "active", self.origin, shader );
+	// Objective_OnEntity(self.id, level.players[0]);
+	
+	self thread removeRadarIconOnDeath();
+}
+
+removeRadarIconOnDeath(){
+	self waittill("death");
+	
+	level.objects[self.id] = undefined;
+	
+	objective_delete(self.id);
 }
 
 createTeamObjpoint( origin, shader, alpha )
