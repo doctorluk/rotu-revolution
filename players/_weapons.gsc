@@ -656,7 +656,12 @@ watchThrowable()
 		{
 			//if ( !self.c4array.size )
 			//	self thread watchC4AltDetonate();
-			
+			if( self.c4array.size >= level.dvar["game_max_c4"] ){
+				c4 delete();
+				self iprintlnbold("You can only put down " + level.dvar["game_max_c4"] + " C4 max.!");
+				self setWeaponAmmoClip( self getCurrentWeapon(), self getWeaponAmmoClip(self getCurrentWeapon()) + 1 );
+				continue;
+			}
 			self.c4array[self.c4array.size] = c4;
 			c4.owner = self;
 			c4.activated = false;
@@ -832,7 +837,10 @@ c4Damage()
 		if ( attacker.pers["team"] != self.owner.pers["team"] )
 			attacker notify("destroyed_explosive");
 	}
-	
+	/* Make sure to remove the c4 from the owner's array to fix faildetection of already exploded c4 */
+	if( isDefined( self.owner ) ){
+		self.owner.c4array = removeFromArray( self.owner.c4array, self );
+	}
 	self detonate( attacker );
 	// won't get here; got death notify.
 }
