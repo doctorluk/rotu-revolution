@@ -367,7 +367,12 @@ shootGL()
 				
 				wait self.fireSpeed;
 			}
-			wait (shotsFired / self.numBullets) * self.cooldown;
+			
+			if( (shotsFired / self.numBullets) * self.cooldown < 0.05 )
+				wait 0.05;
+			else
+				wait (shotsFired / self.numBullets) * self.cooldown;
+				
 			shotsFired = 0;
 		}
 		else if (shotsFired > 0) {
@@ -406,9 +411,13 @@ shootMinigun()
 				
 				wait self.fireSpeed;
 			}
-			if(shotsFired == self.numBullets)
-				playFx(level._effect["overheat"], self getTagOrigin("tag_flash"));
-			wait (shotsFired / self.numBullets) * self.cooldown;
+			// if(shotsFired == self.numBullets)
+				// playFx(level._effect["overheat"], self getTagOrigin("tag_flash"));
+			if( (shotsFired / self.numBullets) * self.cooldown < 0.05 )
+				wait 0.05;
+			else
+				wait (shotsFired / self.numBullets) * self.cooldown;
+				
 			shotsFired = 0;
 		}
 		else if (shotsFired > 0) {
