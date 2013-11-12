@@ -24,6 +24,7 @@ init()
 	addCmd("revive", ::revivecommand);
 	addCmd("resetplayer", ::reset);
 	addCmd("getendview", ::getplayerangles);
+	addCmd("saybold", ::saybold);
 	addCmd("kill_zombies", ::killZombies);
 	precache();
 }
@@ -56,6 +57,13 @@ watchCmd()
 		}
 		wait 0.25;
 	}
+}
+
+saybold(args){
+	if( !isDefined( args[0] ) || args[0] == "" )
+		return;
+	
+	iprintlnbold( args[0] );
 }
 
 
