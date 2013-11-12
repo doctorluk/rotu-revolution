@@ -47,6 +47,7 @@ init()
 	thread scripts\players\_teleporter::init();
 	thread scripts\players\_rank::init();
 	//thread scripts\players\_challenges::buildChallegeInfo();
+	thread updateActiveAliveCounts();
 }
 
 precache()
@@ -190,7 +191,6 @@ Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon,
 	self thread compassBlinkMe();
 	iPrintln( self.name + " ^7is down!" );
 	self.deaths ++;
-	level.alivePlayers -= 1;
 	self.isAlive = false;
 	self.lastDowntime = getTime();
 	self setStatusIcon("icon_down");
@@ -731,11 +731,9 @@ cleanup() // CLEANUP ON DEATH (SPEC) OR DISCONNECT
 	self setclientdvars("r_filmusetweaks", 0, "ui_upgradetext", "", "ui_specialtext", "", "cg_draw2d", 1, "g_compassShowEnemies", 0, "ui_uav_client", 0, "ui_wavetext", "", "ui_waveprogress", 0, "ui_spawnqueue", "", "ui_spawnqueue_show", 1);
 	if (self.isActive)
 	{
-		level.activePlayers -= 1;
 		self.isActive = false;
 		if (self.isAlive)
 		{
-			level.alivePlayers -= 1;
 			self.isAlive = false;
 			
 			if (self.primary!="none"){
@@ -1016,9 +1014,7 @@ spawnPlayer(forceSpawn)
 	if(level.flashlightEnabled)
 		self thread flashlightOn(true);
 	
-	level.activePlayers ++;
 	self.isAlive = true;
-	level.alivePlayers ++;
 	level notify("update_classcounts");
 }
 
@@ -1319,7 +1315,6 @@ revive(by)
 	if (level.gameEnded)
 	return;
 	// Give me back my weapons!
-	level.alivePlayers ++;
 	self.isAlive = true;
 	weapons = self.lastStandWeapons;
 	
@@ -1435,4 +1430,23 @@ flickeringHud(duration){
 		wait 0.05 + randomfloat(0.2);
 	}
 	self setclientdvar("cg_draw2d", 1);
+}
+/* Updates player counts twice a second because I'm too stupid to actually do this with kill/disconnect/spawn events */
+updateActiveAliveCounts(){
+	level endon("game_ended");
+	while(1){
+		level.activePlayers = 0;
+		level.alivePlayers = 0;
+		for(i = 0; i < level.players.size; i++){
+			p = level.players[i];
+			if( !isReallyPlaying ( p ) )
+				continue;
+			if( p.isActive ){
+				level.activePlayers++;
+				if( p.isAlive )
+					level.alivePlayers++;
+			}
+		}
+		wait 0.5;
+	}
 }
