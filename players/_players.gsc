@@ -1397,8 +1397,8 @@ revive(by)
 	self thread scripts\players\_weapons::watchWeaponSwitching();
 	self thread scripts\players\_abilities::watchSpecialAbility();
 	// Properly start Monkey Bomb countdown again
-	if(self hasWeapon(level.weapons["flash"]) && self GetWeaponAmmoClip(level.weapons["flash"]) == 0)
-		self thread scripts\players\_abilities::restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);
+	// if(self hasWeapon(level.weapons["flash"]) && self GetWeaponAmmoClip(level.weapons["flash"]) == 0)
+		// self thread scripts\players\_abilities::restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);
 	// Setting the first-in-queue weapon to be the actionslot weapon
 	if(self.actionslotweapons.size > 0)
 		self setActionSlot( 4, "weapon", self.actionslotweapons[0] );

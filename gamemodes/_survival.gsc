@@ -193,8 +193,6 @@ watchEnd()
 		if (level.alivePlayers == 0)
 		{
 			ran = randomint(3);
-			// ambientStop(1);
-			// wait 1;
 			switch(ran){
 				case 0: thread scripts\gamemodes\_gamemodes::endMap("All Survivors have perished...", 0); break;
 				case 1: thread scripts\gamemodes\_gamemodes::endMap("The human race became extinct", 0); break;

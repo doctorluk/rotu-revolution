@@ -13,6 +13,7 @@
 
 #include scripts\include\hud;
 #include scripts\include\entities;
+#include scripts\include\useful;
 init()
 {
 	precache();

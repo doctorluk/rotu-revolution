@@ -704,6 +704,8 @@ SCOUT_PASSIVE(ability)
 		case "AB3":
 			self giveWeapon( "usp_silencer_mp" );
 			self setOffhandSecondaryClass("flash");
+			self setWeaponAmmoClip( "usp_silencer_mp", 0);
+			self thread restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);
 		break;
 		case "AB4":
 			self.hasRadar = true;

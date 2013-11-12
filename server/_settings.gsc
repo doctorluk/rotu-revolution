@@ -50,8 +50,8 @@ loadSettings()
 	dvarInt(	"game", 		"startpoints",	 		2000,	0,		100000);
 	dvarInt(	"game",			"max_mg_barrels",		4,		1,		20);
 	dvarInt(	"game",			"max_turrets",			5,		1,		12);
-	dvarInt(	"game",			"max_claymores",		8,		0,		20); // Max claymores per player
-	dvarInt(	"game",			"max_c4",				8,		0,		20); // Max c4 per player
+	dvarInt(	"game",			"max_claymores",		10,		0,		50); // Max claymores per player
+	dvarInt(	"game",			"max_c4",				10,		0,		50); // Max c4 per player
 	dvarInt(	"game",			"max_barrels",			12,		1,		30);
 	dvarInt(	"game",			"max_portals",			3,		1,		10);
 	dvarBool(	"game",			"use_custom",			1);
