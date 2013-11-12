@@ -214,3 +214,43 @@ playerGoZombie()
 	if (isdefined(ent))
 	self scripts\bots\_bots::zomSetTarget(ent.origin);
 }
+
+cleanupZombie(){
+	self endon("disconnect");
+	wait 1;
+	self TakeAllWeapons();
+	self.isZombie = false;
+	self detachall();
+	
+	if (self.myBody != "")
+		self setmodel(self.myBody);
+	if (self.myHead != "")
+		self attach(self.myHead);
+		
+	self setclientdvar("cg_thirdperson", 0);
+	self permanentTweaksOff();
+	
+	if ( isReallyPlaying(self) ) {
+		if (isdefined(self.tombEnt))
+		{
+			self setorigin( self.tombEnt.origin, self.tombEnt.angles );
+			self.tombEnt delete();
+		}
+		else
+		{
+			self setorigin( self.origin, self.angles );
+			self iprintlnbold("You're bugged, but don't worry");
+		}
+		
+		self thread scripts\players\_players::revive();
+		self.sessionstate = "playing";
+	}
+	else{
+		// iprintlnbold("Cleaning your zombie stuff...");
+		// self scripts\players\_players::cleanup();
+		return;
+	}
+	self thread scripts\players\_weapons::watchThrowable();
+	self thread scripts\players\_weapons::watchMonkey();
+	self thread scripts\players\_claymore::init();
+}

@@ -300,34 +300,7 @@ onPlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHit
 	self endon("disconnect");
 	if (self.isZombie)
 	{
-		wait 1;
-		self TakeAllWeapons();
-		self.isZombie = false;
-		self detachall();
-		if (self.myBody != "")
-		self setmodel(self.myBody);
-		if (self.myHead != "")
-		self attach(self.myHead);
-		self setclientdvar("cg_thirdperson", 0);
-		self permanentTweaksOff();
-		if (self.sessionstate!="spectator") {
-			if (isdefined(self.tombEnt))
-			{
-				self setorigin( self.tombEnt.origin, self.tombEnt.angles );
-				self.tombEnt delete();
-			}
-			else
-			{
-				self setorigin( self.origin, self.angles );
-				self iprintlnbold("You're bugged, but don't worry");
-			}
-			
-			self thread revive();
-			self.sessionstate = "playing";
-		}
-		self thread scripts\players\_weapons::watchThrowable();
-		self thread scripts\players\_weapons::watchMonkey();
-		self thread scripts\players\_claymore::init();
+		self thread scripts\players\_infection::cleanupZombie();
 		return;
 	}
 	// CLEANUP
@@ -1427,6 +1400,7 @@ revive(by)
 	
 	self thread scripts\players\_weapons::watchWeaponUsage();
 	self thread scripts\players\_weapons::watchWeaponSwitching();
+	self thread scripts\players\_abilities::watchSpecialAbility();
 	// Properly start Monkey Bomb countdown again
 	if(self hasWeapon(level.weapons["flash"]) && self GetWeaponAmmoClip(level.weapons["flash"]) == 0)
 		self thread scripts\players\_abilities::restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);

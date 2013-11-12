@@ -1111,11 +1111,13 @@ watchSpecialAbility()
 	self endon("killed_player");
 	self endon("join_spectator");
 	self endon("death");
+	self notify("watch_special");
+	self endon("watch_special");
 	
 	wait 1;
 	
-	if ( !isdefined(self.special["ability"]) || self.special["ability"] == "none")
-	return;
+	if ( !isdefined(self.special["ability"]) || self.special["ability"] == "none" )
+		return;
 	
 	i = 0;
 	/* Will trigger the special when holding the F button for 1.5 seconds */
@@ -1135,7 +1137,7 @@ watchSpecialAbility()
 onSpecialAbility()
 {
 	if (!self.canUseSpecial){
-		self iprintln("^1DEBUG: ^7You can't use your special! self.canUseSpecial == false !");
+		// self iprintln("^1DEBUG: ^7You can't use your special! self.canUseSpecial == false !");
 		return;
 	}
 	
