@@ -228,6 +228,7 @@ compassBlinkMe(){ // Makes the playersymbol blink in "!" signs to signalize that
 
 	self endon("revived");
 	self endon("disconnect");
+	self endon("death");
 	self endon("spawned");
 	while(1){
 		self pingPlayer();
@@ -987,10 +988,11 @@ spawnPlayer(forceSpawn)
 
 	self spawn( origin, angles );
 	
-	if (self.persData.class!=self.curClass)
-	resetUnlocks();
-	
 	self.curClass = self.class;
+	
+	if (self.persData.class != self.curClass)
+		resetUnlocks();
+
 	self.persData.class = self.curClass;
 	
 
