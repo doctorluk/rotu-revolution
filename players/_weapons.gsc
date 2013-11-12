@@ -657,6 +657,11 @@ watchThrowable()
 			//if ( !self.c4array.size )
 			//	self thread watchC4AltDetonate();
 			if( self.c4array.size >= level.dvar["game_max_c4"] ){
+				for(i = 0; i < self.c4array.size; i++)
+					if( !isDefined( self.c4array[i] ) )
+						self.c4array = removeFromArray( self.c4array, self.c4array[i] );
+			}
+			if( self.c4array.size >= level.dvar["game_max_c4"] ){
 				c4 delete();
 				self iprintlnbold("You can only put down " + level.dvar["game_max_c4"] + " C4 max.!");
 				self setWeaponAmmoClip( self getCurrentWeapon(), self getWeaponAmmoClip(self getCurrentWeapon()) + 1 );
