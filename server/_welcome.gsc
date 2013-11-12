@@ -35,6 +35,7 @@ loadSettings()
 
 onPlayerSpawn()
 {
+	self endon("disconnect");
 	if (!level.dvar["game_welcomemessages"])
 	return;
 	
