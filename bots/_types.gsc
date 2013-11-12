@@ -424,7 +424,7 @@ preWave(type){
 			
 			level.flashlightEnabled = true;
 			scripts\players\_players::flashlightForAll(true);
-			wait 5.5 + randomfloat(1); // Wait at least as long as the announceMessage takes
+			wait 6 + randomfloat(1); // Wait at least as long as the announceMessage takes
 			
 			announceMessage(label[randomint(label.size)], "", (1,.3,0), 6, 85, undefined, 15);
 			wait 2;
