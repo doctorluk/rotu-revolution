@@ -1269,14 +1269,14 @@ joinSpectator()
 	if (self.pers["team"] != "spectator")
 	{
 		if (isalive(self))
-		self suicide();
+			self suicide();
+			
+		self cleanup();
 		
 		self.isActive = false;
-		self.zombie = false;
+		self.isZombie = false;
 		
 		self notify("join_spectator");
-		self cleanup();
-
 		
 		self.pers["team"] = "spectator";
 		self.sessionteam = "spectator";
