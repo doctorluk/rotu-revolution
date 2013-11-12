@@ -269,7 +269,7 @@ initZomTypes()
 	addZomType("burning", "zombie_all", "zombie",	 16, 36, 20, 96 , 40, 200  , .8, 1, 0    , "zombie"); // Code handled
 	addZomType("napalm", "napalm", "zombie",	 16, 36, 20, 50 , 100, 100  , .8, 1, 0    , "zombie"); // Code handled
 	addZomType("scary", "zombie_all", "zombie",	 18, 36, 20, 96 , 40, 200  , .8, 0, .01, "zombie"); // Code handled
-	addZomType("toxic", "quad", "quad",		 8, 32, 16, 104 , 50, 180  , .6, 1, .15, "zombie"); // Code handled
+	addZomType("toxic", "quad", "quad",		 8, 32, 16, 104 , 30, 180  , .6, 0, .15, "zombie"); // Code handled
 	addZomType("fat", "fat", "zombie",			 16, 42, 16, 100, 40, 275  , .8, 0, 0.05 , "zombie");
 	addZomType("fast", "fast", "zombiefast",	 20, 55, 24, 96 , 40, 150  , .7, 1, 0.075, "zombie");
 	addZomType("tank", "tank", "zombie", 		 16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie");
@@ -912,7 +912,7 @@ onCorpse(type)
 		case "dog":
 		return 1;
 		case "toxic":
-			if (randomfloat(1)<.3)
+			if (randomfloat(1) < .15)
 			thread toxicCloud(self.origin, 10);
 		return 2;
 		default:
