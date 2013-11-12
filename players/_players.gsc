@@ -1178,8 +1178,9 @@ fullHeal(speed)
 
 incUpgradePoints(inc)
 {
-	if (!isdefined(inc))
-	return;
+	if ( !isdefined( inc ) || ( inc < 1 && inc > -1 ) )
+		return;
+		
 	self.points += inc;
 	self.persData.points += inc;
 	//iprintlnbold(self.persData.points);
