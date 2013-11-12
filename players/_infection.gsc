@@ -129,11 +129,12 @@ waitGoZombie()
 	self endon("death");
 	self endon("revived");
 	self endon("infection_cured");
-	while (!self.isDown)
+	while ( !self.isDown )
 	{
-		wait .1;
+		wait 0.2;
+		if( self.isDown )
+			wait 3;
 	}
-	wait 5;
 	self thread playerGoZombie();
 }
 
