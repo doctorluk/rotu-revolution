@@ -96,11 +96,16 @@ getNextMap()
 
 changeMap(mapname)
 {
-	if (level.players.size < 1)
+	if (level.players.size < 1 && !getDvarInt("developer_script") )
 	{
 		map_restart(false);
 		return;
 	}
+	else if(level.players.size < 1 && getDvarInt("developer_script")){
+		while(level.players.size < 1) wait 0.1; // Workaround for debug mode, wait until a player connects and then change the map
+		wait 0.5;
+	}
+	
 	tries = 0;
 	setdvar("logfile", 0); // Prevent logging of rcon_password
 	oldpassword = getdvar("rcon_password");
