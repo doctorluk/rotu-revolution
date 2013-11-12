@@ -843,6 +843,7 @@ restoreInvisibility(time)
 
 beAmmobox(time)
 {
+	self endon("death");
 	old = self.origin;
 	wait 0.1;
 	while( isDefined(self) ){
