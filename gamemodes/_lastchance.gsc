@@ -7,15 +7,19 @@ lastChanceMain(){
 	if( isDefined( level.lastChance ) )
 		return;
 	/* See if we can start Last Chance */
+	logPrint("DEBUG: START buildLastChanceRequirement\n");
 	buildLastChanceRequirement();
+	logPrint("DEBUG: END buildLastChanceRequirement\n");
 	if( !level.lastChance )
 		return;
-	
+	logPrint("DEBUG: START prepareLastChance\n");
 	prepareLastChance();
-	
+	logPrint("DEBUG: END prepareLastChance\n");
+	logPrint("DEBUG: START startLastChancePlayers\n");
 	/* Building the HUD display for each player */
 	/* START LAST CHANCE INPUT HERE */
 	startLastChancePlayers();
+	logPrint("DEBUG: END startLastChancePlayers\n");
 	
 	/* Start ambient sound */
 	scripts\server\_environment::setAmbient("ambient_last_stand", 0, 0);
@@ -25,13 +29,16 @@ lastChanceMain(){
 	
 	/* After resurrection etc. */
 	if( level.resurrectPeople.size > 0 ){
+		logPrint("DEBUG: WE CAN RESURRECT SOMEONE!\nDEBUG: START postLastChance\n");
 		postLastChance();
+		logPrint("DEBUG: END postLastChance\n");
 		level notify("delete_last_chance_hud");
 		wait 0.05;
 		level notify("last_chance_end");
 		level notify("last_chance_succeeded");
 	}
 	else{
+		logPrint("DEBUG: THERE IS NOBODY TO RESURRECT!\n");
 		ambientStop(0);
 		// iprintlnbold("Not enough upgradepoints available, no resurrection by erection! (lol)");
 		level notify("delete_last_chance_hud");
