@@ -349,12 +349,15 @@ stopDownTimer(){
 
 endMap(endReasontext, win)
 {
-	level endon("last_chance_succeeded");
+	// level endon("last_chance_succeeded");
 	if (!isdefined(win))
 		win = false;
-	if(!win)
-		scripts\gamemodes\_lastchance::lastChanceMain();
-
+	if(!win){
+		lastChance = scripts\gamemodes\_lastchance::lastChanceMain();
+		if(lastChance){
+			return;
+		}
+	}
 	
 	level.gameEndTime = getTime();
 	level.gameEnded = true;

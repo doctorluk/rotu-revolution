@@ -190,6 +190,7 @@ watchEnd()
 	//wait 5;
 	while (1)
 	{
+		wait .5;
 		if (level.alivePlayers == 0)
 		{
 			ran = randomint(3);
@@ -199,7 +200,6 @@ watchEnd()
 				case 2: thread scripts\gamemodes\_gamemodes::endMap("Zombies have taken over...", 0); break;
 			}
 		}
-		wait .5;
 	}
 }
 

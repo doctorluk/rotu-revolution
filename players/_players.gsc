@@ -1434,6 +1434,8 @@ flickeringHud(duration){
 /* Updates player counts twice a second because I'm too stupid to actually do this with kill/disconnect/spawn events */
 updateActiveAliveCounts(){
 	level endon("game_ended");
+	level notify("update_active_alive_counts");
+	level endon("update_active_alive_counts");
 	while(1){
 		level.activePlayers = 0;
 		level.alivePlayers = 0;

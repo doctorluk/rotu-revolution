@@ -6,21 +6,16 @@
 lastChanceMain(){
 	/* Do not start Last Chance if we had it already */
 	if( isDefined( level.lastChance ) )
-		return;
+		return false;
 	/* See if we can start Last Chance */
-	logPrint("DEBUG: START buildLastChanceRequirement\n");
 	buildLastChanceRequirement();
-	logPrint("DEBUG: END buildLastChanceRequirement\n");
 	if( !level.lastChance )
-		return;
-	logPrint("DEBUG: START prepareLastChance\n");
+		return false;
+
 	prepareLastChance();
-	logPrint("DEBUG: END prepareLastChance\n");
-	logPrint("DEBUG: START startLastChancePlayers\n");
 	/* Building the HUD display for each player */
 	/* START LAST CHANCE INPUT HERE */
 	startLastChancePlayers();
-	logPrint("DEBUG: END startLastChancePlayers\n");
 	
 	/* Start ambient sound */
 	scripts\server\_environment::setAmbient("ambient_last_stand", 0, 0);
@@ -30,22 +25,20 @@ lastChanceMain(){
 	
 	/* After resurrection etc. */
 	if( level.resurrectPeople.size > 0 ){
-		logPrint("DEBUG: WE CAN RESURRECT SOMEONE!\nDEBUG: START postLastChance\n");
 		postLastChance();
-		logPrint("DEBUG: END postLastChance\n");
 		level notify("delete_last_chance_hud");
-		wait 0.05;
 		level notify("last_chance_end");
-		level notify("last_chance_succeeded");
+		// wait 0.05;
+		return true;
 	}
 	else{
-		logPrint("DEBUG: THERE IS NOBODY TO RESURRECT!\n");
 		ambientStop(0);
 		// iprintlnbold("Not enough upgradepoints available, no resurrection by erection! (lol)");
 		level notify("delete_last_chance_hud");
 		wait 3;
 		level notify("last_chance_failed");
 		level notify("last_chance_end");
+		return false;
 	}
 }
 
@@ -170,14 +163,14 @@ postLastChance(){
 		player unfreezePlayerForRoundEnd();
 		player setclientdvar("ui_hud_hardcore", 0);
 	}
-	logPrint("DEBUG: START changing blur!\n");
-	thread scripts\server\_environment::setBlur(scripts\bots\_types::getBlurForType(level.currentType), 3);
+	level thread scripts\server\_environment::setBlur(scripts\bots\_types::getBlurForType(level.currentType), 3);
 	level.resurrectPeople = undefined;
 	level.lastChance = false;
 	if( isDefined( level.bossOverlay ) ){
-		level.bossOverlay fadein(1);
+		level.bossOverlay thread fadein(1);
 	}
-	thread scripts\gamemodes\_survival::watchEnd();
+	level thread scripts\gamemodes\_survival::watchEnd();
+	level thread scripts\players\_players::updateActiveAliveCounts();
 	if(level.currentType != "scary")
 		level.turretsDisabled = 0;
 	level.spawningDisabled = 0;
@@ -189,16 +182,6 @@ reviveEffects(){
 	visionSetNaked("last_chance_revive", 0.2);
 	wait 0.8;
 	scripts\server\_environment::setVision(level.vision, 4);
-}
-
-test(){
-	// wait 2;
-	// for(i = 0; i < level.cantPayLC.size; i++){
-		// player = level.cantPayLC[i];
-		// player.savior = player;
-		// player notify("saved_lc");
-		// level.resurrectPeople[level.resurrectPeople.size] = player;
-	// }
 }
 
 lcHud(){
