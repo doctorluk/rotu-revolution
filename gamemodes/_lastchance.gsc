@@ -1,4 +1,5 @@
 #include scripts\include\data;
+#include scripts\include\hud;
 #include scripts\include\useful;
 #include common_scripts\utility;
 
@@ -161,16 +162,20 @@ postLastChance(){
 		}
 		else 
 			player thread scripts\server\_environment::setVision(level.vision, 3);
-			
+	}
+	for(i = 0; i < level.players.size; i++){
+		player = level.players[i];
+		player closeMenu();
+		player closeInGameMenu();
 		player unfreezePlayerForRoundEnd();
 		player setclientdvar("ui_hud_hardcore", 0);
 	}
+	logPrint("DEBUG: START changing blur!\n");
 	thread scripts\server\_environment::setBlur(scripts\bots\_types::getBlurForType(level.currentType), 3);
 	level.resurrectPeople = undefined;
 	level.lastChance = false;
 	if( isDefined( level.bossOverlay ) ){
-		level.bossOverlay fadeOverTime(2);
-		level.bossOverlay.alpha = 1;
+		level.bossOverlay fadein(1);
 	}
 	thread scripts\gamemodes\_survival::watchEnd();
 	if(level.currentType != "scary")
