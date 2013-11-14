@@ -96,14 +96,10 @@ getNextMap()
 
 changeMap(mapname)
 {
-	if (level.players.size < 1 && !getDvarInt("developer_script") )
+	if ( level.players.size < 1 )
 	{
 		map_restart(false);
 		return;
-	}
-	else if(level.players.size < 1 && getDvarInt("developer_script")){
-		while(level.players.size < 1) wait 0.1; // Workaround for debug mode, wait until a player connects and then change the map
-		wait 0.5;
 	}
 	
 	tries = 0;
