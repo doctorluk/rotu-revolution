@@ -220,6 +220,14 @@ spawnZombie(type, spawnpoint, bot)
 	bot.head = undefined;
 	
 	bot.team = bot.pers["team"];
+	
+	assert( isDefined(bot.team) );
+	
+	if( !isDefined(bot.team) ){
+		bot.hasSpawned = false;
+		return undefined;
+	}
+	
 	bot.sessionteam = bot.team;
 	bot.sessionstate = "playing";
 	bot.spectatorclient = -1;
