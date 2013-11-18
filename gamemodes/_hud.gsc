@@ -230,10 +230,10 @@ removeTimers()
 		
 	for (i=0; i<self.hud_timers.size; i++)
 	{
-		if (isdefined(self.hud_timers[i]))
-		self.hud_timers[i].hud_timer destroy();
-		if (isdefined(self.hud_timers[i].hud_timertext))
-		self.hud_timers[i].hud_timertext destroy();
+		if ( isDefined( self.hud_timers[i].hud_timer ) )
+			self.hud_timers[i].hud_timer destroy();
+		if ( isDefined( self.hud_timers[i].hud_timertext ) )
+			self.hud_timers[i].hud_timertext destroy();
 	}
 	self.hud_timers = [];
 }
