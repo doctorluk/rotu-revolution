@@ -13,6 +13,7 @@
 
 //BOT MODELS AND ANIMATIONS
 #include scripts\include\hud;
+#include scripts\include\useful;
 #include scripts\include\entities;
 #include scripts\include\data;
 
@@ -902,10 +903,10 @@ onCorpse(type)
 			self scripts\bots\_bots::zomAreaDamage(160);
 		return 0;
 		case "napalm":
-			if(!isDefined(self.suicided)){
+			if( !isDefined( self.suicided ) ){
 				PlayFX(level.explodeFX, self.origin);
 				self PlaySound("explo_metal_rand");
-				self scripts\bots\_bots::zomAreaDamage(20);
+				self scripts\bots\_bots::zomAreaDamage(60);
 			}
 		return 0;
 		case "dog":
@@ -924,13 +925,15 @@ toxicCloud(org, time) {
 	playfx(level.toxicFX, org);
 	ent playsound("toxic_gas");
 	self endon("death");
-	for (t=0;t<28; t++) {
+	for ( t = 0; t<28; t++ ){
 		for (i=0; i<level.players.size; i++) {
-			if (distance(level.players[i].origin, org) < 128 && level.players[i].sessionstate == "playing") {
+			if( !isReallyPlaying(level.players[i]) )
+				continue;
+			if ( distance(level.players[i].origin, org) < 128 ) {
 				if (!level.players[i].entoxicated) {
 					level.players[i].entoxicated = true;
 					level.players[i] shellshock("toxic_gas_mp", 5);
-					level.players[i] thread unEntoxicate(7);
+					level.players[i] thread unEntoxicate(8);
 				}
 			}
 		}
