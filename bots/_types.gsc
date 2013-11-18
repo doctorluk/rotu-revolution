@@ -273,7 +273,7 @@ initZomTypes()
 	addZomType("fat", "fat", "zombie",			 16, 42, 16, 100, 40, 275  , .8, 0, 0.05 , "zombie");
 	addZomType("fast", "fast", "zombiefast",	 20, 55, 24, 96 , 40, 150  , .7, 1, 0.075, "zombie");
 	addZomType("tank", "tank", "zombie", 		 16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie");
-	addZomType("electric", "electric", "zombie",  16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie");
+	// addZomType("electric", "electric", "zombie",  16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie");
 	addZomType("halfboss", "halfboss", "zombie",	 16, 40, 20, 96 , 90, 5000 + (2000 * level.activePlayers) , .8, 0, .0 , "zombie"); // Default zombie
 	//addZomType("boss", "boss", "zombie", 30, 50, 20, 120, 65, 10000, .8, 1, "zombie");
 	addZomType("dog", "dog", "dog", 			 18, 58, 30, 96 , 30, 125  , .8, 1, 0.08, "dog"); // Dog zombie
@@ -354,6 +354,7 @@ setZombieProbabilityScenario(index, description, prob0, prob1, prob2, prob3, pro
 randomZombieProbabilityScenario(waitingTime){
 	level endon("game_ended");
 	level endon("wave_finished");
+	assert(waitingTime >= 0.05);
 	while(1){
 		ran = randomint(level.zombieProbabilityScenario.size);
 		i = 0;
@@ -536,26 +537,24 @@ getAmbientForType(type)
 	switch (type)
 	{
 		case "burning":
-		return "ambient_inferno";
+			return "ambient_inferno";
 		case "normal":
-		return "zom_ambient";
+			return "zom_ambient";
 		case "toxic":
-		return "ambient_toxic";
+			return "ambient_toxic";
 		case "scary":
-		return "ambient_scary";
+			return "ambient_scary";
 		case "tank":
-		return "ambient_tank";
+			return "ambient_tank";
 		case "grouped":
-		return "ambient_grouped";
-		case "electric":
-		return "ambient_grouped"; // TODO: EXCHANGE
+			return "ambient_grouped";
 		case "boss":
-		return "ambient_boss";
+			return "ambient_boss";
 		case "dog":
-		thread playSoundOnAllPlayers("dog_howl");
-		return "zom_ambient";
+			thread playSoundOnAllPlayers("dog_howl");
+			return "zom_ambient";
 		default:
-		return "zom_ambient";
+			return "zom_ambient";
 	}
 }
 
@@ -564,17 +563,17 @@ getFogForType(type)
 	switch (type)
 	{
 		case "toxic":
-		return "toxic";
+			return "toxic";
 		case "boss":
-		return "boss";
+			return "boss";
 		case "scary":
-		return "scary";
+			return "scary";
 		case "grouped":
-		return "grouped";
+			return "grouped";
 		case "tank":
-		return "tank";
+			return "tank";
 		default:
-		return "";
+			return "";
 	}
 }
 
@@ -583,13 +582,13 @@ getVisionForType(type)
 	switch (type)
 	{
 		case "burning":
-		return "inferno";
+			return "inferno";
 		case "boss":
-		return "boss";
+			return "boss";
 		case "scary":
-		return "night";
+			return "night";
 		default:
-		return "";
+			return "";
 	}
 }
 
@@ -598,13 +597,13 @@ getFxForType(type)
 	switch (type)
 	{
 		case "burning":
-		return "ember";
+			return "ember";
 		case "tank":
-		return "lightning";
+			return "lightning";
 		case "boss":
-		return "lightning_boss";
+			return "lightning_boss";
 		default:
-		return "";
+			return "";
 	}
 }
 
@@ -646,7 +645,7 @@ loadZomStats(type)
 	self.soundType = struct.soundType;
 	
 	self.walkOnly = false;
-	if (randomfloat(1)>level.slowBots)
+	if ( randomfloat(1) > level.slowBots )
 	{
 		self.walkOnly = true;
 	}
