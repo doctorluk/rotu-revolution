@@ -19,14 +19,14 @@ init()
 	level.player_stat_rank["engineer"] = 433;
 	level.player_stat_rank["scout"] = 434;
 	level.player_stat_rank["medic"] = 435;
-	thread updateGlobalClassCounts();
+	updateGlobalClassCounts();
 }
 
 getSkillpoints(rank)
 {
 	self endon("disconnect");
-	modRank = rank + 110 * self.pers["prestige"];
-	if (!level.dvar["game_class_ranks"])
+	modRank = rank + 60 * self.pers["prestige"]; // Get 60 additional skillpoints per prestige
+	if ( !level.dvar["game_class_ranks"] )
 	{
 		self.skillpoints = 0;
 		self skillPointsNotify(self.skillpoints);
@@ -46,11 +46,13 @@ getSkillpoints(rank)
 	self.rank["engineer"] = self getstat(level.player_stat_rank["engineer"]);
 	self.skillpoints = 0;
 	spent = self.rank["soldier"] + self.rank["stealth"] + self.rank["medic"] + self.rank["scout"] + self.rank["armored"] + self.rank["engineer"];
-	self.skillpoints = modRank * 2 - spent;
+	self.skillpoints = modRank - spent;
+	
 	if (self.rankHacker)
-	self.skillpoints = 0;
-	if ( modRank * 2 > 174)
-	self.skillpoints = 174 - spent;
+		self.skillpoints = 0;
+		
+	if ( modRank > 174)
+		self.skillpoints = 174 - spent;
 	
 	self skillPointsNotify(self.skillpoints);
 	self setclientdvar("ui_skillpoints", self.skillpoints);

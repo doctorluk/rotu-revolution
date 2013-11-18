@@ -288,7 +288,6 @@ mainGametype()
 			else
 				scripts\gamemodes\_gamemodes::addSpawnType(type);
 
-
 		switch(type){
 			case "normal": startRegularWave(); break;
 			case "": break;
@@ -532,7 +531,6 @@ startSpecialWave(type)
 	level.intermission = 1;
 	
 	scripts\players\_players::spawnJoinQueue();
-	
 	level.waveSize = int(scripts\bots\_types::getWaveFactorForType(type) * getWaveSize(level.currentWave) ) + 1;
 	// level.waveSize = 1;
 	// level.waveSize = 100;
