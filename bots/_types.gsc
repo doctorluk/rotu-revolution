@@ -265,21 +265,21 @@ loadAnimTree(type)
 initZomTypes()
 {
 	level.zom_types = [];
-	// addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintOnly, infectionChance, soundType)
-	addZomType("zombie", "zombie", "zombie",	 16, 40, 20, 96 , 40, 200  , .8, 0, .075 , "zombie"); // Default zombie
-	addZomType("burning", "zombie_all", "zombie",	 16, 36, 20, 96 , 40, 200  , .8, 1, 0    , "zombie"); // Code handled
-	addZomType("napalm", "napalm", "zombie",	 16, 36, 20, 50 , 100, 100  , .8, 1, 0    , "zombie"); // Code handled
-	addZomType("scary", "zombie_all", "zombie",	 18, 36, 20, 96 , 40, 200  , .8, 0, .01, "zombie"); // Code handled
-	addZomType("toxic", "quad", "quad",		 8, 32, 16, 104 , 30, 180  , .6, 0, .15, "zombie"); // Code handled
-	addZomType("fat", "fat", "zombie",			 16, 42, 16, 100, 40, 275  , .8, 0, 0.05 , "zombie");
-	addZomType("fast", "fast", "zombiefast",	 20, 55, 24, 96 , 40, 150  , .7, 1, 0.075, "zombie");
-	addZomType("tank", "tank", "zombie", 		 16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie");
+	// addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintOnly, infectionChance, soundType, rewardMultiplier)
+	addZomType("zombie", "zombie", "zombie",	 16, 40, 20, 96 , 40, 200  , .8, 0, .075 , "zombie", 1); // Default zombie
+	addZomType("burning", "zombie_all", "zombie",	 16, 36, 20, 96 , 40, 200  , .8, 1, 0    , "zombie", 0.8); // Code handled
+	addZomType("napalm", "napalm", "zombie",	 16, 36, 20, 50 , 100, 100  , .8, 1, 0    , "zombie", 0.75); // Code handled
+	addZomType("scary", "zombie_all", "zombie",	 18, 36, 20, 96 , 40, 200  , .8, 0, .01, "zombie", 0.8); // Code handled
+	addZomType("toxic", "quad", "quad",		 8, 32, 16, 104 , 30, 180  , .6, 0, .15, "zombie",1); // Code handled
+	addZomType("fat", "fat", "zombie",			 16, 42, 16, 100, 40, 275  , .8, 0, 0.05 , "zombie", 1.2);
+	addZomType("fast", "fast", "zombiefast",	 20, 55, 24, 96 , 40, 150  , .7, 1, 0.075, "zombie", 0.8);
+	addZomType("tank", "tank", "zombie", 		 16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie", 1.35);
 	// addZomType("electric", "electric", "zombie",  16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie");
-	addZomType("halfboss", "halfboss", "zombie",	 16, 40, 20, 96 , 90, 5000 + (2000 * level.activePlayers) , .8, 0, .0 , "zombie"); // Default zombie
+	addZomType("halfboss", "halfboss", "zombie",	 16, 40, 20, 96 , 90, 5000 + (2000 * level.activePlayers) , .8, 0, .0 , "zombie", 3); // Default zombie
 	//addZomType("boss", "boss", "zombie", 30, 50, 20, 120, 65, 10000, .8, 1, "zombie");
-	addZomType("dog", "dog", "dog", 			 18, 58, 30, 96 , 30, 125  , .8, 1, 0.08, "dog"); // Dog zombie
-	addZomType("boss", "boss", "boss", 		 20, 58, 30, 160, 80, 10000, 1, 1, 0    , "zombie");
-	addZomType("boss_bullet", "boss", "boss", 		 20, 58, 30, 160, 80, 10000, .8, 1, 0    , "zombie");
+	addZomType("dog", "dog", "dog", 			 18, 58, 30, 96 , 30, 125  , .8, 1, 0.08, "dog", 0.5); // Dog zombie
+	addZomType("boss", "boss", "boss", 		 20, 58, 30, 160, 80, 10000, 1, 1, 0    , "zombie", 1);
+	addZomType("boss_bullet", "boss", "boss", 		 20, 58, 30, 160, 80, 10000, .8, 1, 0    , "zombie", 5);
 }
 
 getBlurForType(type)
@@ -608,7 +608,7 @@ getFxForType(type)
 	}
 }
 
-addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintOnly, infectionChance, soundType)
+addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintOnly, infectionChance, soundType, rewardMultiplier)
 {
 	struct = spawnstruct();
 	level.zom_types[name] = struct;
@@ -626,6 +626,7 @@ addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRang
 	struct.soundType = soundType;
 	struct.barricadeDamage = damage;
 	struct.spawnFX = undefined;
+	struct.rewardMultiplier = rewardMultiplier;
 	
 }
 
@@ -644,6 +645,7 @@ loadZomStats(type)
 	self.maxHealth = int(struct.maxHealth);
 	self.infectionChance = struct.infectionChance;
 	self.soundType = struct.soundType;
+	self.rewardMultiplier = struct.rewardMultiplier;
 	
 	self.walkOnly = false;
 	if ( randomfloat(1) > level.slowBots )

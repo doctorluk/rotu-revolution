@@ -539,7 +539,8 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		if (attacker.curClass == "medic" && !attacker.isDown)
 			attacker scripts\players\_abilities::heal(5);
 		//attacker.score+=10;
-		attacker scripts\players\_players::incUpgradePoints(10*level.rewardScale);
+		assert( isDefined( self.rewardMultiplier ) );
+		attacker scripts\players\_players::incUpgradePoints( int( 10 * level.rewardScale * self.rewardMultiplier ) );
 		giveAssists(attacker);
 		
 		/* STATS MONITOR */
