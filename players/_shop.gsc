@@ -72,17 +72,17 @@ updateCosts(){
 	for (i=0; i<7; i++)
 	{
 		self setclientdvar("ui_costs"+i, level.dvar["shop_item"+(i+1)+"_costs"]);
-		// wait .05;
+		wait .05;
 	}
 	for (i=0; i<6; i++)
 	{
 		self setclientdvar("ui_itemcosts"+i, level.dvar["shop_defensive"+(i+1)+"_costs"]);
-		// wait .05;
+		wait .05;
 	}
 	for (i=0; i<5; i++)
 	{
 		self setclientdvar("ui_supportcosts"+i, level.dvar["shop_support"+(i+1)+"_costs"]);
-		// wait .05;
+		wait .05;
 	}
 }
 

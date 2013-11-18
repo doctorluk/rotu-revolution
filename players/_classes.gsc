@@ -165,10 +165,10 @@ pickClass(class)
 		self setclientdvars("ui_class_rank", level.player_stat_rank[class]);
 		self.class = class;
 		self.pers["class"] = class;
-		self setclientdvar("ui_loadout_class", class);
-		self setclientdvar("ui_secondary_ability", "@ZOMBIE_NONE");
-		self setclientdvar("ui_secondary_ability_4", 0);
-		self setclientdvar("ui_secondary_ability_5", 0);
+		self setclientdvars("ui_loadout_class", class,
+							"ui_secondary_ability", "@ZOMBIE_NONE",
+							"ui_secondary_ability_4", 0,
+							"ui_secondary_ability_5", 0 );
 		self openMenu( game["menu_changeclass_ability"]  );
 		self.secondaryAbility = "none";
 	}

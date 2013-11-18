@@ -340,8 +340,16 @@ playerSetPermanentTweaks(invert, desaturation, darktint,  lighttint, brightness,
 
 doPermanentTweaks()
 {
-	self setClientDvars( "r_filmusetweaks", 1, "r_filmtweaks", 1 , "r_filmtweakenable", 1 , "r_filmtweakinvert", self.tweakInvert , "r_filmtweakdesaturation", self.tweakDesaturation , "r_filmtweakdarktint", 
-	self.tweakDarkTint , "r_filmtweaklighttint", self.tweakLightTint , "r_filmtweakbrightness", self.tweakBrightness ,"r_filmtweakcontrast", self.tweakContrast, "cg_fovscale", self.tweakFovScale );
+	self setClientDvars("r_filmusetweaks", 1,
+						"r_filmtweaks", 1 ,
+						"r_filmtweakenable", 1,
+						"r_filmtweakinvert", self.tweakInvert,
+						"r_filmtweakdesaturation", self.tweakDesaturation,
+						"r_filmtweakdarktint",self.tweakDarkTint,
+						"r_filmtweaklighttint", self.tweakLightTint,
+						"r_filmtweakbrightness", self.tweakBrightness,
+						"r_filmtweakcontrast", self.tweakContrast,
+						"cg_fovscale", self.tweakFovScale );
 }
 
 permanentTweaksOff()

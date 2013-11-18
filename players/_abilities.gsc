@@ -584,7 +584,7 @@ ARMORED_PASSIVE(ability)
 	{
 		case "AB1":
 			self.weaponMod += "armored";
-			self setclientdvar("ui_armored", 1);
+			// self setclientdvar("ui_armored", 1);
 		break;
 		case "AB2":
 			self setperk("specialty_bulletaccuracy");

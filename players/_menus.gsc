@@ -91,8 +91,7 @@ onPlayerConnect()
 		
 		player setClientDvar("ui_3dwaypointtext", "1");
 		player.enable3DWaypoints = true;
-		player setClientDvar("ui_deathicontext", "1");
-		player setclientdvar( "g_scriptMainMenu", game["menu_class"] );
+		player setClientDvars("ui_deathicontext", "1", "g_scriptMainMenu", game["menu_class"] );
 		player.enableDeathIcons = true;
 		player.classType = undefined;
 		player.selectedClass = false;
