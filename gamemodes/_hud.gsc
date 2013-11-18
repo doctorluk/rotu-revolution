@@ -225,6 +225,9 @@ addTimer(label, string, time)
 
 removeTimers()
 {
+	if( !isDefined( self ) || !isDefined( self.hud_timers ) )
+		return;
+		
 	for (i=0; i<self.hud_timers.size; i++)
 	{
 		if (isdefined(self.hud_timers[i]))
