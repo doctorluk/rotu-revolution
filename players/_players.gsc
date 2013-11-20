@@ -814,27 +814,26 @@ spawnJoinQueue(){
 
 /* Spawn the players in certain situations and in certain states of the waves */
 spawnJoinQueueLoop(){
-	if(level.currentType == "boss" || level.waveSize < 20)
-		return;
-		
 	level endon("wave_finished");
 	level endon("game_ended");
+		
+	if(level.currentType == "boss" || level.waveSize < 20)
+		return;
 	
 	zombiesKilled = 0;
 	intersections = 4;
 	
-	if(level.waveSize < 100)
-		intersections = 2;
-	else if (level.waveSize < 300)
-		intersections = 3;
+	if(level.waveSize <= 100)
+		intersections = 50;
+	else if(level.waveSize > 100 && level.waveSize < 300)
+		intersections = 70;
 	else
-		intersections = 4;
+		intersections = 100;
 		
-	sections = int(level.waveSize / intersections) + 1; // Spawn the players every intersection's of zombies killed
 	while(zombiesKilled < level.waveSize){
 		level waittill("bot_killed");
 		zombiesKilled++;
-		if(zombiesKilled % sections == 0){
+		if(zombiesKilled % intersections == 0){
 			// iprintln("Trying to spawn the queue!");
 			spawnJoinQueue();
 		}
