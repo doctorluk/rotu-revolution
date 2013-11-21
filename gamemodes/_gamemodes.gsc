@@ -247,19 +247,23 @@ loadDifficulty(difficulty)
 		case 1:
 			level.dif_zomPP = 2;
 			level.dif_zomHPMod = .5;
+			level.maxBossPhases = 3;
 		break;
 		case 2:
 			level.dif_zomPP = 5;
 			level.dif_zomHPMod = .75;
+			level.maxBossPhases = 4;
 		break;
 		case 3:
 			level.dif_zomPP = 8;
 			level.dif_zomHPMod = 1;
+			level.maxBossPhases = 4;
 		
 		break;
 		case 4:
 			level.dif_zomPP = 10;
 			level.dif_zomHPMod = 1.5;
+			level.maxBossPhases = 6;
 		
 		break;
 		default:
