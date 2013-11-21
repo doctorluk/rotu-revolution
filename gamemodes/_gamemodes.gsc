@@ -150,7 +150,7 @@ buildZomTypes(preset)
 	level.zom_typenames["toxic"] = "crawler Zombies";
 	level.zom_typenames["tank"] = "hell Zombies";
 	level.zom_typenames["grouped"] = "grouped Zombies";
-	level.zom_typenames["electric"] = "Electrified";
+	// level.zom_typenames["electric"] = "Electrified";
 	level.zom_typenames["boss"] = "^1One Final Zombie^7";
 	switch (preset)
 	{

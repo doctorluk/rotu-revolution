@@ -382,7 +382,7 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 			}
 		}
 		
-	if (self.god || level.godmode)
+	if (self.god || level.godmode || self.spawnProtectionTime + 3000 > getTime())
 	return;
 	
 	if (self.isDown)
@@ -860,12 +860,6 @@ spawnPlayer(forceSpawn)
 			self iprintlnbold("You will join soon! Just be patient ;)");
 			return;
 		}
-		if (level.activePlayers > 0)
-			if (level.alivePlayers / level.activePlayers <= level.dvar["game_spawn_requirement"])
-			{
-				self iprintlnbold("Try again when there are more survivors alive than dead!");
-				return;
-			}
 	}
 	self notify("spawned");
 
@@ -910,6 +904,8 @@ spawnPlayer(forceSpawn)
 	}
 	else
 		self.playtimeStart = getTime() - 5500;
+	self.spawnProtectionTime = getTime();
+	self.fireCatchCount = 0;
 	self.hasDoneCombat = false;
 	self.canHaveStealth = true;
 	self.visible = true;
@@ -1402,8 +1398,10 @@ revive(by)
 	if(self.actionslotweapons.size > 0)
 		self setActionSlot( 4, "weapon", self.actionslotweapons[0] );
 	
-	if(isDefined(by))
+	if(isDefined(by)){
 		self playsound("self_thanks_revived");
+		self.spawnProtectionTime = getTime();
+	}
 	wait .05;
 	self switchtoweapon(self.lastStandWeapon);
 }

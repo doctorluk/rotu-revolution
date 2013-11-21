@@ -18,22 +18,44 @@ playerSetupShop()
 	self.points = level.dvar["game_startpoints"];
 	self.support_level = 0;
 	self.upgrade_damMod = 1;
-	self setclientdvars("ui_points", int(self.points), "ui_upgrade", 0, "ui_supupgrade", 0);
-	for (i=0; i<7; i++)
-	{
-		self setclientdvar("ui_costs"+i, level.dvar["shop_item"+(i+1)+"_costs"]);
-		wait .05;
-	}
-	for (i=0; i<6; i++)
-	{
-		self setclientdvar("ui_itemcosts"+i, level.dvar["shop_defensive"+(i+1)+"_costs"]);
-		wait .05;
-	}
-	for (i=0; i<5; i++)
-	{
-		self setclientdvar("ui_supportcosts"+i, level.dvar["shop_support"+(i+1)+"_costs"]);
-		wait .05;
-	}
+	self setclientdvars();
+	// for (i=0; i<7; i++)
+	// {
+		// self setclientdvar("ui_costs"+i, level.dvar["shop_item"+(i+1)+"_costs"]);
+		// wait .05;
+	// }
+	// for (i=0; i<6; i++)
+	// {
+		// self setclientdvar("ui_itemcosts"+i, level.dvar["shop_defensive"+(i+1)+"_costs"]);
+		// wait .05;
+	// }
+	// for (i=0; i<5; i++)
+	// {
+		// self setclientdvar("ui_supportcosts"+i, level.dvar["shop_support"+(i+1)+"_costs"]);
+		// wait .05;
+	// }
+	self setclientdvars("ui_points", int(self.points), "ui_upgrade", 0, "ui_supupgrade", 0,
+	
+						"ui_costs"+0, level.dvar["shop_item"+(0+1)+"_costs"],
+						"ui_costs"+1, level.dvar["shop_item"+(1+1)+"_costs"],
+						"ui_costs"+2, level.dvar["shop_item"+(2+1)+"_costs"],
+						"ui_costs"+3, level.dvar["shop_item"+(3+1)+"_costs"],
+						"ui_costs"+4, level.dvar["shop_item"+(4+1)+"_costs"],
+						"ui_costs"+5, level.dvar["shop_item"+(5+1)+"_costs"],
+						"ui_costs"+6, level.dvar["shop_item"+(6+1)+"_costs"],
+						
+						"ui_itemcosts"+0, level.dvar["shop_defensive"+(0+1)+"_costs"],
+						"ui_itemcosts"+1, level.dvar["shop_defensive"+(1+1)+"_costs"],
+						"ui_itemcosts"+2, level.dvar["shop_defensive"+(2+1)+"_costs"],
+						"ui_itemcosts"+3, level.dvar["shop_defensive"+(3+1)+"_costs"],
+						"ui_itemcosts"+4, level.dvar["shop_defensive"+(4+1)+"_costs"],
+						"ui_itemcosts"+5, level.dvar["shop_defensive"+(5+1)+"_costs"],
+						
+						"ui_supportcosts"+0, level.dvar["shop_support"+(0+1)+"_costs"],
+						"ui_supportcosts"+1, level.dvar["shop_support"+(1+1)+"_costs"],
+						"ui_supportcosts"+2, level.dvar["shop_support"+(2+1)+"_costs"],
+						"ui_supportcosts"+3, level.dvar["shop_support"+(3+1)+"_costs"],
+						"ui_supportcosts"+4, level.dvar["shop_support"+(4+1)+"_costs"]);
 }
 
 updateShopCosts(){
@@ -69,21 +91,40 @@ updateCosts(){
 			// wait .05;
 		// }
 	// self setclientdvar("ui_supportcosts1", level.dvar["shop_support1_costs"]);
-	for (i=0; i<7; i++)
-	{
-		self setclientdvar("ui_costs"+i, level.dvar["shop_item"+(i+1)+"_costs"]);
-		wait .05;
-	}
-	for (i=0; i<6; i++)
-	{
-		self setclientdvar("ui_itemcosts"+i, level.dvar["shop_defensive"+(i+1)+"_costs"]);
-		wait .05;
-	}
-	for (i=0; i<5; i++)
-	{
-		self setclientdvar("ui_supportcosts"+i, level.dvar["shop_support"+(i+1)+"_costs"]);
-		wait .05;
-	}
+	// for (i=0; i<7; i++)
+	// {
+		// self setclientdvar("ui_costs"+i, level.dvar["shop_item"+(i+1)+"_costs"]);
+		// wait .05;
+	// }
+	// for (i=0; i<6; i++)
+	// {
+		// self setclientdvar("ui_itemcosts"+i, level.dvar["shop_defensive"+(i+1)+"_costs"]);
+		// wait .05;
+	// }
+	// for (i=0; i<5; i++)
+	// {
+		// self setclientdvar("ui_supportcosts"+i, level.dvar["shop_support"+(i+1)+"_costs"]);
+		// wait .05;
+	// }
+	self setclientdvars("ui_costs"+0, level.dvar["shop_item"+(0+1)+"_costs"],
+						"ui_costs"+1, level.dvar["shop_item"+(1+1)+"_costs"],
+						"ui_costs"+2, level.dvar["shop_item"+(2+1)+"_costs"],
+						"ui_costs"+3, level.dvar["shop_item"+(3+1)+"_costs"],
+						"ui_costs"+4, level.dvar["shop_item"+(4+1)+"_costs"],
+						"ui_costs"+5, level.dvar["shop_item"+(5+1)+"_costs"],
+						"ui_costs"+6, level.dvar["shop_item"+(6+1)+"_costs"],
+						
+						"ui_itemcosts"+0, level.dvar["shop_defensive"+(0+1)+"_costs"],
+						"ui_itemcosts"+1, level.dvar["shop_defensive"+(1+1)+"_costs"],
+						"ui_itemcosts"+2, level.dvar["shop_defensive"+(2+1)+"_costs"],
+						"ui_itemcosts"+3, level.dvar["shop_defensive"+(3+1)+"_costs"],
+						"ui_itemcosts"+4, level.dvar["shop_defensive"+(4+1)+"_costs"],
+						"ui_itemcosts"+5, level.dvar["shop_defensive"+(5+1)+"_costs"],
+						
+						"ui_supportcosts"+0, level.dvar["shop_support"+(1+1)+"_costs"],
+						"ui_supportcosts"+1, level.dvar["shop_support"+(2+1)+"_costs"],
+						"ui_supportcosts"+2, level.dvar["shop_support"+(3+1)+"_costs"],
+						"ui_supportcosts"+3, level.dvar["shop_support"+(4+1)+"_costs"]);
 }
 
 processResponse(response)
