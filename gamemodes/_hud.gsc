@@ -16,17 +16,30 @@ init()
 precache()
 {
 	precachestring(&"ZOMBIE_STREAK");
+	
 	precachestring(&"ZOMBIE_NEWWAVE0");
+	precachestring(&"ZOMBIE_NEWWAVE1");
+	precachestring(&"ZOMBIE_NEWWAVE2");
 	precachestring(&"ZOMBIE_SCARYWAVE");
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER0");
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER1");
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER2");
+	
+	precachestring(&"ZOMBIE_BOSS_CATCHED_FIRE");
 	precachestring(&"ZOMBIE_BOSS_EXPLOSIVES0");
+	precachestring(&"ZOMBIE_BOSS_EXPLOSIVES1");
+	precachestring(&"ZOMBIE_BOSS_EXPLOSIVES2");
 	precachestring(&"ZOMBIE_BOSS_KNIFE0");
-	// precachestring(&"ZOMBIE_DAMMOD");
+	precachestring(&"ZOMBIE_BOSS_KNIFE1");
+	precachestring(&"ZOMBIE_BOSS_KNIFE2");
+	precachestring(&"ZOMBIE_BOSS_GUNS0");
+	precachestring(&"ZOMBIE_BOSS_GUNS1");
+	precachestring(&"ZOMBIE_BOSS_GUNS2");
+
 	precachestring(&"ZOMBIE_AVAILABLE_SKILLPOINTS");
 	precachestring(&"ZOMBIE_SURV_LEFT");
 	precachestring(&"ZOMBIE_SURV_DOWN");
+	
 	precachestring(&"MAPVOTE_WAIT4VOTES");
 	precachestring(&"MAPVOTE_PRESSFIRE");
 
