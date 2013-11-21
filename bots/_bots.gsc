@@ -33,6 +33,8 @@ init()
 	level.botsLoaded = false;
 	level.zomTargets = [];
 	level.slowBots = 1;
+	level.lastBossJump = 0;
+	level.nextBossJump = 0;
 	
 	
 	wait 1;
@@ -46,7 +48,6 @@ init()
 	level.botsLoaded = true;
 	
 	thread onMonkeyExplosion();
-	
 	
 	//thread drawWP();
 	
@@ -104,7 +105,7 @@ precache()
 	// precachemodel("bo1_c_zom_george_romero_zombiefied_fb");
 	precachemodel("zom_george_romero");
 	// precachemodel("skeleton");
-	precachemodel("bo2_c_zom_avagadro_fb");
+	// precachemodel("bo2_c_zom_avagadro_fb");
 	
 	
 	precachemodel("char_ger_honorgd_bodyz1_1");
@@ -119,7 +120,7 @@ precache()
 	
 	precachemodel("tag_origin");
 	
-	precachemodel("german_sheperd_dog");
+	// precachemodel("german_sheperd_dog");
 	precachemodel("zombie_wolf");
 	precachemodel("cyclops");
 	
@@ -130,6 +131,8 @@ precache()
 	
 	level.burningFX = loadfx("fire/firelp_med_pm_atspawn");
 	level.burningdogFX = loadfx("fire/dog_onfire");
+	level.bossFireFX = loadfx("fire/boss_onfire");
+	level.bossShockwaveFX = loadfx("zombies/boss_shockwave");
 	level.splatterFX = loadfx("impacts/zombie_crit_splatter_nograv");
 	level.napalmTummyGlowFX = loadfx("misc/napalm_zombie_tummyglow");
 	level.lightningdogFX = loadfx("light/dog_lightning");
@@ -698,12 +701,17 @@ giveAssists(killer)
 			{
 				struct.player.assists ++;
 				damagePercentage = struct.damage/self.maxhealth;
-				
+				rewardMP = 1;
+				if( !isDefined(self.rewardMultiplier) ){
+					iprintln("Reward Multiplier is not defined for " + self.type);
+				}
+				else
+					rewardMP = self.rewardMultiplier;
 				// if(damagePercentage > 1)
 					// iprintlnbold("More than 100 percent damage by " + struct.player.name + " on " + self.name + ".... wtf?");
 				// iprintln(struct.player.name + " got an assist with " + int(damagePercentage*100) + " Percent damage!");
 				
-				struct.player thread scripts\players\_players::incUpgradePoints(int(10*level.rewardScale*damagePercentage));
+				struct.player thread scripts\players\_players::incUpgradePoints( int( ( 10 * level.rewardScale * rewardMP ) * damagePercentage ) );
 				if (damagePercentage*100 > 85)
 				{
 					struct.player thread scripts\players\_rank::giveRankXP("assist5");
@@ -885,6 +893,7 @@ zomMain()
 								self thread zomMoveLockon(self.bestTarget, self.meleeTime, self.meleeSpeed);
 								switch(self.type){
 									case "napalm": self zomExplode(); break;
+									case "boss": self bossAttack(); break;
 									default: self zomMelee(); break;
 								}
 								//doWait = false;
@@ -1297,6 +1306,8 @@ zomMoveLockon(player, time, speed)
 	intervals = int(time / level.zomInterval);
 	for (i=0; i<intervals; i++)
 	{
+		if( !isDefined( player ) )
+			break;
 		dis = distance(self.origin, player.origin);
 		if (dis > 48)
 		{
@@ -1425,6 +1436,34 @@ zomMelee(bDoDamage)
 	//self thread zombieMelee();
 }
 
+bossAttack()
+{
+	self endon("disconnect");
+	self endon("death");
+		
+	if( level.nextBossJump < getTime() && randomfloat(1) < 0.15 ){
+		self setAnim("jump");
+		playFX(level.bossShockwaveFX, self.origin);
+		self playsound("boss_charge");
+		wait 1.1;
+		Earthquake( 0.8, 1, self.origin, 600);
+		
+		if (isalive(self))
+		{
+			self zomAreaDamage(360);
+			self playsound("detpack_explo_main");
+		}
+		
+		wait .2;
+		self setAnim("stand");
+		level.lastBossJump = getTime();
+		level.nextBossJump = level.lastBossJump + ( 10000 + randomint(10000) );
+	}
+	else
+		self zomMelee();
+
+}
+
 infection(chance)
 {
 	if (self.infected)
@@ -1513,6 +1552,7 @@ zomAreaDamage(range)
 								//(0,self GetPlayerAngles()[1],0) // damagedir = the direction damage is moving in      
 								vectorNormalize(target.origin-self.origin)
 							);
+							self scripts\bots\_types::onAttack(self.type, target);
 						}
 					}
 	}
