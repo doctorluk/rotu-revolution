@@ -18,7 +18,7 @@ playerSetupShop()
 	self.points = level.dvar["game_startpoints"];
 	self.support_level = 0;
 	self.upgrade_damMod = 1;
-	self setclientdvars();
+	wait 0.1; // Security wait to ensure that not too many clientdvars are set
 	// for (i=0; i<7; i++)
 	// {
 		// self setclientdvar("ui_costs"+i, level.dvar["shop_item"+(i+1)+"_costs"]);
