@@ -14,8 +14,6 @@ initGame()
 	level.killedZombies = 0;
 	level.bosscount = 1;
 	level.bossPhase = -1;
-	level.maxElectric = 3;
-	level.currentElectric = 0;
 	level.spawningDisabled = 0;
 	level.hasReceivedDamage = 0;
 	level.canBuyRaygun = 1;
@@ -337,8 +335,6 @@ increaseDifficulty(){
 	level.zom_types["fast"].damage*=1.4;
 	level.zom_types["tank"].maxHealth*=1.1;
 	level.zom_types["tank"].damage*=1.2;
-	level.zom_types["electric"].maxHealth*=1.1;
-	level.zom_types["electric"].damage*=1.2;
 	level.zom_types["burning"].damage*=1.6;
 	level.zom_types["napalm"].damage*=1.1;
 	level.zom_types["napalm"].maxHealth*=1.5;
