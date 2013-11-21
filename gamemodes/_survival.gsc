@@ -1,6 +1,7 @@
 #include scripts\include\hud;
 #include scripts\include\data;
 #include scripts\include\strings;
+#include scripts\include\useful;
 initGame()
 {
 	level.currentWave = 1;
@@ -12,6 +13,7 @@ initGame()
 	level.lastSpecialWave = "";
 	level.killedZombies = 0;
 	level.bosscount = 1;
+	level.bossPhase = -1;
 	level.maxElectric = 3;
 	level.currentElectric = 0;
 	level.spawningDisabled = 0;
@@ -121,13 +123,18 @@ getRandomSpawn()
 rotatePrioritizedSpawn(threaded){
 	level endon("game_ended");
 	level endon("wave_finished");
-	while(1){
+	if(threaded){
+		while(1){
+			level.prioritizedSpawns[0] = getRandomSpawn();
+			level.prioritizedSpawns[1] = getRandomSpawn();
+			wait 10;
+		}
+	}
+	else{
 		level.prioritizedSpawns[0] = getRandomSpawn();
 		level.prioritizedSpawns[1] = getRandomSpawn();
-		if(threaded)
-			wait 25;
-		else break;
 	}
+	
 }
 
 getPrioritizedSpawn()
@@ -453,12 +460,14 @@ survivorDown()
 startRegularWave()
 {
 	if(!level.weStartedAtLeastOneGame)
-		level.weStartedAtLeastOneGame = !level.weStartedAtLeastOneGame;
+		level.weStartedAtLeastOneGame = true;
 	level endon( "game_ended" );
 	thread watchEnd();
 	level.currentType = "normal";
+	type = level.currentType;
 	level.intermission = 1;
 	level.waveSize = getWaveSize(level.currentWave);
+	level.waveType = "normal";
 	// level.waveSize = 99999;
 	// level.waveSize = 50;
 	level.waveProgress = 0;
@@ -470,7 +479,7 @@ startRegularWave()
 		revives = 0;
 		for (i=0; i<level.players.size; i++) {
 			player = level.players[i];
-			if( player.sessionteam != "allies" || player.sessionstate != "playing")
+			if( !isReallyPlaying(player) )
 				continue;
 			if ( player.isDown && player.isActive && !player.isBot && !player.isZombie ) {
 				player thread scripts\players\_players::revive();
@@ -491,9 +500,9 @@ startRegularWave()
 		timer(level.dvar["surv_timeout"], &"ZOMBIE_NEWWAVEIN", (.2,.7,0), undefined, level.currentWave);
 		wait level.dvar["surv_timeout"] + 2;
 	}
-	announceMessage(&"ZOMBIE_NEWWAVE0", level.waveSize, (.2,.7,0), 4, 95);
-	wait 5;
-	level.ambient = "zom_ambient"+randomint(5);
+	scripts\bots\_types::preWave(type);
+	
+	level.ambient = "zom_ambient";
 	scripts\server\_environment::setAmbient(level.ambient);
 	scripts\players\_players::resetSpawning();
 	level.intermission = 0;
@@ -608,6 +617,7 @@ startSpecialWave(type)
 	level notify("global_fx_end");
 	scripts\bots\_types::setTurretsEnabledForType("");
 	level.currentWave++;
+	level.bossIsOnFire = 0;
 	level.lastSpecialWave = type;
 }
 
