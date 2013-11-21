@@ -1297,6 +1297,7 @@ zomMoveTowards(target_position)
 		*/
 		
 	}
+	resettimeout();
 }
 
 zomMoveLockon(player, time, speed)
