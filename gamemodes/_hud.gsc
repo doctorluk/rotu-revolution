@@ -122,7 +122,7 @@ createHeadiconKits( origin, shader, alpha )
 	objPoint.y = origin[1];
 	objPoint.z = origin[2];
 	// objPoint.isFlashing = false;
-	objPoint.isFlashing = true;
+	objPoint.isFlashing = false;
 	objPoint.isShown = true;
 	
 	objPoint setShader( shader, 8, 8 );

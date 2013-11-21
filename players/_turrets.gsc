@@ -99,7 +99,7 @@ placeTurret(turret_type)
 			
 			if (self deploy(turret_type))
 			{
-				// self.carryObj unlink();
+				self.carryObj unlink();
 				wait 0.05;
 				self.carryObj delete();
 				
@@ -142,7 +142,9 @@ deploy(turret_type)
 		return false;
 	}
 
-	trace = bulletTrace( end + (0,0,100), end - (0,0,300), false, self );	
+	trace = bulletTrace( end + (0,0,100), end - (0,0,300), false, self );
+	if( !level.turretsDisabled )
+		self playsound( "turret_activate" );
 	self thread defenceTurret( turret_type, trace["position"], (0,angles[1],0) );
 
 	return true;
@@ -230,12 +232,22 @@ defenceTurret( turret_type, pos, angles )
 	self scripts\players\_usables::addUsable(self.turret_gun, "turret", &"USE_TURRET", 96 );
 
 	level thread deleteTurretInTime(self.turret_gun, self.turret_bipod, level.dvar["game_turret_time"] - self.turret_gun.timePassed);
+	level thread deleteTurretOnDC(self.turret_gun, self.turret_bipod, level.dvar["game_turret_time"] - self.turret_gun.timePassed);
 }
 
 deleteTurretInTime(gun, bipod, time)
 {
 	gun endon("death");
+	bipod endon("death");
 	wait time;
+	thread deleteTurret(gun, bipod);
+}
+
+deleteTurretOnDC(gun, bipod, time)
+{
+	gun endon("death");
+	bipod endon("death");
+	gun.owner waittill_any("disconnect", "join_spectator");
 	thread deleteTurret(gun, bipod);
 }
 
@@ -303,6 +315,7 @@ deleteTurret(gun, bipod)
 	level.turrets -= 1;
 	if(isDefined(gun.effect))
 		gun.effect delete();
+	gun playsound( "turret_deactivate" );
 	bipod delete();
 	gun delete();
 }
@@ -358,7 +371,11 @@ shootGL()
 				targetSpot = self.targetPlayer.origin;
 				wait travelDistance(dist);
 				
-				if(!isDefined(self.targetPlayer)) continue; // Stop here if target died
+				if( !isDefined(self.targetPlayer) ){
+					wait 0.05;
+					continue; // Stop here if target died
+				}
+				
 				
 				thread playSoundOnSpot("clusterbomb_explode_default", targetSpot);
 				playFx( level.effect_sentry_hit[self.turret_type], targetSpot );
@@ -461,7 +478,7 @@ CheckForPlayers()
 		{
 			bot = level.bots[i];
 
-			if( bot.sessionstate == "playing" && bot.type != "boss" && !level.turretsDisabled)
+			if( bot.sessionstate == "playing" && (bot.type != "boss" || level.bossPhase == 2) && !level.turretsDisabled)
 			{
 				res = self IsInView(bot);
 				if(res >= 0)
@@ -480,7 +497,7 @@ CheckForPlayers()
 		if(isDefined(closestPlayer))
 			self.targetPlayer = closestPlayer;
          
-		while(isDefined(closestPlayer) && isAlive(closestPlayer) && closestPlayer.type != "boss" && closestPlayer.sessionstate == "playing" && self IsInView(closestPlayer) >= 0 && !level.turretsDisabled)
+		while(isDefined(closestPlayer) && isAlive(closestPlayer) && (closestPlayer.type != "boss" || level.bossPhase == 2 ) && closestPlayer.sessionstate == "playing" && self IsInView(closestPlayer) >= 0 && !level.turretsDisabled)
 		{
 		
 			self.targetPlayer = closestPlayer;
@@ -502,7 +519,7 @@ rotate()
 
 	while(1)
 	{
-		while( isDefined(self.targetPlayer) && !self.targetPlayer.untargetable)
+		while( isDefined(self.targetPlayer) && !self.targetPlayer.untargetable )
 		{
 			time = 0.4;
 			dist = distance( self.origin, self.targetPlayer.origin + (0,0,36) );
@@ -510,18 +527,21 @@ rotate()
 				time = 0.35;
 			else if( dist <= 70 )
 				time = 0.45;
-			else if(dist > 7000)
+			else if(dist > 7000){
+				wait 0.1;
 				continue;
+			}
 
 			aim = vectortoangles( self.targetPlayer.origin - self.origin );
 			// self rotateto( (aim[0], aim[1]+50, 0), time );
 			self rotateto( (aim[0], aim[1], 0), time );
 			self thread notifyRotation(time);
-			wait 0.1;
+			wait 0.05;
 		}
 		wait 0.5;
 	}
 }
+
 
 notifyRotation(delay){
 	self endon("kill_turret");
