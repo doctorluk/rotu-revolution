@@ -998,7 +998,7 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 			/* GENERAL DAMAGE */
 			else if (level.bossPhase == 2)
 			{
-				eAttacker scripts\players\_players::incUpgradePoints(  level.dvar["game_rewardscale"] );
+				eAttacker scripts\players\_players::incUpgradePoints( int( level.dvar["game_rewardscale"]/20 * iDamage ) );
 				level.bossDamageDone[level.bossPhase] += idamage;
 				newval = int(level.bossDamageDone[level.bossPhase]*100/level.bossDamageToDo[level.bossPhase]);
 				if (newval > 100)
