@@ -399,31 +399,28 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		return;
 		
 	//Check for Incendiary/Poisonous Ammo
-		if( isDefined(eAttacker.bulletMod) ){
-			if( self.type != "burning" )
-				if( self.type != "boss" && self.type != "halfboss")
-					if( eAttacker.bulletMod == "incendiary" )
-						if( isDefined(self.isOnFire) && isDefined(self.isPoisoned) )
-							if( !self.isPoisoned && !self.isOnFire )
-								if( !self.isZombie )
-									if( (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) )
-										if( !scripts\players\_weapons::isExplosive(sWeapon) )
-											if(randomfloat(1) <= 0.05){
-												self igniteBot(eAttacker);
-												eAttacker.ignitions++;
-											}
-			if( self.type != "toxic" )
-				if( self.type != "boss" && self.type != "halfboss" )
-					if( eAttacker.bulletMod == "poison" )
-						if( isDefined(self.isOnFire) && isDefined(self.isPoisoned) )
-							if( !self.isPoisoned && !self.isOnFire )
-								if( !self.isZombie )
-									if( (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) )
-										if( !scripts\players\_weapons::isExplosive(sWeapon) )
-											if(randomfloat(1) <= 0.05){
-												self poisonBot(eAttacker);
-												eAttacker.poisons++;
-											}
+	if( isDefined(eAttacker.bulletMod) && randomfloat(1) <= 0.05){
+		if( self.type != "burning" && self.type != "boss" && self.type != "halfboss")
+				if( eAttacker.bulletMod == "incendiary" )
+					if( isDefined(self.isOnFire) && isDefined(self.isPoisoned) )
+						if( !self.isPoisoned && !self.isOnFire )
+							if( !self.isZombie )
+								if( (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) )
+									if( !scripts\players\_weapons::isExplosive(sWeapon) ){
+											self igniteBot(eAttacker);
+											eAttacker.ignitions++;
+										}
+		if( self.type != "toxic" && self.type != "boss" && self.type != "halfboss" )
+				if( eAttacker.bulletMod == "poison" )
+					if( isDefined(self.isOnFire) && isDefined(self.isPoisoned) )
+						if( !self.isPoisoned && !self.isOnFire )
+							if( !self.isZombie )
+								if( (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) )
+									if( !scripts\players\_weapons::isExplosive(sWeapon) ){
+											self poisonBot(eAttacker);
+											eAttacker.poisons++;
+										}
+	}
 
 	if(!isDefined(vDir))
 		iDFlags |= level.iDFLAGS_NO_KNOCKBACK;
@@ -432,7 +429,6 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 	{
 		if(iDamage < 1)
 			iDamage = 1;
-		}
 		//
 		
 		//STATS
@@ -457,6 +453,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 igniteBot(eAttacker){
 	self endon("disconnect");
 	self endon("death");
+	level endon("game_ended");
 	self.isOnFire = true;
 	self thread damageOverTime(eAttacker, (self.maxhealth * 0.05), 1, "fire");
 	if(self.type != "dog")
@@ -469,6 +466,7 @@ poisonBot(eAttacker)
 {
 	self endon("disconnect");
 	self endon("death");
+	level endon("game_ended");
 	self.isPoisoned = true;
 	self thread damageOverTime(eAttacker, (self.maxhealth * 0.05), 1, "poison");
 	if(self.type != "dog")
