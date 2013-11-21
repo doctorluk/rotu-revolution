@@ -149,7 +149,7 @@ initZomModels()
 	addZomModel("halfboss", "zom_george_romero", "");
 	addZomModel("boss", "cyclops", "");
 	// addZomModel("zombified_player", "skeleton", "");
-	
+	level.bossIsOnFire = false;
 	initGroupedSettings();
 }
 
@@ -179,7 +179,7 @@ initGroupedSettings(){
 	// setZombieProbabilityScenario(0, "test", 0, 0, 0, 0, 0, 0, 1);
 	
 	/* Limit the amount of bullet-damageable bosses on the server, because too many can be.... quite.... devastating */
-	level.bossBulletLimit = 2;
+	level.bossBulletLimit = level.dvar["game_difficulty"];
 	level.bossBulletCount = 0;
 }
 
@@ -417,6 +417,7 @@ preWave(type){
 	level endon("game_ended");
 	switch(type){
 		case "scary":
+			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
 			label = [];
 			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER0";
 			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER1";
@@ -426,7 +427,7 @@ preWave(type){
 			
 			level.flashlightEnabled = true;
 			scripts\players\_players::flashlightForAll(true);
-			wait 6 + randomfloat(1); // Wait at least as long as the announceMessage takes
+			wait 6.5 + randomfloat(1); // Wait at least as long as the announceMessage takes
 			
 			announceMessage(label[randomint(label.size)], "", (1,.3,0), 6, 85, undefined, 15);
 			wait 2;
@@ -440,7 +441,18 @@ preWave(type){
 				}
 			}
 			break;
+		case "boss":
+			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
+			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
+			wait 5;
+			break;
+		case "normal":
+			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
+			announceMessage( level.announceNormal[ randomint(level.announceNormal.size) ] , level.waveSize, (.2,.7,0), 4, 95);
+			wait 5;
+			break;
 		default:
+			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
 			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
 			wait 5;
 			break;
@@ -687,20 +699,87 @@ onSpawn(type)
 			//PlayFXOnTag(level.toxicFX, self, "j_head");
 			break;
 		case "boss":
-			level.bossStatus = 0;
-			level.bossOverlay = overlayMessage(&"ZOMBIE_BOSS_EXPLOSIVES0", "", (1,0,0));
+			level.bossPhases = 1;
+			level.bossPhase = getRandomBossPhase();
+			label = getLabelForBoss();
+			colour = getColourForPhase();
+			level.bossOverlay = overlayMessage(label, "", colour);
 			level.bossOverlay setvalue(0);
-			level.bossOverlay fadein(1);
-			level.bossDamageDone = 0;
-			level.bossDamageDoneReal = 0;
-			level.bossDamageToDo = level.activePlayers * 1200;
-			level.bossDamageToDoReal = level.activePlayers * 900;
+			level.bossOverlay.alpha = 0;
+			level.bossOverlay fadeOverTime( 1 );
+			level.bossOverlay.alpha = 1;
+			level.bossDamageDone[level.bossPhase] = 0;
+			level.bossDamageToDo[level.bossPhase] = calculateBossHP();
 			self.quake = true;
 			self thread bossSpecialAttack();
 		break;
 		case "napalm":
 			PlayFXOnTag( level.napalmTummyGlowFX, self, "j_spineupper" );
 			break;
+	}
+}
+
+getColourForPhase(){
+	switch(level.bossPhase){
+		case 0: return (1,0,0);
+		case 1: return (0,1,0);
+		case 2: return (1,1,0);
+	}
+}
+
+/* Returns an HP amount to assign with a boss-phase */
+calculateBossHP(){
+	switch(level.dvar["game_difficulty"]){
+		case 1: return (0.5 * getPhaseMulti() * level.activePlayers);
+		case 2: return (0.8 * getPhaseMulti() * level.activePlayers);
+		case 3: return (  1 * getPhaseMulti() * level.activePlayers);
+		case 4:	return (1.5 * getPhaseMulti() * level.activePlayers);
+	}
+}
+/* Gets generally considered "okay" multipliers for each stage-HP of the boss  */
+getPhaseMulti(){
+	// 0 = EXPLOSIVE, 1 = KNIFE, 2 = GUNFIRE
+	switch(level.bossPhase){
+		case 0: return 900 + (level.dvar["game_difficulty"] * 300);
+		// case 0: return 120;
+		case 1: return 900 + (level.dvar["game_difficulty"] * 300);
+		// case 1: return 90;
+		case 2: return 2200 + (level.dvar["game_difficulty"] * 300);
+		// case 2: return 250;
+	}
+}
+/* Returns either Explosive, Knife or Gunfire, but prevents the old one from being chosen */
+getRandomBossPhase(){
+	selection = level.bossPhase;
+	while(selection == level.bossPhase){
+		switch(level.dvar["game_difficulty"]){
+			case 1: selection = randomint(2); break;
+			case 2: selection = randomint(3); break;
+			case 3: selection = randomint(3); break;
+			case 4: selection = randomint(3); break;
+		}
+	}		
+	return selection;
+}
+
+getLabelForBoss(){
+	expl = [];
+	expl[expl.size] = &"ZOMBIE_BOSS_EXPLOSIVES0";
+	expl[expl.size] = &"ZOMBIE_BOSS_EXPLOSIVES1";
+	expl[expl.size] = &"ZOMBIE_BOSS_EXPLOSIVES2";
+	knife = [];
+	knife[knife.size] = &"ZOMBIE_BOSS_KNIFE0";
+	knife[knife.size] = &"ZOMBIE_BOSS_KNIFE1";
+	knife[knife.size] = &"ZOMBIE_BOSS_KNIFE2";
+	gun = [];
+	gun[gun.size] = &"ZOMBIE_BOSS_GUNS0";
+	gun[gun.size] = &"ZOMBIE_BOSS_GUNS1";
+	gun[gun.size] = &"ZOMBIE_BOSS_GUNS2";
+	
+	switch(level.bossPhase){
+		case 0: return expl[randomint(expl.size)];
+		case 1: return knife[randomint(knife.size)];
+		case 2: return gun[randomint(gun.size)];
 	}
 }
 
@@ -739,7 +818,76 @@ doSpecialAttack()
 	}
 }
 
+bossCatchFire(){
+	self endon("death");
+	level endon("game_ended");
+	
+	self thread burnThrowback();
+	range = 100;
+	time = 2; // in seconds, we need 4 * time encounters to make us burn
+	
+	while(1){
+		for(i = 0; i < level.players.size; i++){
+			p = level.players[i];
+			if( !isReallyPlaying(p) ) continue; // Ignore not-playing players
+			
+			if(distance(self.origin, p.origin) <= range && (p.fireCatchCount < time * 4) && !p.isDown && !p.isZombie ){
+				p.fireCatchCount++;
+			}
+			else if(p.fireCatchCount > 0)
+					if(p.fireCatchCount > time * 4)
+						p.fireCatchCount = time * 4 - 2;
+					else
+						p.fireCatchCount -= 2;
+			
+			if(p.fireCatchCount >= time * 4){
+				self thread bossBurn(p);
+			}
+		}
+		wait 0.25;
+	}
 
+}
+
+burnThrowback(){
+	self endon("death");
+	level endon("game_ended");
+	level endon("wave_finished");
+	
+	level.bossThrowback = false;
+	
+	while(1){
+		level.bossThrowback = !level.bossThrowback;
+		iprintln("Throwback of burning boss is now " + level.bossThrowback);
+		if(level.bossThrowback) // Make it turn off faster than turning on
+			wait 5 + randomfloat(20);
+		else
+			wait 6 + randomfloat(20);
+	}
+}
+
+bossBurn(target){
+	fwdDir = anglestoforward(self getplayerangles());
+	dirToTarget = vectorNormalize(target.origin-self.origin);
+	dot = vectorDot(fwdDir, dirToTarget);
+	if (dot > .5){
+		target.isPlayer = true;
+		//target.damageCenter = self.Mover.origin;
+		target.entity = target;
+		target damageEnt(
+				self, // eInflictor = the entity that causes the damage (e.g. a claymore)
+				self, // eAttacker = the player that is attacking
+				int( self.damage * level.dif_zomDamMod * ( 0.05 + randomfloat( (level.dvar["game_difficulty"] * 0.05) ) ) ), // iDamage = the amount of damage to do
+				"MOD_MELEE", // sMeansOfDeath = string specifying the method of death (e.g. "MOD_PROJECTILE_SPLASH")
+				self.pers["weapon"], // sWeapon = string specifying the weapon used (e.g. "claymore_mp")
+				self.origin, // damagepos = the position damage is coming from
+				//(0,self GetPlayerAngles()[1],0) // damagedir = the direction damage is moving in      
+				vectorNormalize(target.origin-self.origin)
+			);
+		if(level.bossThrowback)
+			self onAttack(self.type, target);
+	}
+}
 deleteKillBall(time)
 {
 	self endon("death");
@@ -807,42 +955,57 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 	{
 		case "boss":
 			self.health = 10000;
-			if (level.bossStatus == 0)
+			/* EXPLOSIVES */
+			if (level.bossPhase == 0)
 			{
 				if (sMeansOfDeath != "MOD_IMPACT")
 				{
-					if (sWeapon == "c4_mp" || sWeapon == "frag_grenade_mp" || sMeansOfDeath == "MOD_MELEE" || sWeapon == "claymore_mp")
+					if (sWeapon == "c4_mp" || sWeapon == "frag_grenade_mp" || sWeapon == "claymore_mp" || sWeapon == "rpg_mp" || sWeapon == "at4_mp" || sMeansOfDeath == "MOD_MELEE")
 					{
 						if (sMeansOfDeath == "MOD_MELEE"){
-							iDamage = int( iDamage * 0.5 );
-							eAttacker scripts\players\_players::incUpgradePoints( 1 * level.dvar["game_rewardscale"] );
+							iDamage = int(iDamage*.5);
+							eAttacker scripts\players\_players::incUpgradePoints(1*level.dvar["game_rewardscale"]);
 						}
 						else
-							eAttacker scripts\players\_players::incUpgradePoints( 5 * level.dvar["game_rewardscale"] );
-						level.bossDamageDone += idamage;
-						newval = int(level.bossDamageDone*100/level.bossDamageToDo);
+							eAttacker scripts\players\_players::incUpgradePoints(5*level.dvar["game_rewardscale"]);
+						
+						level.bossDamageDone[level.bossPhase] += idamage;
+						newval = int(level.bossDamageDone[level.bossPhase]*100/level.bossDamageToDo[level.bossPhase]);
 						if (newval > 100)
 						newval = 100;
 						level.bossOverlay setvalue(newval);
-						thread nextBossStatus(1);
+						thread nextBossStatus();
 						return 1;
 					}
 				}
 
 			}
-			else if (level.bossStatus == 1)
+			/* KNIFE */
+			else if (level.bossPhase == 1)
 			{
 				if (sMeansOfDeath == "MOD_MELEE")
 				{
 					eAttacker scripts\players\_players::incUpgradePoints(5*level.dvar["game_rewardscale"]);
-					level.bossDamageDoneReal += idamage;
-					newval = int(level.bossDamageDoneReal*100/level.bossDamageToDoReal);
+					level.bossDamageDone[level.bossPhase] += idamage;
+					newval = int(level.bossDamageDone[level.bossPhase]*100/level.bossDamageToDo[level.bossPhase]);
 					if (newval > 100)
 					newval = 100;
 					level.bossOverlay setvalue(newval);
-					self thread nextBossStatus(2);
+					self thread nextBossStatus();
 					return 1;
 				}
+			}
+			/* GENERAL DAMAGE */
+			else if (level.bossPhase == 2)
+			{
+				eAttacker scripts\players\_players::incUpgradePoints(  level.dvar["game_rewardscale"] );
+				level.bossDamageDone[level.bossPhase] += idamage;
+				newval = int(level.bossDamageDone[level.bossPhase]*100/level.bossDamageToDo[level.bossPhase]);
+				if (newval > 100)
+				newval = 100;
+				level.bossOverlay setvalue(newval);
+				self thread nextBossStatus();
+				return 1;
 			}
 			eAttacker.damageDealtToBoss += iDamage;
 			return 0;
@@ -851,34 +1014,35 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 	}
 }
 
-nextBossStatus(status)
+nextBossStatus()
 {
-	switch (status)
-	{
-		case 1:
-		
-		if (level.bossDamageDone >= level.bossDamageToDo)
-		{
-			level.bossOverlay destroy();
-			level.bossStatus = 1;
-			level.bossDamageDone = 0;
-			newoverlay = overlayMessage(&"ZOMBIE_BOSS_KNIFE0", "", (0,1,0));
-			level.bossOverlay = newoverlay;
+	if (level.bossDamageDone[level.bossPhase] >= level.bossDamageToDo[level.bossPhase])
+		if(level.bossPhases < level.maxBossPhases){
+			if( isDefined( level.bossOverlay ) ) level.bossOverlay destroy();
+			
+			level.bossPhase = getRandomBossPhase();
+			label = getLabelForBoss();
+			colour = getColourForPhase();
+			level.bossOverlay = overlayMessage(label, "", colour /*(1,0,0)*/);
 			level.bossOverlay setvalue(0);
+			level.bossDamageDone[level.bossPhase] = 0;
+			// level.bossDamageDoneReal = 0;
+			level.bossDamageToDo[level.bossPhase] = calculateBossHP();
+			level.bossOverlay setvalue(0);
+			level.bossPhases++;
+			if(randomfloat(1) < 0.5 && !level.bossIsOnFire){
+				self thread createEffectEntity(level.bossFireFX, "j_spinelower" );
+				self thread bossCatchFire();
+				level.bossIsOnFire = true;
+				// announceMessage(label, text, glowcolor, duration, speed, size, height)
+				announceMessage(&"ZOMBIE_BOSS_CATCHED_FIRE", "", (1,.3,0), 6, 100, undefined, 10);
+			}
 		}
-		break;
-		
-		case 2:
-		
-		if (level.bossDamageDoneReal >= level.bossDamageToDoReal)
-		{
+		else{
 			level.bossOverlay fadeout(1);
-			level.bossStatus = 2;
+			// level.bossStatus = 2;
 			self suicide();
 		}
-		
-		break;
-	}
 }
 
 onAttack(type, target)
@@ -952,7 +1116,9 @@ unEntoxicate(time) {
 	self.entoxicated = false;
 }
 
-playSoundOnAllPlayers(sound){
+playSoundOnAllPlayers(sound, delay){
+	if( isDefined( delay ) && delay >= 0.05 )
+		wait delay;
 	for(i = 0; i < level.players.size; i++)
 		level.players[i] playlocalsound(sound);
 }
