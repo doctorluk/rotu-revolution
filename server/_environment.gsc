@@ -178,13 +178,11 @@ lightningBossFX()
 		wait .2;
 		setVision("thunder", .2);
 		setExpFog( 999999, 9999999, 0, 0, 0, .2);
-		r = randomint(3);
-		for (i=0; i<level.players.size; i++)
+		r = randomint( 2 );
+		for (i = 0; i<level.players.size; i++)
 		{
-			if (r==0)
-			level.players[i] playlocalsound("amb_thunder1");
-			if (r==1)
-			level.players[i] playlocalsound("amb_thunder2");
+			if ( r == 0 )
+			level.players[i] playlocalsound( "amb_thunder" );
 		}
 		wait .2;
 		setVision("boss", .1);
