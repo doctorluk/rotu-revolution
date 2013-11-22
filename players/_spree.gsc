@@ -48,8 +48,8 @@ checkSpree() {
 				self playlocalsound("killing_spree");
 				self scripts\players\_rank::giveRankXP("spree", 50);
 				self.laststreak = "Killing Spree! ";
-				if (self.curClass != "")
-				self scripts\players\_abilities::rechargeSpecial(20);
+				if (self.curClass == "soldier")
+					self scripts\players\_abilities::rechargeSpecial(20);
 			break;
 			case 9:
 				self stoplocalsound("killing_spree");
