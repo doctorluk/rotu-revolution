@@ -31,10 +31,10 @@ init()
 // General information broadcast
 broadcastVersion(){
 	level endon("game_ended");
-	level.rotuVersion = "RotU-Revolution Alpha 0.2.0 (03:07 21.11.2013)";
-	level.rotuVersion_short = "RotU-R Alpha 0.2.0 (03:07 21.11.2013)";
-	level.rotuVersion_hostname = "RotU-Revolution 0.2.0-alpha";
-	level.rotuVersion_hostname_short = "0.2.0-alpha";
+	level.rotuVersion = "RotU-Revolution Alpha 0.2.0.1 (01:36 22.11.2013)";
+	level.rotuVersion_short = "RotU-R Alpha 0.2.0.1 (01:36 22.11.2013)";
+	level.rotuVersion_hostname = "RotU-Revolution 0.2.0.1-alpha";
+	level.rotuVersion_hostname_short = "0.2.0.1-alpha";
 	while(1){
 		iprintln("^2This Server is running ^1" + level.rotuVersion);
 		iprintln("^2Please report bugs at ^3PuffyForum.com");
