@@ -515,7 +515,7 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	if(self.sessionteam == "spectator")
 		return;
 
-	if(sHitLoc == "head" && sMeansOfDeath != "MOD_MELEE")
+	if( ( sHitLoc == "head" || sHitLoc == "helmet" ) && sMeansOfDeath != "MOD_MELEE" )
 		sMeansOfDeath = "MOD_HEAD_SHOT";
 	
 	if(sMeansOfDeath == "MOD_HEAD_SHOT")
@@ -537,8 +537,8 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		if (attacker.curClass=="stealth" && !attacker.isDown) {
 			attacker scripts\players\_abilities::rechargeSpecial(5);
 		}
-		if (attacker.curClass == "medic" && !attacker.isDown)
-			attacker scripts\players\_abilities::heal(5);
+		// if (attacker.curClass == "medic" && !attacker.isDown)
+			// attacker scripts\players\_abilities::heal(5);
 		//attacker.score+=10;
 		assert( isDefined( self.rewardMultiplier ) );
 		attacker scripts\players\_players::incUpgradePoints( int( 10 * level.rewardScale * self.rewardMultiplier ) );
@@ -598,7 +598,7 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	if(isDefined(self.effect))
 		self.effect delete();
 		
-	wait 1;
+	wait 0.1;
 	self.hasSpawned = false;
 	level.botsAlive -= 1;
 	
