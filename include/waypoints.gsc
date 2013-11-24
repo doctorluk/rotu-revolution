@@ -4,6 +4,7 @@ loadWaypoints()
 {
 	level.Wp = [];
 	level.WpCount = 0;
+	level.waypointLoops = 0;
 	
 	fileName =  "waypoints/"+ tolower(getdvar("mapname")) + "_wp.csv";
 	level.WpCount = int(TableLookup(fileName, 0, 0, 1));
@@ -90,12 +91,14 @@ AStarSearch(startWp, goalWp)
   //while Open is not empty  
   while(!PQIsEmpty(pQOpen, pQSize))
   {
+    level.waypointLoops++;
     //pop node n from Open  // n has the lowest f
     n = pQOpen[0];
     highestPriority = 9999999999;
     bestNode = -1;
     for(i = 0; i < pQSize; i++)
     {
+	  level.waypointLoops++;
       if(pQOpen[i].f < highestPriority)
       {
         bestNode = i;
@@ -125,6 +128,7 @@ AStarSearch(startWp, goalWp)
       x = n;
       for(z = 0; z < 1000; z++)
       {
+	    level.waypointLoops++;
         parent = x.parent;
         if(parent.parent.wpIdx == -1)
         {
@@ -140,6 +144,7 @@ AStarSearch(startWp, goalWp)
     //for each successor nc of n
     for(i = 0; i < level.Wp[n.wpIdx].linkedCount; i++)
     {
+	  level.waypointLoops++;
       //newg = n.g + cost(n,nc)
       newg = n.g + distance(level.Wp[n.wpIdx].origin, level.Wp[level.Wp[n.wpIdx].linked[i].ID].origin);
       
@@ -150,6 +155,7 @@ AStarSearch(startWp, goalWp)
         nc = spawnstruct();
         for(p = 0; p < pQSize; p++)
         {
+		  level.waypointLoops++;
           if(pQOpen[p].wpIdx == level.Wp[n.wpIdx].linked[i].ID)
           {
             nc = pQOpen[p];
@@ -169,6 +175,7 @@ AStarSearch(startWp, goalWp)
         nc = spawnstruct();
         for(p = 0; p < listSize; p++)
         {
+		  level.waypointLoops++;
           if(closedList[p].wpIdx == level.Wp[n.wpIdx].linked[i].ID)
           {
             nc = closedList[p];
@@ -202,10 +209,12 @@ AStarSearch(startWp, goalWp)
         deleted = false;
         for(p = 0; p < listSize; p++)
         {
+		  level.waypointLoops++;
           if(closedList[p].wpIdx == nc.wpIdx)
           {
             for(x = p; x < listSize-1; x++)
             {
+			  level.waypointLoops++;
               closedList[x] = closedList[x+1];
             }
             deleted = true;
@@ -262,6 +271,7 @@ PQExists(Q, n, QSize)
 {
   for(i = 0; i < QSize; i++)
   {
+    level.waypointLoops++;
     if(Q[i].wpIdx == n)
     {
       return true;
@@ -278,6 +288,7 @@ ListExists(list, n, listSize)
 {
   for(i = 0; i < listSize; i++)
   {
+    level.waypointLoops;
     if(list[i].wpIdx == n)
     {
       return true;
