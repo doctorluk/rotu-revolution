@@ -24,6 +24,7 @@ init()
 	thread scripts\server\_custom::init();
 	thread scripts\server\_scoreboard::init();
 	thread scripts\server\_servername::init();
+	thread scripts\security\_security::init();
 	
 	thread securityCheck();
 	thread broadcastVersion();
