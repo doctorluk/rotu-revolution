@@ -29,7 +29,7 @@ debugBots()
     {
         bot = addtestclient();
 
-        if ( !isdefined(bot]) )
+        if ( !isdefined(bot) )
         {
             println("Could not add test client");
             wait 1;
