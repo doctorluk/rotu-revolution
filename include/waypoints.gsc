@@ -288,7 +288,7 @@ ListExists(list, n, listSize)
 {
   for(i = 0; i < listSize; i++)
   {
-    level.waypointLoops;
+    level.waypointLoops++;
     if(list[i].wpIdx == n)
     {
       return true;

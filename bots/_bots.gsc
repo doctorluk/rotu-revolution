@@ -39,7 +39,7 @@ init()
 	
 	wait 1;
 	if (level.loadBots)
-	loadBots(level.dvar["bot_count"]);
+		loadBots(level.dvar["bot_count"]);
 	
 	scripts\bots\_types::initZomTypes();
 	
@@ -48,6 +48,7 @@ init()
 	level.botsLoaded = true;
 	
 	thread onMonkeyExplosion();
+	thread scripts\bots\_debug::init();
 	
 	//thread drawWP();
 	

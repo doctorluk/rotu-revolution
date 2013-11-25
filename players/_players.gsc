@@ -791,7 +791,7 @@ spawnJoinQueue(){
 		player = level.joinQueue[i];
 		level.joinQueue = removeFromArray(level.joinQueue, player);
 		if( isReallyPlaying(player) ){
-			logPrint("We tried to spawn someone from the Spawnqueue who is already playing: " + player.name);
+			logPrint("We tried to spawn someone from the Spawnqueue who is already playing: " + player.name + "\n");
 			continue;
 		}
 			
@@ -821,7 +821,6 @@ spawnJoinQueueLoop(){
 		return;
 	
 	zombiesKilled = 0;
-	intersections = 4;
 	
 	if(level.waveSize <= 100)
 		intersections = 50;
@@ -1020,7 +1019,7 @@ flashlightForAll(on){ // Whether it should be turned on or off
 	players = getentarray("player", "classname");
 	for (i = 0; i<players.size; i++)
 	{
-		if(players[i].sessionteam != "allies" || players[i].sessionstate != "playing")
+		if( !isReallyPlaying(players[i]) )
 			continue;
 		if(on)
 			players[i] thread flashlightOn();
