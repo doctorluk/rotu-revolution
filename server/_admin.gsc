@@ -12,16 +12,19 @@
 ************************************/
 #include scripts\include\data;
 #include scripts\include\entities;
+#include scripts\include\useful;
 init()
 {
 	level.cmd = [];
 	thread watchCmd();
 	
 	addCmd("kill", ::kill);
-	addCmd("boom", ::boom);
+	addCmd("wtf", ::wtf);
 	addCmd("change_map", ::changemap);
 	addCmd("restart_map", ::restartmap);
 	addCmd("revive", ::revivecommand);
+	addCmd("freezeplayer", ::freeze);
+	addCmd("unfreezeplayer", ::unfreeze);
 	addCmd("resetplayer", ::reset);
 	addCmd("getendview", ::getplayerangles);
 	addCmd("saybold", ::saybold);
@@ -80,51 +83,31 @@ kill(args)
 	}
 }
 
-// getplayerangles(args)
-// {
-	// players = getentarray("player", "classname");
-	// for (i = 0; i<players.size; i++)
-	// {
-		// if (players[i] getEntityNumber() == int(args[0]))
-		// {
-			// players[i] iprintlnbold("before_origin");
-			// origin = players[i] getOrigin();
-			// originxyz = strTok(origin, ",");
-			// originx = strTok(originxyz[0], "(");
-			// originx = int(originx[0]);
-			// originy = int(originxyz[1]);
-			// originz = strTok(originxyz[2], ")");
-			// originz = int(originz[0]);
-			// players[i] iprintlnbold("after_origin, before angle");
-			// angle = players[i] getPlayerAngles();
-			// anglexyz = strTok(angle, ",");
-			// anglex = strTok(anglexyz[0], "(");
-			// anglex = int(anglex[0]);
-			// angley = int(anglexyz[1]);
-			// anglez = strTok(anglexyz[2], ")");
-			// anglez = int(anglez[0]);
-			// players[i] iprintlnbold("after_angle");
-			// mapname = getDvar("mapname");
-			// logPrint(originx + "," + originy + "," + originz + ";" + anglex + "," + angley + "," + anglez + " for " + mapname + "\n");
-			// origin = strTok(players[i] getOrigin()+" ", ",");
-			// players[i] iprintlnbold("Vector 0: " + origin[0]);
-			// logprint("Vector 0: " + origin[0]);
-			// angle = strTok(players[i] getPlayerAngles(), ",");
-			// logPrint("SPECTATE_POS;" + players[i] getOrigin() + ";" + players[i] GetPlayerAngles() + "\n");
-			// origin = players[i] getOrigin();
-			// if(isDefined(origin))
-				// players[i] iprintlnbold("Origin: " + players[i] getOrigin());
-			// else
-				// players[i] iprintlnbold("Origin is undefined!");
-				
-			// angles = players[i] getPlayerAngles();
-			// if(isDefined(angles))
-				// players[i] iprintlnbold("Angles: " + players[i] getOrigin());
-			// else
-				// players[i] iprintlnbold("Angles are undefined!");
-		// }
-	// }
-// }
+freeze(args)
+{
+	players = getentarray("player", "classname");
+	for (i = 0; i<players.size; i++)
+	{
+		if (players[i] getEntityNumber() == int(args[0]))
+		{
+			players[i] freezePlayerForRoundEnd();
+			players[i] iprintlnbold("You have been ^5frozen ^7in place by an ^1ADMIN^7!");
+		}
+	}
+}
+
+unfreeze(args)
+{
+	players = getentarray("player", "classname");
+	for (i = 0; i<players.size; i++)
+	{
+		if (players[i] getEntityNumber() == int(args[0]))
+		{
+			players[i] unFreezePlayerForRoundEnd();
+			players[i] iprintlnbold("You have been ^2UN^7-^5frozen by an ^1ADMIN^7!");
+		}
+	}
+}
 
 getplayerangles(args)
 {

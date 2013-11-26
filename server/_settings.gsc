@@ -31,6 +31,7 @@ loadSettings()
 	dvarBool(	"zom", 			"dynamicdifficulty",	1);
 	dvarBool(	"zom", 			"infection",			1);
 	dvarBool(	"zom",			"headshotonly",			0);
+	dvarBool(	"zom",			"antilagmonitor",		1); // Check for too many waypoint calculations per frame to reduce infinite loop detections
 	dvarInt(	"zom", 			"infectiontime",		25, 	0, 		120);
 	dvarBool(	"zom",			"spawnprot",			1);
 	dvarBool(	"zom",			"spawnprot_decrease", 	1);

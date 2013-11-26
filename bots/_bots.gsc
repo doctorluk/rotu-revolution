@@ -1259,7 +1259,7 @@ zomMoveTowards(target_position)
 		else
 		{
 			//time = GetTime();
-			if( level.waypointLoops > 200000 ){
+			if( level.waypointLoops > 200000 && level.dvar["zom_antilagmonitor"] ){
 				// logPrint("DEBUG: Caught > 200000 loops in level.waypointLoops!\n");
 				logPrint("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
 				// iprintln("Caught > 200000 loops, mitigating load to more frames...");
