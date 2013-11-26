@@ -180,14 +180,12 @@ upgradeHud(points)
 	{
 		hud_score.glowColor = (.1, .9, .2);
 		hud_score.label = (&"+&&1");
-		// hud_score settext("+" + int(points) );
 		hud_score setvalue( int(points) );
 	}
 	else
 	{
 		hud_score.glowColor = (.9, .1, .2);
 		hud_score.label = (&"&&1");
-		// hud_score settext( int(points) );
 		hud_score setvalue( int(points) );
 	}
 	direction = randomint(360);
