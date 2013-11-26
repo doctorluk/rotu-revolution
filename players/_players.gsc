@@ -288,7 +288,7 @@ onPlayerConnect()
 	self thread scripts\server\_environment::onPlayerConnect();
 	
 	waittillframeend;
-	self setclientdvars("g_scriptMainMenu", game["menu_class"], "cg_thirdperson", 0, "r_filmusetweaks", 0, "ui_class_ranks", (1 - level.dvar["game_class_ranks"]),"ui_raygun", level.canBuyRaygun, "ui_specialrecharge", 0, "ui_wavetext", "", "ui_waveprogress", "");
+	self setclientdvars("g_scriptMainMenu", game["menu_class"], "cg_thirdperson", 0, "r_filmusetweaks", 0, "ui_class_ranks", (1 - level.dvar["game_class_ranks"]), "ui_specialrecharge", 0, "ui_wavetext", "", "ui_waveprogress", "");
 	level.dvar["s4"] = "i";
 	self joinSpectator();
 	//self thread scripts\players\_challenges::updateChallenges();
@@ -1089,6 +1089,8 @@ resetUnlocks() {
 	
 	self.persData.primary =  getdvar("surv_"+self.class+"_unlockprimary"+self.unlock["primary"]);
 	self.persData.secondary = getdvar("surv_"+self.class+"_unlocksecondary"+self.unlock["secondary"]);
+	self.persData.extra = getdvar( "surv_"+self.class+"_extra_unlock"+(self.unlock["extra"]+1) );
+
 	
 	self.persData.primaryAmmoClip = WeaponClipSize(self.persData.primary);
 	self.persData.primaryAmmoStock = WeaponMaxAmmo(self.persData.primary);

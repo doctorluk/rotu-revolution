@@ -215,6 +215,7 @@ processResponse(response)
 			{
 				if (self.unlock["extra"]==0) {
 					self.extra = getdvar("surv_extra_unlock1");
+					self.persData.extra = self.extra;
 					
 					self.unlock["extra"] ++;
 					self.persData.unlock["extra"] ++;

@@ -177,10 +177,11 @@ givePlayerWeapons()
 				self setWeaponAmmoStock(self.primary, self.persData.primaryAmmoStock);
 				self setWeaponAmmoClip(self.primary, self.persData.primaryAmmoClip);
 			}
-			if (self.primary != "none")
+			if (self.extra != "none")
 			{
-				self giveWeapon( self.extra ); 
-				self giveMaxAmmo( self.extra );
+				self giveWeapon( self.extra );
+				self setWeaponAmmoStock(self.extra , self.persData.extraAmmoStock);
+				self setWeaponAmmoClip(self.extra , self.persData.extraAmmoClip);
 			}
 		/*break;
 		case 1:
@@ -475,36 +476,35 @@ swapWeapons(type, weapon)
 	case "primary":
 		if (self.primary != "none")
 			self takeweapon(self.primary);
-			self giveWeapon( weapon ); 
-			self giveMaxAmmo( weapon );
-			self SwitchToWeapon( weapon );
-			self.primary = weapon;
-			self.persData.primary = self.primary;
-			self.persData.primaryAmmoClip = WeaponClipSize(self.primary);
-			self.persData.primaryAmmoStock = WeaponMaxAmmo(self.primary);
-
-	break;
+		self giveWeapon( weapon ); 
+		self giveMaxAmmo( weapon );
+		self SwitchToWeapon( weapon );
+		self.primary = weapon;
+		self.persData.primary = self.primary;
+		self.persData.primaryAmmoClip = self getWeaponAmmoClip(self.primary);
+		self.persData.primaryAmmoStock = self GetWeaponAmmoStock(self.primary);
+		break;
 		case "secondary":
-			if (self.secondary != "none")
+		if (self.secondary != "none")
 			self takeweapon(self.secondary);
-			self giveWeapon( weapon ); 
-			self giveMaxAmmo( weapon );
-			self SwitchToWeapon( weapon );
-			self.secondary = weapon;
-			self.persData.secondary = self.secondary;
-			self.persData.secondaryAmmoClip = WeaponClipSize(self.secondary);
-			self.persData.secondaryAmmoStock = WeaponMaxAmmo(self.secondary);
+		self giveWeapon( weapon ); 
+		self giveMaxAmmo( weapon );
+		self SwitchToWeapon( weapon );
+		self.secondary = weapon;
+		self.persData.secondary = self.secondary;
+		self.persData.secondaryAmmoClip = self getWeaponAmmoClip(self.secondary);
+		self.persData.secondaryAmmoStock = self GetWeaponAmmoStock(self.secondary);
 		break;
 		case "extra":
 			if (self.extra != "none")
-			self takeweapon(self.extra);
+				self takeweapon(self.extra);
 			self giveWeapon( weapon ); 
 			self giveMaxAmmo( weapon );
 			self SwitchToWeapon( weapon );
 			self.extra = weapon;
 			self.persData.extra = self.extra;
-			self.persData.extraAmmoClip = WeaponClipSize(self.extra);
-			self.persData.extraAmmoStock = WeaponMaxAmmo(self.extra);
+			self.persData.extraAmmoClip = self getWeaponAmmoClip(self.extra);
+			self.persData.extraAmmoStock = self GetWeaponAmmoStock(self.extra);
 		break;
 		case "grenade":
 			self giveWeapon( weapon ); 

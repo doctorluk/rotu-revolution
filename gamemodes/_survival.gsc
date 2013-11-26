@@ -16,7 +16,6 @@ initGame()
 	level.bossPhase = -1;
 	level.spawningDisabled = 0;
 	level.hasReceivedDamage = 0;
-	level.canBuyRaygun = 1;
 	level.prioritizedSpawnTime = getTime();
 	level.prioritizedSpawns = [];
 	thread loadConfig();

@@ -174,7 +174,7 @@ killZombies(args)
 	iprintlnbold(max+" zombies have been killed by the admin");
 }
 
-boom(args)
+wtf(args)
 {
 	players = getentarray("player", "classname");
 	for (i = 0; i<players.size; i++)
