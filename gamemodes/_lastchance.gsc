@@ -194,7 +194,7 @@ lcHud(){
 buildLCHud_cantPay(){
 		/* BOT CANT PAY &&1 */
 	self.lastChance_cantpay1 = newClientHudElem(self);
-	self.lastChance_cantpay1.archived = false;
+	self.lastChance_cantpay1.archived = true;
 	self.lastChance_cantpay1.x = 0;
 	self.lastChance_cantpay1.alignX = "center";
 	self.lastChance_cantpay1.alignY = "middle";
@@ -221,7 +221,7 @@ buildLCHud_canpay(){
 	
 	/* TOP TOTAL REQUIRED */
 	self.lastChance_top = newClientHudElem(self);
-	self.lastChance_top.archived = false;
+	self.lastChance_top.archived = true;
 	self.lastChance_top.x = 0;
 	self.lastChance_top.alignX = "center";
 	self.lastChance_top.alignY = "middle";
@@ -241,7 +241,7 @@ buildLCHud_canpay(){
 	
 	/* HINT TEXT HOW TO SPEND "FIRE" */
 	self.lastChance_botFire = newClientHudElem(self);
-	self.lastChance_botFire.archived = false;
+	self.lastChance_botFire.archived = true;
 	self.lastChance_botFire.x = 0;
 	self.lastChance_botFire.alignX = "center";
 	self.lastChance_botFire.alignY = "middle";

@@ -171,7 +171,7 @@ upgradeHud(points)
 	hud_score.y = 0;
 	hud_score.glowAlpha = 1;
 	hud_score.hideWhenInMenu = false;
-	hud_score.archived = false;
+	hud_score.archived = true;
 	hud_score.alignX = "center";
 	hud_score.alignY = "middle";
 	hud_score.horzAlign = "center";
