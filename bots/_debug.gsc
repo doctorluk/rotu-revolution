@@ -6,6 +6,7 @@ init(){
 waypointPerformance(){
 	max = 0;
 	while(1){
+	/*
 		if(max < level.waypointLoops){
 			logPrint("Max was below level.waypointLoops -> " + max + " previous max, " + level.waypointLoops + " level.waypointLoops on map " + getdvar("mapname") + "\n");
 			max = level.waypointLoops;
@@ -16,6 +17,7 @@ waypointPerformance(){
 				logPrint("OVER HALF A MILLION! " + max + " previous max, " + level.waypointLoops + " level.waypointLoops on map " + getdvar("mapname") + "\n");
 			}
 		}
+	*/
 		level.waypointLoops = 0;
 		wait 0.05;
 	}

@@ -87,7 +87,6 @@ AStarSearch(startWp, goalWp)
   pQOpen[pQSize] = spawnstruct();
   pQOpen[pQSize] = s; //push s on Open
   pQSize++;
-
   //while Open is not empty  
   while(!PQIsEmpty(pQOpen, pQSize))
   {

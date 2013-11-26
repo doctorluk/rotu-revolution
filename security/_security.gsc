@@ -23,19 +23,13 @@ CheckValidGuid(){
 		for(i = 0; i < 32; i++){
 			lpGuidChar = GetSubStr(lpGuid, i, i+1);
 			
-			if(lpGuid == "" || !isHexadecimal(lpGuidChar) ){
-				//iprintln("GUID ist leer!");
+			if( lpGuid == "" || !isHexadecimal(lpGuidChar) || lpGuidChar == "" || lpGuidChar == " " )
 				Kick(self getEntityNumber());
-			}
-			if(lpGuidChar == "" || lpGuidChar == " ")
-				Kick(self getEntityNumber());
-			//else
-			//iprintln("GuidChar ist: "+lpGuidChar+" und GUID ist: "+lpGuid);
 			
 			
-			wait 2;
+			wait 0.1;
 		}
-		wait 1;
+		wait 5;
 	}
 }
 
