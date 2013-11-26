@@ -817,8 +817,12 @@ spawnJoinQueueLoop(){
 	level endon("wave_finished");
 	level endon("game_ended");
 		
-	if(level.currentType == "boss" || level.waveSize < 20)
-		return;
+	if(level.currentType == "boss" || level.waveSize < 20){
+		while(1){
+			wait 180;
+			spawnJoinQueue();
+		}
+	}
 	
 	zombiesKilled = 0;
 	
