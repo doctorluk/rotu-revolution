@@ -33,14 +33,13 @@ init()
 	precacheModel( level.sentry_turret_model["gl"] );
 	precacheModel( level.sentry_base_model["gl"] );
 
-	level._effect["turret_flash"] = loadFx( "muzzleflashes/custom_minigun_flash" );
-	level._effect["overheat"] = loadFx( "smoke/heli_engine_smolder" );
+	level._effect["turret_flash"] = loadFx( "muzzleflashes/heavy" );
 	
 	level.effect_sentry_hit["gl"] = loadFx( "explosions/grenadeExp_blacktop" );
 	level.effect_sentry_hit["minigun"] = loadFx( "impacts/flesh_hit_body_fatal_exit" );
 	
-	level.effect_sentry_impact["gl"] = level.effect_sentry_hit["gl"];
-	level.effect_sentry_impact["minigun"] = loadFx( "impacts/large_metalhit_1" );
+	// level.effect_sentry_impact["gl"] = level.effect_sentry_hit["gl"];
+	// level.effect_sentry_impact["minigun"] = loadFx( "impacts/large_metalhit_1" );
 	
 	
 	level.sentry_laser = loadFx( "misc/sentry_laser" );
