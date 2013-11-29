@@ -20,6 +20,7 @@ precache()
 	precachestring(&"ZOMBIE_NEWWAVE0");
 	precachestring(&"ZOMBIE_NEWWAVE1");
 	precachestring(&"ZOMBIE_NEWWAVE2");
+	precachestring(&"ZOMBIE_NEWBOSSWAVE");
 	precachestring(&"ZOMBIE_SCARYWAVE");
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER0");
 	precachestring(&"ZOMBIE_SCARYWAVE_AFTER1");

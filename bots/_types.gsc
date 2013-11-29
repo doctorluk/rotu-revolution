@@ -444,7 +444,7 @@ preWave(type){
 			break;
 		case "boss":
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
-			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
+			announceMessage(&"ZOMBIE_NEWBOSSWAVE", undefined, (.7,.2,0), 5, 85);
 			wait 5;
 			break;
 		case "normal":
@@ -518,6 +518,8 @@ getWaveFactorForType(type){
 			return 0.6;
 		case "tank":
 			return 0.5;
+		case "finale":
+			return 0.6;
 		case "electric":
 			return 0.4;
 		default:
