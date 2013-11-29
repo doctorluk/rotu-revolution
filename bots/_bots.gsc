@@ -131,17 +131,17 @@ precache()
 	// precacheshellshock("frag_grenade_mp");
 	
 	level.burningFX = loadfx("fire/firelp_med_pm_atspawn");
-	level.burningdogFX = loadfx("fire/dog_onfire");
+	// level.burningdogFX = loadfx("fire/dog_onfire");
 	level.bossFireFX = loadfx("fire/boss_onfire");
 	level.bossShockwaveFX = loadfx("zombies/boss_shockwave");
 	level.splatterFX = loadfx("impacts/zombie_crit_splatter_nograv");
 	level.napalmTummyGlowFX = loadfx("misc/napalm_zombie_tummyglow");
-	level.lightningdogFX = loadfx("light/dog_lightning");
+	// level.lightningdogFX = loadfx("light/dog_lightning");
 	level.toxicFX = loadfx("misc/toxic_gas");
 	level.explodeFX = Loadfx("explosions/pyromaniac");
 	level.soulFX = loadfx("misc/soul");
 	level.groundSpawnFX = loadfx("misc/ground_rising");
-	level.cloudSpawnFX = loadfx("zombies/thunderspawn");
+	// level.cloudSpawnFX = loadfx("zombies/thunderspawn");
 	level.soulspawnFX = loadfx("misc/soulspawn");
 	level.incendiary_FX = loadfx("misc/zombie_incendiary_effect");
 	level.poisoned_FX = loadfx("misc/zombie_poison_effect");
