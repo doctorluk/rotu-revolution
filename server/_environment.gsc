@@ -27,9 +27,27 @@ init()
 	if (level.dvar["env_fog"])
 	{
 		setExpFog( level.dvar["env_fog_start_distance"], level.dvar["env_fog_half_distance"], level.dvar["env_fog_red"]/255, level.dvar["env_fog_green"]/255, level.dvar["env_fog_blue"]/255, 0);
+		level.currentFog = [];
+		level.currentFog[0] = level.dvar["env_fog_start_distance"];
+		level.currentFog[1] = level.dvar["env_fog_half_distance"];
+		level.currentFog[2] = level.dvar["env_fog_red"]/255;
+		level.currentFog[3] = level.dvar["env_fog_green"]/255;
+		level.currentFog[4] = level.dvar["env_fog_blue"]/255;
 	}
+	else
+		level.currentFog = [];
 	resetVision(0);
 	level.drgsgsRR = ".";
+}
+
+precache()
+{
+	level.lighting_fx = loadfx("weather/lightning");
+	level.ember_fx = loadfx("fire/emb_burst_a");
+	level._effect["fog0"] = loadfx("zombies/fx_fog_zombie_amb");
+	level._effect["fog1"] = loadfx("zombies/fx_zombie_fog_static_xlg");
+	
+	precacheShader("compass_waypoint_defend");
 }
 
 normalWaveEffects(){
@@ -76,16 +94,6 @@ getDefaultVision()
 	return "rotu";
 	else
 	return getDvar( "mapname" );
-}
-
-precache()
-{
-	level.lighting_fx = loadfx("weather/lightning");
-	level.ember_fx = loadfx("fire/emb_burst_a");
-	level._effect["fog0"] = loadfx("zombies/fx_fog_zombie_amb");
-	level._effect["fog1"] = loadfx("zombies/fx_zombie_fog_static_xlg");
-	
-	precacheShader("compass_waypoint_defend");
 }
 
 onPlayerConnect()
@@ -191,33 +199,97 @@ lightningBossFX()
 	}
 }
 
+smoothFog(startDist, endDist, r, g, b, time){
+	level notify("smooth_fog");
+	level endon("smooth_fog");
+	
+	if( !isDefined( level.currentFog[0] ) )
+		level.currentFog[0] = 512;
+	if( !isDefined( level.currentFog[1] ) )
+		level.currentFog[1] = 1024;
+	if( !isDefined( level.currentFog[2] ) )
+		level.currentFog[2] = 0;
+	if( !isDefined( level.currentFog[3] ) )
+		level.currentFog[3] = 0;
+	if( !isDefined( level.currentFog[4] ) )
+		level.currentFog[4] = 0;
+		
+	oldStartDist = level.currentFog[0];
+	oldEndDist   = level.currentFog[1];
+	oldr         = level.currentFog[2];
+	oldg         = level.currentFog[3];
+	oldb         = level.currentFog[4];
+	
+	if( !isDefined( time ) ){
+		level.currentFog[0] = startDist;
+		level.currentFog[1] = endDist;
+		level.currentFog[2] = r;
+		level.currentFog[3] = g;
+		level.currentFog[4] = b;
+		setExpFog(startDist, endDist, r, g, b);
+		return;
+	}
+	factor = time * 20; // We change it every 0.2 seconds, so 5 per second
+	
+	diffStart = (startDist - oldStartDist) / factor;
+	diffEnd = (endDist - oldEndDist) / factor;
+	diffr = (r - oldr) / factor;
+	diffg = (g - oldg) / factor;
+	diffb = (b - oldb) / factor;
+	
+	for(i = 0; i < factor; i++){
+		level.currentFog[0] += diffStart;
+		level.currentFog[1] += diffEnd;
+		level.currentFog[2] += diffr;
+		level.currentFog[3] += diffg;
+		level.currentFog[4] += diffb;
+		if( level.currentFog[2] > 1 )
+			level.currentFog[2] = 1;
+		if( level.currentFog[2] < 0 )
+			level.currentFog[2] = 0;
+			
+		if( level.currentFog[3] > 1 )
+			level.currentFog[3] = 1;
+		if( level.currentFog[3] < 0 )
+			level.currentFog[3] = 0;
+			
+		if( level.currentFog[4] > 1 )
+			level.currentFog[4] = 1;
+		if( level.currentFog[4] < 0 )
+			level.currentFog[4] = 0;
+			
+		setExpFog(level.currentFog[0], level.currentFog[1], level.currentFog[2], level.currentFog[3], level.currentFog[4], 0);
+		wait 0.05;
+	}
+}
+
 setFog(name, time)
 {
 	switch (name)
 	{
 		case "toxic":
-		setExpFog( 256, 1024, 0.2, 0.4, 0.2, time);
-		break;
+			smoothFog( 256, 1024, 0.2, 0.4, 0.2, time);
+			break;
 		case "boss":
-		setExpFog( 512, 1024, 0, 0, 0, time);
-		break;
+			smoothFog( 512, 1024, 0, 0, 0, time);
+			break;
 		case "scary":
-		setExpFog( 128, 256, 0, 0, 0, time);
-		break;
+			smoothFog( 128, 256, 0, 0, 0, time);
+			break;
 		case "grouped":
-		setExpFog( 300, 700, .4, 0, 0, time);
-		break;
+			smoothFog( 300, 700, .4, 0, 0, time);
+			break;
 		case "tank":
-		setExpFog( 300, 700, .5, .5, .5, time);
-		break;
+			smoothFog( 300, 700, .5, .5, .5, time);
+			break;
 		default:
 		if (level.dvar["env_fog"])
 		{
-			setExpFog( level.dvar["env_fog_start_distance"], level.dvar["env_fog_half_distance"], level.dvar["env_fog_red"]/255, level.dvar["env_fog_green"]/255, level.dvar["env_fog_blue"]/255, time);
+			smoothFog( level.dvar["env_fog_start_distance"], level.dvar["env_fog_half_distance"], level.dvar["env_fog_red"]/255, level.dvar["env_fog_green"]/255, level.dvar["env_fog_blue"]/255, time);
 		}
 		else
 		{
-			setExpFog( 999999, 9999999, 0, 0, 0, time);
+			smoothFog( 999999, 9999999, 0, 0, 0, time);
 		}
 		break;
 	}
