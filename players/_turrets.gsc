@@ -323,7 +323,7 @@ glDamage(targetSpot, range, damage, attacker)
 	for (i=0; i < level.bots.size; i++)
 	{
 		selectedBot = level.bots[i];
-		if (isdefined(selectedBot) && isalive(selectedBot))
+		if (isdefined(selectedBot) && isalive(selectedBot) && !selectedBot.untargetable)
 		{
 			distance = distance(targetSpot, selectedBot.origin);
 			if (distance <= range ){

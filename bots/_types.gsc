@@ -1064,7 +1064,6 @@ nextBossStatus()
 			level.bossOverlay = overlayMessage(label, "", colour /*(1,0,0)*/);
 			level.bossOverlay setvalue(0);
 			level.bossDamageDone[level.bossPhase] = 0;
-			// level.bossDamageDoneReal = 0;
 			level.bossDamageToDo[level.bossPhase] = calculateBossHP();
 			level.bossOverlay setvalue(0);
 			level.bossPhases++;
@@ -1078,16 +1077,24 @@ nextBossStatus()
 		}
 		else{
 			level.bossOverlay thread fadeout(1);
-			// level.bossStatus = 2;
-			if( isDefined( self.partner ) ){
-				self.partner suicide();
-				if( isDefined( self.attachment ) )
-					self.attachment delete();
-			}
-			else
-				iprintlnbold("^1ERROR^7: Boss' partner undefined!");
-			self suicide();
+			self diedelay();
 		}
+}
+
+dieDelay(){
+	self.damageoff = true;
+	self.partner.damageoff = true;
+	wait 0.05;
+	if( isDefined( self.partner ) ){
+		self.partner suicide();
+		self.partner.damageoff = undefined;
+		if( isDefined( self.attachment ) )
+			self.attachment delete();
+	}
+	else
+		iprintlnbold("^1ERROR^7: Boss' partner undefined!");
+	self.damageoff = undefined;
+	self suicide();
 }
 
 onAttack(type, target)

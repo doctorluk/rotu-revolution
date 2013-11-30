@@ -246,7 +246,7 @@ spawnPartner(type, spawnpoint, bot, parent){
 	bot.suicided = undefined;
 	bot.damagePerLoc = [];
 	
-	bot scripts\bots\_types::loadZomStats(type);
+	// bot scripts\bots\_types::loadZomStats(type);
 	if (!isdefined(bot.meleeSpeed))
 	{
 		iprintlnbold("ERROR");
@@ -292,6 +292,7 @@ spawnPartner(type, spawnpoint, bot, parent){
 	
 	
 	bot scripts\bots\_types::loadZomModel(type);
+	bot detachall();
 	
 	
 	bot freezeControls(true);
@@ -311,7 +312,6 @@ spawnPartner(type, spawnpoint, bot, parent){
 	
 	bot linkto(parent.attachment);
 	bot.parent = parent;
-	bot hide();
 	bot.number = 1;
 	bot setanim("stand");
 	
@@ -324,7 +324,7 @@ rotateWithParent(){
 	self.parent endon("death");
 	level endon("wave_finished");
 	level endon("game_ended");
-	
+	self hide();
 	while( isDefined(self.parent) ){
 		self setPlayerAngles(self.parent.angles);
 		wait 0.05;
@@ -491,7 +491,7 @@ endSpawnProt(time, decrease)
 
 Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime)
 {
-	if(!isAlive(self))
+	if(!isAlive(self) || isDefined(self.damageoff) )
 		return;
 		
 	if(!self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker))
