@@ -147,6 +147,7 @@ initZomModels()
 	addZomModel("dog", "zombie_wolf", "");
 	// addZomModel("halfboss", "bo1_c_zom_george_romero_zombiefied_fb", "");
 	addZomModel("halfboss", "zom_george_romero", "");
+	// addZomModel("boss", "body_sp_russian_loyalist_a_dead", "head_sp_loyalist_alex_helmet_body_a_dead");
 	addZomModel("boss", "cyclops", "");
 	// addZomModel("zombified_player", "skeleton", "");
 	level.bossIsOnFire = false;
@@ -692,9 +693,6 @@ onSpawn(type)
 		case "scary":
 				PlayFXOnTag( level.eye_le_fx, self, "j_eyeball_le" );
 				PlayFXOnTag( level.eye_ri_fx, self, "j_eyeball_ri" );
-		case "electric":
-			// TODO: Add body-sparkles (?)
-			break;
 		case "dog":
 			// self thread createEffectEntity(level.burningFX, "j_head" );
 			break;
@@ -715,11 +713,29 @@ onSpawn(type)
 			level.bossDamageToDo[level.bossPhase] = calculateBossHP();
 			self.quake = true;
 			self thread bossSpecialAttack();
+			self spawnHitboxBot();
 		break;
 		case "napalm":
 			PlayFXOnTag( level.napalmTummyGlowFX, self, "j_spineupper" );
 			break;
 	}
+}
+
+spawnHitboxBot(){
+	bot = scripts\bots\_bots::getAvailableBot();
+	assertEx( isDefined( bot ), "Error: Bot attached to boss is non existant!" );
+	if (!isdefined(bot))
+		return;
+		
+	self.attachment = spawn( "script_model", self getTagOrigin( "tag_origin" ) + (0,0,75) );
+	self.attachment setModel( "tag_origin" );
+	self.attachment linkto(self);
+	wait 0.05;
+	
+	self.partner = bot;
+	spawn = self.attachment;
+	scripts\bots\_bots::spawnPartner(undefined, spawn, bot, self);
+	self.number = 0;
 }
 
 getColourForPhase(){
@@ -959,12 +975,17 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 		case "boss":
 			self.health = 10000;
 			/* EXPLOSIVES */
-			if (level.bossPhase == 0)
+			if ( level.bossPhase == 0 )
 			{
 				if (sMeansOfDeath != "MOD_IMPACT")
 				{
-					if (sWeapon == "c4_mp" || sWeapon == "frag_grenade_mp" || sWeapon == "claymore_mp" || sWeapon == "rpg_mp" || sWeapon == "at4_mp" || sMeansOfDeath == "MOD_MELEE")
+					if ( ( sWeapon == "c4_mp" || sWeapon == "frag_grenade_mp" || sWeapon == "claymore_mp" || sWeapon == "rpg_mp" || sWeapon == "at4_mp" || sMeansOfDeath == "MOD_MELEE" ) )
 					{
+						if( isDefined( eAttacker.lastBossHit ) && eAttacker.lastBossHit != self.number ){
+							eAttacker thread resetBossHit();
+							return 0;
+						}
+						eAttacker.lastBossHit = self.number;
 						if (sMeansOfDeath == "MOD_MELEE"){
 							iDamage = int(iDamage*.5);
 							eAttacker scripts\players\_players::incUpgradePoints(1*level.dvar["game_rewardscale"]);
@@ -984,7 +1005,7 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 
 			}
 			/* KNIFE */
-			else if (level.bossPhase == 1)
+			else if ( level.bossPhase == 1 )
 			{
 				if (sMeansOfDeath == "MOD_MELEE")
 				{
@@ -1001,6 +1022,11 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 			/* GENERAL DAMAGE */
 			else if (level.bossPhase == 2)
 			{
+				if( isDefined( eAttacker.lastBossHit ) && eAttacker.lastBossHit != self.number ){
+					eAttacker thread resetBossHit();
+					return 0;
+				}
+				eAttacker.lastBossHit = self.number;
 				eAttacker scripts\players\_players::incUpgradePoints( int( level.dvar["game_rewardscale"]/20 * iDamage ) );
 				level.bossDamageDone[level.bossPhase] += idamage;
 				newval = int(level.bossDamageDone[level.bossPhase]*100/level.bossDamageToDo[level.bossPhase]);
@@ -1015,6 +1041,15 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 		default:
 		return 1;
 	}
+}
+
+resetBossHit(){
+	self endon("disconnect");
+	self endon("death");
+	self notify("resetboss_hit"); // _ there to NOT read it as boss-shit lol
+	self endon("resetboss_hit");
+	wait 0.05;
+	self.lastBossHit = undefined;
 }
 
 nextBossStatus()
@@ -1042,8 +1077,15 @@ nextBossStatus()
 			}
 		}
 		else{
-			level.bossOverlay fadeout(1);
+			level.bossOverlay thread fadeout(1);
 			// level.bossStatus = 2;
+			if( isDefined( self.partner ) ){
+				self.partner suicide();
+				if( isDefined( self.attachment ) )
+					self.attachment delete();
+			}
+			else
+				iprintlnbold("^1ERROR^7: Boss' partner undefined!");
 			self suicide();
 		}
 }

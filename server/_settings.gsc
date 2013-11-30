@@ -79,6 +79,7 @@ loadSettings()
 	
 	dvarBool(	"env", 			"ambient",	 			1);
 	dvarBool(	"env", 			"fog",	 				1);
+	dvarBool(	"env", 			"smoothfog",	 		1); // Enable/disable smooth fog transition
 	dvarInt(	"env", 			"fog_start_distance",	200,	0,		10000);
 	dvarInt(	"env", 			"fog_half_distance",	480,	0,		10000);
 	dvarInt(	"env", 			"fog_red",				5,		0,		255);

@@ -207,6 +207,130 @@ getAvailableBot()
 	}
 }
 
+spawnPartner(type, spawnpoint, bot, parent){
+	type = "boss";
+	if (!isdefined(bot))
+	{
+		bot = getAvailableBot();
+		
+		if (!isdefined(bot))
+		return undefined;
+	}
+	
+	bot.hasSpawned = true;
+	bot.currentTarget = undefined;
+	bot.targetPosition = undefined;
+	bot.type = type;
+	bot.head = undefined;
+	
+	bot.team = bot.pers["team"];
+	
+	assert( isDefined(bot.team) );
+	
+	if( !isDefined(bot.team) ){
+		bot.hasSpawned = false;
+		return undefined;
+	}
+	
+	bot.sessionteam = bot.team;
+	bot.sessionstate = "playing";
+	bot.spectatorclient = -1;
+	bot.killcamentity = -1;
+	bot.archivetime = 0;
+	bot.psoffsettime = 0;
+	bot.statusicon = "";
+	bot.untargetable = true;
+	bot.isZombie = false;
+	bot.wasInfluencedByMonkeyBomb = false;
+	bot.influencedByMonkeyBomb = undefined;
+	bot.suicided = undefined;
+	bot.damagePerLoc = [];
+	
+	bot scripts\bots\_types::loadZomStats(type);
+	if (!isdefined(bot.meleeSpeed))
+	{
+		iprintlnbold("ERROR");
+		setdvar("error_0", type);
+		setdvar("error_1", bot.name);
+		wait 5;
+	}
+	bot.maxHealth = int( bot.maxHealth * level.dif_zomHPMod );
+	
+	bot.health = bot.maxHealth;
+	
+	bot.isDoingMelee = false;
+	
+	bot.damagedBy = [];
+	
+	bot.alertLevel = 0; // Has this zombie been alerted? 
+	bot.myWaypoint = undefined;
+	bot.underway = false;
+	bot.canTeleport = true;
+	bot.quake = false;
+	bot.isOnFire = false;
+	bot.isPoisoned = false;
+	bot.playIdleSound = true;
+	
+	bot scripts\bots\_types::loadAnimTree(type);
+	
+	bot.animWeapon = bot.animation["stand"];
+	bot TakeAllWeapons();
+	bot.pers["weapon"] = bot.animWeapon;
+	bot giveweapon(bot.pers["weapon"]);
+	bot givemaxammo(bot.pers["weapon"]);
+	bot setspawnweapon(bot.pers["weapon"]);
+	bot switchtoweapon(bot.pers["weapon"]);
+	
+	if (isdefined(spawnpoint.angles))
+		bot spawn( spawnpoint.origin, spawnpoint.angles );
+	else
+		bot spawn( spawnpoint.origin, (0,0,0) );
+	
+	level.botsAlive ++;
+	
+	wait 0.05;
+	
+	
+	bot scripts\bots\_types::loadZomModel(type);
+	
+	
+	bot freezeControls(true);
+	
+	bot.linkObj.origin = bot.origin;
+	bot.linkObj.angles = bot.angles;
+	
+	bot.incdammod = 1;
+	if ((bot.type != "tank" && bot.type != "boss") || (level.dvar["zom_spawnprot_tank"]))
+	{
+		if (level.dvar["zom_spawnprot"])
+		{
+			bot.incdammod = 0;
+			bot thread endSpawnProt(level.dvar["zom_spawnprot_time"], level.dvar["zom_spawnprot_decrease"]);
+		}
+	}
+	
+	bot linkto(parent.attachment);
+	bot.parent = parent;
+	bot hide();
+	bot.number = 1;
+	bot setanim("stand");
+	
+	bot thread rotateWithParent();
+	
+}
+
+rotateWithParent(){
+	self        endon("death");
+	self.parent endon("death");
+	level endon("wave_finished");
+	level endon("game_ended");
+	
+	while( isDefined(self.parent) ){
+		self setPlayerAngles(self.parent.angles);
+		wait 0.05;
+	}
+}
+
 spawnZombie(type, spawnpoint, bot)
 {
 	if (!isdefined(bot))
@@ -369,11 +493,10 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 {
 	if(!isAlive(self))
 		return;
-
+		
 	if(!self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker))
-	{
 		return;
-	}
+
 	self.alertLevel += 200;
 	if (isdefined(eAttacker))
 		if (isplayer(eAttacker))

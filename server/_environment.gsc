@@ -200,6 +200,10 @@ lightningBossFX()
 }
 
 smoothFog(startDist, endDist, r, g, b, time){
+	if(!level.dvar["env_smoothfog"]){
+		setExpFog(startDist, endDist, r, g, b, time);
+		return;
+	}
 	level notify("smooth_fog");
 	level endon("smooth_fog");
 	
@@ -229,7 +233,7 @@ smoothFog(startDist, endDist, r, g, b, time){
 		setExpFog(startDist, endDist, r, g, b);
 		return;
 	}
-	factor = time * 20; // We change it every 0.2 seconds, so 5 per second
+	factor = time * 10; // We change it every 0.1 seconds, so 10 per second
 	
 	diffStart = (startDist - oldStartDist) / factor;
 	diffEnd = (endDist - oldEndDist) / factor;
@@ -259,7 +263,7 @@ smoothFog(startDist, endDist, r, g, b, time){
 			level.currentFog[4] = 0;
 			
 		setExpFog(level.currentFog[0], level.currentFog[1], level.currentFog[2], level.currentFog[3], level.currentFog[4], 0);
-		wait 0.05;
+		wait 0.1;
 	}
 }
 
@@ -268,28 +272,28 @@ setFog(name, time)
 	switch (name)
 	{
 		case "toxic":
-			smoothFog( 256, 1024, 0.2, 0.4, 0.2, time);
+			thread smoothFog( 256, 1024, 0.2, 0.4, 0.2, time);
 			break;
 		case "boss":
-			smoothFog( 512, 1024, 0, 0, 0, time);
+			thread smoothFog( 512, 1024, 0, 0, 0, time);
 			break;
 		case "scary":
-			smoothFog( 128, 256, 0, 0, 0, time);
+			thread smoothFog( 128, 256, 0, 0, 0, time);
 			break;
 		case "grouped":
-			smoothFog( 300, 700, .4, 0, 0, time);
+			thread smoothFog( 300, 700, .4, 0, 0, time);
 			break;
 		case "tank":
-			smoothFog( 300, 700, .5, .5, .5, time);
+			thread smoothFog( 300, 700, .5, .5, .5, time);
 			break;
 		default:
 		if (level.dvar["env_fog"])
 		{
-			smoothFog( level.dvar["env_fog_start_distance"], level.dvar["env_fog_half_distance"], level.dvar["env_fog_red"]/255, level.dvar["env_fog_green"]/255, level.dvar["env_fog_blue"]/255, time);
+			thread smoothFog( level.dvar["env_fog_start_distance"], level.dvar["env_fog_half_distance"], level.dvar["env_fog_red"]/255, level.dvar["env_fog_green"]/255, level.dvar["env_fog_blue"]/255, time);
 		}
 		else
 		{
-			smoothFog( 999999, 9999999, 0, 0, 0, time);
+			thread smoothFog( 999999, 9999999, 0, 0, 0, time);
 		}
 		break;
 	}

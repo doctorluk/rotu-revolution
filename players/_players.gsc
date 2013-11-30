@@ -86,6 +86,9 @@ setDown(isDown) {
 
 testloop(){
 	self endon("disconnect");
+	// wait 2;
+	// scripts\bots\_bots::spawnZombie("boss", self, scripts\bots\_bots::getAvailableBot());
+	// self setclientdvar("ui_hud_hardcore", 1);
 	// self setclientdvar("cg_thirdperson", 1);
 	// if(!isDefined(level.test1))
 		// level.test1 = 0;
@@ -902,12 +905,14 @@ spawnPlayer(forceSpawn)
 		self.barriersRestored = 0;
 		self.upgradeHudPoints = 0;
 		self giveDelayedUpgradepoints();
+		
 		// self.poisonKills = 0;
 		// self.incendiaryKills = 0;
 	}
 	else
 		self.playtimeStart = getTime() - 5500;
 	self.spawnProtectionTime = getTime();
+	self.lastBossHit = undefined;
 	self.fireCatchCount = 0;
 	self.hasDoneCombat = false;
 	self.canHaveStealth = true;

@@ -43,8 +43,7 @@ init()
 	
 	
 	level.sentry_laser = loadFx( "misc/sentry_laser" );
-	level.turret_broken = loadFx( "turrets/turret_broken" );
-	level.turret_overheat = loadFx( "turrets/turret_overheat" );
+	level.turret_broken = loadFx( "smoke/grenade_smoke" );
 
 	if( getDvar("turret_time" ) == "" ) 
 		setDvar("turret_time", 90);
