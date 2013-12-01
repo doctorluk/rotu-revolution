@@ -713,7 +713,7 @@ onSpawn(type)
 			level.bossDamageToDo[level.bossPhase] = calculateBossHP();
 			self.quake = true;
 			self thread bossSpecialAttack();
-			self spawnHitboxBot();
+			self thread spawnHitboxBot();
 		break;
 		case "napalm":
 			PlayFXOnTag( level.napalmTummyGlowFX, self, "j_spineupper" );
@@ -724,18 +724,20 @@ onSpawn(type)
 spawnHitboxBot(){
 	bot = scripts\bots\_bots::getAvailableBot();
 	assertEx( isDefined( bot ), "Error: Bot attached to boss is non existant!" );
-	if (!isdefined(bot))
+	if ( !isDefined( bot ) ){
+		iprintlnbold("^1ERROR^7: Could not get an available bot for the boss!");
 		return;
+	}
 		
 	self.attachment = spawn( "script_model", self getTagOrigin( "tag_origin" ) + (0,0,75) );
 	self.attachment setModel( "tag_origin" );
-	self.attachment linkto(self);
 	wait 0.05;
+	self.attachment linkto(self);
 	
 	self.partner = bot;
 	spawn = self.attachment;
-	scripts\bots\_bots::spawnPartner(undefined, spawn, bot, self);
 	self.number = 0;
+	scripts\bots\_bots::spawnPartner(spawn, bot, self);
 }
 
 getColourForPhase(){

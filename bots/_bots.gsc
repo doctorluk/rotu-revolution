@@ -207,8 +207,9 @@ getAvailableBot()
 	}
 }
 
-spawnPartner(type, spawnpoint, bot, parent){
+spawnPartner(spawnpoint, bot, parent){
 	type = "boss";
+	
 	if (!isdefined(bot))
 	{
 		bot = getAvailableBot();
@@ -246,7 +247,7 @@ spawnPartner(type, spawnpoint, bot, parent){
 	bot.suicided = undefined;
 	bot.damagePerLoc = [];
 	
-	// bot scripts\bots\_types::loadZomStats(type);
+	bot scripts\bots\_types::loadZomStats(type);
 	if (!isdefined(bot.meleeSpeed))
 	{
 		iprintlnbold("ERROR");
@@ -292,7 +293,6 @@ spawnPartner(type, spawnpoint, bot, parent){
 	
 	
 	bot scripts\bots\_types::loadZomModel(type);
-	bot detachall();
 	
 	
 	bot freezeControls(true);
@@ -309,7 +309,7 @@ spawnPartner(type, spawnpoint, bot, parent){
 			bot thread endSpawnProt(level.dvar["zom_spawnprot_time"], level.dvar["zom_spawnprot_decrease"]);
 		}
 	}
-	
+	wait 0.05;
 	bot linkto(parent.attachment);
 	bot.parent = parent;
 	bot.number = 1;
@@ -324,6 +324,7 @@ rotateWithParent(){
 	self.parent endon("death");
 	level endon("wave_finished");
 	level endon("game_ended");
+	iprintln("Hiding boss2");
 	self hide();
 	while( isDefined(self.parent) ){
 		self setPlayerAngles(self.parent.angles);
@@ -1382,7 +1383,7 @@ zomMoveTowards(target_position)
 		else
 		{
 			//time = GetTime();
-			if( level.waypointLoops > 200000 && level.dvar["zom_antilagmonitor"] ){
+			if( level.waypointLoops > 100000 && level.dvar["zom_antilagmonitor"] ){
 				// logPrint("DEBUG: Caught > 200000 loops in level.waypointLoops!\n");
 				logPrint("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
 				// iprintln("Caught > 200000 loops, mitigating load to more frames...");
