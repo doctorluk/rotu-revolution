@@ -445,12 +445,12 @@ preWave(type){
 			break;
 		case "boss":
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
-			announceMessage(&"ZOMBIE_NEWBOSSWAVE", undefined, (.7,.2,0), 5, 85);
+			announceMessage(&"ZOMBIE_NEWBOSSWAVE", "", (.7,.2,0), 5, 85);
 			wait 5;
 			break;
 		case "normal":
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
-			announceMessage( level.announceNormal[ randomint(level.announceNormal.size) ] , level.waveSize, (.2,.7,0), 4, 95);
+			announceMessage( level.announceNormal[ randomint(level.announceNormal.size) ] , level.waveSize, (.2,.7,0), 5, 95);
 			wait 5;
 			break;
 		default:
@@ -722,6 +722,7 @@ onSpawn(type)
 }
 
 spawnHitboxBot(){
+	wait 0.1;
 	bot = scripts\bots\_bots::getAvailableBot();
 	assertEx( isDefined( bot ), "Error: Bot attached to boss is non existant!" );
 	if ( !isDefined( bot ) ){
@@ -737,6 +738,7 @@ spawnHitboxBot(){
 	self.partner = bot;
 	spawn = self.attachment;
 	self.number = 0;
+	self.partner.number = 1;
 	scripts\bots\_bots::spawnPartner(spawn, bot, self);
 }
 

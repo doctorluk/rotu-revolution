@@ -312,7 +312,6 @@ spawnPartner(spawnpoint, bot, parent){
 	wait 0.05;
 	bot linkto(parent.attachment);
 	bot.parent = parent;
-	bot.number = 1;
 	bot setanim("stand");
 	
 	bot thread rotateWithParent();
@@ -324,11 +323,28 @@ rotateWithParent(){
 	self.parent endon("death");
 	level endon("wave_finished");
 	level endon("game_ended");
-	iprintln("Hiding boss2");
+	iprintln("Hiding boss"+self.number);
 	self hide();
+	hidden = true;
+	loops = 0;
 	while( isDefined(self.parent) ){
 		self setPlayerAngles(self.parent.angles);
+		loops++;
 		wait 0.05;
+		if( getDvarInt("testhide") == 1){
+			if(loops % 20 == 0){
+				if(hidden){
+					iprintln("Showing");
+					self show();
+					hidden = !hidden;
+				}
+				else{
+					iprintln("Hiding");
+					self hide();
+					hidden = !hidden;
+				}
+			}
+		}
 	}
 }
 

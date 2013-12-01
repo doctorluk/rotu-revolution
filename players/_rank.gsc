@@ -27,6 +27,7 @@ init()
 	registerScoreInfo( "assist5", 10 );
 	registerScoreInfo( "revive", 50 );
 	registerScoreInfo( "headshot", 10 );
+	registerScoreInfo( "cheat", 5000 );
 	registerScoreInfo( "suicide", 0 );
 	registerScoreInfo( "teamkill", 0 );
 
