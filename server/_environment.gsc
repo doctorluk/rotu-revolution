@@ -278,7 +278,7 @@ setFog(name, time)
 			thread smoothFog( 512, 1024, 0, 0, 0, time);
 			break;
 		case "scary":
-			thread smoothFog( 128, 256, 0, 0, 0, time);
+			thread smoothFog( 128, 200, 0, 0, 0, time);
 			break;
 		case "grouped":
 			thread smoothFog( 300, 700, .4, 0, 0, time);

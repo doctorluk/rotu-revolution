@@ -125,6 +125,7 @@ precache()
 	precachemodel("zombie_wolf");
 	precachemodel("cyclops");
 	
+	precachemodel("invisible_model");
 	//PreCacheShellShock("zombiedamage");
 	PreCacheShellShock("boss");
 	precacheshellshock("toxic_gas_mp");
@@ -207,17 +208,8 @@ getAvailableBot()
 	}
 }
 
-spawnPartner(spawnpoint, bot, parent){
+spawnPartner(spawnpoint, bot){
 	type = "boss";
-	
-	if (!isdefined(bot))
-	{
-		bot = getAvailableBot();
-		
-		if (!isdefined(bot))
-		return undefined;
-	}
-	
 	bot.hasSpawned = true;
 	bot.currentTarget = undefined;
 	bot.targetPosition = undefined;
@@ -246,24 +238,12 @@ spawnPartner(spawnpoint, bot, parent){
 	bot.influencedByMonkeyBomb = undefined;
 	bot.suicided = undefined;
 	bot.damagePerLoc = [];
-	
 	bot scripts\bots\_types::loadZomStats(type);
-	if (!isdefined(bot.meleeSpeed))
-	{
-		iprintlnbold("ERROR");
-		setdvar("error_0", type);
-		setdvar("error_1", bot.name);
-		wait 5;
-	}
 	bot.maxHealth = int( bot.maxHealth * level.dif_zomHPMod );
 	
 	bot.health = bot.maxHealth;
 	
-	bot.isDoingMelee = false;
-	
 	bot.damagedBy = [];
-	
-	bot.alertLevel = 0; // Has this zombie been alerted? 
 	bot.myWaypoint = undefined;
 	bot.underway = false;
 	bot.canTeleport = true;
@@ -281,18 +261,19 @@ spawnPartner(spawnpoint, bot, parent){
 	bot givemaxammo(bot.pers["weapon"]);
 	bot setspawnweapon(bot.pers["weapon"]);
 	bot switchtoweapon(bot.pers["weapon"]);
-	
+
 	if (isdefined(spawnpoint.angles))
 		bot spawn( spawnpoint.origin, spawnpoint.angles );
 	else
 		bot spawn( spawnpoint.origin, (0,0,0) );
 	
-	level.botsAlive ++;
+	level.botsAlive++;
 	
 	wait 0.05;
 	
-	
-	bot scripts\bots\_types::loadZomModel(type);
+	bot detachall();
+	bot.head = "";
+	bot setmodel("invisible_model");
 	
 	
 	bot freezeControls(true);
@@ -301,17 +282,8 @@ spawnPartner(spawnpoint, bot, parent){
 	bot.linkObj.angles = bot.angles;
 	
 	bot.incdammod = 1;
-	if ((bot.type != "tank" && bot.type != "boss") || (level.dvar["zom_spawnprot_tank"]))
-	{
-		if (level.dvar["zom_spawnprot"])
-		{
-			bot.incdammod = 0;
-			bot thread endSpawnProt(level.dvar["zom_spawnprot_time"], level.dvar["zom_spawnprot_decrease"]);
-		}
-	}
 	wait 0.05;
-	bot linkto(parent.attachment);
-	bot.parent = parent;
+	bot linkto(bot.parent.attachment);
 	bot setanim("stand");
 	
 	bot thread rotateWithParent();
@@ -323,28 +295,9 @@ rotateWithParent(){
 	self.parent endon("death");
 	level endon("wave_finished");
 	level endon("game_ended");
-	iprintln("Hiding boss"+self.number);
-	self hide();
-	hidden = true;
-	loops = 0;
 	while( isDefined(self.parent) ){
 		self setPlayerAngles(self.parent.angles);
-		loops++;
 		wait 0.05;
-		if( getDvarInt("testhide") == 1){
-			if(loops % 20 == 0){
-				if(hidden){
-					iprintln("Showing");
-					self show();
-					hidden = !hidden;
-				}
-				else{
-					iprintln("Hiding");
-					self hide();
-					hidden = !hidden;
-				}
-			}
-		}
 	}
 }
 
@@ -741,6 +694,8 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		
 	wait 0.1;
 	self.hasSpawned = false;
+	self.parent = undefined;
+	self.number = undefined;
 	level.botsAlive -= 1;
 	
 	//level.zom_deaths ++;

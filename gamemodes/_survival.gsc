@@ -818,16 +818,16 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		spawn = level.wp[randomint(level.wp.size)];
 		thread groundSpawn(type, spawn, bot);
 		return bot;
-	} else if (spawntype==3) { // Ground spawn with cloud for electrics
+	} else if (spawntype==3) { // Random spawn for scary zombies
 		bot = scripts\bots\_bots::getAvailableBot();
 		if (!isdefined(bot))
-		return undefined;
+			return undefined;
 		
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
-		spawn = level.wp[randomint(level.wp.size)];
-		thread cloudSpawn(type, spawn, bot);
+		spawn = scripts\bots\_types::getScarySpawnpoint();
+		thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
 		return bot;
 	}
 	if (forcePrioritizedSpawning) { // Selected Spawn from random spawn function

@@ -442,6 +442,7 @@ preWave(type){
 					level.players[i] thread scripts\players\_players::flickeringHud(getTime() + 6000);
 				}
 			}
+			wait 5;
 			break;
 		case "boss":
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
@@ -480,13 +481,14 @@ setTurretsEnabledForType(type)
 getZombieType(type){
 	switch(type){
 		case "grouped": return getRandomZombieType();
-		default: return type;
 		case "burning":
 			ran = randomfloat(1);
 			if(ran < 0.8)
 				return "burning";
 			else
 				return "napalm";
+				
+		default: return type;
 	}
 }
 
@@ -499,6 +501,7 @@ getSpawnType(zombieType, waveType){
 				case "electric": return getSpawntypeForType("electric");
 				default: return 0;
 			}
+		case "scary": return 3;
 		case "electric": return 3;
 		case "toxic": return 2;
 		case "tank": return 1;
@@ -730,16 +733,17 @@ spawnHitboxBot(){
 		return;
 	}
 		
-	self.attachment = spawn( "script_model", self getTagOrigin( "tag_origin" ) + (0,0,75) );
+	self.attachment = spawn( "script_model", self getTagOrigin( "tag_origin" ) + (0,0,80) );
 	self.attachment setModel( "tag_origin" );
 	wait 0.05;
 	self.attachment linkto(self);
 	
-	self.partner = bot;
+	self.child = bot;
+	bot.parent = self;
 	spawn = self.attachment;
 	self.number = 0;
-	self.partner.number = 1;
-	scripts\bots\_bots::spawnPartner(spawn, bot, self);
+	self.child.number = 1;
+	scripts\bots\_bots::spawnPartner(spawn, self.child);
 }
 
 getColourForPhase(){
@@ -1087,18 +1091,70 @@ nextBossStatus()
 
 dieDelay(){
 	self.damageoff = true;
-	self.partner.damageoff = true;
+	self.child.damageoff = true;
 	wait 0.05;
-	if( isDefined( self.partner ) ){
-		self.partner suicide();
-		self.partner.damageoff = undefined;
+	if( isDefined( self.child ) ){
+		self.child suicide();
+		self.child.damageoff = undefined;
 		if( isDefined( self.attachment ) )
 			self.attachment delete();
 	}
 	else
-		iprintlnbold("^1ERROR^7: Boss' partner undefined!");
+		iprintlnbold("^1ERROR^7: Boss' child undefined!");
 	self.damageoff = undefined;
 	self suicide();
+}
+
+/* Find a spawnpoint for the scary wave from which players are far away, but not too far away, to allow zombies to spawn all over the map, but at a distance from the players */
+getScarySpawnpoint(){
+	minDistance = 500;
+	maxDistance = 2000;
+	validSpawnpoints = [];
+	valid = false;
+	distance = 0;
+	for(i = 0; i < level.wp.size; i++){
+		wp = level.wp[i];
+		valid = true;
+		for(ii = 0; ii < level.players.size; ii++){
+			p = level.players[ii];
+			if( !isReallyPlaying(p) ) // Ignore not playing players
+				continue;
+			distance = distance2d(p.origin, wp.origin);
+			if( distance <= minDistance || distance > maxDistance){ // If any of the players is too close, stop here and continue with the next waypoint
+				valid = false;
+				break;
+			}
+		}
+		if(valid){
+			validSpawnpoints[validSpawnpoints.size] = wp;
+		}
+	}
+	// In case there are no spawnpoints that are not too close + not too far, just consider the minDistance for the next search, so we avoid spawning the zombies too close to the players
+	if(validSpawnpoints.size <= 1){
+		validSpawnpoints = [];
+		for(i = 0; i < level.wp.size; i++){
+			wp = level.wp[i];
+			valid = true;
+			for(ii = 0; ii < level.players.size; ii++){
+				p = level.players[ii];
+				if( !isReallyPlaying(p) ) // Ignore not playing players
+					continue;
+				distance = distance2d(p.origin, wp.origin);
+				if( distance <= minDistance ){ // If any of the players is too close, stop here and continue with the next waypoint
+					valid = false;
+					break;
+				}
+			}
+			if(valid){
+				validSpawnpoints[validSpawnpoints.size] = wp;
+			}
+		}
+	}
+	// In case everything fails, we just spawn the zombie somewhere on the map randomly
+	if(validSpawnpoints.size <= 1)
+		return level.wp[randomint(level.wp.size)];
+		
+	return validSpawnpoints[randomint(validSpawnpoints.size)];
 }
 
 onAttack(type, target)
@@ -1107,13 +1163,11 @@ onAttack(type, target)
 	{
 		case "boss":
 			target thread scripts\players\_players::bounce(vectorNormalize(target.origin+(0,0,15)-self.origin));
-			target shellShock("boss",2);
+			target shellShock("boss", 2);
 		default:
 		return 1;
 	}
 }
-
-
 
 onCorpse(type)
 {
