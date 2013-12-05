@@ -50,8 +50,12 @@ WatchHostname()
 	while(1)
 	{
 		newhostname = GetNewHostname();
-		if( isDefined( newhostname ) )
+		if( isDefined( newhostname ) ){
+			if( getDvar("sv_hostname") == newhostname )
+				continue;
+
 			setDvar( "sv_hostname", newhostname );
+		}
 		wait level.dvar["game_changing_hostname_time"];
 	}
 }

@@ -44,9 +44,8 @@ watchName(){
 			self iprintlnbold("^1Warning: bot is not allowed as name/prefix!");
 			violations++;
 		}
-		else{
-			if(violations > 0)
-				violations--;
+		else if(violations > 0){
+			violations--;
 		}
 		
 		if(violations >= 10)
