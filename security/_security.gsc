@@ -44,9 +44,8 @@ watchName(){
 			self iprintlnbold("^1Warning: bot is not allowed as name/prefix!");
 			violations++;
 		}
-		else if(violations > 0){
+		else if( violations > 0 && false /*level.dvar["admin_decay_namedbot"] TODO: ADD CONFIG VAR*/)
 			violations--;
-		}
 		
 		if(violations >= 10)
 			Kick(self getEntityNumber());
