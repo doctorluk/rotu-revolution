@@ -326,6 +326,8 @@ giveRankXP( type, value )
 			break;
 	}*/
 	
+	value *= level.dvar["game_xpmultiplier"]; // Multiply XP Gain
+	
 	self.xpGains[type] += value;
 		
 	self incRankXP( value );

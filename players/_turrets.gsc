@@ -55,14 +55,22 @@ init()
 
 giveTurret(turret_type, time)
 {
-	if (!isdefined(time))
-	time = 0;
+	if ( !isDefined( time ) )
+		time = 0;
 	
 	self.carryObj = spawn("script_model", (0,0,0));
 	self.carryObj.origin = self.origin + (0,0,32);
 	self.carryObj.angles = (70, self.angles[1], self.angles[2]);
 	self.carryObj.turret_type = turret_type;
+	
+	wait 0.05;
+	
 	self.turret_time = time;
+	
+	if( !isDefined( self.carryObj ) ){
+		iprintln("^1ERROR: ^7" + self.name + "'s Turret is ^1UNDEFINED^7!");
+		return;
+	}
 	
 	self.carryObj linkto(self);
 	// iprintlnbold(level.sentry_turret_model[turret_type]);
@@ -71,7 +79,6 @@ giveTurret(turret_type, time)
 	
 	self.carryObj thread onDeath();
 	
-	level.turrets_held ++;
 		
 	self.canUse = false;
 	self disableweapons();
@@ -80,6 +87,7 @@ giveTurret(turret_type, time)
 
 onDeath()
 {
+	level.turrets_held++;
 	self waittill("death");
 	level.turrets_held -= 1;
 }

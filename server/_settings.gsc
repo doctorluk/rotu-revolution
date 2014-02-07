@@ -49,6 +49,7 @@ loadSettings()
 	dvarBool(	"game",			"enable_delayed_upgradepoints",	1); // Enable/Disabled delayed upgradepoints
 	dvarInt(	"game", 		"delayed_upgradepoints",3000,		1,	100000); // Upgradepoints received for each wave missed
 	dvarInt(	"game", 		"startpoints",	 		2000,	0,		100000);
+	dvarInt(	"game", 		"xpmultiplier",	 		1,	1,		20); // XP Multiplier
 	dvarInt(	"game",			"max_mg_barrels",		4,		1,		20);
 	dvarInt(	"game",			"max_turrets",			5,		1,		12);
 	dvarInt(	"game",			"max_claymores",		10,		0,		50); // Max claymores per player
