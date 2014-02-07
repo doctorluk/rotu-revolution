@@ -287,7 +287,6 @@ spawnPartner(spawnpoint, bot){
 	bot setanim("stand");
 	
 	bot thread rotateWithParent();
-	
 }
 
 rotateWithParent(){
@@ -730,11 +729,11 @@ doSplatter(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc,
 		// attacker iprintln("^1CRITICAL HIT ON " + self.name);
 		// return true;
 	// }	
-	if( isDefined(attacker) && self.type != "dog" && self.type != "burning" && self.type != "napalm")
-	if((sWeapon == attacker.primary || sWeapon == attacker.secondary))
-	if( (damage/self.maxhealth) > 0.8 && sMeansOfDeath != "MOD_MELEE" && (sHitLoc == "head" || sHitLoc == "neck" || sHitLoc == "helmet")){
-		self playsound("zom_splatter");
-		playfx(level.splatterFX, self getTagOrigin("j_spinelower") );
+	if( isDefined(attacker) && self.type != "dog" && self.type != "burning" && self.type != "napalm" )
+		if( ( sWeapon == attacker.primary || sWeapon == attacker.secondary ) )
+			if( ( damage/self.maxhealth ) > 0.8 && sMeansOfDeath != "MOD_MELEE" && ( sHitLoc == "head" || sHitLoc == "neck" || sHitLoc == "helmet" ) ){
+				self playsound("zom_splatter");
+				playfx(level.splatterFX, self getTagOrigin("j_spinelower") );
 		// attacker iprintln("^1CRITICAL HIT ON " + self.name);
 		return true;
 	}

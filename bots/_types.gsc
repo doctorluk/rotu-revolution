@@ -1096,11 +1096,12 @@ dieDelay(){
 	if( isDefined( self.child ) ){
 		self.child suicide();
 		self.child.damageoff = undefined;
+		self.child detachall();
 		if( isDefined( self.attachment ) )
 			self.attachment delete();
 	}
 	else
-		iprintlnbold("^1ERROR^7: Boss' child undefined!");
+		iprintln("^1ERROR^7: Boss' child undefined!");
 	self.damageoff = undefined;
 	self suicide();
 }
