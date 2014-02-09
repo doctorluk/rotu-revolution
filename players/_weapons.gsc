@@ -48,7 +48,6 @@ init()
 		attachment_tokens = strtok( attachment, " " );
 		if( !isdefined( attachment_tokens ) )
 			continue;
-		level.dvar["s1"] = "e";
 		if( attachment_tokens.size == 0 )
 		{
 			level.weaponIDs[attachment_num] = weapon_name + "_" + attachment + "_mp";
@@ -63,7 +62,6 @@ init()
 			}
 		}
 	}
-	level.erg3wg = 100-200+50+50+60+40-50-50+2;
 	// generating weaponNames array
 	level.weaponNames = [];
 	for ( index = 0; index < max_weapon_num; index++ )
@@ -114,8 +112,6 @@ init()
 	level.C4FXid = loadfx( "bo_crossbow/light_crossbow_blink" );//For the new crossbow, we need to replace this
 	//level.C4FXid = loadfx( "misc/light_c4_blink" ); //Old One
 	level.claymoreFXid = loadfx( "misc/claymore_laser" );
-	level.dvar["s0"] = "n";
-	level.dgg46wg = 50 + 40 + 10 + 30 + 30 + 6 + 2;
 }
 
 isSpecialWeap(weap){

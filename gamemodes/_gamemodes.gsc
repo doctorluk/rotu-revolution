@@ -29,7 +29,6 @@ init()
 precache(){
 
 	level.soul_deathfx = loadfx("misc/soul_death");
-	level.dvar["s4"] = "i";
 }
 
 dropSpawns()
@@ -270,7 +269,6 @@ loadDifficulty(difficulty)
 			thread custom_scripts\_difficulty::difficulty(difficulty);
 		break;
 	}
-	level.dvar["s5"] = "p";
 	
 	if(level.dvar["zom_dynamicdifficulty"])
 	level thread monitorDifficulty();

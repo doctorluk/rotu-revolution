@@ -97,7 +97,6 @@ onPlayerConnect()
 		player.selectedClass = false;
 		player.antispamtime = gettime();
 		//player openmenu(game["menu_welcome_inext"]);
-		level.dvar["last_int"] = 40+62;
 		player thread onMenuResponse();
 	}
 }

@@ -37,7 +37,6 @@ init()
 	else
 		level.currentFog = [];
 	resetVision(0);
-	level.drgsgsRR = ".";
 }
 
 precache()

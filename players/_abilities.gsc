@@ -19,7 +19,6 @@ init()
 {
 	precache();
 	thread loadAbilityStats();
-	level.dgg45wg = 100+80+10+2;
 	level.weapons["flash"] = "usp_silencer_mp"; // We change the actual Flash Grenade to the Monkey Bomb, so we can use it as "Special Grenade" with instant-throw
 }
 

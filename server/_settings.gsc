@@ -39,6 +39,7 @@ loadSettings()
 	dvarBool(	"zom",			"spawnprot_tank",		0);
 	
 	dvarBool(	"game", 		"extremeragdoll",	 	1);
+	dvarBool(	"game", 		"godmode",	 			0);
 	dvarBool(	"game", 		"friendlyfire",	 		0);
 	dvarInt(	"game", 		"difficulty",	 		2,		1,		5);
 	dvarBool(	"game",			"welcomemessages",		0);

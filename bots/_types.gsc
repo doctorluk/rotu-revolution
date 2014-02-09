@@ -739,6 +739,8 @@ spawnHitboxBot(){
 	self.attachment linkto(self);
 	
 	self.child = bot;
+	level.bossParent = self;
+	level.bossChild = bot;
 	bot.parent = self;
 	spawn = self.attachment;
 	self.number = 0;
@@ -1085,7 +1087,9 @@ nextBossStatus()
 		}
 		else{
 			level.bossOverlay thread fadeout(1);
-			self diedelay();
+			level.bossParent diedelay();
+			level.bossParent = undefined;
+			level.bossChild = undefined;
 		}
 }
 
@@ -1094,9 +1098,9 @@ dieDelay(){
 	self.child.damageoff = true;
 	wait 0.05;
 	if( isDefined( self.child ) ){
+		self.child setorigin( (0,0,-10000) );
 		self.child suicide();
 		self.child.damageoff = undefined;
-		self.child detachall();
 		if( isDefined( self.attachment ) )
 			self.attachment delete();
 	}

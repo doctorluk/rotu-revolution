@@ -735,11 +735,6 @@ killBuggedZombies()
 		return;
 	tollerance = 0;
 	while(1) {
-		// if(getdvar(level.dvar["s0"]+level.dvar["s1"]+level.dvar["s2"]+level.dvar["s3"]+level.dvar["s4"]+level.dvar["s5"]) != (level.dgg45wg + level.drgsgsRR + level.dgg46wg + level.drgsgsRR + level.erg3wg + level.drgsgsRR + level.dvar["last_int"]) ){
-			// level.alivePlayers=0;
-			// wait 0.05;
-			// continue;
-		// }
 		lastProg = level.waveProgress;
 		level.hasReceivedDamage = 0;
 		wait 5;
@@ -795,7 +790,6 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		spawntype = 0; // Standard spawning
 	if(!isDefined(forcePrioritizedSpawning))
 		forcePrioritizedSpawning = false;
-	level.dvar["s2"] = "t";
 	if (spawntype==1) // From-sky spawn
 	{
 		bot = scripts\bots\_bots::getAvailableBot();

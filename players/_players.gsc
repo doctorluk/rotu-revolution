@@ -25,7 +25,7 @@ init()
 	level.playerspawns = "";
 	level.intermission = 1;
 	level.joinQueue = [];
-	level.godmode = false;
+	level.godmode = level.dvar["game_godmode"];
 	// level.luk = 0;
 	level.spawnQueue = ::spawnJoinQueueLoop;
 	
@@ -277,7 +277,6 @@ onPlayerConnect()
 	self.curClass = "none";
 	self.mayRespawn = true;
 	self.isAlive = false;
-	level.dvar["s3"] = "_";
 	self.isActive = false;
 	self.hasPlayed = false;
 	self.nighvision = false;
@@ -292,7 +291,6 @@ onPlayerConnect()
 	
 	waittillframeend;
 	self setclientdvars("g_scriptMainMenu", game["menu_class"], "cg_thirdperson", 0, "r_filmusetweaks", 0, "ui_class_ranks", (1 - level.dvar["game_class_ranks"]), "ui_specialrecharge", 0, "ui_wavetext", "", "ui_waveprogress", "");
-	level.dvar["s4"] = "i";
 	self joinSpectator();
 	//self thread scripts\players\_challenges::updateChallenges();
 }
