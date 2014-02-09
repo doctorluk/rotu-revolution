@@ -1170,8 +1170,8 @@ incUpgradePoints(inc)
 
 /* For each wave missed, we give the players more upgradepoints (if enabled) */
 giveDelayedUpgradepoints(){
-	if(level.dvar["game_enable_delayed_upgradepoints"]){
-		self.points += ((level.currentWave - 1) * level.dvar["game_delayed_upgradepoints"]);
+	if(level.dvar["game_delayed_upgradepoints"]){
+		self.points += ((level.currentWave - 1) * level.dvar["game_delayed_upgradepoints_amount"]);
 	}
 }
 

@@ -46,8 +46,8 @@ loadSettings()
 	dvarInt(	"game",			"mapvote_time",			20,		5,		60);
 	dvarInt(	"game",			"mapvote_count",		8, 	1, 		15);
 	dvarInt(	"game", 		"rewardscale",	 		25,		1,		10000);
-	dvarBool(	"game",			"enable_delayed_upgradepoints",	1); // Enable/Disabled delayed upgradepoints
-	dvarInt(	"game", 		"delayed_upgradepoints",3000,		1,	100000); // Upgradepoints received for each wave missed
+	dvarBool(	"game",			"delayed_upgradepoints",	1); // Enable/Disabled delayed upgradepoints
+	dvarInt(	"game", 		"delayed_upgradepoints_amount",3000,		1,	100000); // Upgradepoints received for each wave missed
 	dvarInt(	"game", 		"startpoints",	 		2000,	0,		100000);
 	dvarInt(	"game", 		"xpmultiplier",	 		1,	1,		20); // XP Multiplier
 	dvarInt(	"game",			"max_mg_barrels",		4,		1,		20);

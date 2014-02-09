@@ -282,6 +282,7 @@ mainGametype()
 				case "8": type = "finale"; break;
 				case "?": type = scripts\bots\_types::getRandomSpecialWaveType(true); break;
 				case "20": increaseDifficulty(); break;
+				default: iprintlnbold("^1Error: ^7Bad server configuration of dvar 'surv_waves'! Invalid type: '" + level.waves[i] + "'"); break;
 			}
 		// else
 			// switch(level.waves[i]){
@@ -300,7 +301,7 @@ mainGametype()
 		/* Add zombie type that wasn't there before to the normal wave.... */
 		if ( scripts\bots\_types::addToSpawnTypes(type) )
 			if(type == "burning"){
-				scripts\gamemodes\_gamemodes::addSpawnType(type);
+				scripts\gamemodes\_gamemodes::addSpawnType("burning");
 				scripts\gamemodes\_gamemodes::addSpawnType("napalm");
 			}
 			else

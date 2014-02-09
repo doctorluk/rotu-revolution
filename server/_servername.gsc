@@ -29,9 +29,9 @@ PIHN_ARMOREDS			-	Amount of Armoreds
 PIHN_ENGINEERS			-	Amount of Engineers
 PIHN_SCOUTS				-	Amount of Scouts
 PIHN_MEDICS				-	Amount of Medics
+PIHN_MAXPLAYERS			-	Slots (without bots)
 PIHN_ALIVEPLAYERS		-	Players alive
 PIHN_DOWNEDPLAYERS		-	Players down
-PIHN_MAXPLAYERS			-	Slots (without bots)
 PIHN_ZOMBIESALIVE		-	Zombies alive
 PIHN_WAVENUMBER			-	Wave Number
 PIHN_WAVENAME			-	Name of wave
@@ -40,6 +40,7 @@ PIHN_WAVEKILLED			-	Amount of killed zombies in the current wave
 PIHN_WAVELEFT			-	Amount of zombies left to end the wave
 PIHN_BESTPLAYER			-	Best Player Name (Score)
 PIHN_MOSTKILLSPLAYER	-	Most Kills Player name
+PIHN_ZOMBIESALIVE		-	Living Zombie Count
 */
 
 WatchHostname()
@@ -72,6 +73,7 @@ GetNewHostname()
 	string = CheckString( "PIHN_ARMOREDS", string );
 	string = CheckString( "PIHN_ENGINEERS", string );
 	string = CheckString( "PIHN_SCOUTS", string );
+	wait 0.05;
 	string = CheckString( "PIHN_MEDICS", string );
 	string = CheckString( "PIHN_MAXPLAYERS", string );
 	string = CheckString( "PIHN_ALIVEPLAYERS", string );
