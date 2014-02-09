@@ -52,8 +52,10 @@ WatchHostname()
 	{
 		newhostname = GetNewHostname();
 		if( isDefined( newhostname ) ){
-			if( getDvar("sv_hostname") == newhostname )
+			if( getDvar("sv_hostname") == newhostname ){
+				wait 0.1;
 				continue;
+			}
 
 			setDvar( "sv_hostname", newhostname );
 		}
@@ -73,7 +75,6 @@ GetNewHostname()
 	string = CheckString( "PIHN_ARMOREDS", string );
 	string = CheckString( "PIHN_ENGINEERS", string );
 	string = CheckString( "PIHN_SCOUTS", string );
-	wait 0.05;
 	string = CheckString( "PIHN_MEDICS", string );
 	string = CheckString( "PIHN_MAXPLAYERS", string );
 	string = CheckString( "PIHN_ALIVEPLAYERS", string );
