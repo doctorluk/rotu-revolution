@@ -159,11 +159,11 @@ getWaveSize(wave)
 		
 		case 2:
 		
-		return level.dvar["surv_zombies_initial"] + players * (waveid * level.dvar["surv_zombies_perwave"] + level.dvar["surv_zombies_perplayer"]);
+		return level.dvar["surv_zombies_initial"] + players * (waveid * level.dvar["surv_zombies_perwave"] + level.dvar["surv_zombies_perplayer"]); // 10 + a * (x * 7 + 10)
 		
 		case 3:
 		
-		return level.dvar["surv_zombies_initial"] + players * level.dvar["surv_zombies_perplayer"] + waveid * level.dvar["surv_zombies_perwave"];
+		return level.dvar["surv_zombies_initial"] + players * level.dvar["surv_zombies_perplayer"] + waveid * level.dvar["surv_zombies_perwave"]; // 10 + a * 10 + x * 7
 	}
 }
 
@@ -269,21 +269,21 @@ mainGametype()
 	level.weStartedAtLeastOneGame = false;
 	while(isDefined(level.waves[i])){
 		type = "";
-		// if( level.currentDifficulty == 1 )
-			switch(level.waves[i]){
-				case "0": type = "normal"; break;
-				case "1": type = "dog"; break;
-				case "2": type = "burning"; break;
-				case "3": type = "toxic"; break;
-				case "4": type = "tank"; break;
-				case "5": type = "scary"; break;
-				case "6": type = "boss"; break;
-				case "7": type = "grouped"; break;
-				case "8": type = "finale"; break;
-				case "?": type = scripts\bots\_types::getRandomSpecialWaveType(true); break;
-				case "20": increaseDifficulty(); break;
-				default: iprintlnbold("^1Error: ^7Bad server configuration of dvar 'surv_waves'! Invalid type: '" + level.waves[i] + "'"); break;
-			}
+		
+		switch(level.waves[i]){
+			case "0": type = "normal"; break;
+			case "1": type = "dog"; break;
+			case "2": type = "burning"; break;
+			case "3": type = "toxic"; break;
+			case "4": type = "tank"; break;
+			case "5": type = "scary"; break;
+			case "6": type = "boss"; break;
+			case "7": type = "grouped"; break;
+			case "8": type = "finale"; break;
+			case "?": type = scripts\bots\_types::getRandomSpecialWaveType(true); break;
+			case "20": increaseDifficulty(); break;
+			default: iprintlnbold("^1Error: ^7Bad server configuration of dvar 'surv_waves'! Invalid type: '" + level.waves[i] + "'"); break;
+		}
 		// else
 			// switch(level.waves[i]){
 				// case "0": type = "normal"; break;
