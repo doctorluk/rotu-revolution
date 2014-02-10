@@ -305,6 +305,25 @@ getSpawntypeForType(type){
 	}
 }
 
+getFullyRandomZombieType(){
+	ran = 9;
+	// Only select halfboss when he lives
+	if( level.bossBulletCount < level.bossBulletLimit )
+		ran = 8;
+		
+	switch( randomint(ran) ){
+		case 0: return "zombie";
+		case 1: return "dog";
+		case 2: return "fast";
+		case 3: return "fat";
+		case 4: return "burning";
+		case 5: return "toxic";
+		case 6: return "tank";
+		case 7: return "napalm";
+		case 8: return "halfboss";
+	}
+}
+
 /* According to the global probability, this function chooses a random zombie */
 getRandomZombieType(){
 	returns = "";
@@ -454,6 +473,10 @@ preWave(type){
 			announceMessage( level.announceNormal[ randomint(level.announceNormal.size) ] , level.waveSize, (.2,.7,0), 5, 95);
 			wait 5;
 			break;
+		case "finale":
+			thread announceFinale();
+			announceMessage(&"ZOMBIE_FINALWAVE", "", (1,0,0), 5, 85);
+			wait 5;
 		default:
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
 			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
@@ -570,6 +593,8 @@ getAmbientForType(type)
 			return "ambient_grouped";
 		case "boss":
 			return "ambient_boss";
+		case "finale":
+			return "ambient_finale";
 		case "dog":
 			thread playSoundOnAllPlayers("dog_howl");
 			return "zom_ambient";
@@ -592,6 +617,8 @@ getFogForType(type)
 			return "grouped";
 		case "tank":
 			return "tank";
+		case "finale":
+			return "finale";
 		default:
 			return "";
 	}
@@ -607,6 +634,8 @@ getVisionForType(type)
 			return "boss";
 		case "scary":
 			return "night";
+		case "finale":
+			return "finale";
 		default:
 			return "";
 	}
@@ -622,6 +651,8 @@ getFxForType(type)
 			return "lightning";
 		case "boss":
 			return "lightning_boss";
+		case "finale":
+			return "finale";
 		default:
 			return "";
 	}
@@ -720,6 +751,9 @@ onSpawn(type)
 		break;
 		case "napalm":
 			PlayFXOnTag( level.napalmTummyGlowFX, self, "j_spineupper" );
+			break;
+		case "halfboss":
+			level.bossBulletCount++;
 			break;
 	}
 }

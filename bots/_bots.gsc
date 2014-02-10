@@ -35,6 +35,7 @@ init()
 	level.slowBots = 1;
 	level.lastBossJump = 0;
 	level.nextBossJump = 0;
+	level.freezeBots = false;
 	
 	
 	wait 1;
@@ -408,6 +409,7 @@ spawnZombie(type, spawnpoint, bot)
 	bot linkto(bot.linkObj);
 	
 	bot thread monkeyOverride();
+	bot thread freezeBotOnLC();
 	bot thread freezeBot();
 	
 	bot zomGoIdle();
@@ -903,7 +905,7 @@ monkeyOverride(){
 	}
 }
 
-freezeBot(){
+freezeBotOnLC(){
 	self endon("death");
 	self endon("disconnect");
 	level waittill("last_chance_start");
@@ -920,6 +922,34 @@ freezeBot(){
 	if(isAlive(self) && isDefined(self getClosestTarget())) // Giving the zombie a new target, preventing "onSight"-checks in case the zombie is stuck inside a wall
 		self zomSetTarget(self getClosestTarget().origin);
 }
+
+freezeBot(){
+	self endon("death");
+	self endon("disconnect");
+	while(1){
+		while(1){
+			if(level.freezeBots == true)
+				break;
+			else
+				wait 0.5;
+		}
+		
+		self.lastMemorizedPos = undefined;
+		self.playIdleSound = false;
+		self zomGoIdle();
+		
+		while(level.freezeBots)
+			wait 0.1;
+			
+		self.playIdleSound = true;
+		wait 2;
+		
+		// self thread zomMain();
+		if( isDefined( self getClosestTarget() ) ) // Giving the zombie a new target, preventing "onSight"-checks in case the zombie is stuck inside a wall
+			self zomSetTarget(self getClosestTarget().origin);
+	}
+}
+
 
 zomMain()
 {

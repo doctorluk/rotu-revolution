@@ -40,6 +40,7 @@ loadSettings()
 	
 	dvarBool(	"game", 		"extremeragdoll",	 	1);
 	dvarBool(	"game", 		"godmode",	 			0);
+	dvarBool(	"game", 		"version_banner",	 	1); // Display version information and website in iprintln area
 	dvarBool(	"game", 		"friendlyfire",	 		0);
 	dvarInt(	"game", 		"difficulty",	 		2,		1,		5);
 	dvarBool(	"game",			"welcomemessages",		0);

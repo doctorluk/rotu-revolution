@@ -21,6 +21,7 @@
 	-Made by Rycoon ( Xfire: phaedrean )
 	
 	This scripts makes claymores working on RotU.
+	Modified by Luk.
 |----------------------------------------------------------------------------|
 */
 

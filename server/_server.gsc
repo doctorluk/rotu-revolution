@@ -36,18 +36,39 @@ broadcastVersion(){
 	level.rotuVersion_short = "RotU-R Alpha 0.2.4 (11:46 09.02.2014)";
 	level.rotuVersion_hostname = "RotU-Revolution 0.2.4-alpha";
 	level.rotuVersion_hostname_short = "0.2.4-alpha";
-	while(1){
-		iprintln("^2This Server is running ^1" + level.rotuVersion);
-		iprintln("^2Please report bugs at ^3PuffyForum.com");
-		iprintln("^2Also note that this version ^3DOES ^2contain Bugs!");
-		if(getDvarInt("developer_script")){
-			wait 60;
-			iprintln("^3XP GAIN HAS BEEN ^1DISABLED ^3DUE TO DEBUGGING MODE");
-			wait 60;
-		}
-		else
-			wait 120;
+	switch( getDvar("net_ip") ){
+		case "185.4.149.11":
+			while( 1 ){
+				iprintln("^2This Server is running ^1" + level.rotuVersion);
+				iprintln("^2Please report bugs at ^3PuffyForum.com");
+				iprintln("^2Also note that this version ^3DOES ^2contain Bugs!");
+				if(getDvarInt("developer_script")){
+					wait 60;
+					iprintln("^3XP GAIN HAS BEEN ^1DISABLED ^3DUE TO DEBUGGING MODE");
+					wait 60;
+				}
+				else
+					wait 120;
+			}
+			break;
+		default:
+			if(level.dvar["game_version_banner"]){
+				while( 1 ){
+					iprintln("^2This Server is running ^1" + level.rotuVersion);
+					iprintln("^2Please report bugs at ^3PuffyForum.com");
+					iprintln("^2Also note that this version ^3DOES ^2contain Bugs!");
+					if(getDvarInt("developer_script")){
+						wait 60;
+						iprintln("^3XP GAIN HAS BEEN ^1DISABLED ^3DUE TO DEBUGGING MODE");
+						wait 60;
+					}
+					else
+						wait 120;
+				}
+			}
+			break;
 	}
+	
 }
 // rcon_password being bugged out workaround
 // rcon_password in console_mp.log workaround

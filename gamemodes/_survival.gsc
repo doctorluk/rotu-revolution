@@ -224,47 +224,7 @@ mainGametype()
 	rotatePrioritizedSpawn(false);
 	thread survivorsHUD();
 	level thread doWaveHud();
-	/*
-	for (iii=0; iii <= level.difficulties; iii++) { // How many COMPLETE loops the waves do
-		for (i=0; i<level.dvar["surv_specialwaves"]; i++) // How many special waves there are (6)
-		{
-			if (isDefined(level.specialWaves[i]))
-				special = level.specialWaves[i];
-			else
-				special = level.specialWaves[randomint(level.specialWaves.size)];
-				
-			rotatePrioritizedSpawn(false);
-			
-			if (special != "boss" && special != "scary")
-				scripts\gamemodes\_gamemodes::addSpawnType(special);
-			
-			for (ii=1; ii<level.dvar["surv_specialinterval"]; ii++) // Every ii. wave is a special wave
-				// startRegularWave();
-				// startTestWave();
-			
-			startSpecialWave("tank"); // Starts a wave according to current wave index, chronologically
-		}
-		level.zom_types["zombie"].maxHealth*=1.5;
-		level.zom_types["zombie"].damage*=1.4;
-		level.zom_types["fat"].maxHealth*=2;
-		level.zom_types["fat"].damage*=1.4;
-		level.zom_types["fast"].runSpeed*=1.2;
-		level.zom_types["fast"].maxHealth*=1.3;
-		level.zom_types["fast"].damage*=1.4;
-		level.zom_types["tank"].maxHealth*=1.1;
-		level.zom_types["tank"].damage*=1.2;
-		level.zom_types["burning"].damage*=1.6;
-		level.zom_types["toxic"].damage*=1.5;
-		level.zom_types["toxic"].maxhealth*=1.5;
-		level.zom_types["dog"].damage *=1.4;
-		level.zom_types["dog"].maxHealth *= 1.5;
-		level.currentDifficulty++;
-		allowRaygun();
-		level.rewardScale *= 2;
-		if(level.dvar["shop_multiply_costs"])
-			thread scripts\players\_shop::updateShopCosts();
-	}
-	*/
+	
 	i = 0;
 	level.weStartedAtLeastOneGame = false;
 	while(isDefined(level.waves[i])){
@@ -284,20 +244,7 @@ mainGametype()
 			case "20": increaseDifficulty(); break;
 			default: iprintlnbold("^1Error: ^7Bad server configuration of dvar 'surv_waves'! Invalid type: '" + level.waves[i] + "'"); break;
 		}
-		// else
-			// switch(level.waves[i]){
-				// case "0": type = "normal"; break;
-				// case "1": type = "burningdog"; break;
-				// case "2": type = "burning"; break;
-				// case "3": type = "toxicall"; break;
-				// case "4": type = "tank"; break;
-				// case "5": type = "scary"; break;
-				// case "6": type = "boss"; break;
-				// case "7": type = "grouped"; break;
-				// case "8": type = "finale"; break;
-				// case "?": type = scripts\bots\_types::getRandomSpecialWaveType(true); break;
-				// case "20": increaseDifficulty(); break;
-			// }
+		
 		/* Add zombie type that wasn't there before to the normal wave.... */
 		if ( scripts\bots\_types::addToSpawnTypes(type) )
 			if(type == "burning"){
@@ -309,6 +256,7 @@ mainGametype()
 
 		switch(type){
 			case "normal": startRegularWave(); break;
+			case "finale": startFinalWave(); break;
 			case "": break;
 			default: startSpecialWave(type); break;
 		}
@@ -597,8 +545,6 @@ startSpecialWave(type)
 			toSpawnSpawntype = scripts\bots\_types::getSpawnType(toSpawn, type);
 			if (isdefined(spawnZombie(toSpawn, toSpawnSpawntype))){
 				i++;
-				if(toSpawn == "halfboss")
-					level.bossBulletCount++;
 			}
 		}
 		wait level.dif_zomSpawnRate;
@@ -632,22 +578,27 @@ startSpecialWave(type)
 }
 
 /* THE GREAT FINALE */
-/*
+
 startFinalWave()
 {
 	if(!level.weStartedAtLeastOneGame)
 		level.weStartedAtLeastOneGame = !level.weStartedAtLeastOneGame;
+		
 	level endon( "game_ended" );
+	
 	type = "finale";
+	
 	thread watchEnd();
+	
 	level.currentType = type;
 	level.intermission = 1;
 	
 	scripts\players\_players::spawnJoinQueue();
+	
 	level.waveSize = int(scripts\bots\_types::getWaveFactorForType(type) * getWaveSize(level.currentWave) ) + 1;
-	// level.waveSize = 1;
-	// level.waveSize = 100;
+	
 	level.waveProgress = 0;
+	
 	if(level.currentWave == 1 && level.dvar["surv_timeout_firstwave"] > 0){
 		timer(level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0), undefined, level.currentWave);
 		wait level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"] + 2;
@@ -656,33 +607,42 @@ startFinalWave()
 		timer(level.dvar["surv_timeout"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0), undefined, level.currentWave);
 		wait level.dvar["surv_timeout"] + 2;
 	}
+	
 	scripts\bots\_types::preWave(type);
 	
 	level.ambient = scripts\bots\_types::getAmbientForType(type);
+	
 	scripts\server\_environment::setAmbient(level.ambient);
 	scripts\server\_environment::setGlobalFX(scripts\bots\_types::getFxForType(type));
-	
 	thread scripts\server\_environment::setBlur(scripts\bots\_types::getBlurForType(type), 20);
 	
 	vision = scripts\bots\_types::getVisionForType(type);
 	if (vision != "")
-	scripts\server\_environment::setVision(vision, 10);
+		scripts\server\_environment::setVision(vision, 10);
 	
 	fog = scripts\bots\_types::getFogForType(type);
 	if (fog != "")
-	scripts\server\_environment::setFog(fog, 5);
+		scripts\server\_environment::setFog(fog, 5);
 	
 	
 	scripts\players\_players::resetSpawning();
+	
 	level.intermission = 0;
 	// Start bringing in the ZOMBIES!!!
 	level notify("start_monitoring");
 	thread watchWaveProgress();
 	thread [[level.spawnQueue]]();
-	if(type == "grouped")
-		thread scripts\bots\_types::randomZombieProbabilityScenario(45);
-	else if(type == "dog")
-		thread scripts\server\_environment::normalWaveEffects();
+	// if(type == "grouped")
+		// thread scripts\bots\_types::randomZombieProbabilityScenario(45);
+	// else if(type == "dog")
+		// thread scripts\server\_environment::normalWaveEffects();
+	
+	for( i = 0; i < level.dvar("bot_count") && i < level.waveSize ){ // This is the spawning of zombies while players don't see shit
+		toSpawn = scripts\bots\_types::getFullyRandomZombieType();
+		if ( isDefined( spawnZombie( toSpawn, 2 ) ) ){
+				i++;
+		}
+	}
 	for (i=0; i<level.waveSize; )
 	{
 		if (level.botsAlive<level.dif_zomMax && !level.spawningDisabled)
@@ -691,8 +651,6 @@ startFinalWave()
 			toSpawnSpawntype = scripts\bots\_types::getSpawnType(toSpawn, type);
 			if (isdefined(spawnZombie(toSpawn, toSpawnSpawntype))){
 				i++;
-				if(toSpawn == "halfboss")
-					level.bossBulletCount++;
 			}
 		}
 		wait level.dif_zomSpawnRate;
@@ -724,7 +682,7 @@ startFinalWave()
 	level.bossIsOnFire = 0;
 	level.lastSpecialWave = type;
 }
-*/
+
 
 killBuggedZombies()
 {
