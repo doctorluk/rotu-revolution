@@ -227,7 +227,11 @@ mainGametype()
 	
 	i = 0;
 	level.weStartedAtLeastOneGame = false;
-	while(isDefined(level.waves[i])){
+	while( isDefined( level.waves[i] ) ){
+	
+		if( level.lastSpecialWave == "finale" ) // Whenever we had a finale, we end the game
+			break;
+			
 		type = "";
 		
 		switch(level.waves[i]){
@@ -260,6 +264,7 @@ mainGametype()
 			case "": break;
 			default: startSpecialWave(type); break;
 		}
+		// startFinalWave();
 		// increaseDifficulty();
 		// startSpecialWave("tank");
 		// startSpecialWave("grouped");
@@ -510,6 +515,22 @@ startSpecialWave(type)
 		timer(level.dvar["surv_timeout"], &"ZOMBIE_NEWWAVEIN", (.7,.2,0), undefined, level.currentWave);
 		wait level.dvar["surv_timeout"] + 2;
 	}
+	
+	revives = 0;
+	for (i=0; i<level.players.size; i++) {
+		player = level.players[i];
+		if( !isReallyPlaying(player) )
+			continue;
+		if ( player.isDown && player.isActive && !player.isBot && !player.isZombie ) {
+			player thread scripts\players\_players::revive();
+			revives++;
+		}
+	}
+	if(revives == 1)
+		iprintln(revives + " Player has been auto-^2revived^7!");
+	else if (revives > 1)
+		iprintln(revives + " Players have been auto-^2revived^7!");
+	
 	scripts\bots\_types::preWave(type);
 	
 	level.ambient = scripts\bots\_types::getAmbientForType(type);
@@ -581,7 +602,7 @@ startSpecialWave(type)
 
 startFinalWave()
 {
-	if(!level.weStartedAtLeastOneGame)
+	if( !level.weStartedAtLeastOneGame )
 		level.weStartedAtLeastOneGame = !level.weStartedAtLeastOneGame;
 		
 	level endon( "game_ended" );
@@ -596,6 +617,9 @@ startFinalWave()
 	scripts\players\_players::spawnJoinQueue();
 	
 	level.waveSize = int(scripts\bots\_types::getWaveFactorForType(type) * getWaveSize(level.currentWave) ) + 1;
+	if( level.waveSize < level.dvar["bot_count"] )
+		level.waveSize = level.dvar["bot_count"] + 10;
+	level.waveSize = 55;
 	
 	level.waveProgress = 0;
 	
@@ -604,60 +628,81 @@ startFinalWave()
 		wait level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"] + 2;
 	}
 	else{
-		timer(level.dvar["surv_timeout"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0), undefined, level.currentWave);
+		timer(level.dvar["surv_timeout"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0) );
 		wait level.dvar["surv_timeout"] + 2;
 	}
 	
-	scripts\bots\_types::preWave(type);
-	
 	level.ambient = scripts\bots\_types::getAmbientForType(type);
 	
-	scripts\server\_environment::setAmbient(level.ambient);
-	scripts\server\_environment::setGlobalFX(scripts\bots\_types::getFxForType(type));
+	scripts\server\_environment::setAmbient(level.ambient, 1);
+	
+	
+	
 	thread scripts\server\_environment::setBlur(scripts\bots\_types::getBlurForType(type), 20);
 	
 	vision = scripts\bots\_types::getVisionForType(type);
-	if (vision != "")
-		scripts\server\_environment::setVision(vision, 10);
+	// if (vision != "")
+		// scripts\server\_environment::setVision(vision, 10);
 	
 	fog = scripts\bots\_types::getFogForType(type);
 	if (fog != "")
-		scripts\server\_environment::setFog(fog, 5);
+		scripts\server\_environment::setFog(fog, 20);
+		
+	scripts\bots\_types::preWave(type);
 	
+	scripts\server\_environment::setGlobalFX(scripts\bots\_types::getFxForType(type));
 	
 	scripts\players\_players::resetSpawning();
 	
 	level.intermission = 0;
 	// Start bringing in the ZOMBIES!!!
 	level notify("start_monitoring");
+	
 	thread watchWaveProgress();
+	
 	thread [[level.spawnQueue]]();
-	// if(type == "grouped")
-		// thread scripts\bots\_types::randomZombieProbabilityScenario(45);
-	// else if(type == "dog")
-		// thread scripts\server\_environment::normalWaveEffects();
 	
-	for( i = 0; i < level.dvar("bot_count") && i < level.waveSize ){ // This is the spawning of zombies while players don't see shit
+	level.freezeBots = true;
+	
+	level.turretsDisabled = 1;
+	
+	for( z = 0; z < level.dvar["bot_count"] && z < level.waveSize; ){ // This is the spawning of zombies while players don't see shit
 		toSpawn = scripts\bots\_types::getFullyRandomZombieType();
-		if ( isDefined( spawnZombie( toSpawn, 2 ) ) ){
-				i++;
+		if ( isDefined( spawnZombie( toSpawn, 3 ) ) ){
+				z++;
 		}
-	}
-	for (i=0; i<level.waveSize; )
-	{
-		if (level.botsAlive<level.dif_zomMax && !level.spawningDisabled)
-		{
-			toSpawn = scripts\bots\_types::getZombieType(type);
-			toSpawnSpawntype = scripts\bots\_types::getSpawnType(toSpawn, type);
-			if (isdefined(spawnZombie(toSpawn, toSpawnSpawntype))){
-				i++;
-			}
-		}
-		wait level.dif_zomSpawnRate;
 	}
 	
-	if (type!="boss")
+	wait 4.75;
+	
+	thread scripts\server\_environment::updateBlur(0);
+	killBlackscreen();
+	
+	for(i = 0; i < level.players.size; i++){
+		level.players[i] thread finaleMessage(&"FINALE_LAST", "", (1, 0, 0), 4, 3, 3.2);
+	}
+	
+	wait 1;
+	
+	for(i = 0; i < level.players.size; i++){
+		level.players[i] enableweapons();
+	}
+	
+	wait 4.3;
+	level.turretsDisabled = 0;
+	
+	level.freezeBots = false;
+	
+	level.godmode = level.dvar["game_godmode"];
+	
+	scripts\bots\_types::unfreezeAll();
+	
+	thread watchIfZombiesAreDead();
+	
+	burstSpawner(z);
+	
 	level thread killBuggedZombies();
+	
 	level waittill("wave_finished");
 	
 	level.slowBots += 1/(level.dvar["surv_slow_waves"]);
@@ -681,6 +726,49 @@ startFinalWave()
 	level.currentWave++;
 	level.bossIsOnFire = 0;
 	level.lastSpecialWave = type;
+}
+
+burstSpawner(i){
+	level endon("game_ended");
+	level endon("wave_finished");
+	
+	while( i < level.waveSize ){
+		level waittill("all_zombies_are_dead");
+		
+		ii = 0;
+		loops = 0;
+		
+		wayOfSpawning = randomint(2) + 2; // either 2 or 3
+		iprintln(wayOfSpawning);
+		
+		for(; ii < level.dvar["bot_count"] && ii < level.botsAlive && i < level.waveSize; ){ // Burst spawning during finale
+			toSpawn = scripts\bots\_types::getFullyRandomZombieType();
+			if ( isDefined( spawnZombie( toSpawn, wayOfSpawning ) ) ){
+					i++;
+					ii++;
+			}
+			loops++;
+			if( loops % 10 == 0 )
+				wait 0.05;
+		}
+	}
+}
+
+watchIfZombiesAreDead(){
+	level endon("wave_finished");
+	level endon("game_ended");
+	
+	while(1){
+		if( level.botsAlive < 4 ){
+			wait 0.2 + randomfloat(2);
+			level notify("all_zombies_are_dead");
+			iprintln("Firing all_zombies_are_dead notify!");
+			wait 3;
+		}
+		else
+			wait .1;
+	}
+
 }
 
 
@@ -780,6 +868,17 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		
 		type = typeOverride;
 		spawn = scripts\bots\_types::getScarySpawnpoint();
+		thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
+		return bot;
+	} else if (spawntype==4) { // Random instant spawn somewhere on the map
+		bot = scripts\bots\_bots::getAvailableBot();
+		if (!isdefined(bot))
+			return undefined;
+		
+		bot.hasSpawned = true;
+		
+		type = typeOverride;
+		spawn = level.wp[randomint(level.wp.size)];
 		thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
 		return bot;
 	}

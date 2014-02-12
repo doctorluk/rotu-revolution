@@ -36,6 +36,7 @@ init()
 	level.lastBossJump = 0;
 	level.nextBossJump = 0;
 	level.freezeBots = false;
+	level.noMoaning = false;
 	
 	
 	wait 1;
@@ -376,11 +377,14 @@ spawnZombie(type, spawnpoint, bot)
 	bot switchtoweapon(bot.pers["weapon"]);
 	
 	if (isdefined(spawnpoint.angles))
-	bot spawn( spawnpoint.origin, spawnpoint.angles );
+		bot spawn( spawnpoint.origin, spawnpoint.angles );
 	else
-	bot spawn( spawnpoint.origin, (0,0,0) );
+		bot spawn( spawnpoint.origin, (0,0,0) );
 	
-	level.botsAlive ++;
+	if( bot.type == "halfboss" )
+		level.bossBulletCount++;
+	
+	level.botsAlive++;
 	
 	wait 0.05;
 	
@@ -408,15 +412,16 @@ spawnZombie(type, spawnpoint, bot)
 	
 	bot linkto(bot.linkObj);
 	
-	bot thread monkeyOverride();
-	bot thread freezeBotOnLC();
-	bot thread freezeBot();
-	
 	bot zomGoIdle();
 	
 	bot thread zomMain();
 	
 	bot thread zomGroan();
+	
+	bot thread freezeBotOnLC();
+	bot thread freezeBot();
+	
+	bot thread monkeyOverride();
 	
 	/*if (level.zomTarget != "")
 	{
@@ -928,25 +933,26 @@ freezeBot(){
 	self endon("disconnect");
 	while(1){
 		while(1){
-			if(level.freezeBots == true)
+			if( level.freezeBots )
 				break;
 			else
 				wait 0.5;
 		}
-		
+		self notify("kill_main");
 		self.lastMemorizedPos = undefined;
 		self.playIdleSound = false;
 		self zomGoIdle();
 		
-		while(level.freezeBots)
-			wait 0.1;
+		while(level.freezeBots){
+			wait 0.05;
+		}
 			
 		self.playIdleSound = true;
-		wait 2;
 		
-		// self thread zomMain();
+		
 		if( isDefined( self getClosestTarget() ) ) // Giving the zombie a new target, preventing "onSight"-checks in case the zombie is stuck inside a wall
 			self zomSetTarget(self getClosestTarget().origin);
+		self thread zomMain();
 	}
 }
 
@@ -955,7 +961,7 @@ zomMain()
 {
 	self endon("disconnect");
 	self endon("death");
-	
+	self endon("kill_main");
 	
 	self.lastTargetWp = -2;
 	self.nextWp = -2;
@@ -1788,6 +1794,8 @@ zomGroan()
 	
 	for (;;)
 	{
+		wait 3 + randomfloat(3);
+		
 		//self zombieSound(randomfloat(.5), "zom_run", 0);
 		if (self.isDoingMelee == false && self.playIdleSound)
 		{
@@ -1805,7 +1813,6 @@ zomGroan()
 				self zomSound(randomfloat(.5), "zom_run");
 			}
 		}
-		wait 3 + randomfloat(3);
 	}
 }
 

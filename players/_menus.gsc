@@ -22,7 +22,6 @@ init()
 	game["menu_class"] = "class";
 	game["menu_changeclass"] = "changeclass_mw";
 	game["menu_changeclass_offline"] = "changeclass_offline";
-	game["menu_welcome_inext"] = "welcome_inext";
 	
 	game["menu_skillpoints"] = "skillpoints";
 
@@ -61,7 +60,6 @@ init()
 
 	precacheMenu("scoreboard");
 	precacheMenu(game["menu_team"]);
-	precacheMenu(game["menu_welcome_inext"]);
 	precacheMenu(game["menu_class_allies"]);
 	precacheMenu(game["menu_changeclass_allies"]);
 	precacheMenu(game["menu_class_axis"]);
@@ -96,7 +94,6 @@ onPlayerConnect()
 		player.classType = undefined;
 		player.selectedClass = false;
 		player.antispamtime = gettime();
-		//player openmenu(game["menu_welcome_inext"]);
 		player thread onMenuResponse();
 	}
 }

@@ -757,6 +757,7 @@ cleanup() // CLEANUP ON DEATH (SPEC) OR DISCONNECT
 	self notify("end_trance");
 	self updateHealthHud(-1);
 	self flashlightOff();
+	self unfreezePlayerForRoundEnd();
 	if(isDefined(level.cantPayLC) && arrayContains(level.cantPayLC, self))
 		level.cantPayLC = removeFromArray(level.cantPayLC, self);
 }

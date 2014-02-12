@@ -497,7 +497,7 @@ endMap(endReasontext, win)
 		level.end_text.y = 96;
 		level.end_text.sort = -1; //-3
 		level.end_text.alpha = 1;
-		level.end_text.glowColor = (1,0,0);
+		level.end_text.glowColor = (0,1,0);
 		level.end_text.glowAlpha = 1;
 		level.end_text.foreground = true;
 		
@@ -590,13 +590,14 @@ endMap(endReasontext, win)
 displayCredits(){
 	level.startY = 220;
 	wait 8;
-	thread showCredit("Original creator:", "credit", 1.4, 80);
-	wait 0.5;
-	thread showCredit("Bipo", "credit", 1.5, 100);
-	wait 0.5;
 	thread showCredit("REVOLUTION Development:", "credit", 1.4, 80);
 	wait 0.5;
 	thread showCredit("Luk", "credit", 1.5, 100);
+	thread showCredit("", "credit", 1.4, 80);
+	wait 0.5;
+	thread showCredit("RotU 2.1 creators:", "credit", 1.4, 80);
+	wait 0.5;
+	thread showCredit("Bipo, Etheross", "credit", 1.5, 100);
 	wait 0.5;
 	thread showCredit("Additional help:", "credit", 1.4, 80);
 	wait 0.5;

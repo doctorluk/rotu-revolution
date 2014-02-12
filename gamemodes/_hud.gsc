@@ -55,6 +55,44 @@ precache()
 	precachestring(&"USE_TURRET");
 	precachestring(&"LAST_CHANCE_TIMER");
 	
+	precachestring(&"FINALE_0_0");
+	precachestring(&"FINALE_0_1");
+	precachestring(&"FINALE_0_2");
+	precachestring(&"FINALE_0_3");
+	precachestring(&"FINALE_0_4");
+	precachestring(&"FINALE_0_5");
+	precachestring(&"FINALE_0_6");
+	precachestring(&"FINALE_0_7");
+	
+	precachestring(&"FINALE_1_0");
+	precachestring(&"FINALE_1_1");
+	precachestring(&"FINALE_1_2");
+	precachestring(&"FINALE_1_3");
+	precachestring(&"FINALE_1_4");
+	precachestring(&"FINALE_1_5");
+	precachestring(&"FINALE_1_6");
+	precachestring(&"FINALE_1_7");
+	
+	precachestring(&"FINALE_2_0");
+	precachestring(&"FINALE_2_1");
+	precachestring(&"FINALE_2_2");
+	precachestring(&"FINALE_2_3");
+	precachestring(&"FINALE_2_4");
+	precachestring(&"FINALE_2_5");
+	precachestring(&"FINALE_2_6");
+	precachestring(&"FINALE_2_7");
+	
+	precachestring(&"FINALE_3_0");
+	precachestring(&"FINALE_3_1");
+	precachestring(&"FINALE_3_2");
+	precachestring(&"FINALE_3_3");
+	precachestring(&"FINALE_3_4");
+	precachestring(&"FINALE_3_5");
+	precachestring(&"FINALE_3_6");
+	precachestring(&"FINALE_3_7");
+	
+	
+	
 	precachestring(&"+&&1");
 	precachestring(&"&&1");
 	
@@ -67,6 +105,48 @@ precache()
 	
 	precacheShader("icon_ammobox_radar");
 	precacheShader("icon_medkit_radar");
+	
+	finaleLables();
+}
+
+finaleLables(){
+	level.finaleLables = [];
+	
+	level.finaleLables[0][0] = &"FINALE_0_0";
+	level.finaleLables[0][1] = &"FINALE_0_1";
+	level.finaleLables[0][2] = &"FINALE_0_2";
+	level.finaleLables[0][3] = &"FINALE_0_3";
+	level.finaleLables[0][4] = &"FINALE_0_4";
+	level.finaleLables[0][5] = &"FINALE_0_5";
+	level.finaleLables[0][6] = &"FINALE_0_6";
+	level.finaleLables[0][7] = &"FINALE_0_7";
+
+	level.finaleLables[1][0] = &"FINALE_1_0";
+	level.finaleLables[1][1] = &"FINALE_1_1";
+	level.finaleLables[1][2] = &"FINALE_1_2";
+	level.finaleLables[1][3] = &"FINALE_1_3";
+	level.finaleLables[1][4] = &"FINALE_1_4";
+	level.finaleLables[1][5] = &"FINALE_1_5";
+	level.finaleLables[1][6] = &"FINALE_1_6";
+	level.finaleLables[1][7] = &"FINALE_1_7";
+
+	level.finaleLables[2][0] = &"FINALE_2_0";
+	level.finaleLables[2][1] = &"FINALE_2_1";
+	level.finaleLables[2][2] = &"FINALE_2_2";
+	level.finaleLables[2][3] = &"FINALE_2_3";
+	level.finaleLables[2][4] = &"FINALE_2_4";
+	level.finaleLables[2][5] = &"FINALE_2_5";
+	level.finaleLables[2][6] = &"FINALE_2_6";
+	level.finaleLables[2][7] = &"FINALE_2_7";
+
+	level.finaleLables[3][0] = &"FINALE_3_0";
+	level.finaleLables[3][1] = &"FINALE_3_1";
+	level.finaleLables[3][2] = &"FINALE_3_2";
+	level.finaleLables[3][3] = &"FINALE_3_3";
+	level.finaleLables[3][4] = &"FINALE_3_4";
+	level.finaleLables[3][5] = &"FINALE_3_5";
+	level.finaleLables[3][6] = &"FINALE_3_6";
+	level.finaleLables[3][7] = &"FINALE_3_7";
 }
 
 createRadarIcon( shader ){
@@ -519,10 +599,12 @@ showGlowMessage(label, text, glowcolor, duration, speed, size, height)
 	
 	self.hud_message.elemType = "font";
 	self.hud_message.font = "objective";
+	
 	if (!isdefined(size))
-	self.hud_message.fontscale = 2;
+		self.hud_message.fontscale = 2;
 	else
-	self.hud_message.fontscale = size;
+		self.hud_message.fontscale = size;
+		
 	self.hud_message.x = 0;
 	self.hud_message.y = height;
 	self.hud_message.glowAlpha = 1;
@@ -542,15 +624,48 @@ showGlowMessage(label, text, glowcolor, duration, speed, size, height)
 	self.hud_message setPulseFX( speed, int((duration)*1000), 1000 );
 	
 }
+
+showFinaleMessage(label, text, glowcolor, duration, speed, size)
+{
+	
+	self.hud_message.elemType = "font";
+	self.hud_message.font = "objective";
+	
+	if (!isdefined(size))
+		self.hud_message.fontscale = 2;
+	else
+		self.hud_message.fontscale = size;
+		
+	self.hud_message.x = 0;
+	self.hud_message.y = 0;
+	self.hud_message.glowAlpha = 1;
+	self.hud_message.hideWhenInMenu = true;
+	self.hud_message.archived = false;
+	self.hud_message.alignX = "center";
+	self.hud_message.alignY = "middle";
+	self.hud_message.horzAlign = "center";
+	self.hud_message.vertAlign = "middle";
+	self.hud_message.alpha = 1;
+	self.hud_message.glowAlpha = 1;
+	self.hud_message.glowColor = glowcolor;
+	self.hud_message.label = label;
+	if (isdefined(text))
+	self.hud_message setText( text );
+
+	self.hud_message setPulseFX( speed, int((duration)*1000), 1000 );
+	
+}
 showWelcomeMessage(label, text, glowcolor, duration, speed, size, height)
 {
 	
 	self.welcome_message.elemType = "font";
 	self.welcome_message.font = "objective";
+	
 	if (!isdefined(size))
-	self.welcome_message.fontscale = 2;
+		self.welcome_message.fontscale = 2;
 	else
-	self.welcome_message.fontscale = size;
+		self.welcome_message.fontscale = size;
+		
 	self.welcome_message.x = 0;
 	self.welcome_message.y = height;
 	self.welcome_message.glowAlpha = 1;

@@ -45,6 +45,11 @@ glowMessage(label, text, glowcolor, duration, speed, size, sound, height)
 	self thread scripts\gamemodes\_hud::glowMessage(label, text, glowcolor, duration, speed, size, sound, height);
 }
 
+finaleMessage(label, text, glowcolor, duration, speed, size)
+{
+	self thread scripts\gamemodes\_hud::showFinaleMessage(label, text, glowcolor, duration, speed, size);
+}
+
 timer(time, label, glowcolor, text, value)
 {
 	thread scripts\gamemodes\_hud::timer(time, label, glowcolor, text, undefined, value);
@@ -287,6 +292,26 @@ screenFlash(color, time, alpha)
 	whitescreen.alpha = 0;
 	wait time;
 	whitescreen destroy();
+}
+
+blackScreen(){
+	level.blackscreen = newHudElem();
+	level.blackscreen.sort = -2;
+	level.blackscreen.alignX = "left";
+	level.blackscreen.alignY = "top";
+	level.blackscreen.x = 0;
+	level.blackscreen.y = 0;
+	level.blackscreen.horzAlign = "fullscreen";
+	level.blackscreen.vertAlign = "fullscreen";
+	level.blackscreen.foreground = true;
+	level.blackscreen.alpha = 1;
+	level.blackscreen setShader("black", 640, 480);
+	thread scripts\server\_environment::updateBlur(8);
+}
+
+killBlackscreen(){
+	if( isDefined(level.blackscreen) )
+		level.blackscreen destroy();
 }
 
 createHealthOverlay(color)

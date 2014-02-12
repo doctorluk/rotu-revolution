@@ -136,6 +136,9 @@ setGlobalFX(fxtype)
 		case "ember":
 		thread emberFX();
 		break;
+		case "finale":
+		thread finaleFX();
+		break;
 	}
 }
 
@@ -146,6 +149,24 @@ emberFX()
 	{
 		org = level.wp[randomint(level.wp.size)].origin;
 		playfx(level.ember_fx, org);
+		Earthquake( 0.25, 2, org, 512);
+		wait .2 + randomfloat(.2);
+	}
+}
+
+finaleFX(){
+	level endon("global_fx_end");
+	
+	limit = RandomIntRange(20,45);
+	
+	for( i = 0; i < limit; i++ ){
+		org = level.wp[randomint(level.wp.size)].origin;
+		playfx(level.burningFX, org);
+	}
+	
+	while( 1 ){
+		org = level.wp[randomint(level.wp.size)].origin;
+		playfx( level.ember_fx, org );
 		Earthquake( 0.25, 2, org, 512);
 		wait .2 + randomfloat(.2);
 	}
@@ -284,6 +305,9 @@ setFog(name, time)
 			break;
 		case "tank":
 			thread smoothFog( 300, 700, .5, .5, .5, time);
+			break;
+		case "finale":
+			thread smoothFog( 128, 2048, .5, .1, .1, time);
 			break;
 		default:
 		if (level.dvar["env_fog"])

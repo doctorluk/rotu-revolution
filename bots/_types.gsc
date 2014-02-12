@@ -306,10 +306,10 @@ getSpawntypeForType(type){
 }
 
 getFullyRandomZombieType(){
-	ran = 9;
+	ran = 8;
 	// Only select halfboss when he lives
 	if( level.bossBulletCount < level.bossBulletLimit )
-		ran = 8;
+		ran = 9;
 		
 	switch( randomint(ran) ){
 		case 0: return "zombie";
@@ -474,9 +474,23 @@ preWave(type){
 			wait 5;
 			break;
 		case "finale":
-			thread announceFinale();
-			announceMessage(&"ZOMBIE_FINALWAVE", "", (1,0,0), 5, 85);
-			wait 5;
+			wait 2.50;
+			
+			freezeAll();
+			level.godmode = true;
+			a = randomint(4);
+			
+			for(i = 0; i < level.players.size; i++){
+				p = level.players[i];
+				
+				p disableWeapons();
+				p thread announceFinale(a);
+			}
+			
+			level waittill("finale_announce_done");
+			// announceMessage(&"ZOMBIE_FINALWAVE", "", (1,0,0), 5, 85);
+			// wait 5;
+			break;
 		default:
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
 			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
@@ -484,6 +498,83 @@ preWave(type){
 			break;
 	}
 
+}
+
+freezeAll(){
+	for(i = 0; i < level.players.size; i++){
+		p = level.players[i];
+		
+		if( !isReallyPlaying(p) )
+			continue;
+		p freezePlayerForRoundEnd();
+	}
+}
+
+unfreezeAll(){
+	for(i = 0; i < level.players.size; i++){
+		p = level.players[i];
+		
+		// if( !isReallyPlaying(p) )
+			// continue;
+		p unfreezePlayerForRoundEnd();
+	}
+}
+
+announceFinale(a){ // 8 waits
+	self endon("disconnect");
+	level endon("game_ended");
+	
+	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	// finaleMessage(label, text, glowcolor, duration, speed, size)
+	self thread finaleMessage(level.finaleLables[a][0], "", (1, 0, 0), 2.4, 5, 2.6);
+	wait 2.4;
+	
+	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	self thread finaleMessage(level.finaleLables[a][1], "", (1, 0, 0), 2.4, 5, 2.6);
+	wait 2.4;
+	
+	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	self thread finaleMessage(level.finaleLables[a][2], "", (1, 0, 0), 2.4, 5, 2.6);
+	wait 2.35;
+	
+	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	self thread finaleMessage(level.finaleLables[a][3], "", (1, 0, 0), 2.4, 5, 2.6);
+	wait 2.35;
+	
+	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	self thread finaleMessage(level.finaleLables[a][4], "", (1, 0, 0), 2.4, 5, 2.6);
+
+	scripts\server\_environment::setVision(scripts\bots\_types::getVisionForType("finale"), 5);
+		
+	wait 2.35;
+	
+	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	self thread finaleMessage(level.finaleLables[a][5], "", (1, 0, 0), 2.4, 5, 2.6);
+	wait 2.4;
+	
+	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	self thread finaleMessage(level.finaleLables[a][6], "", (1, 0, 0), 2.4, 5, 2.6);
+	wait 2.4;
+	
+	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	self thread finaleMessage(level.finaleLables[a][7], "", (1, 0, 0), 2.4, 5, 2.6);
+	wait 2.35;
+	
+	level.blackscreen = newHudElem();
+	level.blackscreen.sort = 4;
+	level.blackscreen.alignX = "left";
+	level.blackscreen.alignY = "top";
+	level.blackscreen.x = 0;
+	level.blackscreen.y = 0;
+	level.blackscreen.horzAlign = "fullscreen";
+	level.blackscreen.vertAlign = "fullscreen";
+	level.blackscreen.foreground = true;
+	level.blackscreen.alpha = 0.95;
+	level.blackscreen setShader("black", 640, 480);
+	thread scripts\server\_environment::updateBlur(8);
+	
+	
+	level notify("finale_announce_done");
 }
 
 setTurretsEnabledForType(type)
@@ -751,9 +842,6 @@ onSpawn(type)
 		break;
 		case "napalm":
 			PlayFXOnTag( level.napalmTummyGlowFX, self, "j_spineupper" );
-			break;
-		case "halfboss":
-			level.bossBulletCount++;
 			break;
 	}
 }

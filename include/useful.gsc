@@ -2,6 +2,7 @@ freezePlayerForRoundEnd()
 {	
 	self closeMenu();
 	self closeInGameMenu();
+	self scripts\players\_usables::usableAbort();
 	
 	self freezeControls( true );
 }
