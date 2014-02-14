@@ -1148,7 +1148,7 @@ zomMovement()
 		}
 		
 		if (level.dvar["zom_dominoeffect"])
-		thread alertZombies(self.origin, 480, 5, self); 
+			thread alertZombies(self.origin, 480, 5, self); 
 	}
 	else
 	{

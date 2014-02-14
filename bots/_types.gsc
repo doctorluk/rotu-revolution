@@ -334,18 +334,25 @@ getRandomZombieType(){
 		
 	if(ran < getZombieProbability("zombie"))
 		returns = "zombie";
+		
 	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") ) )
 		returns = "dog";
+		
 	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") ) )
 		returns = "tank";
+		
 	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning") ) )
 		returns = "burning";
+		
 	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") ) )
 		returns = "toxic";
+		
 	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") ) )
 		returns = "halfboss";
-	else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") + getZombieProbability("napalm")) )
+		
+	else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") + getZombieProbability("napalm") ) )
 		returns = "napalm";
+		
 	// else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") + getZombieProbability("napalm") + getZombieProbability("electric")) )
 		// returns = "electric";
 	// iprintln("ran is " + ran + " and spawns: " + returns);
@@ -376,7 +383,9 @@ setZombieProbabilityScenario(index, description, prob0, prob1, prob2, prob3, pro
 randomZombieProbabilityScenario(waitingTime){
 	level endon("game_ended");
 	level endon("wave_finished");
+	
 	assert(waitingTime >= 0.05);
+	
 	while(1){
 		ran = randomint(level.zombieProbabilityScenario.size);
 		i = 0;
@@ -575,6 +584,45 @@ announceFinale(a){ // 8 waits
 	
 	
 	level notify("finale_announce_done");
+}
+
+dynamicFinale(){
+	level endon("game_ended");
+	level endon("wave_finished");
+	
+	level.finaleToSpawn = level.dvar["bot_count"];
+	level.finaleDelay = 2;
+	toSpawn = 1;
+	pp = 0;
+	delay = 0;
+	
+	if( level.dvar["surv_dynamic_finale_difficulty"] ){
+		while( 1 ){
+			switch( level.dvar["game_difficulty"] ){
+				case 1:
+					toSpawn = int( level.activePlayers );
+					delay = 4;
+					break;
+				case 2:
+					toSpawn = int( level.activePlayers * 1.4 );
+					delay = 3;
+					break;
+				case 3:
+					toSpawn = int( level.activePlayers * 3 );
+					delay = 1.5;
+					break;
+				case 4:
+					toSpawn = level.dvar["bot_count"];
+					delay = 0;
+					break;
+			}
+		}
+		
+			level.finaleToSpawn = toSpawn;
+			level.finaleDelay = delay;
+			
+			level waittill("burst_done");
+	}
 }
 
 setTurretsEnabledForType(type)

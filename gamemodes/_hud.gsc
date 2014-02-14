@@ -53,6 +53,7 @@ precache()
 	precachestring(&"USE_CURE");
 	precachestring(&"USE_PORTAL");
 	precachestring(&"USE_TURRET");
+	
 	precachestring(&"LAST_CHANCE_TIMER");
 	
 	precachestring(&"FINALE_0_0");
@@ -106,10 +107,17 @@ precache()
 	precacheShader("icon_ammobox_radar");
 	precacheShader("icon_medkit_radar");
 	
-	finaleLables();
+	lableArrays();
 }
 
-finaleLables(){
+lableArrays(){
+
+	level.announceNormal = [];
+	
+	level.announceNormal[level.announceNormal.size] = &"ZOMBIE_NEWWAVE0";
+	level.announceNormal[level.announceNormal.size] = &"ZOMBIE_NEWWAVE1";
+	level.announceNormal[level.announceNormal.size] = &"ZOMBIE_NEWWAVE2";
+	
 	level.finaleLables = [];
 	
 	level.finaleLables[0][0] = &"FINALE_0_0";
@@ -342,9 +350,9 @@ bar(color, initial, y)
 	height = 7;
 	
 	if (!isdefined(y))
-	y = 0;
+		y = 0;
 	
-	self.bar_bg.x = -.5*width-2;
+	self.bar_bg.x = -0.5 * width - 2;
 	self.bar_bg.y = y;
 	self.bar_bg.sort = -2;
 	self.bar_bg.width = width;
@@ -365,7 +373,7 @@ bar(color, initial, y)
 	self.bar_fg.width = width;
 	self.bar_fg.height = height;
 	self.bar_fg.shader = "white";
-	self.bar_fg setShader( "white", initial*width, height );
+	self.bar_fg setShader( "white", initial * width, height );
 	self.bar_fg.alignX = "left";
 	self.bar_fg.alignY = "middle";
 	self.bar_fg.horzAlign = "center";

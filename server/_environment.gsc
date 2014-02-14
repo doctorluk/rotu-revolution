@@ -128,17 +128,17 @@ setGlobalFX(fxtype)
 	switch (fxtype)
 	{
 		case "lightning":
-		thread lightningFX();
-		break;
+			thread lightningFX();
+			break;
 		case "lightning_boss":
-		thread lightningBossFX();
-		break;
+			thread lightningBossFX();
+			break;
 		case "ember":
-		thread emberFX();
-		break;
+			thread emberFX();
+			break;
 		case "finale":
-		thread finaleFX();
-		break;
+			thread finaleFX();
+			break;
 	}
 }
 
@@ -157,7 +157,7 @@ emberFX()
 finaleFX(){
 	level endon("global_fx_end");
 	
-	limit = RandomIntRange(20,45);
+	limit = RandomIntRange( 20, 45 );
 	
 	for( i = 0; i < limit; i++ ){
 		org = level.wp[randomint(level.wp.size)].origin;
