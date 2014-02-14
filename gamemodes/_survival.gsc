@@ -259,12 +259,7 @@ mainGametype()
 
 		switch(type){
 			case "normal": startRegularWave(); break;
-			case "finale": 
-				if( level.dvar["surv_finale_playerlimit"] <= level.activePlayers )
-					startFinalWave();
-				else
-					iprintln("^3Skipping ^7final wave, not enough players are playing!");
-				break;
+			case "finale": startFinalWave(); break;
 			case "": break;
 			default: startSpecialWave(type); break;
 		}
@@ -606,6 +601,11 @@ startSpecialWave(type)
 
 startFinalWave()
 {
+	if( level.dvar["surv_finale_playerlimit"] <= level.activePlayers ){
+		iprintln("^3Skipping ^7final wave, not enough players are playing!");
+		return;
+	}
+	
 	if( !level.weStartedAtLeastOneGame )
 		level.weStartedAtLeastOneGame = !level.weStartedAtLeastOneGame;
 		
