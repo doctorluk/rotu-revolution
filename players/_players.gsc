@@ -290,7 +290,7 @@ onPlayerConnect()
 	self thread scripts\server\_environment::onPlayerConnect();
 	
 	waittillframeend;
-	self setclientdvars("g_scriptMainMenu", game["menu_class"], "cg_thirdperson", 0, "r_filmusetweaks", 0, "ui_class_ranks", (1 - level.dvar["game_class_ranks"]), "ui_specialrecharge", 0, "ui_wavetext", "", "ui_waveprogress", "");
+	self setclientdvars("g_scriptMainMenu", game["menu_class"], "cg_thirdperson", 0, "r_filmusetweaks", 0, "ui_class_ranks", (1 - level.dvar["game_class_ranks"]), "ui_specialrecharge", 0);
 	self joinSpectator();
 	//self thread scripts\players\_challenges::updateChallenges();
 }
@@ -819,7 +819,7 @@ spawnJoinQueueLoop(){
 	level endon("wave_finished");
 	level endon("game_ended");
 		
-	if(level.currentType == "boss" || level.waveSize < 20){
+	if( level.currentType == "boss" || level.waveSize < 20 ){
 		while(1){
 			wait 180;
 			spawnJoinQueue();
@@ -851,12 +851,12 @@ spawnPlayer(forceSpawn)
 		forceSpawn = false;
 		
 	if(!forceSpawn){
-		if (level.gameEnded)
-		return;
+		if ( level.gameEnded )
+			return;
 	//	self endon("disconnect");
 		
-		if(self.sessionteam == "spectator")
-		return;
+		if( self.sessionteam == "spectator" )
+			return;
 		
 		if (!level.intermission && level.activePlayers > 2)
 		{
@@ -951,10 +951,10 @@ spawnPlayer(forceSpawn)
 	
 
 	// Getting spawn loc and spawning
-	if (level.playerspawns == "")
-	spawn = getRandomTdmSpawn();
+	if ( level.playerspawns == "" )
+		spawn = getRandomTdmSpawn();
 	else
-	spawn = getRandomEntity(level.playerspawns);
+		spawn = getRandomEntity(level.playerspawns);
 
 	origin = spawn.origin;
 	angles = spawn.angles;

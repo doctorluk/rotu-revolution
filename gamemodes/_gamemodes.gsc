@@ -270,17 +270,20 @@ loadDifficulty(difficulty)
 		break;
 	}
 	
-	if(level.dvar["zom_dynamicdifficulty"])
-	level thread monitorDifficulty();
+	if( level.dvar["zom_dynamicdifficulty"] )
+		level thread monitorDifficulty();
 }
 
 monitorDifficulty()
 {	
 	level endon("stop_monitoring");
 	level endon("game_ended");
+	
 	thread resumeMonitoring();
+	
 	level waittill("start_monitoring");
-	while (1)
+	
+	while ( 1 )
 	{
 		level.dif_zomMax = level.dif_zomPP * level.activePlayers;
 		level.dif_zomSpawnRate = .1;
@@ -334,6 +337,7 @@ monitorDifficulty()
 resumeMonitoring()
 {
 	level waittill("stop_monitoring");
+	
 	thread monitorDifficulty();
 }
 

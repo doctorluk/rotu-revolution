@@ -626,21 +626,17 @@ startFinalWave()
 	scripts\players\_players::spawnJoinQueue();
 	
 	level.waveSize = int(scripts\bots\_types::getWaveFactorForType(type) * getWaveSize(level.currentWave) ) + 1;
+	
 	if( level.waveSize < level.dvar["bot_count"] )
 		level.waveSize = level.dvar["bot_count"] + 10;
-	level.waveSize = 55;
+		
+	// level.waveSize = 55;
 	
 	level.waveProgress = 0;
 	
-	if(level.currentWave == 1 && level.dvar["surv_timeout_firstwave"] > 0){
-		timer(level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0), undefined, level.currentWave);
-		wait level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"] + 2;
-	}
-	else{
-		timer(level.dvar["surv_timeout"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0) );
-		wait level.dvar["surv_timeout"] + 2;
-	}
-	
+	timer(level.dvar["surv_finale_timeout"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0) );
+	wait level.dvar["surv_finale_timeout"] + 2;
+
 	level.ambient = scripts\bots\_types::getAmbientForType(type);
 	
 	scripts\server\_environment::setAmbient(level.ambient, 1);
@@ -656,8 +652,11 @@ startFinalWave()
 	fog = scripts\bots\_types::getFogForType(type);
 	if (fog != "")
 		scripts\server\_environment::setFog(fog, 20);
-		
-	scripts\bots\_types::preWave(type);
+	
+	if( level.dvar["surv_extended_finale_announcement"] )
+		scripts\bots\_types::preWave( type );
+	else
+		scripts\bots\_types::preWave( type + "_short" );
 	
 	scripts\server\_environment::setGlobalFX(scripts\bots\_types::getFxForType(type));
 	
@@ -675,21 +674,23 @@ startFinalWave()
 	
 	level.turretsDisabled = 1;
 	
-	for( z = 0; z < level.dvar["bot_count"] && z < level.waveSize; ){ // This is the spawning of zombies while players don't see shit
+	for( z = 0; z < level.dvar["bot_count"] && z < level.waveSize && z < level.finaleToSpawn; ){ // This is the spawning of zombies while players don't see shit
 		toSpawn = scripts\bots\_types::getFullyRandomZombieType();
-		if ( isDefined( spawnZombie( toSpawn, 3 ) ) ){
+		if ( isDefined( spawnZombie( toSpawn, 3 ) ) )
 				z++;
-		}
 	}
 	
-	wait 4.75;
+	if( level.dvar["surv_extended_finale_announcement"] )
+		wait 4.75;
+	else
+		wait 2;
 	
 	thread scripts\server\_environment::updateBlur(0);
+	
 	killBlackscreen();
 	
-	for(i = 0; i < level.players.size; i++){
+	for(i = 0; i < level.players.size; i++)
 		level.players[i] thread finaleMessage(&"FINALE_LAST", "", (1, 0, 0), 4, 3, 3.2);
-	}
 	
 	wait 1;
 	
@@ -758,7 +759,9 @@ burstSpawner(i){
 					i++;
 					ii++;
 			}
+			
 			loops++;
+			
 			if( loops % 10 == 0 )
 				wait 0.05;
 		}

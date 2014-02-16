@@ -500,6 +500,22 @@ preWave(type){
 			// announceMessage(&"ZOMBIE_FINALWAVE", "", (1,0,0), 5, 85);
 			// wait 5;
 			break;
+		case "finale_short":
+			wait 1;
+			
+			freezeAll();
+			
+			level.godmode = true;
+			
+			for(i = 0; i < level.players.size; i++){
+				p = level.players[i];
+				
+				p disableWeapons();
+				p thread announceFinaleShort(a);
+			}
+			
+			level waittill("finale_announce_done");
+			break;
 		default:
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
 			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
@@ -582,6 +598,35 @@ announceFinale(a){ // 8 waits
 	level.blackscreen setShader("black", 640, 480);
 	thread scripts\server\_environment::updateBlur(8);
 	
+	
+	level notify("finale_announce_done");
+}
+
+announceFinaleShort(a){ // 8 waits
+	self endon("disconnect");
+	level endon("game_ended");
+	
+	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	
+	scripts\server\_environment::setVision(scripts\bots\_types::getVisionForType("finale"), 5);
+	
+	level.blackscreen = newHudElem();
+	level.blackscreen.sort = 4;
+	level.blackscreen.alignX = "left";
+	level.blackscreen.alignY = "top";
+	level.blackscreen.x = 0;
+	level.blackscreen.y = 0;
+	level.blackscreen.horzAlign = "fullscreen";
+	level.blackscreen.vertAlign = "fullscreen";
+	level.blackscreen.foreground = true;
+	level.blackscreen.alpha = 0.0;
+	level.blackscreen fadeOverTime(0.2);
+	level.blackscreen.alpha = 0.92;
+	level.blackscreen setShader("black", 640, 480);
+	
+	wait 0.2;
+	
+	thread scripts\server\_environment::updateBlur(8);
 	
 	level notify("finale_announce_done");
 }

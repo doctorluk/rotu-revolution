@@ -198,6 +198,7 @@ createTeamObjpoint( origin, shader, alpha )
 		objPoint.alpha = alpha;
 	else
 		objPoint.alpha = 1;
+		
 	objPoint.baseAlpha = objPoint.alpha;
 	
 	return objPoint;
@@ -221,11 +222,12 @@ createHeadiconKits( origin, shader, alpha )
 		objPoint.alpha = alpha;
 	else
 		objPoint.alpha = 1;
+		
 	objPoint.baseAlpha = objPoint.alpha;
 	
 	self waittill("death");
+	
 	objPoint destroy();
-	// return objPoint;
 }
 
 onPlayerConnect()
@@ -233,14 +235,12 @@ onPlayerConnect()
 	self.announceHUD = 0;
 	self.announceIndex = 0;
 	self.announceTotal = 0;
-	if (level.waveHUD)
-	{
+	if ( level.waveHUD ){
 		self setclientdvars("ui_wavetext", level.waveHUD_Killed + "/" +  level.waveHUD_Total, "ui_waveprogress", level.waveHUD_Killed / level.waveHUD_Total);
 	}
 	else
-	{
 		self setclientdvars("ui_wavetext", "", "ui_waveprogress", 0);
-	}
+		
 	self.hud_message = NewClientHudElem(self);
 	self.hud_message.alpha = 0;
 	self.welcome_message = NewClientHudElem(self);

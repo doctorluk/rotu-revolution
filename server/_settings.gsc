@@ -107,6 +107,8 @@ loadSettings()
 	dvarInt(	"surv",			"waw_costs",			750,	1,		100000);
 	dvarBool(	"surv",			"waw_alwayspay",		1);
 	dvarBool(	"surv",			"slow_start",			1);
+	dvarBool(	"surv",			"extended_finale_announcement",			0);
+	dvarInt(	"surv",			"finale_timeout",		5,		60,		300); // Time in seconds being waited before starting the final wave
 	dvarInt(	"surv",			"slow_waves",			3,		1,		10);
 	dvarInt(	"surv",			"dontplaylastmaps",		3,		0,		100);
 	dvarBool(	"surv",			"find_stuck",			1);

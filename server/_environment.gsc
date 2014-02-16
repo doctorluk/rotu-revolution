@@ -99,10 +99,10 @@ normalWaveEffects(){
 
 getDefaultVision()
 {
-	if (level.dvar["env_override_vision"])
-	return "rotu";
+	if ( level.dvar["env_override_vision"] )
+		return "rotu";
 	else
-	return getDvar( "mapname" );
+		return getDvar( "mapname" );
 }
 
 onPlayerConnect()
