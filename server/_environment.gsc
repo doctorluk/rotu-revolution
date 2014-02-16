@@ -52,18 +52,23 @@ precache()
 normalWaveEffects(){
 	level endon("wave_finished");
 	level endon("game_ended");
-	for(i = 0; i < 3; i++){
+	
+	for( i = 0; i < 3; i++ ){
 		if(level.wp.size <= 3)
 			break;
+			
 		poses = level.wp;
 		posent = poses[randomint(poses.size)];
 		pos = posent.origin;
 		poses = removeFromArray(poses, posent);
+		
 		ran = randomfloat(1);
+		
 		if(ran < 0.8)
 			effect = 0;
 		else
 			effect = 1;
+			
 		fxToPlay = "fog" + effect;
 		playfx(level._effect[fxToPlay], pos);
 	}
@@ -75,14 +80,19 @@ normalWaveEffects(){
 	fxToPlay = undefined;
 	
 	while(level.wp.size > 3){
+	
 		pos = level.wp[randomint(level.wp.size)].origin;
+		
 		ran = randomfloat(1);
+		
 		if(ran < 0.8)
 			effect = 0;
 		else
 			effect = 1;
+			
 		fxToPlay = "fog" + effect;
 		playfx(level._effect[fxToPlay], pos);
+		
 		wait 3.5;
 	}
 }
@@ -103,9 +113,9 @@ onPlayerConnect()
 updateBlur(blur)
 {
 	level.blur = blur;
-	for (i=0; i<level.players.size; i++)
+	for ( i = 0; i < level.players.size; i++ )
 	{
-		level.players[i] setclientdvar("r_blur", level.blur);
+		level.players[i] setclientdvar( "r_blur", level.blur );
 	}
 }
 
@@ -115,8 +125,8 @@ setBlur(blur, time, player)
 	level endon("setting_blur");
 	level endon("game_ended");
 	
-	change = (blur - level.blur) / (time + 1) / 2;
-	while (blur != level.blur)
+	change = ( blur - level.blur ) / ( time + 1 ) / 2;
+	while ( blur != level.blur )
 	{
 		updateBlur(level.blur + change);
 		wait 0.5;

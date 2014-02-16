@@ -593,14 +593,13 @@ dynamicFinale(){
 	level.finaleToSpawn = level.dvar["bot_count"];
 	level.finaleDelay = 2;
 	toSpawn = 1;
-	pp = 0;
 	delay = 0;
 	
 	if( level.dvar["surv_dynamic_finale_difficulty"] ){
 		while( 1 ){
 			switch( level.dvar["game_difficulty"] ){
 				case 1:
-					toSpawn = int( level.activePlayers ) + randomIntRange(-2, 3);
+					toSpawn = int( level.activePlayers ) + randomIntRange(-1, 3);
 					delay = 4;
 					break;
 				case 2:
@@ -617,13 +616,14 @@ dynamicFinale(){
 					break;
 			}
 		}
-			if( toSpawn < 1 )
-				toSpawn = 1;
 		
-			level.finaleToSpawn = toSpawn;
-			level.finaleDelay = delay;
-			
-			level waittill("burst_done");
+		if( toSpawn < 1 )
+			toSpawn = 1;
+	
+		level.finaleToSpawn = toSpawn;
+		level.finaleDelay = delay;
+		
+		level waittill("burst_done");
 	}
 }
 

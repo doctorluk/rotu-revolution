@@ -484,8 +484,13 @@ startRegularWave()
 		}
 		wait level.dif_zomSpawnRate;
 	}
+	
 	level thread killBuggedZombies();
+	
 	level waittill("wave_finished");
+	
+	level.slowBots += 1/(level.dvar["surv_slow_waves"]);
+	
 	scripts\server\_environment::stopAmbient();
 	
 	level.currentWave++;
