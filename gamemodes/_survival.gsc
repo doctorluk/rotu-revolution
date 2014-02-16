@@ -313,7 +313,7 @@ increaseDifficulty(){
 	// TODO: Add config variable for display settings
 	announceMessage(&"ZOMBIE_DIFFICULTY_INCREASED", "", (1,.3,0), 6, 85, undefined, 80);
 	wait 7;
-	if(level.dvar["shop_multiply_costs"]){
+	if( level.dvar["shop_multiply_costs"] ){
 		thread scripts\players\_shop::updateShopCosts();
 		announceMessage(&"ZOMBIE_SHOP_COSTS_INCREASED", level.dvar["shop_multiply_costs_amount"], (1,.3,0), 6, 85, undefined, 80);
 		wait 7;
@@ -777,7 +777,6 @@ watchIfZombiesAreDead(){
 
 }
 
-
 killBuggedZombies(){
 
 	level endon("wave_finished");
@@ -860,7 +859,8 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		spawn = level.wp[randomint(level.wp.size)];
 		thread soulSpawn( type, spawn, bot );
 		return bot;
-	} else if ( spawntype == 2 ) { // Ground spawn for crawlers
+	}
+	else if ( spawntype == 2 ) { // Ground spawn for crawlers
 		bot = scripts\bots\_bots::getAvailableBot();
 		if ( !isDefined( bot ) )
 			return undefined;
@@ -871,7 +871,8 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		spawn = level.wp[randomint(level.wp.size)];
 		thread groundSpawn( type, spawn, bot );
 		return bot;
-	} else if ( spawntype == 3 ) { // Random spawn for scary zombies
+	}
+	else if ( spawntype == 3 ) { // Random spawn for scary zombies
 		bot = scripts\bots\_bots::getAvailableBot();
 		if ( !isDefined( bot ) )
 			return undefined;
@@ -882,7 +883,8 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		spawn = scripts\bots\_types::getScarySpawnpoint();
 		thread scripts\bots\_bots::spawnZombie( type, spawn, bot );
 		return bot;
-	} else if ( spawntype == 4 ) { // Random instant spawn somewhere on the map
+	}
+	else if ( spawntype == 4 ) { // Random instant spawn somewhere on the map
 		bot = scripts\bots\_bots::getAvailableBot();
 		if ( !isDefined( bot ) )
 			return undefined;
@@ -894,6 +896,7 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		thread scripts\bots\_bots::spawnZombie( type, spawn, bot );
 		return bot;
 	}
+	
 	if (forcePrioritizedSpawning) { // Selected Spawn from random spawn function
 		if(isDefined(typeOverride))
 			type = typeOverride;
@@ -902,8 +905,7 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		spawn = getPrioritizedSpawn();
 		return scripts\bots\_bots::spawnZombie( type, spawn );
 	}
-	else
-	{
+	else{
 		if (isdefined(typeOverride))
 		{
 			type = typeOverride;

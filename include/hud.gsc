@@ -5,12 +5,12 @@ updateWaveHud(killed,total)
 	level.waveHUD_Total = total;
 	for (i=0; i<level.players.size; i++)
 	{
-		if(level.players[i].sessionstate == "playing"){
+		// if(level.players[i].sessionstate == "playing"){
 			if(level.intermission == 1)
 				level.players[i] setclientdvars("ui_wavetext", "?/?", "ui_waveprogress", 0);
 			else if(level.intermission == 0)
 				level.players[i] setclientdvars("ui_wavetext", level.waveHUD_Killed + "/" +  level.waveHUD_Total, "ui_waveprogress", level.waveHUD_Killed / level.waveHUD_Total);
-		}
+		// }
 	}
 }
 
