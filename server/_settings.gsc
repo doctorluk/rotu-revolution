@@ -1,15 +1,20 @@
-/**********************************
-	---- Reign of the Undead ----
-			   v2.0
-	
-	(Do not copy without permission)
-	
-	Date: November 2010
-	Version: 2.000
-	Author: Bipo
-		
-	© Reign of the Undead Team
-************************************/
+//
+// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
+// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
+// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
+// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
+// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
+//
+// Reign of the Undead - Revolution ALPHA 0.2 by Luk 
+// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon
+//
+// You may modify this code to your liking (since I - Luk - learned scripting the same way)
+// You may also reuse code you find here, as long as you give credit to those who wrote it (3 lines above)
+//
+// Based on Reign of the Undead 2.1 created by Bipo and Etheross
+//
 
 init()
 {
@@ -100,6 +105,7 @@ loadSettings()
 	dvarInt(	"surv", 		"wavesystem",			2,		0,		2);
 	dvarInt(	"surv", 		"timeout",	 			30,		2,		120);
 	dvarInt(	"surv", 		"timeout_firstwave",	30,		0,		60);
+	dvarInt(	"surv",			"timeout_finale",		5,		60,		300); // Time in seconds being waited before starting the final wave
 	dvarString(	"surv",			"defaultmode",			"waves_special");
 	dvarString(	"surv",			"weaponmode",			"upgrade"); //wawzombies or upgrade
 	dvarString(	"surv",			"waw_spawnprimary",		"none");
@@ -108,7 +114,6 @@ loadSettings()
 	dvarBool(	"surv",			"waw_alwayspay",		1);
 	dvarBool(	"surv",			"slow_start",			1);
 	dvarBool(	"surv",			"extended_finale_announcement",			0);
-	dvarInt(	"surv",			"finale_timeout",		5,		60,		300); // Time in seconds being waited before starting the final wave
 	dvarInt(	"surv",			"slow_waves",			3,		1,		10);
 	dvarInt(	"surv",			"dontplaylastmaps",		3,		0,		100);
 	dvarBool(	"surv",			"find_stuck",			1);

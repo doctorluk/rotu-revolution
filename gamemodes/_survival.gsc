@@ -1,3 +1,21 @@
+//
+// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
+// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
+// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
+// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
+// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
+//
+// Reign of the Undead - Revolution ALPHA 0.2 by Luk 
+// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon
+//
+// You may modify this code to your liking (since I - Luk - learned scripting the same way)
+// You may also reuse code you find here, as long as you give credit to those who wrote it (3 lines above)
+//
+// Based on Reign of the Undead 2.1 created by Bipo and Etheross
+//
+
 #include scripts\include\hud;
 #include scripts\include\data;
 #include scripts\include\strings;
@@ -437,22 +455,8 @@ startRegularWave()
 	
 	scripts\players\_players::spawnJoinQueue();
 	
-	if (level.dvar["surv_endround_revive"]) {
-		revives = 0;
-		for (i=0; i<level.players.size; i++) {
-			player = level.players[i];
-			if( !isReallyPlaying(player) )
-				continue;
-			if ( player.isDown && player.isActive && !player.isBot && !player.isZombie ) {
-				player thread scripts\players\_players::revive();
-				revives++;
-			}
-		}
-		if(revives == 1)
-			iprintln(revives + " Player has been auto-^2revived^7!");
-		else if (revives > 1)
-			iprintln(revives + " Players have been auto-^2revived^7!");
-	}
+	reviveActivePlayers();
+	
 	
 	if(level.currentWave == 1 && level.dvar["surv_timeout_firstwave"] > 0){
 		timer(level.dvar["surv_timeout"] + level.dvar["surv_timeout_firstwave"], &"ZOMBIE_NEWWAVEIN", (.2,.7,0), undefined, level.currentWave);
@@ -506,7 +510,9 @@ startSpecialWave(type)
 	level.currentType = type;
 	level.intermission = 1;
 	
+	reviveActivePlayers();
 	scripts\players\_players::spawnJoinQueue();
+	
 	level.waveSize = int(scripts\bots\_types::getWaveFactorForType(type) * getWaveSize(level.currentWave) ) + 1;
 	// level.waveSize = 1;
 	// level.waveSize = 100;
@@ -606,7 +612,11 @@ startSpecialWave(type)
 
 startFinalWave()
 {
-	if( level.dvar["surv_finale_playerlimit"] <= level.activePlayers ){
+	type = "finale";
+	level.currentType = type;
+	level.lastSpecialWave = type;
+	
+	if( level.dvar["surv_finale_playerlimit"] < level.activePlayers ){
 		iprintln("^3Skipping ^7final wave, not enough players are playing!");
 		return;
 	}
@@ -616,13 +626,12 @@ startFinalWave()
 		
 	level endon( "game_ended" );
 	
-	type = "finale";
-	
 	thread watchEnd();
 	
-	level.currentType = type;
+	
 	level.intermission = 1;
 	
+	reviveActivePlayers();
 	scripts\players\_players::spawnJoinQueue();
 	
 	level.waveSize = int(scripts\bots\_types::getWaveFactorForType(type) * getWaveSize(level.currentWave) ) + 1;
@@ -634,8 +643,8 @@ startFinalWave()
 	
 	level.waveProgress = 0;
 	
-	timer(level.dvar["surv_finale_timeout"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0) );
-	wait level.dvar["surv_finale_timeout"] + 2;
+	timer(level.dvar["surv_timeout_finale"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0) );
+	wait level.dvar["surv_timeout_finale"] + 2;
 
 	level.ambient = scripts\bots\_types::getAmbientForType(type);
 	
@@ -674,6 +683,8 @@ startFinalWave()
 	
 	level.turretsDisabled = 1;
 	
+	thread scripts\bots\_types::dynamicFinale();
+	
 	for( z = 0; z < level.dvar["bot_count"] && z < level.waveSize && z < level.finaleToSpawn; ){ // This is the spawning of zombies while players don't see shit
 		toSpawn = scripts\bots\_types::getFullyRandomZombieType();
 		if ( isDefined( spawnZombie( toSpawn, 3 ) ) )
@@ -694,9 +705,8 @@ startFinalWave()
 	
 	wait 1;
 	
-	for(i = 0; i < level.players.size; i++){
+	for(i = 0; i < level.players.size; i++)
 		level.players[i] enableweapons();
-	}
 	
 	wait 4.3;
 	level.turretsDisabled = 0;
@@ -736,14 +746,11 @@ startFinalWave()
 	scripts\bots\_types::setTurretsEnabledForType("");
 	level.currentWave++;
 	level.bossIsOnFire = 0;
-	level.lastSpecialWave = type;
 }
 
 burstSpawner(i){
 	level endon("game_ended");
 	level endon("wave_finished");
-	
-	thread scripts\bots\_types::dynamicFinale();
 	
 	while( i < level.waveSize ){
 		level waittill("all_zombies_are_dead");

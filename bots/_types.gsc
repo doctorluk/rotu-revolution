@@ -1,15 +1,20 @@
-/**********************************
-	---- Reign of the Undead ----
-			   v2.0
-	
-	(Do not copy without permission)
-	
-	Date: November 2010
-	Version: 2.000
-	Author: Bipo
-		
-	© Reign of the Undead Team
-************************************/
+//
+// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
+// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
+// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
+// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
+// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
+//
+// Reign of the Undead - Revolution ALPHA 0.2 by Luk 
+// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon
+//
+// You may modify this code to your liking (since I - Luk - learned scripting the same way)
+// You may also reuse code you find here, as long as you give credit to those who wrote it (3 lines above)
+//
+// Based on Reign of the Undead 2.1 created by Bipo and Etheross
+//
 
 //BOT MODELS AND ANIMATIONS
 #include scripts\include\hud;
@@ -511,7 +516,7 @@ preWave(type){
 				p = level.players[i];
 				
 				p disableWeapons();
-				p thread announceFinaleShort(a);
+				p thread announceFinaleShort();
 			}
 			
 			level waittill("finale_announce_done");
@@ -602,7 +607,7 @@ announceFinale(a){ // 8 waits
 	level notify("finale_announce_done");
 }
 
-announceFinaleShort(a){ // 8 waits
+announceFinaleShort(){
 	self endon("disconnect");
 	level endon("game_ended");
 	
@@ -648,11 +653,11 @@ dynamicFinale(){
 					delay = 4;
 					break;
 				case 2:
-					toSpawn = int( level.activePlayers * 1.4 ) + randomint(-2, 5);
+					toSpawn = int( level.activePlayers * 1.4 ) + randomIntRange(-2, 5);
 					delay = 3;
 					break;
 				case 3:
-					toSpawn = int( level.activePlayers * 3 ) + randomint(-2, 7);
+					toSpawn = int( level.activePlayers * 3 ) + randomIntRange(-2, 7);
 					delay = 2.5;
 					break;
 				case 4:
@@ -660,15 +665,15 @@ dynamicFinale(){
 					delay = 1.5;
 					break;
 			}
+			
+			if( toSpawn < 1 )
+				toSpawn = 1;
+		
+			level.finaleToSpawn = toSpawn;
+			level.finaleDelay = delay;
+			
+			level waittill("burst_done");
 		}
-		
-		if( toSpawn < 1 )
-			toSpawn = 1;
-	
-		level.finaleToSpawn = toSpawn;
-		level.finaleDelay = delay;
-		
-		level waittill("burst_done");
 	}
 }
 
