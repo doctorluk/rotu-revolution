@@ -490,7 +490,11 @@ preWave(type){
 		case "finale":
 			wait 2.50;
 			
+			thread finaleVision();
+			thread goBlackscreen();
+			
 			freezeAll();
+			
 			level.godmode = true;
 			a = randomint(4);
 			
@@ -507,6 +511,9 @@ preWave(type){
 			break;
 		case "finale_short":
 			wait 1;
+			
+			thread finaleVision();
+			thread goBlackscreen();
 			
 			freezeAll();
 			
@@ -550,6 +557,36 @@ unfreezeAll(){
 	}
 }
 
+finaleVision(){
+	level endon("game_ended");
+	level endon("wave_finished");
+	
+	level waittill("finale_vision");
+	
+	scripts\server\_environment::setVision(scripts\bots\_types::getVisionForType("finale"), 5);
+}
+
+goBlackscreen(){
+	level endon("game_ended");
+	level endon("wave_finished");
+	
+	level waittill("finale_blackscreen");
+	
+	level.blackscreen = newHudElem();
+	level.blackscreen.sort = 4;
+	level.blackscreen.alignX = "left";
+	level.blackscreen.alignY = "top";
+	level.blackscreen.x = 0;
+	level.blackscreen.y = 0;
+	level.blackscreen.horzAlign = "fullscreen";
+	level.blackscreen.vertAlign = "fullscreen";
+	level.blackscreen.foreground = true;
+	level.blackscreen.alpha = 0.95;
+	level.blackscreen setShader("black", 640, 480);
+	
+	thread scripts\server\_environment::updateBlur(8);
+}
+
 announceFinale(a){ // 8 waits
 	self endon("disconnect");
 	level endon("game_ended");
@@ -573,9 +610,9 @@ announceFinale(a){ // 8 waits
 	
 	self thread screenFlash( (1,1,1), 0.2, 0.5 );
 	self thread finaleMessage(level.finaleLables[a][4], "", (1, 0, 0), 2.4, 5, 2.6);
-
-	scripts\server\_environment::setVision(scripts\bots\_types::getVisionForType("finale"), 5);
-		
+	
+	level notify("finale_vision");
+	
 	wait 2.35;
 	
 	self thread screenFlash( (1,1,1), 0.2, 0.5 );
@@ -590,20 +627,8 @@ announceFinale(a){ // 8 waits
 	self thread finaleMessage(level.finaleLables[a][7], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.35;
 	
-	level.blackscreen = newHudElem();
-	level.blackscreen.sort = 4;
-	level.blackscreen.alignX = "left";
-	level.blackscreen.alignY = "top";
-	level.blackscreen.x = 0;
-	level.blackscreen.y = 0;
-	level.blackscreen.horzAlign = "fullscreen";
-	level.blackscreen.vertAlign = "fullscreen";
-	level.blackscreen.foreground = true;
-	level.blackscreen.alpha = 0.95;
-	level.blackscreen setShader("black", 640, 480);
-	thread scripts\server\_environment::updateBlur(8);
-	
-	
+	level notify("finale_blackscreen");
+		
 	level notify("finale_announce_done");
 }
 
@@ -613,21 +638,8 @@ announceFinaleShort(){
 	
 	self thread screenFlash( (1,1,1), 0.2, 0.5 );
 	
-	scripts\server\_environment::setVision(scripts\bots\_types::getVisionForType("finale"), 5);
-	
-	level.blackscreen = newHudElem();
-	level.blackscreen.sort = 4;
-	level.blackscreen.alignX = "left";
-	level.blackscreen.alignY = "top";
-	level.blackscreen.x = 0;
-	level.blackscreen.y = 0;
-	level.blackscreen.horzAlign = "fullscreen";
-	level.blackscreen.vertAlign = "fullscreen";
-	level.blackscreen.foreground = true;
-	level.blackscreen.alpha = 0.0;
-	level.blackscreen fadeOverTime(0.2);
-	level.blackscreen.alpha = 0.92;
-	level.blackscreen setShader("black", 640, 480);
+	level notify("finale_vision");
+	level notify("finale_blackscreen");
 	
 	wait 0.2;
 	
