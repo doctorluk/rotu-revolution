@@ -72,7 +72,6 @@ loadSettings()
 	dvarFloat(	"game",			"turret_time",			120,	10,		99999);
 	dvarFloat(	"game",			"spawn_requirement",	0.5, 0, 1);
 	dvarBool(	"game",			"class_ranks",			1);
-	
 	dvarBool(	"game",			"changing_hostname",	0);
 	dvarInt(	"game",			"changing_hostname_time",10,	2,		60);
 	
@@ -82,8 +81,6 @@ loadSettings()
 	
 	
 	dvarString( "server",		"provider",				"www.iNext-gaming.com");
-	// 1 = Normal, 2 = Dogs, 3 = Burning, 4 = Crawlers, 5 = Hell, 6 = Scary, 7 = Boss (to be changed), 8 = grouped Normal, 20 = Increase Shop Costs and Zombie Damage
-	dvarString( "surv",		"waves",				"1;2;6;4;7;20;8;3;6;7");
 	
 	dvarBool(	"env", 			"ambient",	 			1);
 	dvarBool(	"env", 			"fog",	 				1);
@@ -98,6 +95,9 @@ loadSettings()
 	
 	// dvarInt(	"surv", 		"specialinterval",	 	2,		1,		20);
 	// dvarInt(	"surv", 		"specialwaves",	 		5,		1,		100);
+	
+	// 1 = Normal, 2 = Dogs, 3 = Burning, 4 = Crawlers, 5 = Hell, 6 = Scary, 7 = Boss (to be changed), 8 = grouped Normal, 20 = Increase Shop Costs and Zombie Damage
+	dvarString( "surv",			"waves",				"1;2;6;4;7;20;8;3;6;7");
 	dvarInt(	"surv", 		"zombies_initial",		10,		1,		1000);
 	dvarInt(	"surv", 		"zombies_perplayer",	10,		1,		1000);
 	dvarInt(	"surv", 		"zombies_perwave",		5,		1,		1000);
@@ -113,7 +113,7 @@ loadSettings()
 	dvarInt(	"surv",			"waw_costs",			750,	1,		100000);
 	dvarBool(	"surv",			"waw_alwayspay",		1);
 	dvarBool(	"surv",			"slow_start",			1);
-	dvarBool(	"surv",			"extended_finale_announcement",			0);
+	dvarBool(	"surv",			"extended_finale_announcement",			1);
 	dvarInt(	"surv",			"slow_waves",			3,		1,		10);
 	dvarInt(	"surv",			"dontplaylastmaps",		3,		0,		100);
 	dvarBool(	"surv",			"find_stuck",			1);
@@ -138,13 +138,15 @@ loadSettings()
 	dvarInt(	"shop", 		"defensive4_costs",	 	7000,		1,		100000); // GL Turret
 	dvarInt(	"shop", 		"defensive5_costs",	 	8000,		1,		100000); // Barrel + MG
 	dvarInt(	"shop", 		"defensive6_costs",	 	8500,		1,		100000); // Portal
+	
 	dvarInt(	"shop", 		"support1_costs",	 	2500,		1,		100000);
 	dvarInt(	"shop", 		"support2_costs",	 	15000,		1,		100000);
 	dvarInt(	"shop", 		"support3_costs",	 	20000,		1,		100000);
 	dvarInt(	"shop", 		"support4_costs",	 	30000,		1,		100000);
 	dvarInt(	"shop", 		"support5_costs",	 	50000,		1,		100000);
-	dvarBool(	"shop",			"multiply_costs",			0);
-	dvarInt(	"shop", 		"multiply_costs_amount",	 	50,		0,		100);
+	
+	dvarBool(	"shop",			"multiply_costs",			1);
+	dvarInt(	"shop", 		"multiply_costs_amount",	 	40,		0,		100);
 	
 	dvarString(	"surv",		"playedmaps",	"");
 	dvarString(	"surv",		"recentmaps",	"");

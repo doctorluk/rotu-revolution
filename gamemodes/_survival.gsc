@@ -760,6 +760,8 @@ burstSpawner(i){
 		
 		wayOfSpawning = randomint(2) + 2; // either 2 or 3
 		
+		iprintln("^1DEBUG: ^7wayOfSpawning: " + wayOfSpawning + ", and starting burst spawn");
+		
 		for(; ii < level.dvar["bot_count"] && ii < level.botsAlive && i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
 			toSpawn = scripts\bots\_types::getFullyRandomZombieType();
 			if ( isDefined( spawnZombie( toSpawn, wayOfSpawning ) ) ){
@@ -773,6 +775,7 @@ burstSpawner(i){
 				wait 0.05;
 		}
 		level notify("burst_done");
+		iprintln("^1DEBUG: ^7burst_done");
 	}
 }
 
@@ -784,6 +787,7 @@ watchIfZombiesAreDead(){
 		if( level.botsAlive < 4 || level.dvar["bot_count"] < 5 ){
 			wait 0.2 + level.finaleDelay;
 			level notify("all_zombies_are_dead");
+			iprintln("^1DEBUG: ^7Firing all_zombies_are_dead notify");
 			wait 3;
 		}
 		else
@@ -822,7 +826,7 @@ killBuggedZombies(){
 		if (tollerance >= level.dvar["surv_stuck_tollerance"]){
 			iprintlnbold("^1Stuck zombies detected, cutting their head off!");
 			wait 1;
-			for (i=0; i<level.bots.size; i++)
+			for ( i = 0; i < level.bots.size; i++ )
 			{
 				level.bots[i] suicide();
 				wait 0.05;
