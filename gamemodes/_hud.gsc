@@ -681,6 +681,7 @@ showFinaleMessage(label, text, glowcolor, duration, speed, size)
 	self.hud_message setPulseFX( speed, int((duration)*1000), 1000 );
 	
 }
+
 showWelcomeMessage(label, text, glowcolor, duration, speed, size, height)
 {
 	

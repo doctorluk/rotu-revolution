@@ -16,6 +16,8 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
+#include scripts\include\useful;
+
 updateWaveHud(killed,total)
 {
 	level.waveHUD = 1;
@@ -66,6 +68,21 @@ glowMessage(label, text, glowcolor, duration, speed, size, sound, height)
 finaleMessage(label, text, glowcolor, duration, speed, size)
 {
 	self thread scripts\gamemodes\_hud::showFinaleMessage(label, text, glowcolor, duration, speed, size);
+}
+
+finaleMessageAll(label, text, glowcolor, duration, speed, size, all){
+	if( !isDefined( all ) )
+		all = false;
+		
+	for( i = 0; i < level.players.size; i++ ){
+		p = level.players[i];
+		
+		if( !all && !isReallyPlaying( p ) )
+			continue;
+			
+		p thread scripts\gamemodes\_hud::showFinaleMessage(label, text, glowcolor, duration, speed, size);
+	}
+	
 }
 
 timer(time, label, glowcolor, text, value)
@@ -293,6 +310,7 @@ updateArmorHud(){
 
 screenFlash(color, time, alpha)
 {
+	self endon("disconnect");
 	whitescreen = newclientHudElem(self);
 	whitescreen.sort = -2;
 	whitescreen.alignX = "left";
@@ -310,6 +328,21 @@ screenFlash(color, time, alpha)
 	whitescreen.alpha = 0;
 	wait time;
 	whitescreen destroy();
+}
+
+screenFlashAll(color, time, alpha, all){
+	if( !isDefined( all ) )
+		all = false;
+	
+	for( i = 0; i < level.players.size; i++ ){
+		p = level.players[i];
+		
+		if( !all && !isReallyPlaying( p ) )
+			continue;
+			
+		p thread screenFlash(color, time, alpha);
+	}
+
 }
 
 blackScreen(){

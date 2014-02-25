@@ -252,6 +252,7 @@ mainGametype()
 		type = "";
 		
 		switch(level.waves[i]){
+			case "": type = ""; break;
 			case "0": type = "normal"; break;
 			case "1": type = "dog"; break;
 			case "2": type = "burning"; break;
@@ -783,11 +784,18 @@ watchIfZombiesAreDead(){
 	level endon("wave_finished");
 	level endon("game_ended");
 	
+	ran = randomint( 4 ) + 2;
+	
 	while(1){
-		if( level.botsAlive < 4 || level.dvar["bot_count"] < 5 ){
+		if( level.botsAlive <= ran || level.dvar["bot_count"] < 5 ){
 			wait 0.2 + level.finaleDelay;
+			
 			level notify("all_zombies_are_dead");
+			
 			iprintln("^1DEBUG: ^7Firing all_zombies_are_dead notify");
+			
+			ran = randomint( 4 ) + 2;
+			
 			wait 3;
 		}
 		else

@@ -498,14 +498,10 @@ preWave(type){
 			level.godmode = true;
 			a = randomint(4);
 			
-			for(i = 0; i < level.players.size; i++){
-				p = level.players[i];
-				
-				p disableWeapons();
-				p thread announceFinale(a);
-			}
+			for(i = 0; i < level.players.size; i++)
+				level.players[i] disableWeapons();
 			
-			level waittill("finale_announce_done");
+			announceFinale(a);
 			// announceMessage(&"ZOMBIE_FINALWAVE", "", (1,0,0), 5, 85);
 			// wait 5;
 			break;
@@ -519,14 +515,10 @@ preWave(type){
 			
 			level.godmode = true;
 			
-			for(i = 0; i < level.players.size; i++){
-				p = level.players[i];
-				
-				p disableWeapons();
-				p thread announceFinaleShort();
-			}
+			for(i = 0; i < level.players.size; i++)				
+				level.players[i] disableWeapons();
 			
-			level waittill("finale_announce_done");
+			announceFinaleShort();
 			break;
 		default:
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
@@ -591,40 +583,40 @@ announceFinale(a){ // 8 waits
 	self endon("disconnect");
 	level endon("game_ended");
 	
-	self thread screenFlash( (1,1,1), 0.2, 0.5 );
-	// finaleMessage(label, text, glowcolor, duration, speed, size)
-	self thread finaleMessage(level.finaleLables[a][0], "", (1, 0, 0), 2.4, 5, 2.6);
+	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	// finaleMessageAll(label, text, glowcolor, duration, speed, size)
+	finaleMessageAll(level.finaleLables[a][0], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.4;
 	
-	self thread screenFlash( (1,1,1), 0.2, 0.5 );
-	self thread finaleMessage(level.finaleLables[a][1], "", (1, 0, 0), 2.4, 5, 2.6);
+	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	finaleMessageAll(level.finaleLables[a][1], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.4;
 	
-	self thread screenFlash( (1,1,1), 0.2, 0.5 );
-	self thread finaleMessage(level.finaleLables[a][2], "", (1, 0, 0), 2.4, 5, 2.6);
+	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	finaleMessageAll(level.finaleLables[a][2], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.35;
 	
-	self thread screenFlash( (1,1,1), 0.2, 0.5 );
-	self thread finaleMessage(level.finaleLables[a][3], "", (1, 0, 0), 2.4, 5, 2.6);
+	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	finaleMessageAll(level.finaleLables[a][3], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.35;
 	
-	self thread screenFlash( (1,1,1), 0.2, 0.5 );
-	self thread finaleMessage(level.finaleLables[a][4], "", (1, 0, 0), 2.4, 5, 2.6);
+	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	finaleMessageAll(level.finaleLables[a][4], "", (1, 0, 0), 2.4, 5, 2.6);
 	
 	level notify("finale_vision");
 	
 	wait 2.35;
 	
-	self thread screenFlash( (1,1,1), 0.2, 0.5 );
-	self thread finaleMessage(level.finaleLables[a][5], "", (1, 0, 0), 2.4, 5, 2.6);
+	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	finaleMessageAll(level.finaleLables[a][5], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.4;
 	
-	self thread screenFlash( (1,1,1), 0.2, 0.5 );
-	self thread finaleMessage(level.finaleLables[a][6], "", (1, 0, 0), 2.4, 5, 2.6);
+	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	finaleMessageAll(level.finaleLables[a][6], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.4;
 	
-	self thread screenFlash( (1,1,1), 0.2, 0.5 );
-	self thread finaleMessage(level.finaleLables[a][7], "", (1, 0, 0), 2.4, 5, 2.6);
+	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	finaleMessageAll(level.finaleLables[a][7], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.35;
 	
 	level notify("finale_blackscreen");
@@ -636,7 +628,7 @@ announceFinaleShort(){
 	self endon("disconnect");
 	level endon("game_ended");
 	
-	self thread screenFlash( (1,1,1), 0.2, 0.5 );
+	screenFlashAll( (1,1,1), 0.2, 0.5 );
 	
 	level notify("finale_vision");
 	level notify("finale_blackscreen");

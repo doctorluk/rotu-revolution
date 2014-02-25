@@ -120,7 +120,7 @@ loadSettings()
 	dvarInt(	"surv",			"stuck_tollerance",		30,		10,		360);
 	dvarInt(	"surv",			"waves_repeat",			2,		1,		100);
 	dvarBool(	"surv",			"dynamic_finale_difficulty",		1); // Use game_difficulty settings or not
-	dvarInt(	"surv",			"finale_playerlimit",		7,	0, 64 ); // A minimum amount of players that have to play in order to start the final wave
+	dvarInt(	"surv",			"finale_playerlimit",	7,	1, 64 ); // A minimum amount of players that have to play in order to start the final wave
 	dvarBool(	"surv",			"endround_revive",		1);
 	
 	
