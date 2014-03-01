@@ -7,11 +7,13 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.2 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.3 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon
+// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
+// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
 //
 // You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (3 lines above)
+// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
 //
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
@@ -50,12 +52,44 @@ init()
 	level.turrets = 0;
 	level.turrets_held = 0;
 	level.turretsDisabled = 0;
+	
+	turretData();
 }
 
-giveTurret(turret_type, time)
+turretData(){
+	level.turretData = [];
+
+	
+	level.turretData["minigun"] = spawnstruct();
+	
+	level.turretData["minigun"].firespeed = 0.05;
+	level.turretData["minigun"].numbullets = 20;
+	level.turretData["minigun"].mindamage = 5;
+	level.turretData["minigun"].maxdamageadd = 10;
+	level.turretData["minigun"].range = 700;
+	level.turretData["minigun"].maxupangle = 30;
+	level.turretData["minigun"].cooldown = 1;
+	level.turretData["minigun"].fireTag = "tag_flash";
+	
+	level.turretData["gl"] = spawnstruct();
+	
+	level.turretData["gl"].firespeed = 0.5;
+	level.turretData["gl"].numbullets = 3;
+	level.turretData["gl"].mindamage = 50;
+	level.turretData["gl"].maxdamageadd = 70;
+	level.turretData["gl"].range = 1000;
+	level.turretData["gl"].maxupangle = 45;
+	level.turretData["gl"].cooldown = 2;
+	level.turretData["gl"].firetag = "tag_turret";
+}
+
+giveTurret(turret_type, time, augmented)
 {
 	if ( !isDefined( time ) )
 		time = 0;
+		
+	if( !isDefined( augmented ) )
+		augmented = false;
 	
 	self.carryObj = spawn("script_model", (0,0,0));
 	self.carryObj.origin = self.origin + (0,0,32);
@@ -81,7 +115,7 @@ giveTurret(turret_type, time)
 		
 	self.canUse = false;
 	self disableweapons();
-	self thread placeTurret(turret_type);
+	self thread placeTurret(turret_type, augmented);
 }
 
 onDeath()
@@ -91,7 +125,7 @@ onDeath()
 	level.turrets_held -= 1;
 }
 
-placeTurret(turret_type)
+placeTurret(turret_type, augmented)
 {
 	self endon("death");
 	self endon("disconnect");
@@ -102,7 +136,7 @@ placeTurret(turret_type)
 		if (self attackbuttonpressed())
 		{
 			
-			if (self deploy(turret_type))
+			if (self deploy(turret_type, augmented))
 			{
 				self.carryObj unlink();
 				wait 0.05;
@@ -125,7 +159,7 @@ placeTurret(turret_type)
 	
 }
 
-deploy(turret_type)
+deploy(turret_type, augmented)
 {
 	self endon("disconnect");
 	self endon("death");
@@ -150,7 +184,7 @@ deploy(turret_type)
 	trace = bulletTrace( end + (0,0,100), end - (0,0,300), false, self );
 	if( !level.turretsDisabled )
 		self playsound( "turret_activate" );
-	self thread defenceTurret( turret_type, trace["position"], (0,angles[1],0) );
+	self thread defenceTurret( turret_type, trace["position"], (0,angles[1],0), augmented );
 
 	return true;
 }
@@ -169,7 +203,7 @@ hideLowerParts(){
 	playFXonTag(level.sentry_laser, self, "tag_flash");
 }
 
-defenceTurret( turret_type, pos, angles )
+defenceTurret( turret_type, pos, angles, augmented )
 {
 	self endon("kill_turret");
 
@@ -199,26 +233,50 @@ defenceTurret( turret_type, pos, angles )
 	self.turret_gun.owner = self;
 	self.turret_gun.turret_type = turret_type;
 	
-	if (self.turret_gun.turret_type == "gl") {
-		self.turret_gun.fireSpeed = 0.5;
-		self.turret_gun.numBullets = 3;
-		self.turret_gun.minDamage = 50;
-		self.turret_gun.maxDamageAdd = 70;
-		self.turret_gun.range = 1000;
-		self.turret_gun.maxUpAngle = 45;
-		self.turret_gun.cooldown = 2;
-		self.turret_gun.fireTag = "tag_turret";
+	// if (self.turret_gun.turret_type == "gl") {
+		// self.turret_gun.fireSpeed = 0.5;
+		// self.turret_gun.numBullets = 3;
+		// self.turret_gun.minDamage = 50;
+		// self.turret_gun.maxDamageAdd = 70;
+		// self.turret_gun.range = 1000;
+		// self.turret_gun.maxUpAngle = 45;
+		// self.turret_gun.cooldown = 2;
+		// self.turret_gun.fireTag = "tag_turret";
+	// }
+	if ( self.turret_gun.turret_type == "gl" ) {
+		self.turret_gun.fireSpeed = level.turretData["gl"].firespeed;
+		self.turret_gun.numBullets = level.turretData["gl"].numbullets;
+		self.turret_gun.minDamage = level.turretData["gl"].mindamage;
+		self.turret_gun.maxDamageAdd = level.turretData["gl"].maxdamageadd;
+		self.turret_gun.range = level.turretData["gl"].range;
+		self.turret_gun.maxUpAngle = level.turretData["gl"].maxupangle;
+		self.turret_gun.cooldown = level.turretData["gl"].cooldown;
+		self.turret_gun.fireTag = level.turretData["gl"].firetag;
 	}
-	if (self.turret_gun.turret_type == "minigun") {
-		self.turret_gun.fireSpeed = 0.05;
-		self.turret_gun.numBullets = 20;
-		self.turret_gun.minDamage = 5;
-		self.turret_gun.maxDamageAdd = 10;
-		self.turret_gun.range = 700;
-		self.turret_gun.maxUpAngle = 30;
-		self.turret_gun.cooldown = 1;
-		self.turret_gun.fireTag = "tag_flash";
+	// if (self.turret_gun.turret_type == "minigun") {
+		// self.turret_gun.fireSpeed = 0.05;
+		// self.turret_gun.numBullets = 20;
+		// self.turret_gun.minDamage = 5;
+		// self.turret_gun.maxDamageAdd = 10;
+		// self.turret_gun.range = 700;
+		// self.turret_gun.maxUpAngle = 30;
+		// self.turret_gun.cooldown = 1;
+		// self.turret_gun.fireTag = "tag_flash";
+	// }
+	if ( self.turret_gun.turret_type == "minigun" ) {
+		self.turret_gun.fireSpeed = level.turretData["minigun"].firespeed;
+		self.turret_gun.numBullets = level.turretData["minigun"].numbullets;
+		self.turret_gun.minDamage = level.turretData["minigun"].mindamage;
+		self.turret_gun.maxDamageAdd = level.turretData["minigun"].maxdamageadd;
+		self.turret_gun.range = level.turretData["minigun"].range;
+		self.turret_gun.maxUpAngle = level.turretData["minigun"].maxupangle;
+		self.turret_gun.cooldown = level.turretData["minigun"].cooldown;
+		self.turret_gun.fireTag = level.turretData["minigun"].firetag;
 	}
+	
+	if( !isDefined( augmented ) )
+		augmented = false;
+		
 	self.turret_gun.isTurret = true;
 	self.turret_gun thread CheckForPlayers();
 	self.turret_gun thread rotate();
@@ -232,12 +290,46 @@ defenceTurret( turret_type, pos, angles )
 	self.turret_gun.timePassed = self.turret_time;
 	self.turret_gun.bipod = self.turret_bipod;
 	self.turret_gun thread disableEffects();
+	
+	if( augmented )
+		self.turret_gun goAugmented();
+	else
+		self.turret_gun.isAugmented = false;
+		
 	wait 1;
 	// self scripts\players\_usables::addUsable(self.turret_gun, "turret", "Press [^3USE^7] to pickup turret", 96 );
 	self scripts\players\_usables::addUsable(self.turret_gun, "turret", &"USE_TURRET", 96 );
 
 	level thread deleteTurretInTime(self.turret_gun, self.turret_bipod, level.dvar["game_turret_time"] - self.turret_gun.timePassed);
 	level thread deleteTurretOnDC(self.turret_gun, self.turret_bipod, level.dvar["game_turret_time"] - self.turret_gun.timePassed);
+}
+
+goAugmented(){
+	type = self.turret_type;
+	
+	switch(type){
+		case "gl":
+			self.fireSpeed = level.turretData[type].firespeed / 2;
+			self.numBullets = level.turretData[type].numbullets + 2;
+			self.range = level.turretData[type].range + 200;
+			self.cooldown = level.turretData[type].cooldown * 0.8;
+			self.isAugmented = true;
+			self thread scripts\players\_turrets::createEffectEntity(level._effect["augmented"], "tag_origin", "augmented");
+			self.owner iprintln("^3Augmenting ^7GL turret!");
+			break;
+		case "minigun": 
+			self.numBullets = level.turretData[type].numbullets * 2;
+			self.maxDamageAdd = level.turretData[type].maxdamageadd * 2;
+			self.range = level.turretData[type].range + 300;
+			self.cooldown = level.turretData[type].cooldown * 0.5;
+			self.isAugmented = true;
+			self thread scripts\players\_turrets::createEffectEntity(level._effect["augmented"], "tag_origin", "augmented");
+			self.owner iprintln("^3Augmenting ^7Sentry turret!");
+			break;
+		default:
+			iprintlnbold("^1ERROR: ^7Wrong turret type for Engineer special!");
+			break;
+	}
 }
 
 deleteTurretInTime(gun, bipod, time)

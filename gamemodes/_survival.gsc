@@ -7,11 +7,13 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.2 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.3 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon
+// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
+// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
 //
 // You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (3 lines above)
+// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
 //
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
@@ -262,6 +264,7 @@ mainGametype()
 			case "6": type = "boss"; break;
 			case "7": type = "grouped"; break;
 			case "8": type = "finale"; break;
+			// case "8": iprintlnbold("Finale is currently disabled!"); break;
 			case "?": type = scripts\bots\_types::getRandomSpecialWaveType(true); break;
 			case "20": increaseDifficulty(); break;
 			default: iprintlnbold("^1Error: ^7Bad server configuration of dvar 'surv_waves'! Invalid type: '" + level.waves[i] + "'"); break;
@@ -763,7 +766,7 @@ burstSpawner(i){
 		
 		iprintln("^1DEBUG: ^7wayOfSpawning: " + wayOfSpawning + ", and starting burst spawn");
 		
-		for(; ii < level.dvar["bot_count"] && ii < level.botsAlive && i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
+		for(; ii < level.dvar["bot_count"] && level.botsAlive <= level.dvar["bot_count"] && i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
 			toSpawn = scripts\bots\_types::getFullyRandomZombieType();
 			if ( isDefined( spawnZombie( toSpawn, wayOfSpawning ) ) ){
 					i++;
@@ -776,7 +779,7 @@ burstSpawner(i){
 				wait 0.05;
 		}
 		level notify("burst_done");
-		iprintln("^1DEBUG: ^7burst_done");
+		iprintln("^1DEBUG: ^7burst_done with " + loops + " loops");
 	}
 }
 
