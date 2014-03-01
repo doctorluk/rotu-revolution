@@ -655,15 +655,15 @@ dynamicFinale(){
 		while( 1 ){
 			switch( level.dvar["game_difficulty"] ){
 				case 1:
-					toSpawn = int( level.activePlayers ) + randomIntRange(-1, 3);
+					toSpawn = int( level.activePlayers ) + randomIntRange(-1, 5);
 					delay = 4;
 					break;
 				case 2:
-					toSpawn = int( level.activePlayers * 1.4 ) + randomIntRange(-2, 5);
+					toSpawn = int( level.activePlayers * 3 ) + randomIntRange(-2, 5);
 					delay = 3;
 					break;
 				case 3:
-					toSpawn = int( level.activePlayers * 3 ) + randomIntRange(-2, 7);
+					toSpawn = level.dvar["bot_count"] - randomInt(4);
 					delay = 2.5;
 					break;
 				case 4:
@@ -674,6 +674,8 @@ dynamicFinale(){
 			
 			if( toSpawn < 1 )
 				toSpawn = 1;
+			if( toSpawn > level.dvar["bot_count"] )
+				toSpawn = level.dvar["bot_count"];
 		
 			level.finaleToSpawn = toSpawn;
 			level.finaleDelay = delay;

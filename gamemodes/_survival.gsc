@@ -764,13 +764,13 @@ burstSpawner(i){
 		ii = 0;
 		loops = 0;
 		
-		wayOfSpawning = randomint(2) + 2; // either 2 or 3
+		// wayOfSpawning = randomint(2) + 2; // either 2 or 3
 		
-		iprintln("^1DEBUG: ^7wayOfSpawning: " + wayOfSpawning + ", and starting burst spawn");
+		iprintln("^1DEBUG: Starting burst spawn");
 		
 		for(; ii < level.dvar["bot_count"] && level.botsAlive <= level.dvar["bot_count"] && i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
 			toSpawn = scripts\bots\_types::getFullyRandomZombieType();
-			if ( isDefined( spawnZombie( toSpawn, wayOfSpawning ) ) ){
+			if ( isDefined( spawnZombie( toSpawn, 2 ) ) ){
 					i++;
 					ii++;
 			}
@@ -781,7 +781,7 @@ burstSpawner(i){
 				wait 0.05;
 		}
 		level notify("burst_done");
-		iprintln("^1DEBUG: ^7burst_done with " + loops + " loops");
+		iprintln("^1DEBUG: ^7burst_done with " + loops + " loops and " + ii + " spawns");
 	}
 }
 
