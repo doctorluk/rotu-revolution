@@ -309,9 +309,10 @@ usableUse()
 			break;
 			case "turret":
 				turret_type = self.curEnt.turret_type;
+				augmented = self.curEnt.isAugmented;
 				timepassed = self.curEnt.timePassed + (gettime() - self.curEnt.spawnTime)/1000;
 				self scripts\players\_turrets::deleteTurret(self.curEnt, self.curEnt.bipod);
-				self scripts\players\_turrets::giveTurret(turret_type, timepassed);
+				self scripts\players\_turrets::giveTurret(turret_type, timepassed, augmented);
 			break;
 		}
 	}

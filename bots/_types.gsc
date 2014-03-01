@@ -517,8 +517,9 @@ preWave(type){
 			
 			level.godmode = true;
 			
-			for(i = 0; i < level.players.size; i++)				
+			for(i = 0; i < level.players.size; i++)		
 				level.players[i] disableWeapons();
+			level.disableWeapons = true;
 			
 			announceFinaleShort();
 			break;
@@ -532,6 +533,7 @@ preWave(type){
 }
 
 freezeAll(){
+	level.freezePlayers = true;
 	for(i = 0; i < level.players.size; i++){
 		p = level.players[i];
 		
@@ -542,11 +544,9 @@ freezeAll(){
 }
 
 unfreezeAll(){
+	level.freezePlayers = false;
 	for(i = 0; i < level.players.size; i++){
 		p = level.players[i];
-		
-		// if( !isReallyPlaying(p) )
-			// continue;
 		p unfreezePlayerForRoundEnd();
 	}
 }

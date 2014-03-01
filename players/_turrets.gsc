@@ -35,6 +35,7 @@ init()
 	precacheModel( level.sentry_base_model["gl"] );
 
 	level._effect["turret_flash"] = loadFx( "muzzleflashes/heavy" );
+	level._effect["augmented"] = loadFx( "turrets/augmented_turret" );
 	
 	level.effect_sentry_hit["gl"] = loadFx( "explosions/grenadeExp_blacktop" );
 	level.effect_sentry_hit["minigun"] = loadFx( "impacts/flesh_hit_body_fatal_exit" );
@@ -362,7 +363,7 @@ disableEffects(){
 		// iprintlnbold("Turret does not wait!");
 	
 	self playsound( "turret_broken" );
-	self createEffectEntity(level.turret_broken, self.fireTag);
+	self createEffectEntity(level.turret_broken, self.fireTag, "broken");
 	self moveDisabledPosition();
 	self thread enableAgain();
 }
@@ -384,23 +385,44 @@ enableAgain(){
 	level waittill("turrets_enabled");
 	// iprintlnbold("Turret reenabled!");
 	currentAngle = self.angles;
-	if(isDefined(self.effect))
-		self.effect delete();
+	if( isDefined( self.effect["broken"] ) )
+		self.effect["broken"] delete();
 	self rotateto( (0, currentAngle[1], 0), 3, 0.5, 2 );
 	wait 3;
 	self thread disableEffects();
 }
 
-createEffectEntity(effect, origin){
-	if(isDefined(self.effect))
-		return;
+// createEffectEntity(effect, origin, type){
+	// if(isDefined(self.effect))
+		// return;
+	// self endon("death");
+	// self.effect = undefined;
+	// self.effect = spawn( "script_model", self getTagOrigin( origin ));
+	// self.effect setModel( "tag_origin" );
+	// wait 0.05;
+	// PlayFXOnTag( effect, self.effect, "tag_origin" );
+	// self.effect LinkTo( self );
+// }
+
+createEffectEntity(effect, origin, type){
+	if( !isDefined( self.effect ) )
+		self.effect = [];
+		
+	if( isDefined( self.effect[type] ) )
+		self.effect[type] delete();
+		
 	self endon("death");
-	self.effect = undefined;
-	self.effect = spawn( "script_model", self getTagOrigin( origin ));
-	self.effect setModel( "tag_origin" );
-	wait 0.05;
-	PlayFXOnTag( effect, self.effect, "tag_origin" );
-	self.effect LinkTo( self );
+	if( type == "augmented" ){
+		self.effect[type] = spawnFx( effect, self.origin, (0,0,1), (1,0,0) );
+		triggerFx( self.effect[type] );
+	}
+	else{
+		self.effect[type] = spawn( "script_model", self getTagOrigin( origin ) );
+		self.effect[type] setModel( "tag_origin" );
+		wait 0.05;
+		PlayFXOnTag( effect, self.effect[type], "tag_origin" );
+		self.effect[type] LinkTo( self );
+	}
 }
 
 deleteTurret(gun, bipod)
@@ -410,8 +432,12 @@ deleteTurret(gun, bipod)
 		gun.owner scripts\players\_usables::removeUsable(gun);
 	}
 	level.turrets -= 1;
-	if(isDefined(gun.effect))
-		gun.effect delete();
+	if( isDefined( gun.effect ) ){
+		if( isDefined( gun.effect["broken"] ) )
+			gun.effect["broken"] delete();
+		if( isDefined( gun.effect["augmented"] ) )
+			gun.effect["augmented"] delete();
+	}
 	gun playsound( "turret_deactivate" );
 	bipod delete();
 	gun delete();

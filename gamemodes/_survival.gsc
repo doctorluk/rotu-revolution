@@ -34,6 +34,8 @@ initGame()
 	level.killedZombies = 0;
 	level.bosscount = 1;
 	level.bossPhase = -1;
+	level.freezePlayers = false;
+	level.disableWeapons = false;
 	level.spawningDisabled = 0;
 	level.hasReceivedDamage = 0;
 	level.prioritizedSpawnTime = getTime();

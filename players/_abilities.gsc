@@ -56,6 +56,7 @@ loadAbilityStats()
 	level.special["escape"]["duration"] = 10;
 	
 	level.special["ammo"]["recharge_time"] = 60;
+	level.special["augmentation"]["recharge_time"] = 1;
 	
 	level.special["medkit"]["recharge_time"] = 60;
 	
@@ -636,7 +637,7 @@ ENGINEER_PRIMARY(ability)
 			self thread restoreAmmobox(level.special["ammo"]["recharge_time"]);
 		break;
 		case "AB2":
-			self loadSpecialAbility("ammo");
+			self loadSpecialAbility("augmentation");
 		break;
 		case "AB3":
 			
@@ -1166,8 +1167,8 @@ onSpecialAbility()
 			self doInvincible(self.special["duration"]);
 			self resetSpecial();
 		break;
-		case "ammo":
-			if (self doAmmoSpecial())
+		case "augmentation":
+			if (self doAugmentation())
 			self resetSpecial();
 		break;
 		case "escape":
@@ -1540,18 +1541,42 @@ doEscape(time)
 }
 
 //*****************************************************************************************
-// 										 Ammo Special
+// 									Augmented Turrets
 //*****************************************************************************************
 
-doAmmoSpecial()
-{
-	weapon = self GetCurrentWeapon();
-	if (weapon == self.primary || weapon == self.secondary )
-	{
-		self playlocalsound("weap_pickup");
-		self GiveMaxAmmo(weapon);
-		return 1;
+doAugmentation(){
+	if( level.turretsDisabled ){
+		self iprintlnbold("Turrets are disabled! You can't use your Special!");
+		return false;
 	}
-	self iprintln("^1Invalid weapon!");
-	return 0;
+	
+	turrets = [];
+	for(i = 0; i < self.useObjects.size; i++){
+		o = self.useObjects[i];
+		if( o.type == "turret" && o.owner == self && !o.occupied )
+			turrets[turrets.size] = o;
+	}
+	
+	if(turrets.size == 0){
+		self iprintlnbold("You need at least one turret to activate your Special!");
+		return false;
+	}
+	
+	for(i = 0; i < turrets.size; i++)
+		turrets[i] scripts\players\_turrets::goAugmented();
+	return true;
 }
+
+
+// doAmmoSpecial()
+// {
+	// weapon = self GetCurrentWeapon();
+	// if (weapon == self.primary || weapon == self.secondary )
+	// {
+		// self playlocalsound("weap_pickup");
+		// self GiveMaxAmmo(weapon);
+		// return 1;
+	// }
+	// self iprintln("^1Invalid weapon!");
+	// return 0;
+// }

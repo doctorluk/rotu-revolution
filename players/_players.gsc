@@ -1022,6 +1022,12 @@ spawnPlayer(forceSpawn)
 	self thread watchHPandAmmo();
 	if(level.flashlightEnabled)
 		self thread flashlightOn(true);
+		
+	if( level.freezePlayers )
+		self thread freezePlayerForRoundEnd();
+		
+	if( level.disableWeapons )
+		self disableWeapons();
 	
 	self.isAlive = true;
 	level notify("update_classcounts");
