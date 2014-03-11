@@ -300,9 +300,14 @@ defenceTurret( turret_type, pos, angles, augmented )
 	wait 1;
 	// self scripts\players\_usables::addUsable(self.turret_gun, "turret", "Press [^3USE^7] to pickup turret", 96 );
 	self scripts\players\_usables::addUsable(self.turret_gun, "turret", &"USE_TURRET", 96 );
-
-	level thread deleteTurretInTime(self.turret_gun, self.turret_bipod, level.dvar["game_turret_time"] - self.turret_gun.timePassed);
-	level thread deleteTurretOnDC(self.turret_gun, self.turret_bipod, level.dvar["game_turret_time"] - self.turret_gun.timePassed);
+	
+	if(self.longerTurrets)
+		duration = level.dvar["game_turret_time"] * 1.4;
+	else
+		duration = level.dvar["game_turret_time"];
+		
+	level thread deleteTurretInTime(self.turret_gun, self.turret_bipod, duration - self.turret_gun.timePassed);
+	level thread deleteTurretOnDC(self.turret_gun, self.turret_bipod, duration - self.turret_gun.timePassed);
 }
 
 goAugmented(){

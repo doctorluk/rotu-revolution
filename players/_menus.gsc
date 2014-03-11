@@ -243,6 +243,14 @@ onMenuResponse()
 				self playsound("need_ammo");
 				self.antispamtime = gettime();
 				break;
+
+			case "3":
+				if(time - self.antispamtime < 3000)
+					break;
+				self sayteam("^5Thank you!");
+				self playsound("thanks");
+				self.antispamtime = gettime();
+				break;
 			}
 		}
 		

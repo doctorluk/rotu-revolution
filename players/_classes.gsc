@@ -147,13 +147,21 @@ updateGlobalClassCounts(){
 setGlobalClassCounts(){
 	for(i = 0; i < level.players.size; i++){
 		p = level.players[i];
+		
+		// Amount of players per class
 		p setclientdvars(
 		"ui_classcount_soldier", level.classcount["soldier"],
 		"ui_classcount_stealth", level.classcount["stealth"],
 		"ui_classcount_armored", level.classcount["armored"],
 		"ui_classcount_engineer", level.classcount["engineer"],
 		"ui_classcount_scout", level.classcount["scout"],
-		"ui_classcount_medic", level.classcount["medic"]
+		"ui_classcount_medic", level.classcount["medic"],
+		"ui_soldier_unlocked", (level.classcount["soldier"] < level.dvar["game_max_soldiers"]),
+		"ui_assassin_unlocked", (level.classcount["stealth"] < level.dvar["game_max_assassins"]),
+		"ui_armored_unlocked", (level.classcount["armored"] < level.dvar["game_max_armored"]),
+		"ui_engineer_unlocked", (level.classcount["engineer"] < level.dvar["game_max_engineers"]),
+		"ui_scout_unlocked", (level.classcount["scout"] < level.dvar["game_max_scouts"]),
+		"ui_medic_unlocked", (level.classcount["medic"] < level.dvar["game_max_medics"])
 		);
 	}
 }

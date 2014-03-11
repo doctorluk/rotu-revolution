@@ -401,7 +401,7 @@ endMap(endReasontext, win)
 	setdvar( "g_deadChat", 1 );
 	level.turretsDisabled = 1;
 	
-	scripts\server\_environment::stopAmbient(1);
+	scripts\server\_environment::stopAmbient(3);
 	
 	for(i = 0; i < level.players.size; i++){
 		if( isReallyPlaying(level.players[i]) )
@@ -411,7 +411,7 @@ endMap(endReasontext, win)
 			}
 	}
 	
-	wait 1.2;
+	wait 3;
 	
 	// players = getentarray("player", "classname");
 	for(i = 0; i < level.players.size; i++)
@@ -617,9 +617,9 @@ displayCredits(){
 	thread showCredit("REVOLUTION Development:", "credit", 1.4, 80);
 	wait 0.5;
 	thread showCredit("Luk", "credit", 1.5, 100);
-	thread showCredit("", "credit", 1.4, 80);
 	wait 0.5;
-	thread showCredit("RotU 2.1 creators:", "credit", 1.4, 80);
+	thread showCredit("", "credit", 1.4, 80);
+	thread showCredit("Based on RotU 2.1 by:", "credit", 1.4, 80);
 	wait 0.5;
 	thread showCredit("Bipo, Etheross", "credit", 1.5, 100);
 	wait 0.5;
@@ -628,7 +628,7 @@ displayCredits(){
 	thread showCredit("Viking, Rycoon, Punk, Puffy", "credit", 1.5, 100);
 	wait 0.5;
 	thread showCredit("", "credit", 1.4, 80);
-	thread showCredit("More credits in 2d.iwd/credits.txt", "credit", 1.4, 80);
+	thread showCredit("More credits in ccfg.iwd/CREDITS.txt", "credit", 1.4, 80);
 	wait 6;
 	thread displayStats();
 

@@ -736,7 +736,7 @@ cleanup() // CLEANUP ON DEATH (SPEC) OR DISCONNECT
 	self removeTimers();
 	
 	self.hasRadar = false;
-	self setclientdvars("r_filmusetweaks", 0, "ui_upgradetext", "", "ui_specialtext", "", "cg_draw2d", 1, "g_compassShowEnemies", 0, "ui_uav_client", 0, "ui_wavetext", "", "ui_waveprogress", 0, "ui_spawnqueue", "", "ui_spawnqueue_show", 1);
+	self setclientdvars("r_filmusetweaks", 0, "ui_upgradetext", "", "ui_specialtext", "", "cg_draw2d", 1, "g_compassShowEnemies", 0, "ui_uav_client", 0, "ui_wavetext", "", "ui_waveprogress", 0, "ui_spawnqueue", "");
 	if (self.isActive)
 	{
 		self.isActive = false;
@@ -774,7 +774,7 @@ addToJoinQueue(){
 		level.joinQueue[level.joinQueue.size] = self;
 	}
 	self setclientdvar("ui_spawnqueue", "@QUEUE_AWAITING_SPAWN_" + allToUpper(self.class));
-	self thread blinkSpawnqueue();
+	// self thread blinkSpawnqueue();
 }
 
 blinkSpawnQueue(){
@@ -982,7 +982,7 @@ spawnPlayer(forceSpawn)
 	// Setting random player class model
 	self scripts\players\_playermodels::setPlayerClassModel(self.curClass);
 	
-	self setclientdvars("cg_thirdperson", 0, "ui_upgradetext", "Upgrade Points: " + int(self.points), "ui_specialtext", "^1Special Unavailable", "ui_specialrecharge", 1, "ui_spawnqueue", "", "ui_spawnqueue_show", 1);
+	self setclientdvars("cg_thirdperson", 0, "ui_upgradetext", "Upgrade Points: " + int(self.points), "ui_specialtext", "^1Special Unavailable", "ui_specialrecharge", 1, "ui_spawnqueue", "");
 	
 	self scripts\players\_abilities::loadClassAbilities(self.curClass);
 	

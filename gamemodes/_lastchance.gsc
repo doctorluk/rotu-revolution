@@ -149,6 +149,8 @@ postLastChance(){
 	ambientStop(0);
 	scripts\server\_environment::setAmbient(level.ambient, 0, 1);
 	iprintln("The players have managed to get enough points to resurrect!");
+	
+	scripts\server\_environment::setVision(level.vision, 3);
 	/* Kill all zombies before reviving them */
 	for(i=0; i < level.bots.size; i++){
 		bot = level.bots[i];
@@ -168,13 +170,8 @@ postLastChance(){
 				player thread scripts\players\_players::revive();
 			}
 		}
-		else if( isReallyPlaying(player) && !player.isZombie){
-			// Players who did not get saved are all being infected
+		else if( isReallyPlaying(player) && !player.isZombie )
 			player thread scripts\players\_infection::goInfected();
-			player thread scripts\server\_environment::setVision(level.vision, 3);
-		}
-		else 
-			player thread scripts\server\_environment::setVision(level.vision, 3);
 	}
 	for(i = 0; i < level.players.size; i++){
 		player = level.players[i];

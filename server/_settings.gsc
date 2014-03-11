@@ -20,6 +20,7 @@
 
 init()
 {
+
 	level.dvar = [];
 	
 	loadSettings();
@@ -28,6 +29,8 @@ init()
 
 loadSettings()
 {
+	players = (getDvarInt("sv_maxclients") - getDvarInt("bot_count"));
+	
 	dvarInt(	"bot",			"count",				20,		0,		63); // Amount of bots loaded
 	dvarBool(	"bot", 			"scores",		 		0);
 	
@@ -43,7 +46,14 @@ loadSettings()
 	dvarBool(	"zom",			"spawnprot",			1);
 	dvarBool(	"zom",			"spawnprot_decrease", 	1);
 	dvarFloat(	"zom",			"spawnprot_time",		6,		0,		30);
-	dvarBool(	"zom",			"spawnprot_tank",		0);
+	// dvarBool(	"zom",			"spawnprot_tank",		0);
+	
+	dvarInt(	"game",			"max_soldiers",			players,		0,		getDvarInt("sv_maxclients"));
+	dvarInt(	"game",			"max_assassins",		players,		0,		getDvarInt("sv_maxclients"));
+	dvarInt(	"game",			"max_armored",			players,		0,		getDvarInt("sv_maxclients"));
+	dvarInt(	"game",			"max_engineers",		players,		0,		getDvarInt("sv_maxclients"));
+	dvarInt(	"game",			"max_scouts",			players,		0,		getDvarInt("sv_maxclients"));
+	dvarInt(	"game",			"max_medics",			players,		0,		getDvarInt("sv_maxclients"));
 	
 	dvarBool(	"game", 		"extremeragdoll",	 	1);
 	dvarBool(	"game", 		"godmode",	 			0);

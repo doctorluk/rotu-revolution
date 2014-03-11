@@ -117,6 +117,8 @@ resetAbilities()
 	self.medkitHealing = 18;
 	self.auraHealing = 40;
 	self.specialRecharge = 0;
+	self.longerTurrets = false;
+	self.accuracyOverwrite = 6;
 	self.special["ability"] = "none";
 	self.special["recharge_time"] = 60;
 	self.special["duration"] = 10;
@@ -455,14 +457,9 @@ STEALTH_PRIMARY(ability)
 			self loadSpecialAbility("fake_death");
 		break;
 		case "AB3":
+			self thread quickEscape();
 			self SetMoveSpeedScale(self.speed+.2);
-			if(self hasWeapon("dragunov_mp")){
-				self takeWeapon("dragunov_mp");
-				// self.actionslotweapons = removeFromArray(self.actionslotweapons, "dragunov_mp"); // Removing previously given dragunov_mp (bad crossbow)
-			}
-			self giveWeapon( "dragunov_acog_mp" );
-			self giveMaxAmmo( "dragunov_acog_mp" );
-			self setActionSlot( 3, "weapon", "dragunov_acog_mp" );
+			
 			// self.actionslotweapons[self.actionslotweapons.size] = "dragunov_acog_mp";
 		break;
 	}
@@ -480,10 +477,16 @@ STEALTH_PASSIVE(ability)
 			self.weaponMod += "strength";
 		break;
 		case "AB3":
-			self.weaponMod += "hitman";
+			self thread stealthMovement();
 		break;
 		case "AB4":
-			self thread stealthMovement();
+			if(self hasWeapon("dragunov_mp")){
+				self takeWeapon("dragunov_mp");
+				// self.actionslotweapons = removeFromArray(self.actionslotweapons, "dragunov_mp"); // Removing previously given dragunov_mp (bad crossbow)
+			}
+			self giveWeapon( "dragunov_acog_mp" );
+			self giveMaxAmmo( "dragunov_acog_mp" );
+			self setActionSlot( 3, "weapon", "dragunov_acog_mp" );
 		break;
 	}
 }
@@ -640,7 +643,7 @@ ENGINEER_PRIMARY(ability)
 			self loadSpecialAbility("augmentation");
 		break;
 		case "AB3":
-			
+			self.longerTurrets = true;
 		break;
 	}
 }
@@ -942,6 +945,7 @@ beMedkit(time, heal)
 stealthMovement()//For assassin = makes ur screen 24/7 green, zombies can't see u
 {
 	self thread interruptStealthMovement();
+	self thread dynamicAccuracy();
 	self thread stealthMovementWait();
 	self thread restoreInvisibility(level.special_stealthmove_intermission);
 }
@@ -955,6 +959,49 @@ interruptStealthMovement(){
 		self notify("end_trance");
 		self.canHaveStealth = false;
 		wait 0.05;
+	}
+}
+
+dynamicAccuracy(){
+	// self.accuracyOverwrite = 6;
+	self endon( "reset_abilities" );
+	self endon( "death" );
+	self endon( "disconnect" );
+	while(1){
+		self waittill( "begin_firing" );
+		self thread accuracyChangeUp();
+		self waittill( "end_firing" );
+		self thread accuracyChangeDown();
+	}
+}
+
+accuracyChangeUp(){
+	self endon( "reset_abilities" );
+	self endon( "death" );
+	self endon( "disconnect" );
+	self endon( "end_firing" );
+	while( isReallyPlaying(self) && isAlive(self) ){
+		self iprintlnbold( "Up: " + self.accuracyOverwrite );
+		self setSpreadOverride( self.accuracyOverwrite );
+		self.accuracyOverwrite--;
+		if(self.accuracyOverwrite < 1)
+			self.accuracyOverwrite = 1;
+		wait 0.4;
+	}
+}
+
+accuracyChangeDown(){
+	self endon( "reset_abilities" );
+	self endon( "death" );
+	self endon( "disconnect" );
+	self endon( "begin_firing" );
+	while( isReallyPlaying(self) && isAlive(self) ){
+		self iprintlnbold( "Down: " + self.accuracyOverwrite );
+		self setSpreadOverride( self.accuracyOverwrite );
+		self.accuracyOverwrite++;
+		if(self.accuracyOverwrite == 6)
+			break;
+		wait 0.4;
 	}
 }
 
@@ -1008,7 +1055,7 @@ trance_stealthmove_end()
 	self.visible = true;
 }
 
-/*quickEscape() // When health gets below 25% we give ourselves a speedboost - for Assassin class
+quickEscape() // When health gets below 25% we give ourselves a speedboost - for Assassin class
 {
 	self endon("reset_abilities");
 	self endon("death");
@@ -1057,7 +1104,7 @@ trance_quickescape_end()
 	self playerFilmTweaksOff();
 	self.visible = true;
 	self SetMoveSpeedScale(self.speed);
-}*/
+}
 
 regenerate(health, interval, limit)
 {

@@ -341,8 +341,8 @@ setFog(name, time)
 
 setVision(name, time)
 {
-	if( level.vision == name )
-		return;
+	// if( level.vision == name )
+		// return;
 		
 	level.vision = name;
 	visionSetNaked( name, time );

@@ -836,7 +836,7 @@ getVisionForType(type)
 		case "finale":
 			return "finale";
 		default:
-			return "";
+			return "default";
 	}
 }
 
