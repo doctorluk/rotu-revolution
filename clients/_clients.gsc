@@ -115,7 +115,8 @@ Callback_PlayerConnect()
 							"ui_armored_unlocked", (level.classcount["armored"] < level.dvar["game_max_armored"]),
 							"ui_engineer_unlocked", (level.classcount["engineer"] < level.dvar["game_max_engineers"]),
 							"ui_scout_unlocked", (level.classcount["scout"] < level.dvar["game_max_scouts"]),
-							"ui_medic_unlocked", (level.classcount["medic"] < level.dvar["game_max_medics"])
+							"ui_medic_unlocked", (level.classcount["medic"] < level.dvar["game_max_medics"]),
+							"ui_damagereduced", 0
 							);
 		
 		lpselfnum = self getEntityNumber();
@@ -143,7 +144,8 @@ Callback_PlayerDisconnect()
 	self scripts\players\_players::cleanup();
 	
 	self setclientdvars("ui_hud_hardcore", 0,
-						"ui_rotuversion_short", "");
+						"ui_rotuversion_short", "",
+						"ui_damagereduced", 0);
 	
 	//iPrintln( self.name + " ^7disconnected." );
 	lpselfnum = self getEntityNumber();

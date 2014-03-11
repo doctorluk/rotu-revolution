@@ -1227,6 +1227,8 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 						}
 						eAttacker.lastBossHit = self.number;
 						if (sMeansOfDeath == "MOD_MELEE"){
+							if ( isSubStr(eAttacker.knifeMod, "assassin") )
+								iDamage *= 2;
 							iDamage = int(iDamage*.5);
 							eAttacker scripts\players\_players::incUpgradePoints(1*level.dvar["game_rewardscale"]);
 						}
@@ -1249,8 +1251,10 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 			{
 				if (sMeansOfDeath == "MOD_MELEE")
 				{
+					if ( isSubStr(eAttacker.knifeMod, "assassin") )
+						iDamage *= 2;
 					eAttacker scripts\players\_players::incUpgradePoints(5*level.dvar["game_rewardscale"]);
-					level.bossDamageDone[level.bossPhase] += idamage;
+					level.bossDamageDone[level.bossPhase] += iDamage;
 					newval = int(level.bossDamageDone[level.bossPhase]*100/level.bossDamageToDo[level.bossPhase]);
 					if (newval > 100)
 					newval = 100;
@@ -1266,6 +1270,9 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 					eAttacker thread resetBossHit();
 					return 0;
 				}
+				if (sMeansOfDeath == "MOD_MELEE")
+					if ( isSubStr(eAttacker.knifeMod, "assassin") )
+						iDamage *= 2;
 				eAttacker.lastBossHit = self.number;
 				eAttacker scripts\players\_players::incUpgradePoints( int( level.dvar["game_rewardscale"]/20 * iDamage ) );
 				level.bossDamageDone[level.bossPhase] += idamage;

@@ -415,7 +415,8 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 			}
 		}
 		if(iDamage < 1)
-		iDamage = 1;
+			iDamage = 1;
+			
 		iDamage = int(iDamage * self.incdammod);
 		
 		if(isDefined(self.lastHurtTime) && (self.lastHurtTime < (getTime() - 1000) ) && iDamage < self.health ){
@@ -423,7 +424,12 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 			// self iprintln("Playing HURT sound");
 			self.lastHurtTime = getTime();
 		}
-		
+		// Medics take half damage while reviving
+		if( self.reviveWill && isDefined(self.curEnt) && self.curEnt.type == "revive" && self.isBusy ){
+			iDamage = int(iDamage * 0.5);
+			self iprintlnbold("You took half damage!");
+		}
+			
 		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
 		
 		updateHealthHud(self.health/self.maxhealth);
@@ -1160,6 +1166,15 @@ fullHeal(speed)
 		updateHealthHud(self.health/self.maxhealth);
 		wait .1;
 	}
+}
+
+healPlayer(amount){
+	amount = int(amount);
+	self.health += amount;
+	if(self.health > self.maxhealth)
+		self.health = self.maxhealth;
+
+	updateHealthHud(self.health/self.maxhealth);
 }
 
 incUpgradePoints(inc)

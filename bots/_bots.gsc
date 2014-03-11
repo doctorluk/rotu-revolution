@@ -484,6 +484,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 	if (isdefined(eAttacker))
 		if (isplayer(eAttacker))
 		{
+			// Special Recharge Armored -> KNIFE
 			if (eAttacker.curClass=="armored" && !eAttacker.isDown) {
 				if (sMeansOfDeath=="MOD_MELEE") {
 					if (iDamage>self.health)
@@ -499,7 +500,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 			
 			eAttacker scripts\players\_damagefeedback::updateDamageFeedback(0);
 			if (self.isBot)
-			self thread addToAssist(eAttacker, iDamage);
+				self thread addToAssist(eAttacker, iDamage);
 		}
 	
 	if(self.sessionteam == "spectator")
@@ -536,11 +537,16 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 	{
 		if(iDamage < 1)
 			iDamage = 1;
-		//
 		
-		//STATS
+		// Total Damage Stats
 		if( isDefined( eAttacker.damagedealt ) )
 			eAttacker.damagedealt += iDamage;
+			
+		// Medic Transfusion
+		if( eInflictor == eAttacker && !eAttacker.isDown && eAttacker.health < eAttacker.maxhealth && eAttacker.transfusion && (eAttacker.lastTransfusion + 1000 < getTime()) && randomfloat(1) <= 0.2 ){
+			eAttacker.lastTransfusion = getTime();
+			eAttacker scripts\players\_players::healPlayer(self.maxhealth * 0.03);
+		}
 		
 		// if(isDefined(self.head) && (sHitLoc == "head" || sHitLoc == "neck") )
 			// self detach(self.head);

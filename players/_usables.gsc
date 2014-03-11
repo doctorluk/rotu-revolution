@@ -202,6 +202,7 @@ usableUse()
 				self.curEnt.occupied = true;
 				self.isBusy = true;
 				self.curEnt setclientdvar("ui_infostring", "You are being revived by: " + self.name);
+				self setclientdvar("ui_damagereduced", 1);
 				self freezecontrols(1);
 				self disableWeapons();
 				self progressBar(self.revivetime);
@@ -338,6 +339,7 @@ usableAbort()
 				case "revive":
 					self.isBusy = false;
 					self.curEnt setclientdvar("ui_infostring", "");
+					self setclientdvar("ui_damagereduced", 0);
 					self.curEnt.occupied = false;
 					self freezecontrols(0);
 					self EnableWeapons();

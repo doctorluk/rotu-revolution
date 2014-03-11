@@ -97,10 +97,12 @@ resetAbilities()
 	self.isHitman = false;
 	self.focus = -1;
 	self.weaponMod = "";
+	self.knifeMod = "";
 	self.bulletMod = "";
 	self.weaponNoiseMP = 1;
 	self.immune = false;
 	self.transfusion = false;
+	self.lastTransfusion = false;
 	self.canCure = false;
 	self.hasMedicine = false;
 	self.canSearchBodies = false;
@@ -118,6 +120,7 @@ resetAbilities()
 	self.auraHealing = 40;
 	self.specialRecharge = 0;
 	self.longerTurrets = false;
+	self.reviveWill = false;
 	self.accuracyOverwrite = 6;
 	self.special["ability"] = "none";
 	self.special["recharge_time"] = 60;
@@ -135,7 +138,7 @@ getDamageModifier(weapon, means, target, damage)
 		if (scripts\players\_weapons::isRifle(weapon))
 			MP += .1;
 	}
-	if (issubstr(self.weaponMod, "assasin"))
+	if (issubstr(self.weaponMod, "assassin"))
 	{
 		if (!WeaponIsBoltAction(weapon) && !WeaponIsSemiAuto(weapon))
 			MP -= .15;
@@ -185,6 +188,11 @@ getDamageModifier(weapon, means, target, damage)
 			MP -= .15;
 		if (scripts\players\_weapons::isSniper(weapon) || scripts\players\_weapons::isPistol(weapon) || scripts\players\_weapons::isSMG(weapon))
 			MP += .1;
+	}
+	if (issubstr(self.knifeMod, "assassin"))
+	{
+		if (means == "MOD_MELEE")
+			MP += 1;
 	}
 	//self.upgrade_damMod = 1;
 	MP = MP * self.upgrade_damMod;
@@ -470,11 +478,10 @@ STEALTH_PASSIVE(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self.weaponMod += "assasin";
+			self.weaponMod += "assassin";
 		break;
 		case "AB2":
-			self.weaponNoiseMP = .65;
-			self.weaponMod += "strength";
+			self.knifeMod += "assassin";
 		break;
 		case "AB3":
 			self thread stealthMovement();
@@ -526,7 +533,7 @@ MEDIC_PRIMARY(ability)
 			self loadSpecialAbility("aura");
 		break;
 		case "AB3":
-			//OnBotKilled();
+			self.transfusion = true;
 		break;
 	}
 }
@@ -539,11 +546,11 @@ MEDIC_PASSIVE(ability)
 			self.revivetime -= 1.5;
 		break;
 		case "AB2":
-			self.speed += 0.10;
+			self.canCure = true;
+			self.speed *= 1.10;
 		break;
 		case "AB3":
-			self.hasMedicine = true;
-			self.canCure = true;
+			self.reviveWill = true;
 		break;
 		case "AB4":
 			self.bulletMod = "poison";
@@ -981,7 +988,7 @@ accuracyChangeUp(){
 	self endon( "disconnect" );
 	self endon( "end_firing" );
 	while( isReallyPlaying(self) && isAlive(self) ){
-		self iprintlnbold( "Up: " + self.accuracyOverwrite );
+		// self iprintlnbold( "Up: " + self.accuracyOverwrite );
 		self setSpreadOverride( self.accuracyOverwrite );
 		self.accuracyOverwrite--;
 		if(self.accuracyOverwrite < 1)
@@ -996,7 +1003,7 @@ accuracyChangeDown(){
 	self endon( "disconnect" );
 	self endon( "begin_firing" );
 	while( isReallyPlaying(self) && isAlive(self) ){
-		self iprintlnbold( "Down: " + self.accuracyOverwrite );
+		// self iprintlnbold( "Down: " + self.accuracyOverwrite );
 		self setSpreadOverride( self.accuracyOverwrite );
 		self.accuracyOverwrite++;
 		if(self.accuracyOverwrite == 6)
