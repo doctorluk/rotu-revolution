@@ -93,7 +93,7 @@ RemoveOn( till, owner )
 	if( isDefined( owner ) )
 		owner waittill( till );
 		
-	self delete();
 	self.fx delete();
+	self delete();
 	self notify( "death" );
 }

@@ -92,6 +92,7 @@ resetAbilities()
 	self.revivetime = level.dvar["surv_revivetime"];
 	
 	self clearPerks();
+	self setStableMissile(0);
 	
 	self.canAssasinate = false;
 	self.isHitman = false;
@@ -99,6 +100,7 @@ resetAbilities()
 	self.weaponMod = "";
 	self.knifeMod = "";
 	self.bulletMod = "";
+	self.knifeDamageMP = 1;
 	self.weaponNoiseMP = 1;
 	self.immune = false;
 	self.transfusion = false;
@@ -193,6 +195,11 @@ getDamageModifier(weapon, means, target, damage)
 	{
 		if (means == "MOD_MELEE")
 			MP += 1;
+	}
+	if (issubstr(self.knifeMod, "armored"))
+	{
+		if (means == "MOD_MELEE")
+			MP += 0.35;
 	}
 	//self.upgrade_damMod = 1;
 	MP = MP * self.upgrade_damMod;
@@ -402,12 +409,13 @@ SOLDIER_PRIMARY(ability)
 	{
 		case "AB1":
 			self setPerk("specialty_bulletpenetration");
+			self setPerk("specialty_bulletdamage");
 		break;
 		case "AB2":
 			self loadSpecialAbility("rampage");
 		break;
 		case "AB3":
-			self.focus = 1;
+			self setStableMissile(1);
 		break;
 	}
 }
@@ -605,6 +613,7 @@ ARMORED_PASSIVE(ability)
 		break;
 		case "AB2":
 			self setperk("specialty_bulletaccuracy");
+			self.knifeMod += "armored";
 		break;
 		case "AB3":
 			self reloadForArmored();
@@ -952,7 +961,6 @@ beMedkit(time, heal)
 stealthMovement()//For assassin = makes ur screen 24/7 green, zombies can't see u
 {
 	self thread interruptStealthMovement();
-	self thread dynamicAccuracy();
 	self thread stealthMovementWait();
 	self thread restoreInvisibility(level.special_stealthmove_intermission);
 }
@@ -966,49 +974,6 @@ interruptStealthMovement(){
 		self notify("end_trance");
 		self.canHaveStealth = false;
 		wait 0.05;
-	}
-}
-
-dynamicAccuracy(){
-	// self.accuracyOverwrite = 6;
-	self endon( "reset_abilities" );
-	self endon( "death" );
-	self endon( "disconnect" );
-	while(1){
-		self waittill( "begin_firing" );
-		self thread accuracyChangeUp();
-		self waittill( "end_firing" );
-		self thread accuracyChangeDown();
-	}
-}
-
-accuracyChangeUp(){
-	self endon( "reset_abilities" );
-	self endon( "death" );
-	self endon( "disconnect" );
-	self endon( "end_firing" );
-	while( isReallyPlaying(self) && isAlive(self) ){
-		// self iprintlnbold( "Up: " + self.accuracyOverwrite );
-		self setSpreadOverride( self.accuracyOverwrite );
-		self.accuracyOverwrite--;
-		if(self.accuracyOverwrite < 1)
-			self.accuracyOverwrite = 1;
-		wait 0.4;
-	}
-}
-
-accuracyChangeDown(){
-	self endon( "reset_abilities" );
-	self endon( "death" );
-	self endon( "disconnect" );
-	self endon( "begin_firing" );
-	while( isReallyPlaying(self) && isAlive(self) ){
-		// self iprintlnbold( "Down: " + self.accuracyOverwrite );
-		self setSpreadOverride( self.accuracyOverwrite );
-		self.accuracyOverwrite++;
-		if(self.accuracyOverwrite == 6)
-			break;
-		wait 0.4;
 	}
 }
 
@@ -1166,6 +1131,49 @@ reloadForArmored()
 			self SetPerk("specialty_fastreload");
 		else
 			self unSetPerk("specialty_fastreload");
+	}
+}
+
+dynamicAccuracy(){
+	// self.accuracyOverwrite = 6;
+	self endon( "reset_abilities" );
+	self endon( "death" );
+	self endon( "disconnect" );
+	while(1){
+		self waittill( "begin_firing" );
+		self thread accuracyChangeUp();
+		self waittill( "end_firing" );
+		self thread accuracyChangeDown();
+	}
+}
+
+accuracyChangeUp(){
+	self endon( "reset_abilities" );
+	self endon( "death" );
+	self endon( "disconnect" );
+	self endon( "end_firing" );
+	while( isReallyPlaying(self) && isAlive(self) ){
+		// self iprintlnbold( "Up: " + self.accuracyOverwrite );
+		self setSpreadOverride( self.accuracyOverwrite );
+		self.accuracyOverwrite--;
+		if(self.accuracyOverwrite < 1)
+			self.accuracyOverwrite = 1;
+		wait 0.4;
+	}
+}
+
+accuracyChangeDown(){
+	self endon( "reset_abilities" );
+	self endon( "death" );
+	self endon( "disconnect" );
+	self endon( "begin_firing" );
+	while( isReallyPlaying(self) && isAlive(self) ){
+		// self iprintlnbold( "Down: " + self.accuracyOverwrite );
+		self setSpreadOverride( self.accuracyOverwrite );
+		self.accuracyOverwrite++;
+		if(self.accuracyOverwrite == 6)
+			break;
+		wait 0.4;
 	}
 }
 
