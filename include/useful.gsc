@@ -58,6 +58,25 @@ reviveActivePlayers(){
 	}
 }
 
+freezeAll(){
+	level.freezePlayers = true;
+	for(i = 0; i < level.players.size; i++){
+		p = level.players[i];
+		
+		if( !isReallyPlaying(p) )
+			continue;
+		p freezePlayerForRoundEnd();
+	}
+}
+
+unfreezeAll(){
+	level.freezePlayers = false;
+	for(i = 0; i < level.players.size; i++){
+		p = level.players[i];
+		p unfreezePlayerForRoundEnd();
+	}
+}
+
 isReallyPlaying(player){
 	if( !isDefined( player ) )
 		return false;
@@ -66,4 +85,11 @@ isReallyPlaying(player){
 		return false;
 		
 	return true;
+}
+
+playSoundOnAllPlayers(sound, delay){
+	if( isDefined( delay ) && delay >= 0.05 )
+		wait delay;
+	for(i = 0; i < level.players.size; i++)
+		level.players[i] playlocalsound(sound);
 }

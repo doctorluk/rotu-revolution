@@ -667,8 +667,8 @@ showFinaleMessage(label, text, glowcolor, duration, speed, size)
 	self.hud_message.x = 0;
 	self.hud_message.y = 0;
 	self.hud_message.glowAlpha = 1;
-	self.hud_message.hideWhenInMenu = true;
-	self.hud_message.archived = false;
+	self.hud_message.hideWhenInMenu = false;
+	self.hud_message.archived = true;
 	self.hud_message.alignX = "center";
 	self.hud_message.alignY = "middle";
 	self.hud_message.horzAlign = "center";

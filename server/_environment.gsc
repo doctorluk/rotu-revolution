@@ -261,13 +261,13 @@ smoothFog(startDist, endDist, r, g, b, time){
 	oldg         = level.currentFog[3];
 	oldb         = level.currentFog[4];
 	
-	if( !isDefined( time ) ){
+	if( !isDefined( time ) || time == 0 ){
 		level.currentFog[0] = startDist;
 		level.currentFog[1] = endDist;
 		level.currentFog[2] = r;
 		level.currentFog[3] = g;
 		level.currentFog[4] = b;
-		setExpFog(startDist, endDist, r, g, b);
+		setExpFog(startDist, endDist, r, g, b, 0);
 		return;
 	}
 	factor = time * 10; // We change it every 0.1 seconds, so 10 per second

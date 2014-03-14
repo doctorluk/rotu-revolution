@@ -282,7 +282,6 @@ onPlayerConnect()
 	self.useObjects = [];
 	self.class = "none";
 	self.curClass = "none";
-	self.mayRespawn = true;
 	self.isAlive = false;
 	self.isActive = false;
 	self.hasPlayed = false;
@@ -329,7 +328,6 @@ onPlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHit
 
 	self.sessionstate = "dead";
 	
-	self.mayRespawn = false;
 
 	//if (isplayer(attacker) && attacker != self)
 	//attacker.score++;
@@ -347,14 +345,6 @@ onPlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHit
 		thread delayStartRagdoll( body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath );
 	}
 	
-}
-
-resetSpawning()
-{
-	for (i=0; i<level.players.size; i++)
-	{
-		self.mayRespawn = true;
-	}
 }
 
 onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime)

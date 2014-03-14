@@ -18,7 +18,6 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
-//BOT MODELS AND ANIMATIONS
 #include scripts\include\hud;
 #include scripts\include\useful;
 #include scripts\include\entities;
@@ -448,108 +447,6 @@ addToSpawnTypes(type){
 	}
 }
 
-/* Function to do something while announcing the new zombie wave */
-/* NOT THREADED */
-preWave(type){
-	level endon("game_ended");
-	switch(type){
-		case "scary":
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
-			label = [];
-			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER0";
-			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER1";
-			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER2";
-			
-			announceMessage(&"ZOMBIE_SCARYWAVE", level.waveSize, (.7,.2,0), 5.5, 85);
-			
-			level.flashlightEnabled = true;
-			scripts\players\_players::flashlightForAll(true);
-			wait 6.5 + randomfloat(1); // Wait at least as long as the announceMessage takes
-			
-			announceMessage(label[randomint(label.size)], "", (1,.3,0), 6, 85, undefined, 15);
-			wait 2;
-			
-			scripts\bots\_types::setTurretsEnabledForType(type);
-			
-			for(i = 0; i < level.players.size; i++){
-				if(level.players[i].isActive && level.players[i].isAlive){
-					level.players[i] shellshock("general_shock", 7);
-					level.players[i] thread scripts\players\_players::flickeringHud(getTime() + 6000);
-				}
-			}
-			wait 5;
-			break;
-		case "boss":
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
-			announceMessage(&"ZOMBIE_NEWBOSSWAVE", "", (.7,.2,0), 5, 85);
-			wait 5;
-			break;
-		case "normal":
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
-			announceMessage( level.announceNormal[ randomint(level.announceNormal.size) ] , level.waveSize, (.2,.7,0), 5, 95);
-			wait 5;
-			break;
-		case "finale":
-			wait 2.50;
-			
-			thread finaleVision();
-			thread goBlackscreen();
-			
-			freezeAll();
-			
-			level.godmode = true;
-			a = randomint(4);
-			
-			for(i = 0; i < level.players.size; i++)
-				level.players[i] disableWeapons();
-			
-			announceFinale(a);
-			// announceMessage(&"ZOMBIE_FINALWAVE", "", (1,0,0), 5, 85);
-			// wait 5;
-			break;
-		case "finale_short":
-			wait 1;
-			
-			thread finaleVision();
-			thread goBlackscreen();
-			
-			freezeAll();
-			
-			level.godmode = true;
-			
-			for(i = 0; i < level.players.size; i++)		
-				level.players[i] disableWeapons();
-			level.disableWeapons = true;
-			
-			announceFinaleShort();
-			break;
-		default:
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
-			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
-			wait 5;
-			break;
-	}
-
-}
-
-freezeAll(){
-	level.freezePlayers = true;
-	for(i = 0; i < level.players.size; i++){
-		p = level.players[i];
-		
-		if( !isReallyPlaying(p) )
-			continue;
-		p freezePlayerForRoundEnd();
-	}
-}
-
-unfreezeAll(){
-	level.freezePlayers = false;
-	for(i = 0; i < level.players.size; i++){
-		p = level.players[i];
-		p unfreezePlayerForRoundEnd();
-	}
-}
 
 finaleVision(){
 	level endon("game_ended");
@@ -603,7 +500,7 @@ announceFinale(a){ // 8 waits
 	wait 2.35;
 	
 	screenFlashAll( (1,1,1), 0.2, 0.5 );
-	finaleMessageAll(level.finaleLables[a][4], "", (1, 0, 0), 2.4, 5, 2.6);
+	finaleMessageAll(level.finaleLables[a][4], "", (1, 0, 0), 2.4, 5, 2.9);
 	
 	level notify("finale_vision");
 	
@@ -1466,11 +1363,4 @@ unEntoxicate(time) {
 	self endon("disconnect");
 	wait time;
 	self.entoxicated = false;
-}
-
-playSoundOnAllPlayers(sound, delay){
-	if( isDefined( delay ) && delay >= 0.05 )
-		wait delay;
-	for(i = 0; i < level.players.size; i++)
-		level.players[i] playlocalsound(sound);
 }

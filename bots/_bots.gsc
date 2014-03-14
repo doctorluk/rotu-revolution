@@ -479,8 +479,8 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		
 	if(!self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker))
 		return;
-
-	self.alertLevel += 200;
+	if( isDefined( self.alertLevel )) self.alertLevel += 200;
+	
 	if (isdefined(eAttacker))
 		if (isplayer(eAttacker))
 		{

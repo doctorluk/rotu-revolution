@@ -157,7 +157,7 @@ postLastChance(){
 		if(bot.sessionstate == "playing" && bot.type != "boss")
 			bot suicide();
 	}
-	scripts\bots\_types::playSoundOnAllPlayers("phoenix");
+	playSoundOnAllPlayers("phoenix");
 	wait 1;
 	for (i=0; i < level.players.size; i++) {
 		player = level.players[i];

@@ -25,7 +25,6 @@
 init()
 {
 	level.useObjects = [];
-	level.stuckZombies = "192.168.2.103";
 }
 
 addUsable(ent, type, hintstring, distance)
@@ -202,7 +201,7 @@ usableUse()
 				self.curEnt.occupied = true;
 				self.isBusy = true;
 				self.curEnt setclientdvar("ui_infostring", "You are being revived by: " + self.name);
-				self setclientdvar("ui_damagereduced", 1);
+				if( self.reviveWill ) self setclientdvar("ui_damagereduced", 1); // Medic Passive
 				self freezecontrols(1);
 				self disableWeapons();
 				self progressBar(self.revivetime);
@@ -339,7 +338,7 @@ usableAbort()
 				case "revive":
 					self.isBusy = false;
 					self.curEnt setclientdvar("ui_infostring", "");
-					self setclientdvar("ui_damagereduced", 0);
+					if( self.reviveWill ) self setclientdvar("ui_damagereduced", 0); // Medic Passive
 					self.curEnt.occupied = false;
 					self freezecontrols(0);
 					self EnableWeapons();
