@@ -845,5 +845,5 @@ playEndSound()
 
 playCreditsSound()
 {
-	ambientPlay( "zom_win" );
+	ambientPlay( "zom_win", 2 );
 }

@@ -169,7 +169,7 @@ preWave(wavetype, type){
 					level.players[i] thread scripts\players\_players::flickeringHud(getTime() + 6000);
 				}
 			}
-			wait 5;
+			wait 3;
 			break;
 		case "boss":
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );

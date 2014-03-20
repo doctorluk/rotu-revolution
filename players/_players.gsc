@@ -415,10 +415,8 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 			self.lastHurtTime = getTime();
 		}
 		// Medics take half damage while reviving
-		if( self.reviveWill && isDefined(self.curEnt) && self.curEnt.type == "revive" && self.isBusy ){
+		if( self.reviveWill && isDefined(self.curEnt) && self.curEnt.type == "revive" && self.isBusy )
 			iDamage = int(iDamage * 0.5);
-			self iprintlnbold("You took half damage!");
-		}
 			
 		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
 		
@@ -428,8 +426,8 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 
 hasLowAmmo(){
 
-	if(scripts\players\_weapons::canRestoreAmmo(self getCurrentWeapon())){
-		max = self GetFractionMaxAmmo(self getCurrentWeapon());
+	if( scripts\players\_weapons::canRestoreAmmo( self getCurrentWeapon() ) ){
+		max = self GetFractionMaxAmmo( self getCurrentWeapon() );
 		if(max <= 0.3) // If player has only 30% or less in his stock, return true, else false
 			return true;
 	}
@@ -611,7 +609,7 @@ getBestPlayer(type, returns){
 		else
 			return amount;
 	}
-	iprintlnbold("^1ERROR: ^7Invalid use of getBestPlayer");
+	iprintlnbold("^1ERROR: ^7Invalid use of getBestPlayer()");
 	return undefined;
 }
 
