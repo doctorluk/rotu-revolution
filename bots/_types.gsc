@@ -151,6 +151,7 @@ initZomModels()
 	addZomModel("quad", "bo_quad", "");
 	// addZomModel("dog", "german_sheperd_dog", "");
 	addZomModel("dog", "zombie_wolf", "");
+	addZomModel("helldog", "zombie_wolf", "");
 	// addZomModel("halfboss", "bo1_c_zom_george_romero_zombiefied_fb", "");
 	addZomModel("halfboss", "zom_george_romero", "");
 	// addZomModel("boss", "body_sp_russian_loyalist_a_dead", "head_sp_loyalist_alex_helmet_body_a_dead");
@@ -171,18 +172,20 @@ initGroupedSettings(){
 	level.zombieProbability[4] = 5; // toxic
 	level.zombieProbability[5] = 100; // halfboss
 	level.zombieProbability[6] = 5; // Napalm
+	level.zombieProbability[7] = 5; // Helldoge
 	// level.zombieProbability[7] = 5; // Electric
 	
 	level.zombieProbabilityScenario = [];
-	setZombieProbabilityScenario(0, "normal zombies", 35, 10, 10, 10, 10, 0, 5/*, 0*/);
-	setZombieProbabilityScenario(1, "burning only", 0, 0, 0, 3, 0, 0, 1/*, 0*/);
-	setZombieProbabilityScenario(2, "crawlers only", 0, 0, 0, 0, 1, 0, 0/*, 0*/);
-	setZombieProbabilityScenario(3, "tanks only", 0, 0, 1, 0, 0, 0, 0/*, 0*/);
-	setZombieProbabilityScenario(4, "burning + crawlers", 0, 0, 0, 3, 3, 0/*, 1*/);
-	setZombieProbabilityScenario(5, "tank + crawlers", 0, 0, 1, 1, 0, 0, 0/*, 0*/);
-	setZombieProbabilityScenario(6, "all + boss", 30, 10, 10, 10, 10, 1, 10/*, 10*/);
-	setZombieProbabilityScenario(7, "tank + dogs + boss", 0, 10, 40, 0, 0, 1, 0/*, 0*/);
-	setZombieProbabilityScenario(8, "dogs + burning", 0, 3, 0, 3, 0, 0, 1/*, 0*/);
+	setZombieProbabilityScenario(0, "normal zombies", 35, 10, 10, 10, 10, 0, 5, 5/*, 0*/);
+	setZombieProbabilityScenario(1, "burning only", 0, 0, 0, randomint(2)+1, 0, 0, randomint(1), randomint(1)/*, 0*/);
+	setZombieProbabilityScenario(2, "crawlers only", 0, 0, 0, 0, 1, 0, 0, 0/*, 0*/);
+	setZombieProbabilityScenario(3, "tanks only", 0, 0, 1, 0, 0, 0, 0, 0/*, 0*/);
+	setZombieProbabilityScenario(4, "burning + crawlers", 0, 0, 0, randomint(2)+1, randomint(2)+1, randomint(1), randomint(1)/*, 1*/);
+	setZombieProbabilityScenario(5, "tank + crawlers", 0, 0, randomint(2)+1, 0, randomint(2)+1, 0, 0, 0/*, 0*/);
+	setZombieProbabilityScenario(6, "all + boss", 30, 10, 10, 10, 10, 1, 10, 10/*, 10*/);
+	setZombieProbabilityScenario(7, "tank + dogs + boss", 0, 10, 40, 0, 0, 1, 0, 1/*, 0*/);
+	setZombieProbabilityScenario(8, "dogs + burning", 0, 3, 0, 3, 0, 0, 1, 1/*, 0*/);
+	setZombieProbabilityScenario(9, "Pure random", randomint(4)+1, randomint(5), randomint(5), randomint(5), randomint(5), randomint(5), randomint(5), randomint(5)/*, 0*/);
 	// setZombieProbabilityScenario(0, "test", 0, 0, 0, 0, 0, 0, 1);
 	
 	/* Limit the amount of bullet-damageable bosses on the server, because too many can be.... quite.... devastating */
@@ -251,6 +254,11 @@ loadAnimTree(type)
 			self.animation["sprint"] = "bot_dog_run_mp"; // bot_dog_run
 			self.animation["melee"] = "defaultweapon_mp"; // bot_dog_attack
 		break;
+		case "helldog":
+			self.animation["stand"] = "bot_dog_idle_mp"; // bot_dog_idle
+			self.animation["sprint"] = "bot_dog_run_mp"; // bot_dog_run
+			self.animation["melee"] = "defaultweapon_mp"; // bot_dog_attack
+		break;
 		case "boss":
 			ran = randomint(2);
 			self.animation["stand"] = "bot_zombie_stand_mp"; // bot_zom_stand
@@ -273,18 +281,19 @@ loadAnimTree(type)
 initZomTypes()
 {
 	level.zom_types = [];
-	// addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintOnly, infectionChance, soundType, rewardMultiplier)
+	// addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintChance, infectionChance, soundType, rewardMultiplier)
 	addZomType("zombie", "zombie", "zombie",	 16, 40, 20, 96 , 40, 200  , .8, 0, .075 , "zombie", 1); // Default zombie
 	addZomType("burning", "zombie_all", "zombie",	 16, 36, 20, 96 , 40, 200  , .8, 1, 0    , "zombie", 0.8); // Code handled
 	addZomType("napalm", "napalm", "zombie",	 16, 36, 20, 50 , 100, 100  , .8, 1, 0    , "zombie", 0.75); // Code handled
-	addZomType("scary", "zombie_all", "zombie",	 18, 36, 20, 96 , 40, 200  , .8, 0, .01, "zombie", 0.8); // Code handled
-	addZomType("toxic", "quad", "quad",		 8, 32, 16, 104 , 30, 180  , .6, 0, .15, "zombie",1); // Code handled
-	addZomType("fat", "fat", "zombie",			 16, 42, 16, 100, 40, 275  , .8, 0, 0.05 , "zombie", 1.2);
+	addZomType("scary", "zombie_all", "zombie",	 18, 36, 20, 96 , 40, 200  , .8, 0.3, .01, "zombie", 0.8); // Code handled
+	addZomType("toxic", "quad", "quad",		 8, 32, 16, 104 , 30, 180  , .6, 0.5, .15, "zombie",1); // Code handled
+	addZomType("fat", "fat", "zombie",			 16, 42, 16, 100, 40, 275  , .8, 0.2, 0.05 , "zombie", 1.2);
 	addZomType("fast", "fast", "zombiefast",	 20, 55, 24, 96 , 40, 150  , .7, 1, 0.075, "zombie", 0.8);
-	addZomType("tank", "tank", "zombie", 		 16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie", 1.35);
+	addZomType("tank", "tank", "zombie", 		 16, 40, 20, 100, 30, 800  , .8, 0.4, 0.05 , "zombie", 1.35);
 	// addZomType("electric", "electric", "zombie",  16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie");
-	addZomType("halfboss", "halfboss", "zombie",	 16, 40, 20, 96 , 90, 5000 + (2000 * level.activePlayers) , .8, 0, .0 , "zombie", 3); // Default zombie
+	addZomType("halfboss", "halfboss", "zombie",	 16, 40, 20, 96 , 90, 5000 + (2000 * level.activePlayers) , .8, 0.6, .0 , "zombie", 3); // Default zombie
 	//addZomType("boss", "boss", "zombie", 30, 50, 20, 120, 65, 10000, .8, 1, "zombie");
+	addZomType("helldog", "dog", "dog", 			 18, 58, 30, 96 , 45, 150  , .8, 1, 0.08, "dog", 0.5); // Burning Dog zombie
 	addZomType("dog", "dog", "dog", 			 18, 58, 30, 96 , 30, 125  , .8, 1, 0.08, "dog", 0.5); // Dog zombie
 	addZomType("boss", "boss", "boss", 		 20, 58, 30, 160, 80, 10000, 1, 1, 0    , "zombie", 1);
 	addZomType("boss_bullet", "boss", "boss", 		 20, 58, 30, 160, 80, 10000, .8, 1, 0    , "zombie", 5);
@@ -295,6 +304,8 @@ getBlurForType(type)
 	switch (type)
 	{
 		case "burning":
+		return .65;
+		case "helldog":
 		return .65;
 		case "toxic":
 		return 1;
@@ -312,10 +323,10 @@ getSpawntypeForType(type){
 }
 
 getFullyRandomZombieType(){
-	ran = 8;
+	ran = 9;
 	// Only select halfboss when he lives
 	if( level.bossBulletCount < level.bossBulletLimit )
-		ran = 9;
+		ran = 10;
 		
 	switch( randomint(ran) ){
 		case 0: return "zombie";
@@ -326,7 +337,8 @@ getFullyRandomZombieType(){
 		case 5: return "toxic";
 		case 6: return "tank";
 		case 7: return "napalm";
-		case 8: return "halfboss";
+		case 8: return "helldog";
+		case 9: return "halfboss";
 	}
 }
 
@@ -353,11 +365,14 @@ getRandomZombieType(){
 	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") ) )
 		returns = "toxic";
 		
-	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") ) )
-		returns = "halfboss";
-		
-	else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") + getZombieProbability("napalm") ) )
+	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") ) )
 		returns = "napalm";
+		
+	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") + getZombieProbability("helldog") ) )
+		returns = "helldog";
+		
+	else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") + getZombieProbability("halfboss") ) )
+		returns = "halfboss";
 		
 	// else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") + getZombieProbability("napalm") + getZombieProbability("electric")) )
 		// returns = "electric";
@@ -370,7 +385,7 @@ setZombieProbability(type, probability){
 	level.zombieProbability[getZombieProbabilityIndex(type)] = probability;
 }
 
-setZombieProbabilityScenario(index, description, prob0, prob1, prob2, prob3, prob4, prob5, prob6/*, prob7*/){
+setZombieProbabilityScenario(index, description, prob0, prob1, prob2, prob3, prob4, prob5, prob6, prob7/*, prob7*/){
 	if(isDefined(level.zombieProbabilityScenario[index]))
 		return;
 	level.zombieProbabilityScenario[index]["description"] = description;
@@ -381,6 +396,7 @@ setZombieProbabilityScenario(index, description, prob0, prob1, prob2, prob3, pro
 	level.zombieProbabilityScenario[index]["prob4"] = prob4;
 	level.zombieProbabilityScenario[index]["prob5"] = prob5;
 	level.zombieProbabilityScenario[index]["prob6"] = prob6;
+	level.zombieProbabilityScenario[index]["prob7"] = prob7;
 	// level.zombieProbabilityScenario[index]["prob7"] = prob7;
 
 }
@@ -419,6 +435,7 @@ getZombieProbabilityType(index){
 		case 4: return "toxic";
 		case 5: return "halfboss";
 		case 6: return "napalm";
+		case 7: return "helldog";
 		// case 7: return "electric";
 	}
 }
@@ -432,6 +449,7 @@ getZombieProbabilityIndex(type){
 		case "toxic": return 4;
 		case "halfboss": return 5;
 		case "napalm": return 6;
+		case "helldog": return 7;
 		// case "electric": return 7;
 	}
 }
@@ -443,6 +461,7 @@ addToSpawnTypes(type){
 		case "burning": return true;
 		case "toxic": return true;
 		case "napalm": return true;
+		case "helldog": return true;
 		default: return false;
 	}
 }
@@ -603,7 +622,10 @@ getZombieType(type){
 		case "burning":
 			ran = randomfloat(1);
 			if(ran < 0.8)
-				return "burning";
+				if( randomfloat(1) < 0.2 )
+					return "helldog";
+				else
+					return "burning";
 			else
 				return "napalm";
 				
@@ -643,6 +665,10 @@ getWaveFactorForType(type){
 			return 0.5;
 		case "finale":
 			return 0.6;
+		case "dog":
+			return 0.6;
+		case "helldog":
+			return 0.6;
 		case "electric":
 			return 0.4;
 		default:
@@ -676,6 +702,8 @@ getAmbientForType(type)
 	switch (type)
 	{
 		case "burning":
+			return "ambient_inferno";
+		case "helldog":
 			return "ambient_inferno";
 		case "normal":
 			return "zom_ambient";
@@ -726,6 +754,8 @@ getVisionForType(type)
 	{
 		case "burning":
 			return "inferno";
+		case "helldog":
+			return "inferno";
 		case "boss":
 			return "boss";
 		case "scary":
@@ -743,6 +773,8 @@ getFxForType(type)
 	{
 		case "burning":
 			return "ember";
+		case "helldog":
+			return "ember";
 		case "tank":
 			return "lightning";
 		case "boss":
@@ -754,7 +786,7 @@ getFxForType(type)
 	}
 }
 
-addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintOnly, infectionChance, soundType, rewardMultiplier)
+addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintChance, infectionChance, soundType, rewardMultiplier)
 {
 	struct = spawnstruct();
 	level.zom_types[name] = struct;
@@ -767,7 +799,7 @@ addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRang
 	struct.damage = damage;
 	struct.maxHealth = maxHealth;
 	struct.meleeTime = meleeTime;
-	struct.sprintOnly = sprintOnly;
+	struct.sprintChance = sprintChance;
 	struct.infectionChance = infectionChance;
 	struct.soundType = soundType;
 	struct.barricadeDamage = damage;
@@ -787,7 +819,7 @@ loadZomStats(type)
 	self.damage = struct.damage;
 	self.barricadeDamage = struct.barricadeDamage;
 	self.meleeTime = struct.meleeTime;
-	self.sprintOnly = struct.sprintOnly;
+	self.sprintChance = struct.sprintChance;
 	self.maxHealth = int(struct.maxHealth);
 	self.infectionChance = struct.infectionChance;
 	self.soundType = struct.soundType;
@@ -806,6 +838,10 @@ onSpawn(type)
 	{
 		case "burning":
 			self thread createEffectEntity(level.burningFX, "j_spinelower" );
+			self playloopsound("fire_wood_medium");
+			break;
+		case "helldog":
+			self thread createEffectEntity(level.burningFX, "tag_origin" );
 			self playloopsound("fire_wood_medium");
 			break;
 		case "zombie":
@@ -1317,6 +1353,11 @@ onCorpse(type)
 			self PlaySound("explo_metal_rand");
 			self scripts\bots\_bots::zomAreaDamage(160);
 		return 0;
+		case "helldog":
+			PlayFX(level.explodeFX, self.origin);
+			self PlaySound("explo_metal_rand");
+			self scripts\bots\_bots::zomAreaDamage(160);
+		return 0;
 		case "napalm":
 			if( !isDefined( self.suicided ) ){
 				PlayFX(level.explodeFX, self.origin);
@@ -1340,15 +1381,18 @@ toxicCloud(org, time) {
 	playfx(level.toxicFX, org);
 	ent playsound("toxic_gas");
 	self endon("death");
-	for ( t = 0; t<28; t++ ){
-		for (i=0; i<level.players.size; i++) {
-			if( !isReallyPlaying(level.players[i]) )
+	for ( t = 0; t < 28; t++ ){
+		for ( i = 0; i < level.players.size; i++) {
+			p = level.players[i];
+			
+			if( !isReallyPlaying(p) )
 				continue;
-			if ( distance(level.players[i].origin, org) < 128 ) {
-				if (!level.players[i].entoxicated) {
-					level.players[i].entoxicated = true;
-					level.players[i] shellshock("toxic_gas_mp", 5);
-					level.players[i] thread unEntoxicate(8);
+				
+			if ( distance(p.origin, org) < 128 && !p.toxicImmunity ) {
+				if (!p.entoxicated){
+					p.entoxicated = true;
+					p shellshock("toxic_gas_mp", 5);
+					p thread unEntoxicate(8);
 				}
 			}
 		}

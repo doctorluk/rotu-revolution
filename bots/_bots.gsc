@@ -260,6 +260,10 @@ spawnPartner(spawnpoint, bot){
 	bot.isOnFire = false;
 	bot.isPoisoned = false;
 	bot.playIdleSound = true;
+	if( randomfloat(1) > bot.sprintChance )
+		bot.sprinting = false;
+	else
+		bot.sprinting = true;
 	
 	bot scripts\bots\_types::loadAnimTree(type);
 	
@@ -372,6 +376,10 @@ spawnZombie(type, spawnpoint, bot)
 	bot.isOnFire = false;
 	bot.isPoisoned = false;
 	bot.playIdleSound = true;
+	if( randomfloat(1) > bot.sprintChance )
+		bot.sprinting = false;
+	else
+		bot.sprinting = true;
 	
 	bot scripts\bots\_types::loadAnimTree(type);
 	
@@ -569,7 +577,7 @@ igniteBot(eAttacker){
 	level endon("game_ended");
 	self.isOnFire = true;
 	self thread damageOverTime(eAttacker, (self.maxhealth * 0.05), 1, "fire");
-	if(self.type != "dog")
+	if(self.type != "dog" && self.type != "helldog")
 		self thread scripts\bots\_types::createEffectEntity(level.incendiary_FX, "j_spinelower");
 	else
 		self thread scripts\bots\_types::createEffectEntity(level.incendiary_FX, "j_head", (0,0,-35)); // Prevent effect from being too far up above the head
@@ -582,7 +590,7 @@ poisonBot(eAttacker)
 	level endon("game_ended");
 	self.isPoisoned = true;
 	self thread damageOverTime(eAttacker, (self.maxhealth * 0.05), 1, "poison");
-	if(self.type != "dog")
+	if(self.type != "dog" && self.type != "helldog")
 		self thread scripts\bots\_types::createEffectEntity(level.poisoned_FX, "j_spinelower");
 	else
 		self thread scripts\bots\_types::createEffectEntity(level.poisoned_FX, "j_head", (0,0,-35)); // Prevent effect from being too far up above the head
@@ -749,7 +757,7 @@ doSplatter(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc,
 		// attacker iprintln("^1CRITICAL HIT ON " + self.name);
 		// return true;
 	// }	
-	if( isDefined(attacker) && self.type != "dog" && self.type != "burning" && self.type != "napalm" )
+	if( isDefined(attacker) && self.type != "dog" && self.type != "helldog" && self.type != "burning" && self.type != "napalm" )
 		if( ( sWeapon == attacker.primary || sWeapon == attacker.secondary ) )
 			if( ( damage/self.maxhealth ) > 0.8 && sMeansOfDeath != "MOD_MELEE" && ( sHitLoc == "head" || sHitLoc == "neck" || sHitLoc == "helmet" ) ){
 				self playsound("zom_splatter");
@@ -913,7 +921,7 @@ monkeyOverride(){
 				self zomSetTarget(nearestEnt.origin);
 				self.targetedMonkey = true;
 				self.targetedMonkeyEntIndex = nearestEnt.index;
-				self.sprintOnly = true;
+				self.sprinting = true;
 				if ( distance(nearestEnt.origin, self.origin) < (self.meleeRange - 40) ){
 					self zomGoIdle();
 				}
@@ -1151,7 +1159,7 @@ zomMovement()
 {
 	self.cur_speed = 0;
 	
-	if ((self.alertLevel >= 200 && (!self.walkOnly || self.quake)) || self.sprintOnly ) //GO RUNNING... AAHH
+	if ((self.alertLevel >= 200 && (!self.walkOnly || self.quake)) || self.sprinting ) //GO RUNNING... AAHH
 	{
 		self setanim("sprint");
 		self.cur_speed = self.runSpeed;
@@ -1564,7 +1572,7 @@ zomMelee(bDoDamage)
 	{
 		if(bDoDamage)
 			self zomDoDamage(70);
-		if(self.type != "dog")
+		if(self.type != "dog" && self.type != "helldog")
 		self zomSound(0, "zom_attack");
 		else
 		self zomSound(0, "dog_attack");

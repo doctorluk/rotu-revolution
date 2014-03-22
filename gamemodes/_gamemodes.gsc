@@ -166,6 +166,7 @@ buildZomTypes(preset)
 	level.zom_typenames["fast"] = "quick Zombies";
 	level.zom_typenames["fat"] = "fat Zombies";
 	level.zom_typenames["burning"] = "inferno Zombies";
+	level.zom_typenames["helldog"] = "Helldogs";
 	level.zom_typenames["toxic"] = "crawler Zombies";
 	level.zom_typenames["tank"] = "hell Zombies";
 	level.zom_typenames["grouped"] = "grouped Zombies";
@@ -210,7 +211,9 @@ buildZomTypes(preset)
 			level.zom_spawntypes_weight[6] = 2;
 			level.zom_spawntypes[7] = "napalm";
 			level.zom_spawntypes_weight[7] = 2;
-			level.zom_spawntypes_weightotal = 26;
+			level.zom_spawntypes[8] = "helldog";
+			level.zom_spawntypes_weight[8] = 2;
+			level.zom_spawntypes_weightotal = 28;
 		break;
 	}
 }
@@ -226,6 +229,8 @@ getDefaultWeight(type)
 		case "fast":
 		return 3;
 		case "burning":
+		return 2;
+		case "helldog":
 		return 2;
 		case "toxic":
 		return 2;

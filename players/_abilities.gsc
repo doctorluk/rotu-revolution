@@ -123,6 +123,7 @@ resetAbilities()
 	self.specialRecharge = 0;
 	self.longerTurrets = false;
 	self.reviveWill = false;
+	self.toxicImmunity = false;
 	self.accuracyOverwrite = 6;
 	self.special["ability"] = "none";
 	self.special["recharge_time"] = 60;
@@ -672,7 +673,7 @@ ENGINEER_PASSIVE(ability)
 			self.weaponMod += "engineer";
 		break;
 		case "AB2":
-			self.explosiveExpert = true;
+			self.toxicImmunity = true;
 		break;
 		case "AB3":
 			

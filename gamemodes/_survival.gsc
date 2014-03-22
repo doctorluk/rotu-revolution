@@ -51,16 +51,18 @@ loadConfig()
 	
 	dvarDefault("surv_special1", "dog");
 	dvarDefault("surv_special2", "burning");
-	dvarDefault("surv_special3", "toxic");
-	dvarDefault("surv_special4", "scary");
-	dvarDefault("surv_special5", "tank");
-	dvarDefault("surv_special6", "boss");
-	dvarDefault("surv_special7", "grouped");
-	dvarDefault("surv_special8", "finale");
+	dvarDefault("surv_special3", "helldog");
+	dvarDefault("surv_special4", "toxic");
+	dvarDefault("surv_special5", "scary");
+	dvarDefault("surv_special6", "tank");
+	dvarDefault("surv_special7", "boss");
+	dvarDefault("surv_special8", "grouped");
+	dvarDefault("surv_special9", "finale");
 	
 	level.availableSpecialWaves = [];
 	level.availableSpecialWaves[level.availableSpecialWaves.size] = "dog";
 	level.availableSpecialWaves[level.availableSpecialWaves.size] = "burning";
+	level.availableSpecialWaves[level.availableSpecialWaves.size] = "helldog";
 	level.availableSpecialWaves[level.availableSpecialWaves.size] = "toxic";
 	level.availableSpecialWaves[level.availableSpecialWaves.size] = "scary";
 	level.availableSpecialWaves[level.availableSpecialWaves.size] = "tank";
@@ -185,12 +187,13 @@ mainGametype()
 			case "0": type = "normal"; break;
 			case "1": type = "dog"; break;
 			case "2": type = "burning"; break;
-			case "3": type = "toxic"; break;
-			case "4": type = "tank"; break;
-			case "5": type = "scary"; break;
-			case "6": type = "boss"; break;
-			case "7": type = "grouped"; break;
-			case "8": type = "finale"; break;
+			case "3": type = "helldog"; break;
+			case "4": type = "toxic"; break;
+			case "5": type = "tank"; break;
+			case "6": type = "scary"; break;
+			case "7": type = "boss"; break;
+			case "8": type = "grouped"; break;
+			case "9": type = "finale"; break;
 			// case "8": iprintlnbold("Finale is currently disabled!"); break;
 			case "?": type = scripts\bots\_types::getRandomSpecialWaveType(true); break;
 			case "20": increaseDifficulty(); break;
@@ -202,6 +205,7 @@ mainGametype()
 			if(type == "burning"){
 				scripts\gamemodes\_gamemodes::addSpawnType("burning");
 				scripts\gamemodes\_gamemodes::addSpawnType("napalm");
+				scripts\gamemodes\_gamemodes::addSpawnType("helldog");
 			}
 			else
 				scripts\gamemodes\_gamemodes::addSpawnType(type);
@@ -257,6 +261,8 @@ increaseDifficulty(){
 	level.zom_types["toxic"].maxhealth*=1.5;
 	level.zom_types["dog"].damage *=1.4;
 	level.zom_types["dog"].maxHealth *= 1.5;
+	level.zom_types["helldog"].damage *=1.4;
+	level.zom_types["helldog"].maxHealth *= 1.5;
 	level.currentDifficulty++;
 	level.rewardScale *= 2;
 	// TODO: Add config variable for display settings

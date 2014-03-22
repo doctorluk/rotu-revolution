@@ -151,7 +151,7 @@ preWave(wavetype, type){
 			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER0";
 			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER1";
 			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER2";
-			
+			scripts\bots\_types::setTurretsEnabledForType(type);
 			announceMessage(&"ZOMBIE_SCARYWAVE", level.waveSize, (.7,.2,0), 5.5, 85);
 			
 			level.flashlightEnabled = true;
@@ -160,8 +160,6 @@ preWave(wavetype, type){
 			
 			announceMessage(label[randomint(label.size)], "", (1,.3,0), 6, 85, undefined, 15);
 			wait 2;
-			
-			scripts\bots\_types::setTurretsEnabledForType(type);
 			
 			for(i = 0; i < level.players.size; i++){
 				if(level.players[i].isActive && level.players[i].isAlive){
@@ -300,6 +298,7 @@ preWave(wavetype, type){
 	thread rotatePrioritizedSpawn(true);
 	level notify("start_monitoring");
 	thread watchWaveProgress();
+	thread scripts\players\_players::spawnJoinQueueLoop();
 	if( type != "finale" && type != "finale_short" )
 		thread waveAmbient(type);
 }
@@ -581,6 +580,7 @@ killBuggedZombies(){
 		return;
 		
 	tollerance = 0;
+	detections = 0;
 	
 	while(1){
 		lastProg = level.waveProgress;
@@ -599,6 +599,21 @@ killBuggedZombies(){
 			tollerance = 0;
 			
 		if (tollerance >= level.dvar["surv_stuck_tollerance"]){
+			if( detections >= 5 ){
+				assert( detections < 5 );
+				iprintlnbold("Game appears to be stuck. Enforcing wave end...");
+				wait 3;
+				level notify("wave_finished");
+				break;
+				// wait 3;
+				// ran = randomint(3);
+				// switch(ran){
+					// case 0: thread scripts\gamemodes\_gamemodes::endMap("All Survivors have perished...", 0); break;
+					// case 1: thread scripts\gamemodes\_gamemodes::endMap("The human race became extinct", 0); break;
+					// case 2: thread scripts\gamemodes\_gamemodes::endMap("Zombies have taken over...", 0); break;
+				// }
+			}
+			detections++;
 			iprintlnbold("^1Stuck zombies detected, cutting their head off!");
 			wait 1;
 			for ( i = 0; i < level.bots.size; i++ )
@@ -613,6 +628,7 @@ killBuggedZombies(){
 watchWaveProgress()
 {
 	level endon( "game_ended" );
+	level endon( "wave_finished" );
 	while (1){
 		level waittill("bot_killed");
 		
