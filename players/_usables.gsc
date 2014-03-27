@@ -176,9 +176,9 @@ getBetterUseObj(distance)
 canUseObj(obj)
 {
 	if (obj == self)
-	return 0;
+		return 0;
 	if (obj.type == "infected" && !self.canCure)
-	return 0;
+		return 0;
 	
 	return 1;
 }

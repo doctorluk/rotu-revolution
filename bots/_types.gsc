@@ -371,7 +371,7 @@ getRandomZombieType(){
 	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") + getZombieProbability("helldog") ) )
 		returns = "helldog";
 		
-	else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") + getZombieProbability("halfboss") ) )
+	else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") + getZombieProbability("helldog") + getZombieProbability("halfboss") ) )
 		returns = "halfboss";
 		
 	// else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") + getZombieProbability("napalm") + getZombieProbability("electric")) )
@@ -579,19 +579,17 @@ dynamicFinale(){
 					delay = 3;
 					break;
 				case 3:
-					toSpawn = level.dvar["bot_count"] - randomInt(4);
+					toSpawn = int( level.dvar["bot_count"] * 1.4 );
 					delay = 2.5;
 					break;
 				case 4:
-					toSpawn = level.dvar["bot_count"];
+					toSpawn = int( level.dvar["bot_count"] * 2.5 );
 					delay = 1.5;
 					break;
 			}
 			
 			if( toSpawn < 1 )
 				toSpawn = 1;
-			if( toSpawn > level.dvar["bot_count"] )
-				toSpawn = level.dvar["bot_count"];
 		
 			level.finaleToSpawn = toSpawn;
 			level.finaleDelay = delay;
@@ -635,15 +633,8 @@ getZombieType(type){
 
 getSpawnType(zombieType, waveType){
 	switch(waveType){
-		case "grouped": 
-			switch(zombieType){
-				case "tank": return getSpawntypeForType("tank");
-				case "toxic": return getSpawntypeForType("toxic");
-				case "electric": return getSpawntypeForType("electric");
-				default: return 0;
-			}
+		case "grouped": return randomint(6);
 		case "scary": return 3;
-		case "electric": return 3;
 		case "toxic": return 2;
 		case "tank": return 1;
 		default: return 0;
@@ -1015,7 +1006,7 @@ bossCatchFire(){
 	level endon("game_ended");
 	
 	self thread burnThrowback();
-	range = 100;
+	range = 130;
 	time = 2; // in seconds, we need 4 * time encounters to make us burn
 	
 	while(1){
@@ -1026,11 +1017,12 @@ bossCatchFire(){
 			if(distance(self.origin, p.origin) <= range && (p.fireCatchCount < time * 4) && !p.isDown && !p.isZombie ){
 				p.fireCatchCount++;
 			}
-			else if(p.fireCatchCount > 0)
-					if(p.fireCatchCount > time * 4)
-						p.fireCatchCount = time * 4 - 2;
-					else
-						p.fireCatchCount -= 2;
+			else 
+			if(p.fireCatchCount > 0)
+				if(p.fireCatchCount > time * 4)
+					p.fireCatchCount = time * 4 - 2;
+				else
+					p.fireCatchCount -= 2;
 			
 			if(p.fireCatchCount >= time * 4){
 				self thread bossBurn(p);
@@ -1282,8 +1274,8 @@ dieDelay(){
 
 /* Find a spawnpoint for the scary wave from which players are far away, but not too far away, to allow zombies to spawn all over the map, but at a distance from the players */
 getScarySpawnpoint(){
-	minDistance = 500;
-	maxDistance = 2000;
+	minDistance = 400;
+	maxDistance = 1800;
 	validSpawnpoints = [];
 	valid = false;
 	distance = 0;
@@ -1356,7 +1348,7 @@ onCorpse(type)
 		case "helldog":
 			PlayFX(level.explodeFX, self.origin);
 			self PlaySound("explo_metal_rand");
-			self scripts\bots\_bots::zomAreaDamage(160);
+			self scripts\bots\_bots::zomAreaDamage(120);
 		return 0;
 		case "napalm":
 			if( !isDefined( self.suicided ) ){

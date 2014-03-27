@@ -133,10 +133,11 @@ testloop(){
 	// self setclientdvar("cg_thirdperson", 1);
 	// while(1){
 		// self waittill("weapon_fired");
+		// wait 5;
 		// oldhp = self.health;
 		// self.health += 5000000;
 		// angle = self getPlayerAngles();
-		// self finishPlayerDamage(self, self, 50, 0, "MOD_PROJECTILE", "rpg_mp", vectorNormalize(anglesToForward(angle)), vectorNormalize(anglesToForward(angle)), "none", 0);
+		// self finishPlayerDamage(self, self, 500, 0, "MOD_PROJECTILE", "rpg_mp", vectorNormalize(anglesToForward(angle)), vectorNormalize(anglesToForward(angle)), "none", 0);
 		// self.health = oldhp;
 	// }
 	// loops = 0;
@@ -164,8 +165,6 @@ Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon,
 {
 	level scripts\players\_usables::removeUsable(self);
 	
-	self endon("disconnect");
-	
 	self notify("downed");
 
 	//self.health = int(self.maxhealth / 4);
@@ -173,7 +172,7 @@ Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon,
 	self.isTargetable = false;
 	
 	// Removes a carrying object (turret, barrel, etc.) on down
-	if(isDefined(self.carryObj) ){
+	if( isDefined( self.carryObj ) ){
 		self.carryObj delete();
 		self enableweapons();
 		self.canUse = true;
@@ -768,22 +767,6 @@ addToJoinQueue(){
 		level.joinQueue[level.joinQueue.size] = self;
 	}
 	self setclientdvar("ui_spawnqueue", "@QUEUE_AWAITING_SPAWN_" + allToUpper(self.class));
-	// self thread blinkSpawnqueue();
-}
-
-blinkSpawnQueue(){
-	self notify("blink_spawnqueue");
-	self endon("blink_spawnqueue");
-	self endon("disconnect");
-	self endon("spawned");
-	self endon("join_spectator");
-	
-	while(1){
-		self setclientdvar("ui_spawnqueue_show", 1);
-		wait 0.5;
-		self setclientdvar("ui_spawnqueue_show", 0);
-		wait 0.5;
-	}
 }
 
 spawnJoinQueue(){
@@ -795,6 +778,7 @@ spawnJoinQueue(){
 		level.joinQueue = removeFromArray(level.joinQueue, player);
 		if( isReallyPlaying(player) ){
 			logPrint("We tried to spawn someone from the Spawnqueue who is already playing: " + player.name + "\n");
+			iprintln("We tried to spawn someone from the Spawnqueue who is already playing: " + player.name + "\n");
 			continue;
 		}
 			
@@ -805,12 +789,15 @@ spawnJoinQueue(){
 		spawners[spawners.size] = player;
 	}
 	if(spawners.size > 0){ // Put out some names in the bottom left corner to inform people who has been spawned by the queue
-		string = "We are spawning ^3";
+		string = "";
+		have = "have";
 		for(i = 0; i < spawners.size; i++){
-			string += spawners[i].name + "^7, ^3"; 
+			string += spawners[i].name + "^7 as ^3" + ( spawners[i] getFullClassName() ) + "^7, ^3"; 
 		}
 		string = getSubStr(string, 0, string.size-4);
-		string += "!";
+		if( i <= 1 )
+			have = "has";
+		string += " " + have + " joined the fight!";
 		iprintln(string);
 	}
 }

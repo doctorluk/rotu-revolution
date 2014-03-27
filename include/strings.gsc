@@ -103,7 +103,7 @@ isHexadecimal(char){
 
 /* Makes all letters capital in a sentence */
 allToUpper(string){
-	if( !isDefined(string) || string == "")
+	if( !isDefined(string) || string == "" )
 		return;
 	returns = "";
 	for(i = 0; i < getStrLength(string); i++)
@@ -137,9 +137,20 @@ strToVec(string){
 	return vector;
 }
 
-appendToDvar( dvar, string )
-{
+appendToDvar( dvar, string ){
 	setDvar( dvar, getDvar( dvar ) + string );
+}
+
+getFullClassName(){
+	switch(self.class){
+		case "soldier": return "Soldier";
+		case "armored": return "Armored";
+		case "stealth": return "Assassin";
+		case "engineer": return "Engineer";
+		case "scout": return "Scout";
+		case "medic": return "Medic";
+		default: return "undefined";
+	}
 }
 
 

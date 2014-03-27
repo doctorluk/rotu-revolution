@@ -34,7 +34,7 @@ WatchForClaymore()
 {
 	self endon( "disconnect" );
 	self endon( "death" );
-	self endon("not_zombie_anymore");
+	self endon( "not_zombie_anymore" );
 	if( !isDefined( self.claymores ) )
 		self.claymores = 0;
 	while(1)

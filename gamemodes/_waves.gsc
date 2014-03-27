@@ -29,10 +29,13 @@ startRegularWave(){
 	
 	prePreWave(wavetype, type);
 	preWave(wavetype, type);
+	spawntype = 0;
 
 	for ( i = 0; i < level.waveSize; ){ 
 		if (level.botsAlive<level.dif_zomMax && !level.spawningDisabled){
-			if ( isDefined( spawnZombie() ) )
+			if( getDvar("priospawner") == "1" )
+				spawntype = 5;
+			if ( isDefined( spawnZombie(undefined, spawntype) ) )
 			i++;
 		}
 		wait level.dif_zomSpawnRate;
@@ -143,7 +146,7 @@ waveCountdown(type){
 /* Preparing everything before starting the spawning */
 preWave(wavetype, type){
 	level endon("game_ended");
-	
+	thread watchWaveProgress();
 	switch(type){
 		case "scary":
 			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
@@ -297,7 +300,6 @@ preWave(wavetype, type){
 	level.intermission = 0;
 	thread rotatePrioritizedSpawn(true);
 	level notify("start_monitoring");
-	thread watchWaveProgress();
 	thread scripts\players\_players::spawnJoinQueueLoop();
 	if( type != "finale" && type != "finale_short" )
 		thread waveAmbient(type);
@@ -405,7 +407,7 @@ burstSpawner(i){
 	level endon("game_ended");
 	level endon("wave_finished");
 	
-	while( i < level.waveSize ){
+	while( i <= level.waveSize ){
 		level waittill("all_zombies_are_dead");
 		
 		ii = 0;
@@ -415,7 +417,8 @@ burstSpawner(i){
 		
 		iprintln("^1DEBUG: Starting burst spawn");
 		
-		for(; ii < level.dvar["bot_count"] && level.botsAlive <= level.dvar["bot_count"] && i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
+		// for(; ii < level.dvar["bot_count"] && level.botsAlive <= level.dvar["bot_count"] && i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
+		for(; i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
 			toSpawn = scripts\bots\_types::getFullyRandomZombieType();
 			if ( isDefined( spawnZombie( toSpawn, 2 ) ) ){
 					i++;
@@ -489,6 +492,21 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		thread scripts\bots\_bots::spawnZombie( type, spawn, bot );
 		return bot;
 	}
+	else if ( spawntype == 5 ) { // Prioritized Spawn
+		bot = scripts\bots\_bots::getAvailableBot();
+		if ( !isDefined( bot ) )
+			return undefined;
+		
+		bot.hasSpawned = true;
+		
+		if(isDefined(typeOverride))
+			type = typeOverride;
+		else
+			type = scripts\gamemodes\_gamemodes::getRandomType();
+		spawn = getPrioritizedSpawn();
+		thread scripts\bots\_bots::spawnZombie( type, spawn, bot );
+		return bot;
+	}
 	
 	if (forcePrioritizedSpawning) { // Selected Spawn from random spawn function
 		if(isDefined(typeOverride))
@@ -497,8 +515,7 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 			type = scripts\gamemodes\_gamemodes::getRandomType();
 		spawn = getPrioritizedSpawn();
 		return scripts\bots\_bots::spawnZombie( type, spawn );
-	}
-	else{
+	}else{
 		if (isdefined(typeOverride))
 		{
 			type = typeOverride;
@@ -534,10 +551,10 @@ soulSpawn(type, spawn, bot)
 	time = 8 + randomint(13); // 20 sec max
 	org = spawn("script_model", spawn.origin + (0,0,time * 100));
 	org setmodel( "tag_origin" );
-	wait .1;
+	wait .05;
 	playFXOnTag( level.soulFX , org, "tag_origin" );
-	wait .1;
-	time = time - randomint(3);
+	wait .05;
+	time -= randomint(3);
 	org moveto(spawn.origin+(0,0,48), time);
 	wait time;
 	playfx(level.soulspawnFX, org.origin);
@@ -647,7 +664,7 @@ rotatePrioritizedSpawn(threaded){
 		while(1){
 			level.prioritizedSpawns[0] = getRandomSpawn();
 			level.prioritizedSpawns[1] = getRandomSpawn();
-			wait 10;
+			wait 7 + randomint(5);
 		}
 	}
 	else{

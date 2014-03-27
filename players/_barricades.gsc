@@ -36,8 +36,7 @@ init()
 	level.barricades = [];
 }
 
-giveBarrel(type)
-{
+giveBarrel(type){
 	if (!isdefined(type))
 	type = 0;
 	
@@ -45,7 +44,7 @@ giveBarrel(type)
 	self.carryObj = spawn("script_model", (0,0,0));
 	self.carryObj.origin = self.origin + AnglesToForward(self.angles)*48;
 	self.carryObj.master = self;
-	
+	// wait 0.05;
 	self.carryObj linkto(self);
 	self.carryObj.type = type;
 
@@ -94,7 +93,7 @@ placeBarrel()
 				self.carryObj.angles = self.angles;
 				level.dynamic_barricades[level.dynamic_barricades.size] = self.carryObj;
 				if (self.carryObj.type == 1)
-				self.carryObj addMG();
+					self.carryObj addMG();
 				self.carryObj = undefined;
 				self notify("used_usable");
 				

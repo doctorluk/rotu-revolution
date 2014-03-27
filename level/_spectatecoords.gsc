@@ -98,6 +98,8 @@ getSpectateCoords(){
 			return "253,1481,702;28,-103,0";
 		case "mp_surv_plaza":
 			return "-2092,897,154;14,-33,0";
+			
+			
 		default:
 			return undefined;
 	}

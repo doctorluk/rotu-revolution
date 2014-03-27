@@ -493,8 +493,8 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		if (isplayer(eAttacker))
 		{
 			// Special Recharge Armored -> KNIFE
-			if (eAttacker.curClass=="armored" && !eAttacker.isDown) {
-				if (sMeansOfDeath=="MOD_MELEE") {
+			if ( eAttacker.curClass == "armored" && !eAttacker.isDown ) {
+				if ( sMeansOfDeath == "MOD_MELEE" ) {
 					if (iDamage>self.health)
 						eAttacker scripts\players\_abilities::rechargeSpecial(self.health/25);
 					else
@@ -502,13 +502,18 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 				}
 			}
 			
+			assertEx( isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ), "getDamageModifier was undefined!");
+			if( !isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) ){
+				iprintln("^1ERROR^7: getDamageModifier for player " + eAttacker.name + " is UNDEFINED using weapon " + sWeapon);
+				return;
+			}
 			iDamage = int( iDamage * eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) * self.incdammod);
 			
 			eAttacker notify("damaged_bot", self);
 			
 			eAttacker scripts\players\_damagefeedback::updateDamageFeedback(0);
 			if (self.isBot)
-				self thread addToAssist(eAttacker, iDamage);
+				self addToAssist(eAttacker, iDamage);
 		}
 	
 	if(self.sessionteam == "spectator")
@@ -516,7 +521,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		
 	//Check for Incendiary/Poisonous Ammo
 	if( isDefined(eAttacker.bulletMod) && randomfloat(1) <= 0.05){
-		if( self.type != "burning" && self.type != "boss" && self.type != "halfboss")
+		if( self.type != "burning" && self.type != "napalm" && self.type != "hellhound" && self.type != "boss" && self.type != "halfboss" )
 				if( eAttacker.bulletMod == "incendiary" )
 					if( isDefined(self.isOnFire) && isDefined(self.isPoisoned) )
 						if( !self.isPoisoned && !self.isOnFire )

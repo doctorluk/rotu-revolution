@@ -234,12 +234,13 @@ waveName(name){
 		case "normal": return "Normal";
 		case "dog": return "Dogs";
 		case "burning": return "Inferno";
+		case "helldog": return "Helldogs";
 		case "toxic": return "Crawlers";
 		case "tank": return "Hell";
 		case "scary": return "Night";
 		case "boss": return "Boss";
 		case "grouped": return "Grouped";
 		case "finale": return "FINALE";
-		default: return "None";
+		default: return "undefined";
 	}
 }
