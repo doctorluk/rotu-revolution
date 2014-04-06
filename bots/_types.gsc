@@ -1329,7 +1329,7 @@ onAttack(type, target)
 	switch (type)
 	{
 		case "boss":
-			target thread scripts\players\_players::bounce(vectorNormalize(target.origin+(0,0,15)-self.origin));
+			target thread scripts\players\_players::bounce(vectorNormalize(target.origin + (0,0,15) - self.origin));
 			target shellShock("boss", 2);
 		default:
 		return 1;
@@ -1361,7 +1361,7 @@ onCorpse(type)
 		return 1;
 		case "toxic":
 			if (randomfloat(1) < .15)
-			thread toxicCloud(self.origin, 10);
+				thread toxicCloud(self.origin, 10);
 		return 2;
 		default:
 		return 2;

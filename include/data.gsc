@@ -32,7 +32,7 @@ atoi(string)
 
 removeFromArray(array, item)
 {
-	for (i=0; i<array.size; i++)
+	for (i = 0; i<array.size; i++)
 	{
 		if (array[i] == item)
 		{
@@ -60,7 +60,7 @@ dissect(string)
 	ret = [];
 	index = -1;
 	skip = 1;
-	for (i=0; i<string.size; i++)
+	for (i = 0; i<string.size; i++)
 	{
 		if (string[i]==" ")
 		{

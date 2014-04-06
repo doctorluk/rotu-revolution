@@ -568,11 +568,13 @@ watchIfZombiesAreDead(){
 	level endon("game_ended");
 	
 	ran = randomint( 4 ) + 2;
+	loops = 0;
 	
 	while(1){
-		if( level.botsAlive <= ran || level.dvar["bot_count"] < 5 ){
+		if( level.botsAlive <= ran || level.dvar["bot_count"] <= 5 || loops == (timelimit*10) ){
 			wait 0.2 + level.finaleDelay;
-			
+			loops = 0;
+			timelimit = 5 + randomint(10);
 			level notify("all_zombies_are_dead");
 			
 			iprintln("^1DEBUG: ^7Firing all_zombies_are_dead notify");
@@ -581,8 +583,10 @@ watchIfZombiesAreDead(){
 			
 			wait 3;
 		}
-		else
+		else{
 			wait .1;
+			loops++;
+		}
 	}
 
 }
@@ -698,7 +702,10 @@ getRandomSpawn()
 	}
 	if (isdefined(spawn))
 	{
+		// return getent(spawn, "targetname");
 		array = getentarray(spawn, "targetname");
-		return array[randomint(array.size)];
+		choice = randomint(array.size);
+		// iprintlnbold("Spawn " + choice + " on " + spawn);
+		return array[choice];
 	}
 }

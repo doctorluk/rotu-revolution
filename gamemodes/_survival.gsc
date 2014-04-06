@@ -113,6 +113,8 @@ addSpawn(targetname, priority)
 	
 	spawns = getentarray(targetname, "targetname");
 	
+	// iprintlnbold("Name: " + targetname + ", size: " + spawns.size);
+	
 	if (spawns.size > 0)
 	{
 		ii = level.survSpawns.size;
