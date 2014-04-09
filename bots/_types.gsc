@@ -7,8 +7,8 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.3 by Luk 
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon
+// Reign of the Undead - Revolution ALPHA 0.4 by Luk 
+// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
 //
@@ -1274,8 +1274,14 @@ dieDelay(){
 
 /* Find a spawnpoint for the scary wave from which players are far away, but not too far away, to allow zombies to spawn all over the map, but at a distance from the players */
 getScarySpawnpoint(){
-	minDistance = 400;
-	maxDistance = 1800;
+	if( level.waveType == "finale" ){
+		minDistance = 150;
+		maxDistance = 1000;
+	}
+	else{
+		minDistance = 400;
+		maxDistance = 1800;
+	}
 	validSpawnpoints = [];
 	valid = false;
 	distance = 0;

@@ -7,8 +7,8 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.3 by Luk 
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon
+// Reign of the Undead - Revolution ALPHA 0.4 by Luk 
+// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
 //
@@ -85,8 +85,8 @@ startFinalWave()
 		preWave(wavetype, type);
 	else
 		preWave(wavetype, type + "_short");
-
-	burstSpawner(level.burstSpawned);
+	
+	thread burstSpawner(level.burstSpawned);
 	
 	postWave(wavetype, type);
 }
@@ -105,8 +105,8 @@ prePreWave(wavetype, type){
 	level.waveProgress = 0;
 	
 	thread scripts\gamemodes\_survival::watchEnd();
-	scripts\players\_players::spawnJoinQueue();
 	reviveActivePlayers();
+	scripts\players\_players::spawnJoinQueue();
 	
 	waveCountdown(type);
 }
@@ -193,17 +193,16 @@ preWave(wavetype, type){
 			freezeAll();
 			
 			level.godmode = true;
-			a = randomint(4);
 			
 			for(i = 0; i < level.players.size; i++)
 				level.players[i] disableWeapons();
 			
-			scripts\bots\_types::announceFinale(a);
+			scripts\bots\_types::announceFinale(randomint(4));
 			level.freezeBots = true;
 			level.turretsDisabled = 1;
 			thread scripts\bots\_types::dynamicFinale();
 			scripts\server\_environment::setGlobalFX(scripts\bots\_types::getFxForType(type));
-			for( level.burstSpawned = 0; level.burstSpawned < level.dvar["bot_count"] && level.burstSpawned < level.waveSize && level.burstSpawned < level.finaleToSpawn; ){ // This is the spawning of zombies while players don't see shit
+			for( level.burstSpawned = 0; level.burstSpawned < level.dvar["bot_count"] && level.burstSpawned < level.waveSize; ){ // This is the spawning of zombies while players don't see shit
 				toSpawn = scripts\bots\_types::getFullyRandomZombieType();
 				if ( isDefined( spawnZombie( toSpawn, 3 ) ) )
 						level.burstSpawned++;
@@ -570,6 +569,8 @@ watchIfZombiesAreDead(){
 	ran = randomint( 4 ) + 2;
 	loops = 0;
 	
+	timelimit = 5 + randomint(10);
+	
 	while(1){
 		if( level.botsAlive <= ran || level.dvar["bot_count"] <= 5 || loops == (timelimit*10) ){
 			wait 0.2 + level.finaleDelay;
@@ -620,8 +621,7 @@ killBuggedZombies(){
 			tollerance = 0;
 			
 		if (tollerance >= level.dvar["surv_stuck_tollerance"]){
-			if( detections >= 5 ){
-				assert( detections < 5 );
+			if( detections >= 3 ){
 				iprintlnbold("Game appears to be stuck. Enforcing wave end...");
 				wait 3;
 				level notify("wave_finished");
@@ -658,7 +658,6 @@ watchWaveProgress()
 			break;
 	}
 	level notify("wave_finished");
-	
 }
 
 rotatePrioritizedSpawn(threaded){
