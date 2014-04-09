@@ -39,8 +39,8 @@ init()
 // General information broadcast
 broadcastVersion(){
 	level endon("game_ended");
-	level.rotuVersion = "RotU-Revolution Alpha 0.4 (12:30, 09.04.2014)";
-	level.rotuVersion_short = "RotU-R Alpha 0.4 (12:30, 09.04.2014)";
+	level.rotuVersion = "RotU-Revolution Alpha 0.4 (09.04.2014)";
+	level.rotuVersion_short = "RotU-R Alpha 0.4 (09.04.2014)";
 	level.rotuVersion_hostname = "RotU-Revolution 0.4-alpha";
 	level.rotuVersion_hostname_short = "0.4-alpha";
 	switch( getDvar("net_ip") ){
