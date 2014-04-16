@@ -28,7 +28,7 @@ init()
 	thread scripts\server\_environment::init();
 	thread scripts\server\_admin::init();
 	thread scripts\server\_adminmenu::init();
-	thread scripts\server\_custom::init();
+	// thread scripts\server\_custom::init();
 	thread scripts\server\_scoreboard::init();
 	thread scripts\server\_servername::init();
 	thread scripts\security\_security::init();
@@ -39,10 +39,10 @@ init()
 // General information broadcast
 broadcastVersion(){
 	level endon("game_ended");
-	level.rotuVersion = "RotU-Revolution Alpha 0.4 (09.04.2014)";
-	level.rotuVersion_short = "RotU-R Alpha 0.4 (09.04.2014)";
-	level.rotuVersion_hostname = "RotU-Revolution 0.4-alpha";
-	level.rotuVersion_hostname_short = "0.4-alpha";
+	level.rotuVersion = "RotU-Revolution Alpha 0.4.2";
+	level.rotuVersion_short = "RotU-R Alpha 0.4.2";
+	level.rotuVersion_hostname = "RotU-Revolution 0.4.2-alpha";
+	level.rotuVersion_hostname_short = "0.4.2-alpha";
 	switch( getDvar("net_ip") ){
 		case "185.4.149.11":
 			while( 1 ){
@@ -88,9 +88,10 @@ securityCheck(){
 	else
 		setDvar("rcon_password", getDvar("rcon_password2"));
 		
-	while(getDvarInt("logfile_2") == 3 || getDvar("logfile_2") == ""){
-			iprintlnbold("You have not set ^1logfile_2^7 in your Serverconfig^1!");
-			iprintlnbold("logfile_2 is invalid, value: " + getDvar("logfile_2"));
+	while( getDvarInt("logfile_2") > 2 || getDvar("logfile_2") == "" ){
+			// iprintlnbold("You have not set ^1logfile_2^7 in your Serverconfig^1!");
+			// iprintlnbold("logfile_2 is invalid, value: " + getDvar("logfile_2"));
+			logPrint("ERROR: Use logfile_2 as replacement for the dvar logfile!\n");
 			wait 3;
 		}
 

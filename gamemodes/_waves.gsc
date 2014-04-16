@@ -414,7 +414,7 @@ burstSpawner(i){
 		
 		// wayOfSpawning = randomint(2) + 2; // either 2 or 3
 		
-		iprintln("^1DEBUG: Starting burst spawn");
+		// iprintln("^1DEBUG: Starting burst spawn");
 		
 		// for(; ii < level.dvar["bot_count"] && level.botsAlive <= level.dvar["bot_count"] && i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
 		for(; i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
@@ -430,7 +430,7 @@ burstSpawner(i){
 				wait 0.05;
 		}
 		level notify("burst_done");
-		iprintln("^1DEBUG: ^7burst_done with " + loops + " loops and " + ii + " spawns");
+		// iprintln("^1DEBUG: ^7burst_done with " + loops + " loops and " + ii + " spawns");
 	}
 }
 
@@ -578,7 +578,7 @@ watchIfZombiesAreDead(){
 			timelimit = 5 + randomint(10);
 			level notify("all_zombies_are_dead");
 			
-			iprintln("^1DEBUG: ^7Firing all_zombies_are_dead notify");
+			// iprintln("^1DEBUG: ^7Firing all_zombies_are_dead notify");
 			
 			ran = randomint( 4 ) + 2;
 			

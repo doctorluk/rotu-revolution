@@ -177,7 +177,7 @@ initGroupedSettings(){
 	
 	level.zombieProbabilityScenario = [];
 	setZombieProbabilityScenario(0, "normal zombies", 35, 10, 10, 10, 10, 0, 5, 5/*, 0*/);
-	setZombieProbabilityScenario(1, "burning only", 0, 0, 0, randomint(2)+1, 0, 0, randomint(1), randomint(1)/*, 0*/);
+	setZombieProbabilityScenario(1, "burning only", 0, 0, 0, randomint(2)+1, 0, 0, randomint(2), randomint(2)/*, 0*/);
 	setZombieProbabilityScenario(2, "crawlers only", 0, 0, 0, 0, 1, 0, 0, 0/*, 0*/);
 	setZombieProbabilityScenario(3, "tanks only", 0, 0, 1, 0, 0, 0, 0, 0/*, 0*/);
 	setZombieProbabilityScenario(4, "burning + crawlers", 0, 0, 0, randomint(2)+1, randomint(2)+1, randomint(1), randomint(1)/*, 1*/);
@@ -186,6 +186,7 @@ initGroupedSettings(){
 	setZombieProbabilityScenario(7, "tank + dogs + boss", 0, 10, 40, 0, 0, 1, 0, 1/*, 0*/);
 	setZombieProbabilityScenario(8, "dogs + burning", 0, 3, 0, 3, 0, 0, 1, 1/*, 0*/);
 	setZombieProbabilityScenario(9, "Pure random", randomint(4)+1, randomint(5), randomint(5), randomint(5), randomint(5), randomint(5), randomint(5), randomint(5)/*, 0*/);
+	setZombieProbabilityScenario(10, "dogs + helldogs", 0, 1, 0, 0, 0, 0, 0, 1/*, 0*/);
 	// setZombieProbabilityScenario(0, "test", 0, 0, 0, 0, 0, 0, 1);
 	
 	/* Limit the amount of bullet-damageable bosses on the server, because too many can be.... quite.... devastating */
@@ -415,7 +416,7 @@ randomZombieProbabilityScenario(waitingTime){
 			setZombieProbability(getZombieProbabilityType(i), level.zombieProbabilityScenario[ran]["prob"+i]);
 			i++;
 		}
-		iprintln("Loading scenario '^3" + level.zombieProbabilityScenario[ran]["description"] + "^7'");
+		// iprintln("Loading scenario '^3" + level.zombieProbabilityScenario[ran]["description"] + "^7'");
 		wait waitingTime;
 	}
 

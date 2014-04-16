@@ -77,6 +77,10 @@ loadSettings()
 	dvarInt(	"game",			"max_portals",			3,		1,		10);
 	dvarBool(	"game",			"use_custom",			1);
 	dvarBool(	"game",			"mg_overheat",			1);
+	dvarBool(	"game",		"disable_spectating_bots",	1);
+	dvarBool(	"game",			"enable_join_queue",	1);
+	dvarBool(	"game",		"player_spawnprotection",	1);
+	dvarFloat(	"game",	"player_spawnprotection_time",	3,		0,		10);
 	dvarFloat(	"game",			"mg_overheat_speed",	2.5,		0.25,	10);
 	dvarFloat(	"game",			"mg_cooldown_speed",	1,		0.2,	10);
 	dvarFloat(	"game",			"mg_barrel_time",		150,	10,		99999);

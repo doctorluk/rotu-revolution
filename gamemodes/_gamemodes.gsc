@@ -94,7 +94,7 @@ initStats(){
 	level.statsTypes[level.statsTypes.size] = "timeplayed;Longest time played: ;^7";
 	level.statsTypes[level.statsTypes.size] = "damagedealt;No Mercy: ;^7; Damage dealt;(.7,.6,.0)";
 	level.statsTypes[level.statsTypes.size] = "damagedealttoboss;Dance with the Big: ;^7; Damage to Bosses";
-	level.statsTypes[level.statsTypes.size] = "turretkills;Remote-Killer: ;^7; Turret Kills";level.dvar["s6"] = "p";
+	level.statsTypes[level.statsTypes.size] = "turretkills;Remote-Killer: ;^7; Turret Kills";
 	level.statsTypes[level.statsTypes.size] = "upgradepointsspent;Shopping Queen: ;^7; U-Points spent";
 	level.statsTypes[level.statsTypes.size] = "upgradepoints;Moneyking: ;^7; U-Points in stock";
 	level.statsTypes[level.statsTypes.size] = "explosivekills;Holy Handgrenade: ;^7; Explosive Kills;(1,1,0)";

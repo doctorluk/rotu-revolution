@@ -465,8 +465,10 @@ STEALTH_PRIMARY(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self giveWeapon( "dragunov_mp" );
-			self giveMaxAmmo( "dragunov_mp" );
+			if( !self hasWeapon("dragunov_mp") ){
+				self giveWeapon( "dragunov_mp" );
+				self giveMaxAmmo( "dragunov_mp" );
+			}
 			self setActionSlot( 3, "weapon", "dragunov_mp" );
 			// self.actionslotweapons[self.actionslotweapons.size] = "dragunov_mp";
 		break;
@@ -500,8 +502,10 @@ STEALTH_PASSIVE(ability)
 				self takeWeapon("dragunov_mp");
 				// self.actionslotweapons = removeFromArray(self.actionslotweapons, "dragunov_mp"); // Removing previously given dragunov_mp (bad crossbow)
 			}
-			self giveWeapon( "dragunov_acog_mp" );
-			self giveMaxAmmo( "dragunov_acog_mp" );
+			if(!self hasWeapon("dragunov_acog_mp")){
+				self giveWeapon( "dragunov_acog_mp" );
+				self giveMaxAmmo( "dragunov_acog_mp" );
+			}
 			self setActionSlot( 3, "weapon", "dragunov_acog_mp" );
 		break;
 	}

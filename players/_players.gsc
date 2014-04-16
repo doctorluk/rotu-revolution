@@ -93,6 +93,8 @@ setDown(isDown) {
 
 testloop(){
 	self endon("disconnect");
+	// self FinishPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime );
+	
 	// wait 2;
 	// scripts\bots\_bots::spawnZombie("boss", self, scripts\bots\_bots::getAvailableBot());
 	// self setclientdvar("ui_hud_hardcore", 1);
@@ -349,41 +351,35 @@ onPlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHit
 onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime)
 {
 
-	if(self.sessionteam == "spectator")
+	if( self.sessionteam == "spectator" )
+		return;
+	if ( self.isDown )
 		return;
 	
-		if(isdefined(eAttacker))
+	if( isDefined(eAttacker) && isPlayer(eAttacker) && eAttacker.team == self.team )
+	{
+		if (self.isZombie)
 		{
-			if (isplayer(eAttacker))
-			{
-				if (eAttacker.team == self.team)
-				{
-					
-					if (self.isZombie)
-					{
-						self scripts\bots\_bots::Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
-						updateHealthHud(self.health/self.maxhealth);
-						return;
-					}
-					else if (!level.dvar["game_friendlyfire"] && eAttacker != self)
-					{
-						if (!eAttacker.isZombie)
-						return;
-					}
-				}
-				else
-				{
-					if (!level.hasReceivedDamage)
-						level.hasReceivedDamage = 1;
-				}
-			}
+			self scripts\bots\_bots::Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
+			updateHealthHud(self.health/self.maxhealth);
+			return;
 		}
+		else if (!level.dvar["game_friendlyfire"] && eAttacker != self)
+		{
+			if (!eAttacker.isZombie)
+			return;
+		}
+	}
+	else
+	{
+		if (!level.hasReceivedDamage)
+			level.hasReceivedDamage = 1;
+	}
 		
-	if (self.god || level.godmode || self.spawnProtectionTime + 3000 > getTime())
+	if (self.god || level.godmode || ( self.spawnProtectionTime + (level.dvar["game_player_spawnprotection_time"]*1000) > getTime() && level.dvar["game_player_spawnprotection"]) )
 	return;
 	
-	if (self.isDown)
-	return;
+	
 
 
 	if(!isDefined(vDir))
@@ -444,7 +440,7 @@ getBestPlayer(type, returns){
 	amount = 0;
 	amount2 = 999999999;
 	for(i = 0; i < level.players.size; i++){
-		if(level.players[i].isBot || !level.players[i].hasPlayed)
+		if( level.players[i].isBot || !level.players[i].hasPlayed )
 			continue;
 			
 		switch(type){
@@ -846,7 +842,7 @@ spawnPlayer(forceSpawn)
 		if( self.sessionteam == "spectator" )
 			return;
 		
-		if (!level.intermission && level.activePlayers > 2)
+		if ( !level.intermission && level.activePlayers > 2 && level.dvar["game_enable_join_queue"] )
 		{
 			self addToJoinQueue();
 			self iprintlnbold("You have been put into an automated joining queue.");
@@ -856,9 +852,9 @@ spawnPlayer(forceSpawn)
 	}
 	self notify("spawned");
 
-//	resettimeout();
 	
-	// Setting neccesary variables
+	
+	// Setting neccessary variables
 	self.team = self.pers["team"];
 	self.sessionteam = self.team;
 	self.sessionstate = "playing";
@@ -937,6 +933,7 @@ spawnPlayer(forceSpawn)
 	self.c4Array = [];
 	self setStatusIcon("icon_"+self.class);
 	
+	resettimeout();
 
 	// Getting spawn loc and spawning
 	if ( level.playerspawns == "" )
@@ -984,6 +981,7 @@ spawnPlayer(forceSpawn)
 	self scripts\players\_weapons::givePlayerWeapons();
 
 	self notify("spawned_player");
+	level notify("spawned_player", self);
 	
 	self thread scripts\players\_usables::checkForUsableObjects();
 	
@@ -1313,6 +1311,10 @@ spawnSpectator(origin, angles)
 	self.sessionstate = "spectator";
 	self.spectatorclient = -1;
 	self.friendlydamage = undefined;
+	
+	self allowSpectateTeam("axis", !level.dvar["game_disable_spectating_bots"]);
+	
+	level notify("spawned_spectator", self);
 
 	self spawn( origin, angles );
 }

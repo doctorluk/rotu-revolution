@@ -22,7 +22,7 @@ init()
 {
 	waittillframeend;
 	if (level.dvar["game_use_custom"]) {
-		thread custom_scripts\_admin::myRanks();
-		thread custom_scripts\_admin::myCommands();
+		// thread custom_scripts\_admin::myRanks();
+		// thread custom_scripts\_admin::myCommands();
 	}
 }

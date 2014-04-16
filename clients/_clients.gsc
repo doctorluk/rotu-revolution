@@ -103,7 +103,7 @@ Callback_PlayerConnect()
 							 "r_distortion", 1,
 							 "ui_spawnqueue", "",
 							 "ui_spawnqueue_show", 1,
-							 "ui_rotuversion_short", level.rotuVersion_short,
+							 "ui_rotuversion_short", level.rotuVersion,
 							 "ui_classcount_soldier", level.classcount["soldier"],
 							"ui_classcount_stealth", level.classcount["stealth"],
 							"ui_classcount_armored", level.classcount["armored"],
