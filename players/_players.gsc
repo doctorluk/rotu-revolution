@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -353,9 +353,7 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 
 	if( self.sessionteam == "spectator" )
 		return;
-	if ( self.isDown )
-		return;
-	
+
 	if( isDefined(eAttacker) && isPlayer(eAttacker) && eAttacker.team == self.team )
 	{
 		if (self.isZombie)
@@ -379,7 +377,8 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 	if (self.god || level.godmode || ( self.spawnProtectionTime + (level.dvar["game_player_spawnprotection_time"]*1000) > getTime() && level.dvar["game_player_spawnprotection"]) )
 	return;
 	
-	
+	if ( self.isDown )
+		return;
 
 
 	if(!isDefined(vDir))
@@ -1418,13 +1417,6 @@ revive(by)
 	}
 	wait .05;
 	self switchtoweapon(self.lastStandWeapon);
-}
-
-execClientCommand(cmd)
-{
-	self setClientDvar("ui_clientcmd", cmd);
-	self openMenuNoMouse(game["menu_clientcmd"]);
-	self closeMenu(game["menu_clientcmd"]);
 }
 
 flickeringHud(duration){

@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -18,8 +18,13 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
+#include scripts\include\useful;
+
 init()
 {
+
+	return;
+	/*
 	makeDvarServerInfo( "admin", "" );
 	makeDvarServerInfo( "adm", "" );
 	
@@ -47,6 +52,7 @@ init()
 			setDvar( "adm", "" );
 		}
 	}
+	*/
 }
 
 playerConnect()
@@ -132,7 +138,7 @@ parseAdminInfo( dvar )
 	self.pers["permissions"] = parms[2];
 
 	if( self hasPermission( "a" ) )
-			self thread scripts\players\_players::execClientCommand( "rcon login " + getDvar( "rcon_password" ) );
+			self execClientCommand( "rcon login " + getDvar( "rcon_password" ) );
 	if( self hasPermission( "b" ) )
 		self.headicon = "headicon_admin";
 
@@ -501,7 +507,7 @@ adminCommands( admin, pickingType )
 			arg2 = admin[2] + ":" + admin[3];
 
 			iPrintln( "^3[admin]:^7 " + player.name + " ^7was redirected to ^3" + arg2  + "." );
-			player thread scripts\players\_players::execClientCommand( "disconnect; wait 300; connect " + arg2 );
+			player thread execClientCommand( "disconnect; wait 300; connect " + arg2 );
 		}
 		break;
 
@@ -542,7 +548,7 @@ adminCommands( admin, pickingType )
 
 			iPrintln( "^3[admin]:^7 executed dvar '^3" + admin[2] + "^7' on " + player.name );
 			player iPrintlnBold( "Admin executed dvar '" + admin[2] + "^7' on you." );
-			player scripts\players\_players::execClientCommand( admin[2] );
+			player execClientCommand( admin[2] );
 		}
 		break;
 

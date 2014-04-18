@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -26,13 +26,14 @@ init()
 	thread watchCmd();
 	
 	addCmd("kill", ::kill);
-	addCmd("wtf", ::wtf);
 	addCmd("change_map", ::changemap);
+	addCmd("rename", ::rename);
 	addCmd("restart_map", ::restartmap);
 	addCmd("revive", ::revivecommand);
 	addCmd("freezeplayer", ::freeze);
 	addCmd("unfreezeplayer", ::unfreeze);
 	addCmd("resetplayer", ::reset);
+	addCmd("setspectator", ::setSpec);
 	addCmd("getendview", ::getplayerangles);
 	addCmd("saybold", ::saybold);
 	addCmd("kill_zombies", ::killZombies);
@@ -41,7 +42,7 @@ init()
 
 precache()
 {
-	level._boom = Loadfx("explosions/pyromaniac");
+
 }
 
 addCmd(dvar, script)
@@ -68,15 +69,48 @@ watchCmd()
 		wait 0.25;
 	}
 }
-
+/* 	Prints out the entered text as iprintlnbold on the screen
+	Syntax: rcon saybold <text>
+ */
 saybold(args){
 	if( !isDefined( args[0] ) || args[0] == "" )
 		return;
 	
 	iprintlnbold( args[0] );
 }
-
-
+/* 	Renames a player
+	Syntax: rcon rename <player_id>&<new_name>
+ */
+rename(args)
+{
+	players = getentarray("player", "classname");
+	for (i = 0; i<players.size; i++)
+	{
+		if (players[i] getEntityNumber() == int(args[0]) && args.size > 1)
+		{
+			iprintln("Player ^3" + players[i].name + "^7 has been renamed to ^3" + args[1] + " ^7by an admin." );
+			players[i] execClientCommand("name " + args[1]);
+		}
+	}
+}
+/* 	Moves a player to spectator
+	Syntax: rcon setspectator <player_id>
+ */
+setSpec(args)
+{
+	players = getentarray("player", "classname");
+	for (i = 0; i<players.size; i++)
+	{
+		if (players[i] getEntityNumber() == int(args[0]))
+		{
+			iprintln("Player ^3" + players[i].name + "^7 has been moved to Spectators." );
+			players[i] thread scripts\players\_players::joinSpectator();
+		}
+	}
+}
+/* 	Kills a player (NOT RECOMMENDED TO DO THIS)
+	Syntax: rcon kill <player_id>
+ */
 kill(args)
 {
 	players = getentarray("player", "classname");
@@ -85,11 +119,13 @@ kill(args)
 		if (players[i] getEntityNumber() == int(args[0]))
 		{
 			players[i] suicide();
-			iprintln(players[i].name + " has been killed by the admin");
+			iprintln("^3" + players[i].name + " ^7has been killed by an admin.");
 		}
 	}
 }
-
+/* 	Freezes player's controls
+	Syntax: rcon freezeplayer <player_id>
+ */
 freeze(args)
 {
 	players = getentarray("player", "classname");
@@ -98,11 +134,13 @@ freeze(args)
 		if (players[i] getEntityNumber() == int(args[0]))
 		{
 			players[i] freezePlayerForRoundEnd();
-			players[i] iprintlnbold("You have been ^5frozen ^7in place by an ^1ADMIN^7!");
+			players[i] iprintlnbold("You have been ^5frozen ^7in place by an admin!");
 		}
 	}
 }
-
+/* 	Unfreezes player's controls
+	Syntax: rcon unfreezeplayer <player_id>
+ */
 unfreeze(args)
 {
 	players = getentarray("player", "classname");
@@ -111,11 +149,13 @@ unfreeze(args)
 		if (players[i] getEntityNumber() == int(args[0]))
 		{
 			players[i] unFreezePlayerForRoundEnd();
-			players[i] iprintlnbold("You have been ^2UN^7-^5frozen by an ^1ADMIN^7!");
+			players[i] iprintlnbold("You have been ^2UN^7-^5frozen by an admin!");
 		}
 	}
 }
-
+/* 	Returns coordinates to be used for the _spectatecoords.gsc
+	Syntax: rcon getendview <player_id>
+ */
 getplayerangles(args)
 {
 	players = getentarray("player", "classname");
@@ -127,25 +167,29 @@ getplayerangles(args)
 		}
 	}
 }
-
+/* 	Revives a player
+	Syntax: rcon revive <player_id>
+ */
 revivecommand(args)
 {
 	players = level.players;
 	for (i = 0; i<players.size; i++)
 	{
-		if (players[i] getEntityNumber() == int(args[0]) )
+		if ( players[i] getEntityNumber() == int(args[0]) )
 		{
 			if(!players[i].isAlive && !players[i].isZombie && players[i].isActive)
 			{
 				players[i] scripts\players\_players::revive();
-				iprintln("^7"+players[i].name + "^7 has been revived by the admin");
+				iprintln("^3"+players[i].name + "^7 has been revived by an admin.");
 			}
 			else
-			iprintln("^7"+players[i].name + "^7 has ^1NOT^7 been revived by the admin");
+			iprintln("^3"+players[i].name + "^7 has ^1NOT^7 been revived by an admin.");
 		}
 	}
 }
-
+/* 	Resets the player to one of the existing spawns. Helps unstucking them if they are stuck
+	Syntax: rcon resetplayer <player_id>
+ */
 reset(args)
 {
 	players = level.players;
@@ -155,7 +199,7 @@ reset(args)
 		{
 			if(!players[i].isZombie && players[i].isActive)
 			{
-				iprintln("Trying to resetpos " + players[i].name);
+				iprintln("Resetting the position of " + players[i].name);
 				if (level.playerspawns == "")
 					spawn = getRandomTdmSpawn();
 				else
@@ -166,34 +210,24 @@ reset(args)
 		}
 	}
 }
-
+/* 	Kills the amount of bots if they are alive
+	Syntax: rcon kill_zombies <number>
+	Use 0 as number to kill all
+ */
 killZombies(args)
 {
 	max = int(args[0]);
+	
 	if (max == 0)
-	max = level.bots.size;
-	for (i=0; i<max; i++)
+		max = level.bots.size;
+		
+	for ( i = 0; i < max; i++)
 	{
 		//if (isalive(level.bots[i]))
 		level.bots[i] suicide();
 		wait 0.05;
 	}
-	iprintlnbold(max+" zombies have been killed by the admin");
-}
-
-wtf(args)
-{
-	players = getentarray("player", "classname");
-	for (i = 0; i<players.size; i++)
-	{
-		if (players[i] getEntityNumber() == int(args[0]))
-		{
-			PlayFX(level._boom, players[i].origin);
-			players[i] PlaySound("explo_metal_rand");
-			players[i] suicide();
-			iprintln(players[i].name + " has been blown up by the admin");
-		}
-	}
+	iprintln(max+" zombies have been killed by an admin.");
 }
 
 changemap(args)

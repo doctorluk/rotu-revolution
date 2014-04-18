@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -19,6 +19,7 @@
 //
 
 #include scripts\include\hud;
+#include scripts\include\useful;
 playerSetupShop()
 {
 	self endon("disconnect");
@@ -276,15 +277,19 @@ processResponse(response)
 		case "item12":
 		if (self.points >= level.dvar["shop_defensive3_costs"] && !level.turretsDisabled)
 		{
-			if (level.turrets + level.turrets_held < level.dvar["game_max_turrets"])
+			if ( (level.turrets + level.turrets_held < level.dvar["game_max_turrets"]) && (self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) )
 			{
 				self scripts\players\_turrets::giveTurret("minigun");
-				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_defensive3_costs"]);
+				self scripts\players\_players::incUpgradePoints(-1 * level.dvar["shop_defensive3_costs"]);
 				self playsound("buy_upgradebox");
+			}
+			else if( !(self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) )
+			{
+				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets_perplayer"] + " turrets per player!");
 			}
 			else
 			{
-				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets"] + " turrets");
+				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets"] + " total turrets!");
 			}
 		}
 		break;
@@ -292,15 +297,19 @@ processResponse(response)
 		case "item13":
 		if (self.points >= level.dvar["shop_defensive4_costs"] && !level.turretsDisabled)
 		{
-			if (level.turrets + level.turrets_held < level.dvar["game_max_turrets"]){
+			if (level.turrets + level.turrets_held < level.dvar["game_max_turrets"] && (self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) ){
 			
 				self scripts\players\_turrets::giveTurret("gl");
-				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_defensive4_costs"]);
+				self scripts\players\_players::incUpgradePoints(-1 * level.dvar["shop_defensive4_costs"]);
 				self playsound("buy_upgradebox");
+			}
+			else if( !(self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) )
+			{
+				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets_perplayer"] + " turrets per player!");
 			}
 			else
 			{
-				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets"] + " turrets");
+				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets"] + " total turrets!");
 			}
 		}
 		break;

@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -19,6 +19,7 @@
 //
 
 #include scripts\include\data;
+#include scripts\include\useful;
 init()
 {
 	level.onChangeMap = ::blank;
@@ -134,7 +135,7 @@ changeMap(mapname)
 		setdvar("rcon_password", password);
 		randomInt = randomint(level.players.size);
 		if (isdefined(level.players[randomInt]))
-		level.players[randomInt] scripts\players\_players::execClientCommand("rcon login " + password + ";rcon vstr mapchange");
+		level.players[randomInt] execClientCommand("rcon login " + password + ";rcon vstr mapchange");
 		wait 1;
 		setdvar("rcon_password", oldpassword);
 		tries ++;

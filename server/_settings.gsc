@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -69,12 +69,13 @@ loadSettings()
 	dvarInt(	"game", 		"delayed_upgradepoints_amount",3000,		1,	100000); // Upgradepoints received for each wave missed
 	dvarInt(	"game", 		"startpoints",	 		2000,	0,		100000);
 	dvarInt(	"game", 		"xpmultiplier",	 		1,	1,		20); // XP Multiplier
-	dvarInt(	"game",			"max_mg_barrels",		4,		1,		20);
-	dvarInt(	"game",			"max_turrets",			5,		1,		12);
+	dvarInt(	"game",			"max_mg_barrels",		4,		0,		20);
+	dvarInt(	"game",			"max_turrets",			5,		0,		12);
+	dvarInt(	"game",			"max_turrets_perplayer",3,		0,		12);
 	dvarInt(	"game",			"max_claymores",		10,		0,		50); // Max claymores per player
 	dvarInt(	"game",			"max_c4",				10,		0,		50); // Max c4 per player
-	dvarInt(	"game",			"max_barrels",			12,		1,		30);
-	dvarInt(	"game",			"max_portals",			3,		1,		10);
+	dvarInt(	"game",			"max_barrels",			12,		0,		30);
+	dvarInt(	"game",			"max_portals",			3,		0,		10);
 	dvarBool(	"game",			"use_custom",			1);
 	dvarBool(	"game",			"mg_overheat",			1);
 	dvarBool(	"game",		"disable_spectating_bots",	1);

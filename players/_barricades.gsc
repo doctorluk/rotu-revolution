@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -20,6 +20,7 @@
 
 #include scripts\include\data;
 #include scripts\include\hud;
+#include scripts\include\useful;
 
 init()
 {
@@ -153,7 +154,7 @@ MGOverheat()
 		
 				if (self.overheat >= 100 || self.cooldown)
 				{
-					player scripts\players\_players::execClientCommand("-attack");
+					player execClientCommand("-attack");
 					self.cooldown = true;
 				}
 				else
