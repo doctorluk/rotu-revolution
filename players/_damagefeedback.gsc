@@ -21,7 +21,7 @@
 init()
 {
 	precacheShader("damage_feedback");
-	precacheShader("damage_feedback_j");
+	precacheShader("icon_turret_hit");
 
 	level thread onPlayerConnect();
 }
@@ -40,6 +40,15 @@ onPlayerConnect()
 		player.hud_damagefeedback_normal.alpha = 0;
 		player.hud_damagefeedback_normal.archived = true;
 		player.hud_damagefeedback_normal setShader("damage_feedback", 24, 48);
+
+		player.hud_damagefeedback_turret = newClientHudElem(player);
+		player.hud_damagefeedback_turret.horzAlign = "center";
+		player.hud_damagefeedback_turret.vertAlign = "middle";
+		player.hud_damagefeedback_turret.x = -47/2;
+		player.hud_damagefeedback_turret.y = 20;
+		player.hud_damagefeedback_turret.alpha = 0;
+		player.hud_damagefeedback_turret.archived = true;
+		player.hud_damagefeedback_turret setShader("icon_turret_hit", 47, 20);
 	}
 }
 
@@ -51,24 +60,27 @@ updateDamageFeedbackSound()
 		self playlocalsound("MP_hit_alert");
 } 
 
-updateDamageFeedback( hitBodyArmor )
+updateDamageFeedback( )
 {
 	if ( !isPlayer( self ) )
 		return;
-	
-	if ( hitBodyArmor )
-	{
-		self.hud_damagefeedback_normal setShader("damage_feedback_j", 24, 48);
-		self playlocalsound("MP_hit_alert"); // TODO: change sound?
-	}
-	else
-	{
 		
-		self.hud_damagefeedback_normal setShader("damage_feedback", 24, 48);
-		self playlocalsound("MP_hit_alert");
-	}
+	self.hud_damagefeedback_normal setShader("damage_feedback", 24, 48);
+	self playlocalsound("MP_hit_alert");
 	
 	self.hud_damagefeedback_normal.alpha = 1;
 	self.hud_damagefeedback_normal fadeOverTime(1);
 	self.hud_damagefeedback_normal.alpha = 0;
+}
+
+updateTurretDamageFeedback( )
+{
+	if ( !isPlayer( self ) )
+		return;
+		
+	self.hud_damagefeedback_turret setShader("icon_turret_hit", 47, 20);
+	
+	self.hud_damagefeedback_turret.alpha = 0.8;
+	self.hud_damagefeedback_turret fadeOverTime(1);
+	self.hud_damagefeedback_turret.alpha = 0;
 }

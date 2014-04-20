@@ -30,11 +30,11 @@ onPlayerConnect(){
 }
 
 check(){
-	self thread CheckValidGuid();
+	self thread checkValidGuid();
 	self thread watchName();
 }
 
-CheckValidGuid(){
+checkValidGuid(){
 	self endon( "disconnect" );
 	lpGuidChar = "";
 	lpGuid = self getGuid();

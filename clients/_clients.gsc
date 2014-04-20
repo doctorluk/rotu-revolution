@@ -131,7 +131,7 @@ Callback_PlayerConnect()
 		
 		self thread scripts\players\_players::onPlayerConnect();
 		self thread scripts\gamemodes\_hud::onPlayerConnect();
-		self thread scripts\players\_players::joinAllies();
+		// self thread scripts\players\_players::joinAllies();
 		
 	}
 }

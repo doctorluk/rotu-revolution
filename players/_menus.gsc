@@ -18,6 +18,9 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
+#include scripts\include\data;
+
+
 init()
 {
 	game["menu_team"] = "team_marinesopfor";
@@ -125,9 +128,8 @@ onMenuResponse()
 			self closeMenu();
 			self closeInGameMenu();
 			if ( menu == game["menu_changeclass_ability"] )
-			{
 				self openMenu( game["menu_changeclass_allies"] );
-			}
+				
 			continue;
 		}
 		
@@ -137,11 +139,25 @@ onMenuResponse()
 			continue;
 		}
 		
-		if( response == "changeteam" )
+		if( response == "join" )
 		{
 			self closeMenu();
 			self closeInGameMenu();
-			self openMenu(game["menu_team"]);
+			self openMenu(game["menu_changeclass_allies"]);
+		}
+		
+		if( response == "gospec" )
+		{
+			self closeMenu();
+			self closeInGameMenu();
+			self scripts\players\_players::joinSpectator();
+		}
+		
+		if( response == "removefromqueue" )
+		{
+			self closeMenu();
+			self closeInGameMenu();
+			self scripts\players\_players::removeFromQueue();
 		}
 	
 		if( response == "changeclass_marines" )
@@ -189,6 +205,7 @@ onMenuResponse()
 			{
 				self closeMenu();
 				self closeInGameMenu();
+				// self scripts\players\_players::joinAllies();
 				//self openmenu(game["menu_changeweapon"]);
 				
 			}

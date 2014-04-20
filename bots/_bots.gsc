@@ -509,9 +509,17 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 			}
 			iDamage = int( iDamage * eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) * self.incdammod);
 			
+			assertEx( isDefined( self.incdammod ) );
+			if( !isDefined( iDamage ) )
+				return;
+			
 			eAttacker notify("damaged_bot", self);
 			
-			eAttacker scripts\players\_damagefeedback::updateDamageFeedback(0);
+			if( isDefined( eInflictor.isTurret ) && eInflictor.isTurret && isDefined( eInflictor.owner ) )
+				eAttacker scripts\players\_damagefeedback::updateTurretDamageFeedback();
+			else
+				eAttacker scripts\players\_damagefeedback::updateDamageFeedback();
+				
 			if (self.isBot)
 				self addToAssist(eAttacker, iDamage);
 		}
@@ -908,7 +916,7 @@ monkeyOverride(){
 		while(level.monkeyEntities.size > 0 && self.type != "boss" && self.type != "halfboss"){
 			nearestEnt = undefined;
 			nearestDistance = 9999999999;
-			for (i=0; i<level.monkeyEntities.size; i++)
+			for ( i = 0; i < level.monkeyEntities.size; i++ )
 			{
 				ent = level.monkeyEntities[i];
 				if(!isDefined(self.origin) || !isDefined(ent.origin))

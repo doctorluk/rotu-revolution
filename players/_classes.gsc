@@ -175,7 +175,10 @@ pickClass(class)
 		//return;
 		//self setstat(434, 0);
 		//self setstat(444, 1000);
-
+		if( isDefined( self.class ) && isAlive( self ) )
+			self.oldclass = self.class;
+		else
+			self.oldclass = "none";
 		
 		self setclientdvars("ui_class_rank", level.player_stat_rank[class]);
 		self.class = class;
@@ -217,17 +220,19 @@ acceptClass()
 	{
 		self closeMenu();
 		self closeInGameMenu();
-		if (self.pers["team"] == "spectator") {
+		if ( self.oldClass != self.class ) {
+			if( isAlive( self ) )
+				self scripts\players\_players::joinSpectator();
 			self scripts\players\_players::joinAllies();
 			self thread scripts\players\_players::spawnPlayer();
-			return;
+			// return;
 		}
-		if (self.isActive)
-		{
-			self iprintlnbold("Class will change next wave (not implemented yet)");
-		} else {
-			self thread scripts\players\_players::spawnPlayer();
-		}
+		// if (self.isActive)
+		// {
+			// self iprintlnbold("Class will change next wave (not implemented yet)");
+		// } else {
+			// self thread scripts\players\_players::spawnPlayer();
+		// }
 	} else  {
 		self iprintlnbold("Select a class!");
 	}

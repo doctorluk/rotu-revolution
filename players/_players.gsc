@@ -1219,7 +1219,7 @@ joinAllies()
 		
 		self.sessionteam = "allies";
 
-		self setclientdvar("g_scriptMainMenu", game["menu_class"]);
+		self setclientdvars("g_scriptMainMenu", game["menu_class"]);
 		
 		self.pers["team"] = "allies";
 		
@@ -1227,17 +1227,20 @@ joinAllies()
 	}
 }
 
-joinSpectator()
-{
-	if (level.gameEnded)
-	return;
-	
+removeFromQueue(){
 	self setclientdvars("cg_thirdperson", 0, "ui_spawnqueue", "");
 	if( arrayContains(level.joinQueue, self) ){
 		level.joinQueue = removeFromArray(level.joinQueue, self);
 		self iprintlnbold("You have been removed from the queue!");
-		self iprintlnbold("Reselect a class to join again");
+
+		self joinSpectator();
 	}
+}
+
+joinSpectator()
+{
+	if (level.gameEnded)
+	return;
 	
 	if (self.pers["team"] != "spectator")
 	{
@@ -1414,6 +1417,8 @@ revive(by)
 	if(isDefined(by)){
 		self playsound("self_thanks_revived");
 		self.spawnProtectionTime = getTime();
+		if( isReallyPlaying(by) && by.curClass == "medic" )
+			by scripts\players\_abilities::rechargeSpecial(8);
 	}
 	wait .05;
 	self switchtoweapon(self.lastStandWeapon);
