@@ -100,7 +100,7 @@ prePreWave(wavetype, type){
 	level.intermission = 1;
 	
 	level.waveSize = getWaveSize(level.currentWave, type);
-	// level.waveSize = 1;
+	// level.waveSize = 60;
 	level.currentType = type;
 	level.waveType = wavetype;
 	level.waveProgress = 0;

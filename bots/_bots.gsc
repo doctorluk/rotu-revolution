@@ -89,29 +89,30 @@ precache()
 	precachemodel("head_sp_loyalist_josh_helmet_body_c_dead");
 	precachemodel("head_sp_loyalist_tom_hat_body_d_dead");
 	
-	precachemodel("bo1_c_viet_zombie_napalm");
-	precachemodel("bo1_c_viet_zombie_napalm_head");
+	precachemodel("bo1_c_viet_zombie_napalm"); // LOD FIXED
+	precachemodel("bo1_c_viet_zombie_napalm_head"); // LOD FIXED
 	
-	precachemodel("bo1_c_viet_zombie_female");
-	precachemodel("bo1_c_viet_zombie_female_head");
-	precachemodel("bo1_c_viet_zombie_nva1_body");
-	precachemodel("bo1_c_viet_zombie_nva1_head1");
-	precachemodel("bo1_c_zom_cosmo_cosmonaut_body");
-	precachemodel("bo1_c_zom_cosmo_head1");
-	precachemodel("bo1_c_zom_cosmo_head2");
-	precachemodel("bo1_c_zom_cosmo_head3");
-	precachemodel("bo1_c_zom_cosmo_head4");
-	precachemodel("bo1_c_usa_pent_zombie_officeworker_body");
-	precachemodel("bo1_c_zom_head_1");
-	precachemodel("bo1_c_zom_head_2");
-	precachemodel("bo1_c_zom_head_3");
-	precachemodel("bo1_c_zom_head_4");
-	precachemodel("bo1_c_ger_zombie_head1");
-	precachemodel("bo1_c_ger_zombie_head2");
-	precachemodel("bo1_c_ger_zombie_head3");
-	precachemodel("bo1_c_ger_zombie_head4");
-	precachemodel("bo1_c_usa_pent_zombie_militarypolice_body");
-	precachemodel("bo1_c_zom_cosmo_spetznaz_body");
+	precachemodel("bo1_c_viet_zombie_female"); // LOD FIXED
+	precachemodel("bo1_c_viet_zombie_female_head"); // LOD FIXED
+	precachemodel("bo1_c_viet_zombie_nva1_body"); // LOD FIXED
+	precachemodel("bo1_c_viet_zombie_nva1_head1"); // LOD FIXED
+	precachemodel("bo1_c_zom_cosmo_cosmonaut_body"); // FIXED MAX. LOD DISTANCE
+	precachemodel("bo1_c_zom_cosmo_head1"); // FIXED MAX. LOD DISTANCE
+	precachemodel("bo1_c_zom_cosmo_head2"); // FIXED MAX. LOD DISTANCE
+	precachemodel("bo1_c_zom_cosmo_head3"); // FIXED MAX. LOD DISTANCE
+	precachemodel("bo1_c_zom_cosmo_head4"); // FIXED MAX. LOD DISTANCE
+	precachemodel("bo1_c_usa_pent_zombie_officeworker_body"); // LOD FIXED
+	precachemodel("bo1_c_zom_head_1"); // LOD FIXED
+	precachemodel("bo1_c_zom_head_2"); // LOD FIXED
+	precachemodel("bo1_c_zom_head_3"); // LOD FIXED
+	precachemodel("bo1_c_zom_head_4"); // LOD FIXED
+	precachemodel("bo1_c_ger_zombie_head1"); // LOD FIXED
+	precachemodel("bo1_c_ger_zombie_head2"); // LOD FIXED
+	precachemodel("bo1_c_ger_zombie_head3"); // LOD FIXED
+	precachemodel("bo1_c_ger_zombie_head4"); // LOD FIXED
+	precachemodel("bo1_c_usa_pent_zombie_scientist_body"); // LOD FIXED
+	precachemodel("bo1_c_usa_pent_zombie_militarypolice_body"); // LOD FIXED
+	precachemodel("bo1_c_zom_cosmo_spetznaz_body"); // FIXED MAX. LOD DISTANCE
 	// precachemodel("bo1_c_zom_george_romero_zombiefied_fb");
 	precachemodel("zom_george_romero");
 	// precachemodel("skeleton");
@@ -126,16 +127,12 @@ precache()
 	precachemodel("char_ger_honorgd_zombiehead1_3");
 	precachemodel("char_ger_honorgd_zombiehead1_4");
 	
-	precachemodel("bo1_c_usa_pent_zombie_scientist_body");
+	precachemodel("zombie_wolf");
+	precachemodel("cyclops");
+	precachemodel("invisible_model");
 	
 	precachemodel("tag_origin");
 	
-	// precachemodel("german_sheperd_dog");
-	precachemodel("zombie_wolf");
-	precachemodel("cyclops");
-	
-	precachemodel("invisible_model");
-	//PreCacheShellShock("zombiedamage");
 	PreCacheShellShock("boss");
 	precacheshellshock("toxic_gas_mp");
 	// precacheshellshock("frag_grenade_mp");

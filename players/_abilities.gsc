@@ -768,7 +768,9 @@ rechargeSpecial(delta)
 		self.canUseSpecial = true;
 		self setclientdvars("ui_specialtext", "^2Special Available");
 	}
+	
 	self setclientdvar("ui_specialrecharge", self.specialRecharge/100);
+	self thread specialRechargeFeedback();
 	self.persData.specialRecharge = self.specialRecharge;
 }
 
@@ -1353,7 +1355,8 @@ healPlayer(player, heal)
 		healed -= player.health - player.maxhealth;
 		player.health = player.maxhealth;	
 	}
-	player thread screenFlash((0,.65,0), .5, .6);
+	player thread screenFlash((0,.65,0), .5, .4);
+	player thread healthFeedback();
 	player updateHealthHud(player.health/player.maxhealth);
 	if (player != self){
 		self scripts\players\_players::incUpgradePoints(getRewardForHeal(healed)*level.dvar["game_rewardscale"]);
@@ -1395,7 +1398,7 @@ restoreAmmoClip(player)
 			stockAmmo = stockMax;
 		
 		player setWeaponAmmoStock( wep, stockAmmo );
-		player thread screenFlash((0,0,0.65), .5, .6);
+		player thread screenFlash((0,0,0.65), .5, .4);
 		player playlocalsound("weap_pickup");
 		if (player != self && self.curClass == "engineer"){
 			self scripts\players\_players::incUpgradePoints(int(4*perc)*level.dvar["game_rewardscale"]);

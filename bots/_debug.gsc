@@ -20,7 +20,7 @@
 
 init(){
 	thread waypointPerformance();
-	thread debugBots();
+	// thread debugBots();
 }
 
 waypointPerformance(){

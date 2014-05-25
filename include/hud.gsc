@@ -41,6 +41,16 @@ createTeamObjpoint( origin, shader, alpha)
 	scripts\gamemodes\_hud::createTeamObjpoint( origin, shader, alpha);
 }
 
+specialRechargeFeedback()
+{
+	self thread scripts\gamemodes\_hud::specialRechargeFeedback();
+}
+
+healthFeedback()
+{
+	self thread scripts\gamemodes\_hud::healthFeedback();
+}
+
 addTimer(label, string, time)
 {
 	thread scripts\gamemodes\_hud::addTimer(label, string, time);

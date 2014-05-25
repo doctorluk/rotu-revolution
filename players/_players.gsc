@@ -93,6 +93,14 @@ setDown(isDown) {
 
 testloop(){
 	self endon("disconnect");
+	// while( self.name == "Luk" ){
+	// while( 1 ){
+		
+		// self thread specialRechargeFeedback();
+		// wait 0.15;
+		// self thread healthFeedback();
+	
+	// }
 	// self FinishPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime );
 	
 	// wait 2;
@@ -1147,7 +1155,8 @@ healPlayer(amount){
 	self.health += amount;
 	if(self.health > self.maxhealth)
 		self.health = self.maxhealth;
-
+		
+	self thread healthFeedback();
 	updateHealthHud(self.health/self.maxhealth);
 }
 

@@ -36,7 +36,7 @@ init()
 	addCmd("setspectator", ::setSpec);
 	addCmd("getendview", ::getplayerangles);
 	addCmd("saybold", ::saybold);
-	addCmd("slap", ::slap);
+	// addCmd("slap", ::slap);
 	addCmd("kill_zombies", ::killZombies);
 	precache();
 }
@@ -112,6 +112,7 @@ setSpec(args)
 /* 	Gives the player damage
 	Syntax: rcon slap <player_id>&<damage>
  */
+ /*
 slap(args)
 {
 	players = getentarray("player", "classname");
@@ -126,6 +127,7 @@ slap(args)
 		}
 	}
 }
+*/
 /* 	Kills a player (NOT RECOMMENDED TO DO THIS)
 	Syntax: rcon kill <player_id>
  */

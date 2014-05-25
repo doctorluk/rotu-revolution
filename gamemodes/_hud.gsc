@@ -123,6 +123,8 @@ precache()
 	precacheShader("progress_bar_fill");
 	precacheshader("hud_weapons");
 	precacheshader("hud_ammo");
+	precacheshader("healthcross");
+	precacheshader("lightning_icon");
 	
 	precacheShader("icon_ammobox_radar");
 	precacheShader("icon_medkit_radar");
@@ -282,6 +284,85 @@ onPlayerConnect()
 	self.hinttext.y = 300;
 	self.hinttext.fontscale = 1.4;
 	self.hinttext.alpha = 0;
+}
+
+healthFeedback(){
+
+	self endon("disconnect");
+	
+	if( !isDefined( self.lastHealthFeedback ) ) // Don't add too many client hudelements or display will get bugged
+		self.lastHealthFeedback = getTime();
+	else if( self.lastHealthFeedback + 300 > getTime() )
+		return;
+	else
+		self.lastHealthFeedback = getTime();
+	
+	healthcross = NewClientHudElem(self);
+	
+	healthcross.alpha = 0;
+	healthcross.x = 104;
+	healthcross.y = -108;
+	healthcross.hideWhenInMenu = false;
+	healthcross.alignX = "left";
+	healthcross.alignY = "bottom";
+	healthcross.horzAlign = "left";
+	healthcross.vertAlign = "bottom";
+	healthcross.archived = true;
+	healthcross setShader("healthcross", 20, 20);
+	direction = -30 + randomint(50);
+	
+	
+	healthcross FadeOverTime(.5);
+	healthcross.alpha = 1;
+	
+	healthcross MoveOverTime(1.5);
+	healthcross.x += cos(direction)*48;
+	healthcross.y += sin(direction)*40;
+	wait 1.3;
+	healthcross FadeOverTime(.3);
+	healthcross.alpha = 0;
+	wait .3;
+	healthcross destroy();
+
+}
+
+specialRechargeFeedback(){
+
+	self endon("disconnect");
+	
+	if( !isDefined( self.lastSpecialRechargeFeedback ) )  // Don't add too many client hudelements or display will get bugged
+		self.lastSpecialRechargeFeedback = getTime();
+	else if( self.lastSpecialRechargeFeedback + 300 > getTime() )
+		return;
+	else
+		self.lastSpecialRechargeFeedback = getTime();
+	
+	lightning_icon = NewClientHudElem(self);
+	lightning_icon.alpha = 0;
+	lightning_icon.x = 104;
+	lightning_icon.y = -92;
+	lightning_icon.hideWhenInMenu = false;
+	lightning_icon.alignX = "left";
+	lightning_icon.alignY = "bottom";
+	lightning_icon.horzAlign = "left";
+	lightning_icon.vertAlign = "bottom";
+	lightning_icon.archived = true;
+	lightning_icon setShader("lightning_icon", 20, 20);
+	direction = -30 + randomint(50);
+	
+	
+	lightning_icon FadeOverTime(.5);
+	lightning_icon.alpha = 1;
+	
+	lightning_icon MoveOverTime(1.5);
+	lightning_icon.x += cos(direction)*48;
+	lightning_icon.y += sin(direction)*40;
+	wait 1.3;
+	lightning_icon FadeOverTime(.3);
+	lightning_icon.alpha = 0;
+	wait .3;
+	lightning_icon destroy();
+
 }
 
 
