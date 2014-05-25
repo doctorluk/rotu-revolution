@@ -92,6 +92,13 @@ loadSettings()
 	dvarBool(	"game",			"changing_hostname",	0);
 	dvarInt(	"game",			"changing_hostname_time",10,	2,		60);
 	
+	// AFK SETTINGS
+	dvarBool(	"game",			"afk_enabled",			1); 						// AFK Enabled?
+	dvarInt(	"game",			"afk_time_warn",		240,	5,		6000); 	// Time in s how long a player is afk
+	dvarInt(	"game",			"afk_warn_amount",		5,		1,		100); 	// Times a player should be warned after afk_time_warn has been reached
+	dvarInt(	"game",			"afk_time",				300,	5,		6000); 	// Time in s how long a player is afk
+	dvarInt(	"game",			"afk_type",				0,		0,		1); 		// AFK-handle type, 0 = kick, 1 = spec
+	
 	dvarBool(	"hud",			"survivors_left",		1);
 	dvarBool(	"hud",			"survivors_down",		1);
 	dvarBool(	"hud",			"wave_number",			1);

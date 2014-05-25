@@ -33,6 +33,8 @@ init()
 	thread scripts\server\_servername::init();
 	thread scripts\security\_security::init();
 	
+	thread scripts\extras\_antiafk::init();
+	
 	thread securityCheck();
 	thread broadcastVersion();
 }

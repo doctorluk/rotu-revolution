@@ -857,7 +857,6 @@ spawnPlayer(forceSpawn)
 		}
 	}
 	self notify("spawned");
-
 	
 	
 	// Setting neccessary variables
@@ -1018,6 +1017,7 @@ spawnPlayer(forceSpawn)
 		self disableWeapons();
 	
 	self.isAlive = true;
+	level notify("spawned", self);
 	level notify("update_classcounts");
 }
 

@@ -118,3 +118,12 @@ playSoundOnAllPlayers(sound, delay){
 	for(i = 0; i < level.players.size; i++)
 		level.players[i] playlocalsound(sound);
 }
+
+pressesAnyButton(){
+
+	if( self adsbuttonpressed() || self attackbuttonpressed() || self fragbuttonpressed() || self meleebuttonpressed() || self secondaryoffhandbuttonpressed() || self usebuttonpressed() )
+		return true;
+		
+	return false;
+
+}
