@@ -217,6 +217,18 @@ addZomModel(type, body, head)
 	}
 }
 
+clearZomModel(type){
+
+	if ( isDefined( level.zom_models[type] ) ){
+	
+		for(i = 0; i < level.zom_models[type].size; i++) // Remove bodies
+			level.zom_models[type][i] = undefined;
+			
+		for(i = 0; i < level.zom_models_head[type].size; i++) // Remove heads
+			level.zom_models_head[type][i] = undefined;
+	}
+}
+
 loadZomModel(type)
 {
 	self DetachAll(); 
@@ -1326,7 +1338,10 @@ getScarySpawnpoint(){
 	}
 	// In case everything fails, we just spawn the zombie somewhere on the map randomly
 	if(validSpawnpoints.size <= 1)
-		return level.wp[randomint(level.wp.size)];
+		if( level.wp.size > 2 )
+			return level.wp[randomint(level.wp.size)];
+		else
+			return  scripts\gamemodes\_waves::getRandomSpawn();
 		
 	return validSpawnpoints[randomint(validSpawnpoints.size)];
 }

@@ -120,7 +120,8 @@ resetAbilities()
 	self.medkitTime = 12;
 	self.medkitHealing = 18;
 	self.auraHealing = 40;
-	self.specialRecharge = 0;
+	if( !isDefined( self.specialRecharge ) )
+		self.specialRecharge = 0;
 	self.longerTurrets = false;
 	self.reviveWill = false;
 	self.toxicImmunity = false;
@@ -753,6 +754,7 @@ rechargeSpecial(delta)
 		self.specialRecharge = 100;
 		self setclientdvars("ui_specialtext", "^2Special Available");
 		self setclientdvar("ui_specialrecharge", 1);
+		self.persData.specialRecharge = self.specialRecharge;
 		return;
 	}
 	
@@ -767,6 +769,7 @@ rechargeSpecial(delta)
 		self setclientdvars("ui_specialtext", "^2Special Available");
 	}
 	self setclientdvar("ui_specialrecharge", self.specialRecharge/100);
+	self.persData.specialRecharge = self.specialRecharge;
 }
 
 giveArmoredHud(){

@@ -36,6 +36,7 @@ init()
 	addCmd("setspectator", ::setSpec);
 	addCmd("getendview", ::getplayerangles);
 	addCmd("saybold", ::saybold);
+	addCmd("slap", ::slap);
 	addCmd("kill_zombies", ::killZombies);
 	precache();
 }
@@ -105,6 +106,23 @@ setSpec(args)
 		{
 			iprintln("Player ^3" + players[i].name + "^7 has been moved to Spectators." );
 			players[i] thread scripts\players\_players::joinSpectator();
+		}
+	}
+}
+/* 	Gives the player damage
+	Syntax: rcon slap <player_id>&<damage>
+ */
+slap(args)
+{
+	players = getentarray("player", "classname");
+	if( args.size < 2 )
+		return;
+	for (i = 0; i < players.size; i++)
+	{
+		if (players[i] getEntityNumber() == int(args[0]))
+		{
+			iprintln("Player ^3" + players[i].name + "^7 has been slapped with " + int(args[1]) + " damage!" );
+			players[i] finishPlayerDamage(players[i], players[i], int(args[1]), 0, "MOD_PROJECTILE", "slap_mp", (0,0,0), (0,0,0), "none", 0);
 		}
 	}
 }

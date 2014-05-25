@@ -100,12 +100,14 @@ prePreWave(wavetype, type){
 	level.intermission = 1;
 	
 	level.waveSize = getWaveSize(level.currentWave, type);
+	// level.waveSize = 1;
 	level.currentType = type;
 	level.waveType = wavetype;
 	level.waveProgress = 0;
 	
 	thread scripts\gamemodes\_survival::watchEnd();
 	reviveActivePlayers();
+	
 	scripts\players\_players::spawnJoinQueue();
 	
 	waveCountdown(type);
@@ -371,6 +373,8 @@ finaleAmbient(){
 
 getWaveSize(wave, type)
 {
+	// return 1;
+	// /*
 	if( !isDefined( type ) )
 		type = "";
 		
@@ -400,6 +404,7 @@ getWaveSize(wave, type)
 	if( type == "finale" && amount < level.dvar["bot_count"] )
 		amount = level.dvar["bot_count"] + 10;
 	return amount;
+	// */
 }
 
 burstSpawner(i){
@@ -426,7 +431,7 @@ burstSpawner(i){
 			
 			loops++;
 			
-			if( loops % 10 == 0 )
+			if( loops % 10 == 0 ) // More output! <3
 				wait 0.05;
 		}
 		level notify("burst_done");
@@ -451,7 +456,11 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
-		spawn = level.wp[randomint(level.wp.size)];
+		if( level.wp.size < 2 ) // Fix for maps without waypoints
+			spawn = getRandomSpawn();
+		else
+			spawn = level.wp[randomint(level.wp.size)];
+			
 		thread soulSpawn( type, spawn, bot );
 		return bot;
 	}
@@ -463,7 +472,10 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
-		spawn = level.wp[randomint(level.wp.size)];
+		if( level.wp.size < 2 ) // Fix for maps without waypoints
+			spawn = getRandomSpawn();
+		else
+			spawn = level.wp[randomint(level.wp.size)];
 		thread groundSpawn( type, spawn, bot );
 		return bot;
 	}

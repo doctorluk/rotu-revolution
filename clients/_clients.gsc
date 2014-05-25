@@ -141,6 +141,15 @@ Callback_PlayerDisconnect()
 	if (self.isBot || !self.hasBegun)
 	return;
 	
+	// if( isReallyPlaying( self ) )
+		// self.persData.lastPlayedWave = level.currentWave;
+		
+	if( isDefined( self.persData.lastPlayedWave ) && isAlive( self ) ){
+		// logPrint("Updated your lastPlayedWave, " + self.name + ", it is " + level.currentWave + "\n");
+		self.lastPlayedWave = level.currentWave;
+		self.persData.lastPlayedWave = self.lastPlayedWave;
+	}
+	
 	self scripts\players\_players::cleanup();
 	
 	self setclientdvars("ui_hud_hardcore", 0,

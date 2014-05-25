@@ -124,6 +124,22 @@ addSpawn(targetname, priority)
 	}
 }
 
+removeSpawn(targetname){
+
+	if (!isdefined(level.survSpawns))
+	return -1;
+	
+	for( i = 0; i < level.survSpawns.size; i++ ){
+		if( level.survSpawns[i] == targetname ){
+			level.survSpawnsTotalPriority = level.survSpawnsTotalPriority - level.survSpawnsPriority[i];
+			level.survSpawnsPriority = removeFromArray( level.survSpawnsPriority, level.survSpawnsPriority[i] );
+			level.survSpawns = removeFromArray( level.survSpawns, level.survSpawns[i] );
+		
+		}
+	}
+
+}
+
 beginGame()
 {
 	if (level.survMode == "special")

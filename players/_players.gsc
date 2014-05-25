@@ -373,9 +373,8 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 		if (!level.hasReceivedDamage)
 			level.hasReceivedDamage = 1;
 	}
-		
 	if (self.god || level.godmode || ( self.spawnProtectionTime + (level.dvar["game_player_spawnprotection_time"]*1000) > getTime() && level.dvar["game_player_spawnprotection"]) )
-	return;
+		return;
 	
 	if ( self.isDown )
 		return;
@@ -690,8 +689,8 @@ doAreaDamage(range, damage, attacker)
 
 cleanup() // CLEANUP ON DEATH (SPEC) OR DISCONNECT
 {
-	if (isDefined(self.isDown) && self.isDown)
-		level scripts\players\_usables::removeUsable(self);
+	if ( isDefined(self.isDown) && self.isDown )
+		scripts\players\_usables::removeUsable(self);
 		
 	self scripts\players\_usables::usableAbort();
 	self.actionslotweapons = [];
@@ -758,7 +757,7 @@ cleanup() // CLEANUP ON DEATH (SPEC) OR DISCONNECT
 }
 
 addToJoinQueue(){
-	if( !arrayContains(level.joinQueue, self) ){ // See if to-be-added player is already in the queue{
+	if( !arrayContains(level.joinQueue, self) ){ // See if to-be-added player is already in the queue
 		level.joinQueue[level.joinQueue.size] = self;
 	}
 	self setclientdvar("ui_spawnqueue", "@QUEUE_AWAITING_SPAWN_" + allToUpper(self.class));
@@ -773,7 +772,7 @@ spawnJoinQueue(){
 		level.joinQueue = removeFromArray(level.joinQueue, player);
 		if( isReallyPlaying(player) ){
 			logPrint("We tried to spawn someone from the Spawnqueue who is already playing: " + player.name + "\n");
-			iprintln("We tried to spawn someone from the Spawnqueue who is already playing: " + player.name + "\n");
+			iprintln("We tried to spawn someone from the Spawnqueue who is already playing: " + player.name);
 			continue;
 		}
 			
@@ -886,13 +885,13 @@ spawnPlayer(forceSpawn)
 		self.headshotKills = 0;
 		self.barriersRestored = 0;
 		self.upgradeHudPoints = 0;
-		self giveDelayedUpgradepoints();
 		
 		// self.poisonKills = 0;
 		// self.incendiaryKills = 0;
 	}
 	else
 		self.playtimeStart = getTime() - 5500;
+	self giveDelayedUpgradepoints();
 	self.spawnProtectionTime = getTime();
 	self.lastBossHit = undefined;
 	self.fireCatchCount = 0;
@@ -947,8 +946,11 @@ spawnPlayer(forceSpawn)
 	
 	self.curClass = self.class;
 	
-	if (self.persData.class != self.curClass)
+	if (self.persData.class != self.curClass){
 		resetUnlocks();
+		self.specialRecharge = 100; // Fully load the special on spawn when player has changed class
+		self.persData.specialRecharge = self.specialRecharge;
+	}
 
 	self.persData.class = self.curClass;
 	
@@ -1169,8 +1171,15 @@ incUpgradePoints(inc)
 
 /* For each wave missed, we give the players more upgradepoints (if enabled) */
 giveDelayedUpgradepoints(){
-	if(level.dvar["game_delayed_upgradepoints"]){
-		self.points += ((level.currentWave - 1) * level.dvar["game_delayed_upgradepoints_amount"]);
+
+	if( ( level.currentWave - self.lastPlayedWave ) <= 1 )
+		return;
+
+	if( level.dvar["game_delayed_upgradepoints"] ){
+		// self.points += ((level.currentWave - self.lastPlayedWave - 1) * level.dvar["game_delayed_upgradepoints_amount"]);
+		self incUpgradePoints( ((level.currentWave - self.lastPlayedWave - 1) * level.dvar["game_delayed_upgradepoints_amount"]) );
+		// self iprintln("We gave you " + ((level.currentWave - self.persData.lastPlayedWave - 1) * level.dvar["game_delayed_upgradepoints_amount"]) + " upgrade points");
+		// self iprintln("You missed " + (level.currentWave - self.persData.lastPlayedWave - 1) + " waves");
 	}
 }
 
@@ -1244,8 +1253,12 @@ joinSpectator()
 	
 	if (self.pers["team"] != "spectator")
 	{
-		if (isalive(self))
+		if ( isalive(self) ){
+			// logPrint("Updated your lastPlayedWave, " + self.name + ", it is " + level.currentWave + "\n");
+			self.lastPlayedWave = level.currentWave;
+			self.persData.lastPlayedWave = self.lastPlayedWave;
 			self suicide();
+		}
 			
 		self cleanup();
 		
@@ -1253,6 +1266,7 @@ joinSpectator()
 		self.isZombie = false;
 		
 		self notify("join_spectator");
+		level notify("spawned_spectator", self);
 		
 		self.pers["team"] = "spectator";
 		self.sessionteam = "spectator";
@@ -1398,7 +1412,8 @@ revive(by)
 	self.health = self.maxhealth;
 	
 	self updateHealthHud(1);
-	self scripts\players\_abilities::resetSpecial();
+	// self scripts\players\_abilities::resetSpecial();
+	self setclientdvar("ui_specialrecharge", self.specialRecharge/100);
 	
 	setStatusIcon("icon_"+self.class);
 	

@@ -59,6 +59,8 @@ restoreData() {
 		struct.points = level.dvar["game_startpoints"];
 		struct.isDown = false;
 		struct.downOrigin = (0,0,0);
+		struct.lastPlayedWave = 0;
+		struct.specialRecharge = 100;
 		struct.class = "";
 	}
 	self.persData = struct;
@@ -67,6 +69,9 @@ restoreData() {
 	self.unlock["primary"] = struct.unlock["primary"];
 	self.unlock["secondary"] = struct.unlock["secondary"];
 	self.unlock["extra"] = struct.unlock["extra"];
+	
+	self.lastPlayedWave = struct.lastPlayedWave;
+	self.specialRecharge = struct.specialRecharge;
 	
 }
 
