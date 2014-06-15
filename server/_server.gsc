@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.5 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -41,10 +41,10 @@ init()
 // General information broadcast
 broadcastVersion(){
 	level endon("game_ended");
-	level.rotuVersion = "RotU-Revolution Alpha 0.4.2";
-	level.rotuVersion_short = "RotU-R Alpha 0.4.2";
-	level.rotuVersion_hostname = "RotU-Revolution 0.4.2-alpha";
-	level.rotuVersion_hostname_short = "0.4.2-alpha";
+	level.rotuVersion = "RotU-Revolution Alpha 0.5";
+	level.rotuVersion_short = "RotU-R Alpha 0.5";
+	level.rotuVersion_hostname = "RotU-Revolution 0.5-alpha";
+	level.rotuVersion_hostname_short = "0.5-alpha";
 	switch( getDvar("net_ip") ){
 		case "185.4.149.11":
 			while( 1 ){

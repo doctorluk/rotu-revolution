@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.5 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -22,10 +22,10 @@
 
 init(){
 	if( level.dvar["game_afk_enabled"] )
-		thread onPlayerSpawned();
+		thread onPlayerSpawn();
 }
 
-onPlayerSpawned(){
+onPlayerSpawn(){
 	level waittill("spawned", player);
 	player.antiAFK = 0;
 	player thread antiAFK();
@@ -53,13 +53,10 @@ antiAFK(){
 		
 		if( self pressesAnyButton() || self getOrigin() != oldpos || self getPlayerAngles() != oldangles || self getStance() != oldstance ){
 			self.antiAFK = 0;
-			// self iprintlnbold("^2NOT AFK");
 			continue;
 		}
-		else{
+		else
 			self.antiAFK++;
-			// self iprintlnbold("^1AFK");
-		}
 			
 		if( self.antiAFK >= (level.dvar["game_afk_time_warn"] * 20) && self.antiAFK % 20 == 0 && self.antiAFK < ( (level.dvar["game_afk_time_warn"] + level.dvar["game_afk_warn_amount"]) * 20) )
 			self iprintlnbold("^1WARNING: ^7DO NOT BE AFK OR YOU WILL BE " + handleTypeText + "!");
@@ -70,7 +67,6 @@ antiAFK(){
 				case 0: kick( self getEntityNumber() ); break;
 				case 1: self thread scripts\players\_players::joinSpectator(); break;
 			}
-	
 	}
 
 }

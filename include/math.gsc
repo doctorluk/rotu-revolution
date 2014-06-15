@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.4.2 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.5 by Luk 
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
@@ -45,6 +45,23 @@ abs(x)
 	if (x<0)
 	return x*-1;
 	return x;
+}
+
+/*
+	Cross Product of two vectors, giving us an orthogonal vector c of the plane drawn by a and b
+		( a2b3 - a3b2 )
+	c =	( a3b1 - a1b3 )
+		( a1b2 - a2b1 )
+*/
+crossProduct(a, b){
+	result = (0,0,0);
+	
+	result[0] = (a[1] * b[2]) - (a[2] * b[1]);
+	result[1] = (a[2] * b[0]) - (a[0] * b[2]);
+	result[2] = (a[0] * b[1]) - (a[1] * b[0]);
+	
+	return result;
+
 }
 
 
