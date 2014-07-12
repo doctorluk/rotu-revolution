@@ -386,7 +386,7 @@ survivorDown()
 	level endon("game_ended");
 	while (1)
 	{
-		val = level.activePlayers-level.alivePlayers;
+		val = level.activePlayers - level.alivePlayers;
 		self setValue(val);
 		wait 0.2;
 	}
@@ -396,7 +396,7 @@ doWaveHud()
 {
 	level endon( "game_ended" );
 	while(1){
-		updateWaveHud(level.waveProgress,level.waveSize);
+		updateWaveHud(level.waveProgress, level.waveSize);
 		wait 1;
 	}
 }

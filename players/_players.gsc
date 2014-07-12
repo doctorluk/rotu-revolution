@@ -774,7 +774,6 @@ addToJoinQueue(){
 spawnJoinQueue(){
 	level notify("spawn_queue");
 	spawners = [];
-	string = "";
 	for(i = 0; i < level.joinQueue.size; i++){
 		player = level.joinQueue[i];
 		level.joinQueue = removeFromArray(level.joinQueue, player);
@@ -791,7 +790,7 @@ spawnJoinQueue(){
 		spawners[spawners.size] = player;
 	}
 	if(spawners.size > 0){ // Put out some names in the bottom left corner to inform people who has been spawned by the queue
-		string = "";
+		string = "^3";
 		have = "have";
 		for(i = 0; i < spawners.size; i++){
 			string += spawners[i].name + "^7 as ^3" + ( spawners[i] getFullClassName() ) + "^7, ^3"; 
