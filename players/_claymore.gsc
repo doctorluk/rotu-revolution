@@ -22,6 +22,7 @@ init()
 {	
 	if(!isDefined(level.claymoreFXid))
 		precache();
+	level.claymoresEnabled = true;
 	
 	thread WatchForClaymore();
 }
@@ -75,6 +76,9 @@ WatchClaymore()
 			continue;
 			
 		if( player.type == "boss" && level.bossPhase == 1 )
+			continue;
+			
+		if( !level.claymoresEnabled )
 			continue;
 		
 		self PlaySound( "claymore_activated" );

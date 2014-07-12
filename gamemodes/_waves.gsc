@@ -202,6 +202,7 @@ preWave(wavetype, type){
 			scripts\bots\_types::announceFinale(randomint(4));
 			level.freezeBots = true;
 			level.turretsDisabled = 1;
+			level.claymoresEnabled = false;
 			thread scripts\bots\_types::dynamicFinale();
 			scripts\server\_environment::setGlobalFX(scripts\bots\_types::getFxForType(type));
 			for( level.burstSpawned = 0; level.burstSpawned < level.dvar["bot_count"] && level.burstSpawned < level.waveSize; ){ // This is the spawning of zombies while players don't see shit
@@ -225,6 +226,7 @@ preWave(wavetype, type){
 			wait 4.3;
 			level.turretsDisabled = 0;
 			level.freezeBots = false;
+			level.claymoresEnabled = true;
 			level.godmode = level.dvar["game_godmode"];
 			unfreezeAll();
 			
@@ -251,6 +253,7 @@ preWave(wavetype, type){
 			
 			level.freezeBots = true;
 			level.turretsDisabled = 1;
+			level.claymoresEnabled = false;
 			thread scripts\bots\_types::dynamicFinale();
 			scripts\server\_environment::setGlobalFX(scripts\bots\_types::getFxForType("finale"));
 			for( level.burstSpawned = 0; level.burstSpawned < level.dvar["bot_count"] && level.burstSpawned < level.waveSize && level.burstSpawned < level.finaleToSpawn; ){ // This is the spawning of zombies while players don't see shit
@@ -274,6 +277,7 @@ preWave(wavetype, type){
 			wait 4.3;
 			level.turretsDisabled = 0;
 			level.freezeBots = false;
+			level.claymoresEnabled = true;
 			level.godmode = level.dvar["game_godmode"];
 			unfreezeAll();
 			
