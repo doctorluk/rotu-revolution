@@ -45,6 +45,13 @@ init()
 	level.freezeBots = false;
 	level.noMoaning = false;
 	
+	level.botsLookingForWaypoints = 0;
+	
+	if( getDvar("max_waypoint_bots") == "" )
+		setDvar("max_waypoint_bots", 18);
+	if( getDvar("debug_max_waypoint_bots") == "" )
+		setDvar("debug_max_waypoint_bots", 0);
+	
 	
 	wait 1;
 	if (level.loadBots)
@@ -1420,6 +1427,7 @@ zomMoveTowards(target_position)
 		else
 		{
 			//time = GetTime();
+			/* This way may not be the safest and most reliable */
 			if( level.waypointLoops > 100000 && level.dvar["zom_antilagmonitor"] ){
 				// logPrint("DEBUG: Caught > 200000 loops in level.waypointLoops!\n");
 				logPrint("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
@@ -1430,6 +1438,15 @@ zomMoveTowards(target_position)
 					self thread zomMoveTowards(target_position);
 				return;
 			}
+			if( level.botsLookingForWaypoints > getDvarInt("max_waypoint_bots") ){
+				if( getDvarInt("debug_max_waypoint_bots") )
+					iprintln("Caught > " + getDvarInt("max_waypoint_bots") + " bots looking for waypoints!");
+				wait 0.05;
+				if( isDefined(target_position) )
+					self thread zomMoveTowards(target_position);
+				return;
+			}
+			level.botsLookingForWaypoints++;
 			nextWp = AStarSearch(self.myWaypoint, targetWp);
 			//newtime = GetTime()-time;
 			//iprintlnbold("MILISEC:" + newtime);
@@ -1471,7 +1488,7 @@ zomMoveTowards(target_position)
 		*/
 		
 	}
-
+	level.botsLookingForWaypoints--;
 }
 
 zomMoveLockon(player, time, speed)
