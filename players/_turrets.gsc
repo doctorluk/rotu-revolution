@@ -97,8 +97,6 @@ giveTurret(turret_type, time, augmented)
 	self.carryObj.angles = (70, self.angles[1], self.angles[2]);
 	self.carryObj.turret_type = turret_type;
 	
-	wait 0.05;
-	
 	self.turret_time = time;
 	
 	if( !isDefined( self.carryObj ) ){
@@ -130,17 +128,38 @@ placeTurret(turret_type, augmented)
 {
 	self endon("death");
 	self endon("disconnect");
-	self endon("downed");
+	// self endon("downed");
 	wait 1;
 	while (1)
 	{
-		if (self attackbuttonpressed())
+		if( self.isDown ){
+			if( self deploy(turret_type, augmented) ){
+				self.carryObj unlink();
+				wait 0.2;
+				self.carryObj delete();
+				
+				self.canUse = true;
+				self enableweapons();
+				self notify("placed_turret");
+
+				return;
+			}
+			else{
+				turret = self.carryObj;
+				turret unlink();
+				wait 0.2;
+				turret delete();
+				self.carryObj = undefined;
+				return;
+			}
+		}
+		if (self attackbuttonpressed() && self isOnGround())
 		{
 			
 			if (self deploy(turret_type, augmented))
 			{
 				self.carryObj unlink();
-				wait 0.05;
+				wait 0.2;
 				self.carryObj delete();
 				
 				self.canUse = true;
