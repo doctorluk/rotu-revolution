@@ -75,20 +75,30 @@ makeBarricade()
 
 placeBarrel()
 {
-	self endon("downed");
+	// self endon("downed");
 	self endon("death");
 	self endon("disconnect");
 	wait 1;
 	while (1)
 	{
+		if( self.isDown ){
+			barrel = self.carryObj;
+			barrel unlink();
+			wait 0.2;
+			barrel delete();
+			self.carryObj = undefined;
+			return;
+		}
 		if (self attackbuttonpressed())
 		{
 			newpos = PlayerPhysicsTrace(self.carryObj.origin, self.carryObj.origin - (0,0,1000));
 			
-			if (BulletTrace(self GetEye(), newpos, false, self.carryObj)["fraction"] == 1 && BulletTrace(self GetEye(), newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 && BulletTrace(newpos, newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 )
+			if (BulletTrace(self GetEye(), newpos, false, self.carryObj)["fraction"] == 1 && 
+				BulletTrace(self GetEye(), newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 &&
+				BulletTrace(newpos, newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 )
 			{
 				self.carryObj unlink();
-				wait .05;
+				wait .2;
 				self.carryObj.bar_type = 1;
 				self.carryObj.origin = newpos;
 				self.carryObj.angles = self.angles;
@@ -102,9 +112,7 @@ placeBarrel()
 				
 				self.canUse = true;
 				self enableweapons();
-
-				
-				return ;
+				return;
 			}
 			else
 			{

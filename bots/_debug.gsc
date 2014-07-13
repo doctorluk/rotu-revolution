@@ -38,6 +38,7 @@ waypointPerformance(){
 			}
 		}
 	*/
+		level.botsLookingForWaypoints = 0;
 		level.waypointLoops = 0;
 		wait 0.05;
 	}

@@ -48,7 +48,7 @@ init()
 	level.botsLookingForWaypoints = 0;
 	
 	if( getDvar("max_waypoint_bots") == "" )
-		setDvar("max_waypoint_bots", 18);
+		setDvar("max_waypoint_bots", 5);
 	if( getDvar("debug_max_waypoint_bots") == "" )
 		setDvar("debug_max_waypoint_bots", 0);
 	
@@ -1488,7 +1488,6 @@ zomMoveTowards(target_position)
 		*/
 		
 	}
-	level.botsLookingForWaypoints--;
 }
 
 zomMoveLockon(player, time, speed)
