@@ -39,15 +39,18 @@ lastChanceMain(){
 	
 	/* Start ambient sound */
 	scripts\server\_environment::setAmbient("ambient_last_stand", 0, 0);
+	level.silenceZombies = true;
 	// thread test();
 	/* Add timer display, WAIT 10 SECONDS */
 	scripts\gamemodes\_hud::timer(10, &"LAST_CHANCE_TIMER", (1,0,0), undefined, 120);
 	
 	/* After resurrection etc. */
+	level.silenceZombies = false;
 	if( level.resurrectPeople.size > 0 ){
 		postLastChance();
 		level notify("delete_last_chance_hud");
 		level notify("last_chance_end");
+		
 		// wait 0.05;
 		return true;
 	}

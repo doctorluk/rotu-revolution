@@ -43,7 +43,7 @@ init()
 	level.lastBossJump = 0;
 	level.nextBossJump = 0;
 	level.freezeBots = false;
-	level.noMoaning = false;
+	level.silenceZombies = false;
 	
 	level.botsLookingForWaypoints = 0;
 	
@@ -1869,7 +1869,8 @@ zomSound(delay, sound)
 		self endon("death");
 		wait delay;
 	}
-	sound = sound;
+	if( level.silenceZombies )
+		return;
 	if (isalive(self))
 	self playSound( sound );
 }

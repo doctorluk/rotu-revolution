@@ -389,7 +389,7 @@ endMap(endReasontext, win)
 			return;
 		}
 	}
-	
+	level.silenceZombies = true;
 	level.gameEndTime = getTime();
 	level.gameEnded = true;
 
@@ -437,6 +437,8 @@ endMap(endReasontext, win)
 	
 	if(isDefined(level.bossOverlay))
 		level.bossOverlay destroy();
+		
+	if (scripts\include\physics::finalizeStats()){
 	
 	if (win)
 		thread playCreditsSound();
@@ -613,6 +615,7 @@ endMap(endReasontext, win)
 	wait 1;
 	if( isDefined( level.blackscreen ) )
 		level.blackscreen destroy();
+	}
 	[[level.onChangeMap]]();
 }
 

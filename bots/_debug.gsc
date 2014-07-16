@@ -44,6 +44,11 @@ waypointPerformance(){
 	}
 }
 
+reportUndefined(var, varstring){
+	if( !isDefined( var ) )
+		iprintlnbold("Var " + varstring + " is undefined!");
+}
+
 debugBots()
 {
 	level endon("game_ended");

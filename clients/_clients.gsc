@@ -151,6 +151,8 @@ Callback_PlayerDisconnect()
 	}
 	
 	self scripts\players\_players::cleanup();
+	if ( isdefined(self.carryObj) )
+			self.carryObj delete();
 	
 	self setclientdvars("ui_hud_hardcore", 0,
 						"ui_rotuversion_short", "",

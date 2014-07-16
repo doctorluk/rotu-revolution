@@ -87,15 +87,14 @@ placeBarrel()
 			wait 0.2;
 			barrel delete();
 			self.carryObj = undefined;
+			self enableweapons();
 			return;
 		}
 		if (self attackbuttonpressed())
 		{
 			newpos = PlayerPhysicsTrace(self.carryObj.origin, self.carryObj.origin - (0,0,1000));
 			
-			if (BulletTrace(self GetEye(), newpos, false, self.carryObj)["fraction"] == 1 && 
-				BulletTrace(self GetEye(), newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 &&
-				BulletTrace(newpos, newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 )
+			if ( self canPlaceBarrel(newpos) )
 			{
 				self.carryObj unlink();
 				wait .2;
@@ -123,6 +122,12 @@ placeBarrel()
 		wait .05;
 	}
 	
+}
+
+canPlaceBarrel(newpos){
+	return (BulletTrace(self GetEye(), newpos, false, self.carryObj)["fraction"] == 1 && 
+				BulletTrace(self GetEye(), newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 &&
+				BulletTrace(newpos, newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 );
 }
 
 addMG()

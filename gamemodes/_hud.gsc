@@ -19,6 +19,7 @@
 //
 
 #include scripts\include\data;
+#include scripts\include\useful;
 #include common_scripts\utility;
 
 init()
@@ -29,6 +30,8 @@ init()
 	level.objects = [];
 	
 	level.globalHUD = 0;
+	
+	level.callbackLastManStanding = ::lastManStanding;
 	
 	precache();
 }
@@ -58,6 +61,7 @@ precache()
 	precachestring(&"ZOMBIE_BOSS_GUNS2");
 
 	precachestring(&"ZOMBIE_AVAILABLE_SKILLPOINTS");
+	precachestring(&"ZOMBIE_LAST_MAN_STANDING");
 	precachestring(&"ZOMBIE_SURV_LEFT");
 	precachestring(&"ZOMBIE_SURV_DOWN");
 	
@@ -625,6 +629,59 @@ destroyTimerOnGameEnd(){
 	self destroy();
 }
 
+/* To be shown when at least 3 players are on the server and only one is alive */
+lastManStanding(){
+	self endon("disconnect");
+	
+	if( self.isDown )
+		return;
+	
+	self thread scripts\include\hud::screenFlash( (1, 0, 0), 1, 0.4);
+	
+	self.lastManStanding_message = NewClientHudElem(self);
+	self.lastManStanding_message.elemType = "font";
+	self.lastManStanding_message.font = "objective";
+	self.lastManStanding_message.fontscale = 3;
+	self.lastManStanding_message.x = 0;
+	self.lastManStanding_message.y = -128;
+	self.lastManStanding_message.glowAlpha = 1;
+	self.lastManStanding_message.hideWhenInMenu = true;
+	self.lastManStanding_message.archived = false;
+	self.lastManStanding_message.alignX = "center";
+	self.lastManStanding_message.alignY = "middle";
+	self.lastManStanding_message.horzAlign = "center";
+	self.lastManStanding_message.vertAlign = "bottom";
+	self.lastManStanding_message.alpha = 0;
+	self.lastManStanding_message.color = (2, 0, 0);
+	self.lastManStanding_message.glowAlpha = 1;
+	self.lastManStanding_message.glowColor = (.7, .4, .4);
+	self.lastManStanding_message.label = &"ZOMBIE_LAST_MAN_STANDING";
+	self playlocalsound("last_man_standing");
+	self.lastManStanding_message thread increaseFontSize(1.4, 3.5, 0.1);
+	self.lastManStanding_message fadeOverTime(1);
+	self.lastManStanding_message.alpha = 1;
+	wait 3;
+	self.lastManStanding_message fadeOverTime(1);
+	self.lastManStanding_message.alpha = 0;
+	wait 1;
+	self.lastManStanding_message destroy();
+}
+
+increaseFontSize(start, end, stepsize){
+	self endon("death");
+	
+	if( start < 1.4 )
+		start = 1.4;
+		
+	if( end > 4.8 )
+		end = 4.8;
+	
+	for( i = start; i < end; i += stepsize ){
+		self.fontscale = i;
+		wait 0.05;
+	}
+}
+
 glowMessage(label, text, glowcolor, duration, speed, size, sound, height)
 {
 	self endon("disconnect");
@@ -664,6 +721,7 @@ glowMessage(label, text, glowcolor, duration, speed, size, sound, height)
 	self.announceIndex ++;
 	self notify("hud_announce_done");
 }
+
 welcomeMessage(label, text, glowcolor, duration, speed, size, sound, height)
 {
 	self endon("disconnect");

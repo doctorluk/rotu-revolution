@@ -164,6 +164,7 @@ playerGoZombie()
 	self.infected = false;
 	level scripts\players\_usables::removeUsable(self);
 	self.isZombie = true;
+	self.sprinting = true;
 	self notify("zombify");
 	type = "tank";
 	self.type = "tank";
@@ -229,6 +230,7 @@ cleanupZombie(){
 	wait 1;
 	self TakeAllWeapons();
 	self.isZombie = false;
+	self.sprinting = undefined;
 	self detachall();
 	
 	if (self.myBody != "")

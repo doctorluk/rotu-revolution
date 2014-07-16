@@ -64,6 +64,7 @@ WatchClaymore()
 	self.fx = spawnFx( level.claymoreFxId, self getTagOrigin( "tag_fx" ), anglesToForward( self GetTagAngles( "tag_fx" ) ), anglesToUp( self getTagAngles( "tag_fx" ) ) );
 	triggerFx( self.fx );
 	self.trigger = spawn( "trigger_radius", self.origin-(0,0,192), 0, 192, 320 );
+	level.testTrigger = self.trigger;
 	self thread RemoveOn( "disconnect", self.owner );
 	
 	while(1)
@@ -84,6 +85,7 @@ WatchClaymore()
 		self PlaySound( "claymore_activated" );
 		wait 0.3;
 		self.fx delete();
+		self.trigger delete();
 		self.owner.claymores--;
 		assert(self.owner.claymores >= 0);
 		self detonate();
@@ -98,6 +100,7 @@ RemoveOn( till, owner )
 		owner waittill( till );
 		
 	self.fx delete();
+	self.trigger delete();
 	self delete();
 	self notify( "death" );
 }

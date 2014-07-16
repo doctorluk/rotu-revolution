@@ -28,7 +28,10 @@ init()
 {
 	
 	level.activePlayers = 0;
+	level.activePlayersArray = [];
 	level.alivePlayers = 0;
+	level.alivePlayersArray = [];
+	level.lastAlivePlayers = 0;
 	level.playerspawns = "";
 	level.intermission = 1;
 	level.joinQueue = [];
@@ -93,6 +96,8 @@ setDown(isDown) {
 
 testloop(){
 	self endon("disconnect");
+	// wait 5;
+	// thread [[level.callbackLastManStanding]]();
 	// while( self.name == "Luk" ){
 	// while( 1 ){
 		
@@ -176,17 +181,18 @@ Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon,
 	level scripts\players\_usables::removeUsable(self);
 	
 	self notify("downed");
+	level notify("downed", self);
 
 	//self.health = int(self.maxhealth / 4);
 	self setDown(true);
 	self.isTargetable = false;
 	
 	// Removes a carrying object (turret, barrel, etc.) on down
-	if( isDefined( self.carryObj ) ){
-		self.carryObj delete();
-		self enableweapons();
-		self.canUse = true;
-	}
+	// if( isDefined( self.carryObj ) ){
+		// self.carryObj delete();
+		// self enableweapons();
+		// self.canUse = true;
+	// }
 	
 	self scripts\players\_usables::usableAbort();
 	
@@ -711,9 +717,6 @@ cleanup() // CLEANUP ON DEATH (SPEC) OR DISCONNECT
 		
 	if (isdefined(self.tombEnt))
 		self.tombEnt delete();
-		
-	if (isdefined(self.carryObj))
-		self.carryObj delete();
 	
 	if(isDefined(self.armored_hud))
 		self.armored_hud destroy();
@@ -1269,6 +1272,8 @@ joinSpectator()
 		}
 			
 		self cleanup();
+		if ( isdefined(self.carryObj) )
+			self.carryObj delete();
 		
 		self.isActive = false;
 		self.isZombie = false;
@@ -1462,6 +1467,7 @@ flickeringHud(duration){
 	}
 	self setclientdvar("cg_draw2d", 1);
 }
+
 /* Updates player counts twice a second because I'm too stupid to actually do this with kill/disconnect/spawn events */
 updateActiveAliveCounts(){
 	level endon("game_ended");
@@ -1470,16 +1476,26 @@ updateActiveAliveCounts(){
 	while(1){
 		level.activePlayers = 0;
 		level.alivePlayers = 0;
+		level.alivePlayersArray = undefined;
+		level.activePlayersArray = undefined;
+		level.alivePlayersArray = [];
+		level.activePlayersArray = [];
 		for(i = 0; i < level.players.size; i++){
 			p = level.players[i];
 			if( !isReallyPlaying ( p ) )
 				continue;
 			if( p.isActive ){
 				level.activePlayers++;
-				if( p.isAlive )
+				level.activePlayersArray[level.activePlayersArray.size] = p;
+				if( p.isAlive ){
 					level.alivePlayers++;
+					level.alivePlayersArray[level.alivePlayersArray.size] = p;
+				}
 			}
 		}
 		wait 0.5;
+		if( level.lastAlivePlayers > 1 && level.activePlayers > 2 && level.alivePlayers == 1 )
+			level.alivePlayersArray[0] thread [[level.callbackLastManStanding]]();
+		level.lastAlivePlayers = level.alivePlayers;
 	}
 }

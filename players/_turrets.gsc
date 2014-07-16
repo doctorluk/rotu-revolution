@@ -141,19 +141,18 @@ placeTurret(turret_type, augmented)
 				self.canUse = true;
 				self enableweapons();
 				self notify("placed_turret");
-
 				return;
 			}
 			else{
-				turret = self.carryObj;
-				turret unlink();
+				self.carryObj unlink();
 				wait 0.2;
-				turret delete();
+				self.carryObj delete();
 				self.carryObj = undefined;
+				self enableweapons();
 				return;
 			}
 		}
-		if (self attackbuttonpressed() && self isOnGround())
+		else if (self attackbuttonpressed() && self isOnGround())
 		{
 			
 			if (self deploy(turret_type, augmented))
