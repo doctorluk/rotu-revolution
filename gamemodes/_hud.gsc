@@ -311,7 +311,7 @@ healthFeedback(){
 	healthcross.alignY = "bottom";
 	healthcross.horzAlign = "left";
 	healthcross.vertAlign = "bottom";
-	healthcross.archived = true;
+	healthcross.archived = false;
 	healthcross setShader("healthcross", 20, 20);
 	direction = -30 + randomint(50);
 	
@@ -350,7 +350,7 @@ specialRechargeFeedback(){
 	lightning_icon.alignY = "bottom";
 	lightning_icon.horzAlign = "left";
 	lightning_icon.vertAlign = "bottom";
-	lightning_icon.archived = true;
+	lightning_icon.archived = false;
 	lightning_icon setShader("lightning_icon", 20, 20);
 	direction = -30 + randomint(50);
 	
