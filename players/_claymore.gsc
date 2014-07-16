@@ -64,7 +64,6 @@ WatchClaymore()
 	self.fx = spawnFx( level.claymoreFxId, self getTagOrigin( "tag_fx" ), anglesToForward( self GetTagAngles( "tag_fx" ) ), anglesToUp( self getTagAngles( "tag_fx" ) ) );
 	triggerFx( self.fx );
 	self.trigger = spawn( "trigger_radius", self.origin-(0,0,192), 0, 192, 320 );
-	level.testTrigger = self.trigger;
 	self thread RemoveOn( "disconnect", self.owner );
 	
 	while(1)
