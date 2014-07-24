@@ -104,6 +104,8 @@ getSpectateCoords(){
 			return "-744,-654,495;27,34,0";
 		case "mp_surv_maniacmansion":
 			return "1310,292,451;20,-171,0";
+		case "mp_fnrp_smurfs":
+			return "1243,-1281,342;25,121,0";
 			
 			
 		default:
