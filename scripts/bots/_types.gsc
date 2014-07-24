@@ -1401,7 +1401,7 @@ onCorpse(type)
 		case "toxic":
 			if (randomfloat(1) < .15)
 				thread toxicCloud(self.origin, 10);
-		return 2;
+		return 1;
 		default:
 		return 2;
 	}
