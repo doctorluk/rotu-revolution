@@ -1,0 +1,341 @@
+#include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
+
+#define CHOICE_SIZE_X			//150
+#define CHOICE_SIZE_Y			22
+
+#define CHOICE_X_START			0
+#define CHOICE_Y_START			34
+
+#define CHOICE_Y_COUNT			5
+
+#define CHOICE_SEP_OFFSET_Y		-2
+
+#include "ui_mp/menustyle.inc"
+#include "ui/choices_setup_common.menu"
+
+#define MENU_LOCKED_COLOR		0.25 0.25 0.25 1
+
+#define ORIGIN_BUTTON_BACK			52 438
+#define ORIGIN_MENU_TREE			54 64
+#define ORIGIN_MENU_TITLE_MARINES	178 64
+#define ORIGIN_MENU_TITLE_OPFOR		170 64
+#define TREE_COLOR					1 1 1 0.5
+#define LABEL_TEXT_COLOR		0.7 0.75 0.75 1
+
+
+#define ORIGIN_DIY_TITLE_PC			12 270
+#define ORIGIN_DIY_FRAME_PC			5 270
+#define ORIGIN_DIY_PC				7 290
+
+#define ORIGIN_DIY_TITLE_HIDEF		52 300
+#define ORIGIN_DIY_FRAME_HIDEF		45 300
+#define ORIGIN_DIY_HIDEF			47 320
+#define ORIGIN_DIY_TITLE			136 300
+#define ORIGIN_DIY_FRAME			129 300
+#define ORIGIN_DIY					131 320
+
+#define WIDESCREEN_OFFSET			0 0
+#define RANK stat(dvarint(ui_class_rank))+1+dvarint(ui_class_ranks)*(29-stat(dvarint(ui_class_rank)))
+
+
+
+{
+	menuDef
+	{
+		name			"changeclass_ability"
+		rect			0 0 640 480
+		focuscolor		COLOR_FOCUSED
+		style			WINDOW_STYLE_EMPTY
+		blurWorld		7.0
+		onOpen
+		{
+			setLocalVarString ui_team "marines"
+			exec "set ui_description 0"
+		}
+		onEsc 
+		{
+			scriptMenuResponse "back";
+		}
+		
+		// background overlay
+		itemDef	{
+			style			WINDOW_STYLE_FILLED
+			rect			0 0 640 480 HORIZONTAL_ALIGN_FULLSCREEN VERTICAL_ALIGN_FULLSCREEN
+			backcolor		0 0 0 .75 //0 0.05 0.15 0.5
+			visible			1
+			decoration
+		}
+		// gradient_top
+		itemDef	{
+			style			WINDOW_STYLE_SHADER
+			rect			0 0 854 75 HORIZONTAL_ALIGN_FULLSCREEN 0
+			background		"gradient_top"
+			visible			1
+			decoration
+		}
+		// gradient_bottom
+		itemDef	{
+			style			WINDOW_STYLE_SHADER
+			rect			0 405 854 75 HORIZONTAL_ALIGN_FULLSCREEN 0
+			background		"gradient_bottom"
+			visible			1
+			decoration
+		}
+		
+				itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			ORIGIN_DIY_FRAME_PC 285 140
+			origin			WIDESCREEN_OFFSET
+			backcolor		0 0 0 .5
+			visible			1	decoration	}
+		itemDef
+		{
+			rect			ORIGIN_DIY_PC 270 140
+			type			ITEM_TYPE_BUTTON
+			textfont		UI_FONT_DEFAULT
+			//dvar			"ui_description"
+			exp				text("@ABILITIES_DES_" +dvarstring(ui_loadout_class)+ "_" + dvarstring(ui_description))			
+			textalign 		ITEM_ALIGN_LEFT
+			textscale		TEXTSIZE_SMALL
+			forecolor		1 1 1 1
+			backcolor		0 0 0 0
+			textalignx 		5
+			textaligny 		0  
+			origin			WIDESCREEN_OFFSET
+			visible			when ( dvarstring(ui_description) != "0" ); decoration	autowrapped	}
+			
+		itemDef
+		{
+			type			ITEM_TYPE_TEXT
+			visible			when ( dvarstring(ui_description) != "0" );
+			rect			ORIGIN_DIY_TITLE_PC 0 0
+			origin			WIDESCREEN_OFFSET
+			forecolor		1 0.8 0.4 1
+			exp				text("@ABILITIES_"+dvarstring(ui_loadout_class)+ "_" + dvarstring(ui_description))
+			textfont		UI_FONT_DEFAULT
+			textstyle	ITEM_TEXTSTYLE_SHADOWEDMORE
+			textscale		TEXTSIZE_DEFAULT decoration	
+		}
+		itemDef
+		{
+			
+			style			WINDOW_STYLE_SHADER
+			rect			ORIGIN_DIY_FRAME_PC 283 138
+			origin			WIDESCREEN_OFFSET
+			background		"white"
+			forecolor		.5 .5 .5 0.15
+			border			1
+			bordersize		1
+			bordercolor		0.5 0.5 0.5 0.7
+			visible			1	decoration
+		}
+		itemDef 
+		{
+			name			accept
+			text			"@ZOMBIE_ACCEPT"
+			type			ITEM_TYPE_BUTTON
+			textfont		UI_FONT_NORMAL
+			style			WINDOW_STYLE_FILLED	
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			rect			220 -26 40 20 HORIZONTAL_ALIGN_CENTER VERTICAL_ALIGN_BOTTOM
+			textalign		ITEM_ALIGN_LEFT
+			textscale		TEXTSIZE_SMALL
+			textalignx		0
+			textaligny		18
+			forecolor		TEXTBUTTON_COLOR
+			visible			1
+			mouseEnter		{ play "mouse_over"; }
+			action 
+			{
+				play "mouse_click";
+				scriptmenuresponse "accept";
+			}	
+		}
+		
+
+
+		// ------------------ TREE TITLE ------------------
+		
+		CHOICE_MENU_TITLE( "@ABILITIES_TITLE" )
+
+		// ------------------ buttons ---------------------
+		#define BACK_OPEN open changeclass_marines_mw;
+		#include "ui_mp/navcontrols.inc"
+		
+		//=========================================================================
+		//================ MENU SELECTION FOR ONLINE/OFFLINE GAME =================
+		//=========================================================================
+		// #include "ui_mp/teamicon.inc"
+		
+		#define CAC_SETUP_ACTION1 \
+			play "mouse_click"; \
+			open "ability_secondary"; 
+		#define INFO_FOCUS_RESET \
+		exec "set ui_description 0";
+		
+		#define INFO_FOCUS_ACTION(TEXT) \
+		exec "set ui_description "TEXT;
+		
+		#undef	NEW_X_OFFSET
+		#define NEW_X_OFFSET -196
+		#undef	NEW_Y_OFFSET
+		#define NEW_Y_OFFSET -2
+		#undef CHOICE_X_SPACING		
+		#define CHOICE_X_SPACING		206 // - 44
+			
+		
+		/* =================================== default classes ================================= */		
+		CHOICE_SECTION_TITLE( 1, "@ABILITIES_ABILITY1" )
+		CHOICE_BUTTON_BG( 2, 1 ) 
+		CHOICE_HIGHLIGHT( 2, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 2, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB1", ;, INFO_FOCUS_ACTION("PR_AB1");, INFO_FOCUS_RESET, when ( (RANK >= 5) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 2, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB1", when ( (RANK < 5) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 2, "", ;, INFO_FOCUS_ACTION("PR_AB1D");, INFO_FOCUS_RESET, when ( (RANK < 5) ) )
+		CHOICE_NEWICON_VIS( 2, "specialty_locked", when ( (RANK < 5) ));
+		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (6) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 5) ); )
+		
+		
+		CHOICE_BUTTON_BG( 3, 1 ) 
+		CHOICE_HIGHLIGHT( 3, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 3, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB2", ;, INFO_FOCUS_ACTION("PR_AB2");, INFO_FOCUS_RESET, when ( (RANK >= 15) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 3, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB2", when ( (RANK < 15) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 3, "", ;, INFO_FOCUS_ACTION("PR_AB2D");, INFO_FOCUS_RESET, when ( (RANK < 15) ) )
+		CHOICE_NEWICON_VIS( 3, "specialty_locked", when ( (RANK < 15) ));
+		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y+6) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 15) ); )
+		
+		CHOICE_BUTTON_BG( 4, 1 ) 
+		CHOICE_HIGHLIGHT( 4, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 4, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB3", ;, INFO_FOCUS_ACTION("PR_AB3" );, INFO_FOCUS_RESET, when ( (RANK >= 25) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 4, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB3", when ( (RANK < 25) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 4, "", ;, INFO_FOCUS_ACTION("PR_AB3D");, INFO_FOCUS_RESET, when ( (RANK < 25) ) )
+		CHOICE_NEWICON_VIS( 4, "specialty_locked", when ( (RANK < 25) ));
+		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y*2+9) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 25) ); )
+		//CHOICE_BUTTON(2, "@ZOMBIE_SHOW", CAC_SETUP_ACTION1)
+		CHOICE_SECTION_TITLE( 6, "@ABILITIES_ABILITY3" )
+		CHOICE_BUTTON_BG( 7, 1 ) 
+		CHOICE_HIGHLIGHT( 7, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 7, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB1", ;, INFO_FOCUS_ACTION("PS_AB1");, INFO_FOCUS_RESET, 1 )
+		
+		
+		CHOICE_BUTTON_BG( 8, 1 ) 
+		CHOICE_HIGHLIGHT( 8, 1 ) 
+		//CHOICE_BUTTON_FOCUS_VIS_ADV( 8, "@ZOMBIE_"+dvarstring(ui_loadout_class)+"_PS_AB2", scriptmenuresponse "PS_AB2";, INFO_FOCUS_ACTION("PS_AB2");, ;, when ( (RANK >= 10) ), when (1) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 8, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB2", ;, INFO_FOCUS_ACTION("PS_AB2");, INFO_FOCUS_RESET, when ( (RANK >= 10) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 8, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB2", when ( (RANK < 10) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 8, "", ;, INFO_FOCUS_ACTION("PS_AB2D");, INFO_FOCUS_RESET, when ( (RANK < 10) ) )
+		CHOICE_NEWICON_VIS( 8, "specialty_locked", when ( (RANK < 10) ));
+		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y+6) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 10) ); )
+		
+		CHOICE_BUTTON_BG( 9, 1 ) 
+		CHOICE_HIGHLIGHT( 9, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 9, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB3", ;, INFO_FOCUS_ACTION("PS_AB3" );, INFO_FOCUS_RESET, when ( (RANK >= 20) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 9, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB3", when ( (RANK < 20) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 9, "", ;, INFO_FOCUS_ACTION("PS_AB3D");, INFO_FOCUS_RESET, when ( (RANK < 20) ) )
+		CHOICE_NEWICON_VIS( 9, "specialty_locked", when ( (RANK < 20) ));
+		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y*2+9) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 20) ); )
+		
+		CHOICE_BUTTON_BG( 10, 1 ) 
+		CHOICE_HIGHLIGHT( 10, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 10, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB4", ;, INFO_FOCUS_ACTION("PS_AB4" );, INFO_FOCUS_RESET, when ( (RANK >= 30) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 10, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB4", when ( (RANK < 30) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 10, "", ;, INFO_FOCUS_ACTION("PS_AB4D");, INFO_FOCUS_RESET, when ( (RANK < 30) ) )
+		CHOICE_NEWICON_VIS( 10, "specialty_locked", when ( (RANK < 30) ));
+		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y*2+9) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 30) ); )
+		
+		// CHOICE_SECTION_TITLE( 11, "@ABILITIES_ABILITY2" )
+		// CHOICE_BUTTON(12, dvarstring(ui_secondary_ability), CAC_SETUP_ACTION1)
+		
+
+		//CHOICE_BUTTON(13, "@ZOMBIE_ACCEPT", scriptmenuresponse done;)
+
+		#include "ui_mp/player_info_class.inc"
+		#include "ui/safearea.menu"
+	}
+	
+		#include "ui_mp/popupstyle.inc"	
+	#include "ui/choices_setup_popmenu.menu"
+	
+
+	
+	menuDef	{
+		#undef	NEW_X_OFFSET
+		#define NEW_X_OFFSET -176
+		IMPROVED_POPUP_SETUP_ONOPEN( "ability_secondary", 5, (CHOICE_X_START) + 532 - 44, (CHOICE_Y_START) + 22, ;, ;, 0 )
+		CHOICE_BUTTON_BG( 1, 1 ) 
+		CHOICE_HIGHLIGHT( 1, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 1, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB1", scriptmenuresponse "SC_AB1"; close self;, INFO_FOCUS_ACTION("PR_AB1");, INFO_FOCUS_RESET, when ( (RANK >= 5) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 1, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB1", when ( (RANK < 5) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 1, "", ;, INFO_FOCUS_ACTION("SC_AB1D");, INFO_FOCUS_RESET, when ( (RANK < 5) ) )
+		CHOICE_NEWICON_VIS( 1, "specialty_locked", when ( (RANK < 5) ));
+		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (6) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, CHOICE_POPUP_BORDER_COLOR visible when ( (RANK < 5) ); )
+		
+		
+		CHOICE_BUTTON_BG( 2, 1 ) 
+		CHOICE_HIGHLIGHT( 2, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 2, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB2", scriptmenuresponse "SC_AB2"; close self;, INFO_FOCUS_ACTION("SC_AB2");, INFO_FOCUS_RESET, when ( (RANK >= 10) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 2, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB2", when ( (RANK < 10) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 2, "", ;, INFO_FOCUS_ACTION("SC_AB2D");, INFO_FOCUS_RESET, when ( (RANK < 10) ) )
+		CHOICE_NEWICON_VIS( 2, "specialty_locked", when ( (RANK < 10) ));
+		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y+6) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, CHOICE_POPUP_BORDER_COLOR visible when ( (RANK < 10) ); )
+		
+		CHOICE_BUTTON_BG( 3, 1 ) 
+		CHOICE_HIGHLIGHT( 3, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 3, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB3", scriptmenuresponse "SC_AB3"; close self;, INFO_FOCUS_ACTION("SC_AB3" );, INFO_FOCUS_RESET, when ( (RANK >= 20) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 3, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB3", when ( (RANK < 20) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 3, "", ;, INFO_FOCUS_ACTION("SC_AB3D");, INFO_FOCUS_RESET, when ( (RANK < 20) ) )
+		CHOICE_NEWICON_VIS( 3, "specialty_locked", when ( (RANK < 20) ));
+		
+		CHOICE_BUTTON_BG( 4, 1 ) 
+		CHOICE_HIGHLIGHT( 4, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 4, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB4", scriptmenuresponse "SC_AB4"; close self;, INFO_FOCUS_ACTION("SC_AB4" );, INFO_FOCUS_RESET , when ( dvarbool(ui_secondary_ability_4) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 4, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB4", when ( !dvarbool(ui_secondary_ability_4) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 4, "", ;, INFO_FOCUS_ACTION("SC_AB4D");, INFO_FOCUS_RESET, when ( !dvarbool(ui_secondary_ability_4) ) )
+		CHOICE_NEWICON_VIS( 4, "specialty_locked", when ( !dvarbool(ui_secondary_ability_4) ));
+		
+		CHOICE_BUTTON_BG( 5, 1 ) 
+		CHOICE_HIGHLIGHT( 5, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 5, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB5", scriptmenuresponse "SC_AB5"; close self;, INFO_FOCUS_ACTION("SC_AB5" );, INFO_FOCUS_RESET, when ( dvarbool(ui_secondary_ability_4) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 5, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_SC_AB5", when ( !dvarbool(ui_secondary_ability_5) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 5, "", ;, INFO_FOCUS_ACTION("SC_AB5D");, INFO_FOCUS_RESET, when ( !dvarbool(ui_secondary_ability_5) ) )
+		CHOICE_NEWICON_VIS( 5, "specialty_locked", when ( !dvarbool(ui_secondary_ability_5) ));
+		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y*2+9) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, CHOICE_POPUP_BORDER_COLOR visible when ( (RANK < 20) ); )
+		
+		
+	}
+	
+	/*menuDef	{
+		IMPROVED_POPUP_SETUP_ONOPEN( "ability_passive", 3, (CHOICE_X_START) + 32, (CHOICE_Y_START) + 22, ;, ;, 0 )
+		CHOICE_BUTTON_BG( 1, 1 ) 
+		CHOICE_HIGHLIGHT( 1, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 1, "@ZOMBIE_"+dvarstring(ui_loadout_class)+"_PS_AB1", ;, INFO_FOCUS_ACTION("PS_AB1");, scriptmenuresponse "Ps_AB1" ;, 1 )
+		
+		
+		CHOICE_BUTTON_BG( 2, 1 ) 
+		CHOICE_HIGHLIGHT( 2, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 2, "@ZOMBIE_"+dvarstring(ui_loadout_class)+"_PS_AB2", ;, INFO_FOCUS_ACTION("PS_AB2");, scriptmenuresponse "PS_AB2";, when ( (RANK >= 5) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 2, "@ZOMBIE_"+dvarstring(ui_loadout_class)+"_PS_AB2D", when ( (RANK < 5) ) )
+		PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y+6) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, CHOICE_POPUP_BORDER_COLOR visible when ( (RANK < 5) ); )
+		
+		CHOICE_BUTTON_BG( 3, 1 ) 
+		CHOICE_HIGHLIGHT( 3, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 3, "@ZOMBIE_"+dvarstring(ui_loadout_class)+"_PS_AB3", ;, INFO_FOCUS_ACTION("PS_AB3" );, scriptmenuresponse "PS_AB3";, when ( (RANK >= 15) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 3, "@ZOMBIE_"+dvarstring(ui_loadout_class)+"_PS_AB3D", when ( (RANK < 15) ) )
+		PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y*2+9) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, CHOICE_POPUP_BORDER_COLOR visible when ( (RANK < 25) ); )
+		
+		CHOICE_BUTTON_BG( 4, 1 ) 
+		CHOICE_HIGHLIGHT( 4, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 4, "@ZOMBIE_"+dvarstring(ui_loadout_class)+"_PS_AB4", ;, INFO_FOCUS_ACTION("PS_AB4" );, scriptmenuresponse "PS_AB4";, when ( (RANK >= 25) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 4, "@ZOMBIE_"+dvarstring(ui_loadout_class)+"_PS_AB4D", when ( (RANK < 25) ) )
+		PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y*2+9) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, CHOICE_POPUP_BORDER_COLOR visible when ( (RANK < 25) ); )
+		
+		
+	}*/
+	
+
+
+	
+
+	
+}

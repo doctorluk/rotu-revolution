@@ -1,0 +1,6 @@
+VERSION             "1"
+CONFIG              "C:\trees\cod3\cod3\bin\StringEd.cfg"
+FILENOTES           ""
+
+REFERENCE           RADIO_0
+LANG_ENGLISH        "Place the radio and try to make contact!"

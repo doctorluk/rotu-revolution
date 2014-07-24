@@ -1,0 +1,252 @@
+VERSION             "1"
+CONFIG              "C:\trees\cod3\cod3\bin\StringEd.cfg"
+FILENOTES           ""
+
+REFERENCE			STREAK
+LANG_ENGLISH		"X&&1"
+
+REFERENCE           4_PLAYERMENU
+LANG_ENGLISH        "4. Player Menu"
+
+REFERENCE           5_ADMINMENU
+LANG_ENGLISH        "5. Admin Menu"
+
+REFERENCE           SURV
+LANG_ENGLISH        "Reign of the Undead-^1Revolution"
+
+REFERENCE           PROMOTION
+LANG_ENGLISH        "Rank up!"
+
+REFERENCE           SOLDIER
+LANG_ENGLISH        "Soldier"
+
+REFERENCE           SOLDIER_FULL
+LANG_ENGLISH        "Soldier (^1FULL^7)"
+
+REFERENCE           STEALTH
+LANG_ENGLISH        "Assassin"
+
+REFERENCE           STEALTH_FULL
+LANG_ENGLISH        "Assassin (^1FULL^7)"
+
+REFERENCE           ARMORED
+LANG_ENGLISH        "Armored"
+
+REFERENCE           ARMORED_FULL
+LANG_ENGLISH        "Armored (^1FULL^7)"
+
+REFERENCE           ENGINEER
+LANG_ENGLISH        "Engineer"
+
+REFERENCE           ENGINEER_FULL
+LANG_ENGLISH        "Engineer (^1FULL^7)"
+
+REFERENCE           SCOUT
+LANG_ENGLISH        "Scout"
+
+REFERENCE           SCOUT_FULL
+LANG_ENGLISH        "Scout (^1FULL^7)"
+
+REFERENCE           MEDIC
+LANG_ENGLISH        "Medic"
+
+REFERENCE           MEDIC_FULL
+LANG_ENGLISH        "Medic (^1FULL^7)"
+
+REFERENCE           About
+LANG_ENGLISH        "About RotU-R"
+
+REFERENCE           ZOMCOUNT
+LANG_ENGLISH        "Amount of Bots:"
+
+REFERENCE           HEALTH
+LANG_ENGLISH        "Zombie health:"
+
+REFERENCE			AVAILABLE_SKILLPOINTS
+LANG_ENGLISH		"Skillpoints Available: &&1"
+
+REFERENCE           DIFFICULTY
+LANG_ENGLISH        "Difficulty:"
+
+REFERENCE           EASY
+LANG_ENGLISH        "Easy"
+
+REFERENCE           NORMAL
+LANG_ENGLISH        "Normal"
+
+REFERENCE           HARD
+LANG_ENGLISH        "Hard"
+
+REFERENCE           VERYHARD
+LANG_ENGLISH        "Very Hard"
+
+REFERENCE           1_FLASHLIGHT
+LANG_ENGLISH        "1. Toggle Flashlight"
+
+REFERENCE           2_THIRDPERSON
+LANG_ENGLISH        "2. Toggle Thirdperson"
+
+REFERENCE           3_RESPAWN
+LANG_ENGLISH        "3. Respawn"
+
+REFERENCE           TOGGLECONTROLS
+LANG_ENGLISH        "4. Controls"
+
+REFERENCE           LAST_MAN_STANDING
+LANG_ENGLISH        "You're the Last Man alive!"
+
+REFERENCE           JOIN_TESTSERVER
+LANG_ENGLISH        "Join ^2NOW ^7(Official Server)"
+
+REFERENCE           JOIN_SERVER
+LANG_ENGLISH        "Join ^2NOW"
+
+REFERENCE           PLAYERMENU
+LANG_ENGLISH        "Player Menu"
+
+REFERENCE           CONTROLS
+LANG_ENGLISH        "Zombie Controls"
+
+REFERENCE           BIND_FLASHLIGHT
+LANG_ENGLISH        "Toggle Flashlight"
+
+REFERENCE           BIND_THIRDPERSON
+LANG_ENGLISH        "Toggle Thirdperson"
+
+REFERENCE			INVENTORY
+LANG_ENGLISH        "Manage Inventory"
+
+REFERENCE			MYINVENTORY
+LANG_ENGLISH        "My Inventory"
+
+REFERENCE			WEIGHT
+LANG_ENGLISH        "^3Weight"
+
+REFERENCE			ITEMS
+LANG_ENGLISH        "Items ^3(&&1/&&2)"
+
+REFERENCE			DESCRIPTION
+LANG_ENGLISH        "Description"
+
+REFERENCE			ABILITIES
+LANG_ENGLISH        "Abilities"
+
+REFERENCE			ACCEPT
+LANG_ENGLISH        "Accept"
+
+REFERENCE			SHOW
+LANG_ENGLISH        "Show"
+
+REFERENCE			NONE
+LANG_ENGLISH        "None"
+
+REFERENCE           ATTACHMENTS
+LANG_ENGLISH        "Possible attachments:"
+
+REFERENCE           NEWWAVEIN
+LANG_ENGLISH        "Prepare for Wave #&&1:"
+
+REFERENCE           FINALWAVEIN
+LANG_ENGLISH        "PREPARE FOR THE GREAT FINALE:"
+
+REFERENCE           NEWWAVE0
+LANG_ENGLISH        "Be careful: &&1 Zombies are coming!"
+
+REFERENCE           NEWWAVE1
+LANG_ENGLISH        "Incoming wave! &&1 Zombies are in it!"
+
+REFERENCE           NEWWAVE2
+LANG_ENGLISH        "A new wave of &&1 Zombies incoming!"
+
+REFERENCE           SCARYWAVE
+LANG_ENGLISH        "Interferences detected! &&1 Zombies invading!"
+
+REFERENCE           SCARYWAVE_AFTER0
+LANG_ENGLISH        "^1DEVICES REPORT MALFUNCTION"
+
+REFERENCE           SCARYWAVE_AFTER1
+LANG_ENGLISH        "^1MACHINES ARE JAMMED"
+
+REFERENCE           SCARYWAVE_AFTER2
+LANG_ENGLISH        "^1TURRETS BROKE DOWN"
+
+REFERENCE           NEWSPECIALWAVE
+LANG_ENGLISH        "A special wave of &&1 incoming!"
+
+REFERENCE           NEWBOSSWAVE
+LANG_ENGLISH        "WATCH OUT! A ^1BOSS ZOMBIE ^7IS COMING!"
+
+REFERENCE           BOSS_CATCHED_FIRE
+LANG_ENGLISH        "Be careful! The beast catched fire!"
+
+REFERENCE           BOSS_EXPLOSIVES0
+LANG_ENGLISH        "Weaken this fat-ass using Explosives! &&1%"
+
+REFERENCE           BOSS_EXPLOSIVES1
+LANG_ENGLISH        "Throw C4 and Nades at it! &&1%"
+
+REFERENCE           BOSS_EXPLOSIVES2
+LANG_ENGLISH        "Use BOOM BOOM things! &&1%"
+
+REFERENCE           BOSS_KNIFE0
+LANG_ENGLISH        "Quickly knife the giant! &&1%"
+
+REFERENCE           BOSS_KNIFE1
+LANG_ENGLISH        "Cut through it, quick! &&1%"
+
+REFERENCE           BOSS_KNIFE2
+LANG_ENGLISH        "Sharpen your blade on it! &&1%"
+
+REFERENCE           BOSS_GUNS0
+LANG_ENGLISH        "Use all your firepower! &&1%"
+
+REFERENCE           BOSS_GUNS1
+LANG_ENGLISH        "Throw your bullets at it! &&1%"
+
+REFERENCE           BOSS_GUNS2
+LANG_ENGLISH        "Guns'n'Rifles, ole! &&1%"
+
+REFERENCE           INFECTED
+LANG_ENGLISH        "You have become infected! Cure yourself!"
+
+REFERENCE			DAMMOD
+LANG_ENGLISH		"^1Damage Modifier: &&1"
+
+REFERENCE           SPEND_SKILLPOINTS
+LANG_ENGLISH        "Spend Skillpoints"
+
+REFERENCE			SURV_LEFT
+LANG_ENGLISH		"Survivors Alive: &&1"
+
+REFERENCE			ZOMB_ALIVE
+LANG_ENGLISH		"Zombies Alive: &&1"
+
+REFERENCE			SURV_DOWN
+LANG_ENGLISH		"Survivors Down: &&1"
+
+REFERENCE			MAPVOTE_WAIT4VOTES
+LANG_ENGLISH		"Waiting for Votes"
+
+REFERENCE			MAPVOTE_PRESSFIRE
+LANG_ENGLISH		"Press ^3[{+attack}] ^7or ^3[{+melee}] ^7to vote!"
+
+REFERENCE			WAVE_NUMBER
+LANG_ENGLISH		"Wave #&&1"
+
+REFERENCE			MEDKIT_IN
+LANG_ENGLISH		"Medkit in:"
+
+REFERENCE			AMMOBOX_IN
+LANG_ENGLISH		"Ammobox in:"
+
+REFERENCE			MONKEY_IN
+LANG_ENGLISH		"Monkey Bomb in:"
+
+REFERENCE			INVISIBILITY_IN
+LANG_ENGLISH		"Invisible in:"
+
+REFERENCE			DIFFICULTY_INCREASED
+LANG_ENGLISH		"Difficulty has been ^1INCREASED^7!"
+
+REFERENCE			SHOP_COSTS_INCREASED
+LANG_ENGLISH		"Shop Item costs increased by &&1%!"

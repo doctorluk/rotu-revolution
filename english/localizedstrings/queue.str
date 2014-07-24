@@ -1,0 +1,21 @@
+VERSION             "1"
+CONFIG              "C:\trees\cod3\cod3\bin\StringEd.cfg"
+FILENOTES           ""
+
+REFERENCE			AWAITING_SPAWN_SOLDIER
+LANG_ENGLISH		"Pending spawn:\nSoldier"
+
+REFERENCE			AWAITING_SPAWN_STEALTH
+LANG_ENGLISH		"Pending spawn:\nAssassin"
+
+REFERENCE			AWAITING_SPAWN_ARMORED
+LANG_ENGLISH		"Pending spawn:\nArmored"
+
+REFERENCE			AWAITING_SPAWN_ENGINEER
+LANG_ENGLISH		"Pending spawn:\nEngineer"
+
+REFERENCE			AWAITING_SPAWN_SCOUT
+LANG_ENGLISH		"Pending spawn:\nScout"
+
+REFERENCE			AWAITING_SPAWN_MEDIC
+LANG_ENGLISH		"Pending spawn:\nMedic"

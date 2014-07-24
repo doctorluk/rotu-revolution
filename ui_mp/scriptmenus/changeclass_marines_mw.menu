@@ -1,0 +1,223 @@
+#include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
+
+#define CHOICE_SIZE_X			//150
+#define CHOICE_SIZE_Y			22
+
+#define CHOICE_X_START			0
+#define CHOICE_Y_START			34
+
+#define CHOICE_SEP_OFFSET_Y		-2
+
+#include "ui_mp/menustyle.inc"
+#include "ui/choices_setup_common.menu"
+
+#define MENU_LOCKED_COLOR		0.25 0.25 0.25 1
+
+#define ORIGIN_BUTTON_BACK			52 438
+#define ORIGIN_MENU_TREE			54 64
+#define ORIGIN_MENU_TITLE_MARINES	178 64
+#define ORIGIN_MENU_TITLE_OPFOR		170 64
+#define TREE_COLOR					1 1 1 0.5
+#define LABEL_TEXT_COLOR		0.7 0.75 0.75 1
+#define ORIGIN_PLAYER_COUNT 110 64
+#define PLAYER_COUNT_ALIGNMENT	HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP
+#define PLAYER_COUNT_X (CHOICE_SIZE_X + 6)
+#define PLAYER_COUNT_Y 78
+#define PLAYER_COUNT_STEP 24
+
+{
+	menuDef
+	{
+		name			"changeclass_marines_mw"
+		rect			0 0 640 480
+		focuscolor		COLOR_FOCUSED
+		style			WINDOW_STYLE_EMPTY
+		blurWorld		7.0
+		onOpen
+		{
+			setLocalVarString ui_team "marines"
+			setDvar rotu_class_description "@CLASS_DESCRIPTION_CLASS_DESCRIPTION_DEFAULT"
+			setDvar rotu_class_description_title ""
+		}
+		onClose	
+		{ 
+			
+		}
+		onEsc 
+		{
+			close self;
+			open class;
+			// scriptMenuResponse "back";
+		}
+		
+		// background overlay
+		itemDef	{
+			style			WINDOW_STYLE_FILLED
+			rect			0 0 640 480 HORIZONTAL_ALIGN_FULLSCREEN VERTICAL_ALIGN_FULLSCREEN
+			backcolor		0 0 0 .75 //0 0.05 0.15 0.5
+			visible			1
+			decoration
+		}
+		// gradient_top
+		itemDef	{
+			style			WINDOW_STYLE_SHADER
+			rect			0 0 854 75 HORIZONTAL_ALIGN_FULLSCREEN 0
+			background		"gradient_top"
+			visible			1
+			decoration
+		}
+		// gradient_bottom
+		itemDef	{
+			style			WINDOW_STYLE_SHADER
+			rect			0 405 854 75 HORIZONTAL_ALIGN_FULLSCREEN 0
+			background		"gradient_bottom"
+			visible			1
+			decoration
+		}
+
+		#define DESCRIPTION_SIZE_X			295
+		#define DESCRIPTION_SIZE_Y			220
+		#define DESCRIPTION_FRAME_SIZE_X	(DESCRIPTION_SIZE_X + 2)
+		#define DESCRIPTION_FRAME_SIZE_Y	(DESCRIPTION_SIZE_Y + 2)
+		#define DESCRIPTION_ALIGNMENT 		HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+		#define DESCRIPTION_ORIGIN			(0 - (DESCRIPTION_FRAME_SIZE_X + 15)) 55
+		
+		#define SET_DESCRIPTION(desc, desctitle) 	setDvar rotu_class_description desc; setDvar rotu_class_description_title desctitle
+		#define CLEAN_DESCRIPTION 					setDvar rotu_class_description "@CLASS_DESCRIPTION_CLASS_DESCRIPTION_DEFAULT"; setDvar rotu_class_description_title ""
+		
+		#define DESCRIPTION_BUTTON(slot, text, action, desc, desctitle, condition) CHOICE_BUTTON_FOCUS_VIS(slot, text, action, SET_DESCRIPTION(desc, desctitle), CLEAN_DESCRIPTION , when( condition ))
+		
+		#define PLAYER_COUNT_TEXT(slot, classtype) \
+		itemDef \
+		{ \
+			type			ITEM_TYPE_TEXT \
+			rect			PLAYER_COUNT_X (PLAYER_COUNT_Y + (PLAYER_COUNT_STEP * slot)) 0 0 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP \
+			forecolor		1 1 1 1 \
+			exp				text( dvarint("ui_classcount_"classtype) + " " + LocString("@CLASS_DESCRIPTION_CLASS_DISPLAY_PLAYERS") )  \
+			textfont		UI_FONT_DEFAULT \
+			textstyle		ITEM_TEXTSTYLE_SHADOWEDMORE \
+			textscale		0.4 \
+			visible			when(dvarint("ui_classcount_" + classtype) > 1) \
+		} \
+		itemDef \
+		{ \
+			type			ITEM_TYPE_TEXT \
+			rect			PLAYER_COUNT_X (PLAYER_COUNT_Y + (PLAYER_COUNT_STEP * slot)) 0 0 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP \
+			forecolor		1 1 1 1 \
+			exp				text( dvarint("ui_classcount_"classtype) + " " + LocString("@CLASS_DESCRIPTION_CLASS_DISPLAY_PLAYER") ) \
+			textfont		UI_FONT_DEFAULT \
+			textstyle		ITEM_TEXTSTYLE_SHADOWEDMORE \
+			textscale		0.4 \
+			visible			when(dvarint("ui_classcount_" + classtype) == 1) \
+		} \
+		itemDef \
+		{ \
+			type			ITEM_TYPE_TEXT \
+			rect			PLAYER_COUNT_X (PLAYER_COUNT_Y + (PLAYER_COUNT_STEP * slot)) 0 0 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP \
+			forecolor		1 1 1 1 \
+			exp				text( "^1" + dvarint("ui_classcount_"classtype) + " " + LocString("@CLASS_DESCRIPTION_CLASS_DISPLAY_PLAYERS") ) \
+			textfont		UI_FONT_DEFAULT \
+			textstyle		ITEM_TEXTSTYLE_SHADOWEDMORE \
+			textscale		0.4 \
+			visible			when(dvarint("ui_classcount_" + classtype) == 0) \
+		}
+		
+		// Description text above Description Box
+		itemDef
+		{
+			type			ITEM_TYPE_TEXT
+			visible			when ( dvarstring(rotu_class_description_title) != "" );
+			rect			DESCRIPTION_ORIGIN 0 0 DESCRIPTION_ALIGNMENT
+			origin			0 0
+			forecolor		1 0.8 0.4 1
+			exp				text(dvarstring("rotu_class_description_title"))
+			textfont		UI_FONT_DEFAULT
+			textstyle	ITEM_TEXTSTYLE_SHADOWEDMORE
+			textscale		TEXTSIZE_DEFAULT decoration	
+		}
+		
+		// Description Box
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			DESCRIPTION_ORIGIN DESCRIPTION_FRAME_SIZE_X DESCRIPTION_FRAME_SIZE_Y DESCRIPTION_ALIGNMENT
+			backcolor		0 0 0 .5
+			visible			1 
+			decoration		autowrapped
+		}
+		itemDef
+		{
+			
+			style			WINDOW_STYLE_SHADER 
+			rect			DESCRIPTION_ORIGIN DESCRIPTION_SIZE_X DESCRIPTION_SIZE_Y DESCRIPTION_ALIGNMENT
+			background		"white"
+			forecolor		.5 .5 .5 0.15
+			border			1
+			bordersize		1
+			bordercolor		0.5 0.5 0.5 0.7
+			visible			1 
+			decoration		autowrapped	
+		}
+		itemDef
+		{
+			rect			DESCRIPTION_ORIGIN DESCRIPTION_SIZE_X DESCRIPTION_SIZE_Y DESCRIPTION_ALIGNMENT
+			type			ITEM_TYPE_BUTTON
+			textfont		UI_FONT_DEFAULT
+			dvar			"rotu_class_description"
+			textalign 		ITEM_ALIGN_LEFT
+			textscale		TEXTSIZE_SMALL
+			forecolor		1 1 1 1
+			backcolor		0 0 0 0
+			textalignx 		5
+			textaligny 		0 
+			origin			0 20
+			visible			1 
+			decoration		autowrapped
+		}
+		
+		// Playercount next to Classname
+		PLAYER_COUNT_TEXT(0, "soldier")
+		PLAYER_COUNT_TEXT(1, "stealth")
+		PLAYER_COUNT_TEXT(2, "armored")
+		PLAYER_COUNT_TEXT(3, "engineer")
+		PLAYER_COUNT_TEXT(4, "scout")
+		PLAYER_COUNT_TEXT(5, "medic")
+		
+		// ------------------ TREE TITLE ------------------
+		
+		CHOICE_MENU_TITLE( "@CLASS_DESCRIPTION_CHOOSE_ROLE" )
+
+		// ------------------ buttons ---------------------
+		#define BACK_OPEN open class;
+		#include "ui_mp/navcontrols.inc"
+		
+		//=========================================================================
+		//================ MENU SELECTION FOR ONLINE/OFFLINE GAME =================
+		//=========================================================================
+		#include "ui_mp/teamicon_rotu.inc"
+		
+		/* =================================== default classes ================================= */		
+		CHOICE_SECTION_TITLE( 1, "@CLASS_DESCRIPTION_AVAILABLE_ROLES" )
+
+		DESCRIPTION_BUTTON(2, "@ZOMBIE_SOLDIER", scriptMenuResponse "soldier";, "@CLASS_DESCRIPTION_SOLDIER_DESCRIPTION", "@CLASS_DESCRIPTION_SOLDIER_DESCRIPTION_TITLE", dvarInt("ui_soldier_unlocked"))
+		DESCRIPTION_BUTTON(2, "@ZOMBIE_SOLDIER_FULL", ;, "@CLASS_DESCRIPTION_SOLDIER_DESCRIPTION", "@CLASS_DESCRIPTION_SOLDIER_DESCRIPTION_TITLE", !dvarInt("ui_soldier_unlocked"))
+
+		DESCRIPTION_BUTTON(3, "@ZOMBIE_STEALTH", scriptMenuResponse "stealth";, "@CLASS_DESCRIPTION_STEALTH_DESCRIPTION", "@CLASS_DESCRIPTION_STEALTH_DESCRIPTION_TITLE", dvarInt("ui_assassin_unlocked") )
+		DESCRIPTION_BUTTON(3, "@ZOMBIE_STEALTH_FULL", ;, "@CLASS_DESCRIPTION_STEALTH_DESCRIPTION", "@CLASS_DESCRIPTION_STEALTH_DESCRIPTION_TITLE", !dvarInt("ui_assassin_unlocked") )
+		
+		DESCRIPTION_BUTTON(4, "@ZOMBIE_ARMORED", scriptMenuResponse "armored";, "@CLASS_DESCRIPTION_ARMORED_DESCRIPTION", "@CLASS_DESCRIPTION_ARMORED_DESCRIPTION_TITLE", dvarInt("ui_armored_unlocked") )
+		DESCRIPTION_BUTTON(4, "@ZOMBIE_ARMORED_FULL", ;, "@CLASS_DESCRIPTION_ARMORED_DESCRIPTION", "@CLASS_DESCRIPTION_ARMORED_DESCRIPTION_TITLE", !dvarInt("ui_armored_unlocked") )
+		
+		DESCRIPTION_BUTTON(5, "@ZOMBIE_ENGINEER", scriptMenuResponse "engineer";, "@CLASS_DESCRIPTION_ENGINEER_DESCRIPTION", "@CLASS_DESCRIPTION_ENGINEER_DESCRIPTION_TITLE", dvarInt("ui_engineer_unlocked") )
+		DESCRIPTION_BUTTON(5, "@ZOMBIE_ENGINEER_FULL", ;, "@CLASS_DESCRIPTION_ENGINEER_DESCRIPTION", "@CLASS_DESCRIPTION_ENGINEER_DESCRIPTION_TITLE", !dvarInt("ui_engineer_unlocked") )
+		
+		DESCRIPTION_BUTTON(6, "@ZOMBIE_SCOUT", scriptMenuResponse "scout";, "@CLASS_DESCRIPTION_SCOUT_DESCRIPTION", "@CLASS_DESCRIPTION_SCOUT_DESCRIPTION_TITLE", dvarInt("ui_scout_unlocked") )
+		DESCRIPTION_BUTTON(6, "@ZOMBIE_SCOUT_FULL", ;, "@CLASS_DESCRIPTION_SCOUT_DESCRIPTION", "@CLASS_DESCRIPTION_SCOUT_DESCRIPTION_TITLE", !dvarInt("ui_scout_unlocked") )
+		
+		DESCRIPTION_BUTTON(7, "@ZOMBIE_MEDIC", scriptMenuResponse "medic";, "@CLASS_DESCRIPTION_MEDIC_DESCRIPTION", "@CLASS_DESCRIPTION_MEDIC_DESCRIPTION_TITLE", dvarInt("ui_medic_unlocked") )
+		DESCRIPTION_BUTTON(7, "@ZOMBIE_MEDIC_FULL", ;, "@CLASS_DESCRIPTION_MEDIC_DESCRIPTION", "@CLASS_DESCRIPTION_MEDIC_DESCRIPTION_TITLE", !dvarInt("ui_medic_unlocked") )
+
+		#include "ui/safearea.menu"
+	}
+}

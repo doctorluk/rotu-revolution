@@ -1,0 +1,1185 @@
+rawfile,animtrees/multiplayer.atr
+rawfile,mp/playeranim.script
+rawfile,mp/playeranimtypes.txt
+rawfile,mp/CoD2maps.arena
+
+stringtable,mp\didyouknow.csv
+rawfile,mp\didyouknow.csv
+
+
+// rawfile,custom_scripts/_admin.gsc
+rawfile,custom_scripts/_difficulty.gsc
+
+
+localize,mpui
+localize,weapon
+localize,zombie
+localize,zombieui
+localize,finale
+localize,shop
+localize,abilities
+localize,didyouknow
+localize,class_description
+localize,last_chance
+localize,queue
+localize,use
+localize,class
+
+
+// fx,explosions/grenadeExp_blacktop
+// fx,explosions/grenadeExp_metal
+// fx,turrets/turret_broken
+// fx,turrets/turret_overheat
+// fx,fire/zomb_onfire
+// fx,fire/dog_onfire
+// fx,light/dog_lightning
+// fx,impacts/flesh_hit_body_nonfatal
+// fx,impacts/zombie_crit_splatter
+// fx,fire/humanburning_1
+// fx,impacts/large_metalhit_1
+// fx,misc/flashlight
+// fx,misc/fumes
+// fx,muzzleflashes/thundergun
+// fx,muzzleflashes/heavy
+// fx,raygun/raygun_trail
+// fx,smoke/heli_engine_smolder
+// fx,zombies/thunderspawn
+// fx,zombies/thunder_attack
+
+
+fx,explosions/pyromaniac
+fx,turrets/augmented_turret
+fx,fire/emb_burst_a
+fx,fire/firelp_med_pm_atspawn
+fx,fire/boss_onfire
+fx,flamethrower/muzzle
+fx,impacts/zombie_crit_splatter_nograv
+fx,misc/ground_rising
+fx,misc/healing
+fx,misc/heal_glow
+fx,misc/heal_glow_body
+fx,misc/medkit
+fx,misc/sentry_laser
+fx,misc/soul
+fx,misc/soulspawn
+fx,misc/soul_death
+fx,misc/spirit
+fx,misc/toxic_gas
+fx,misc/napalm_zombie_tummyglow
+fx,misc/zombie_incendiary_effect
+fx,misc/zombie_poison_effect
+fx,raygun/raygun_muzzle_v
+fx,raygun/raygun_muzzle_w
+fx,raygun/raygun_impact
+fx,raygun/trail_raygun_geotrail
+fx,raygun/trail_raygun_ring_emit
+fx,weather/lightning
+material,gfx_fxt_fx_raygun_ring
+fx,wunderwaffe/wunderwaffe_muzzle
+fx,wunderwaffe/wunderwaffe_trail
+fx,wunderwaffe/wunderwaffe_impact
+fx,zombies/boss_shockwave
+
+
+// ## Flashlight Glow by Rycoon, modified by Luk
+fx,light/flashlight_glow
+
+// ## Fog Effects by susel
+material,gfx_fxt_smk_spiral_detail
+material,gfx_fxt_smk_gen
+fx,zombies/fx_fog_zombie_amb
+fx,zombies/fx_zombie_fog_static_xlg
+
+// ## Zombie Eye glow generic
+fx,zombies/eye_glow_le
+fx,zombies/eye_glow_ri
+
+
+rawfile,maps/mp/gametypes/_gametypes.txt
+rawfile,maps/mp/gametypes/war.txt
+rawfile,maps/mp/gametypes/war.gsc
+rawfile,maps/mp/gametypes/surv.txt
+rawfile,maps/mp/gametypes/surv.gsc
+rawfile,maps/mp/gametypes/dm.txt
+rawfile,maps/mp/gametypes/dm.gsc
+rawfile,maps/mp/_load.gsc
+rawfile,maps/mp/_zombiescript.gsc
+
+
+material,bx_medkit_skin
+material,bx_teleporter_edge
+material,bx_teleporter_energy
+material,bx_teleporter_main
+material,bx_teleporter_pad
+material,bx_teleporter_transparency
+
+material,hud_ammo
+material,hud_flamethrower_reticle
+material,hud_icon_ammobox
+material,hud_icon_crossbow
+material,hud_icon_crossbow_dpad
+material,hud_icon_f2000
+material,hud_icon_lowhp
+material,hud_icon_low_ammo
+
+material,icon_medkit_radar
+material,icon_medkit_placed
+material,icon_ammobox_placed
+material,icon_ammobox_radar
+material,hud_icon_medkit
+material,hud_icon_monkey
+material,hud_icon_thundergun
+material,hud_icon_tomahawk
+material,hud_lowhp
+material,healthcross
+material,hud_thundergun_dpad
+material,hud_tomahawk_dpad
+material,hud_weapons
+
+material,lightning_icon
+
+material,rotu-r_logo
+material,bg_front_thunder
+
+material,scorebar_backdrop
+
+material,icon_infection
+material,icon_down
+material,icon_admin
+material,icon_spec
+material,icon_dev
+
+material,icon_turret_hit
+
+// Scoreboard Icons for classes
+material,icon_medic
+material,icon_engineer
+material,icon_soldier
+material,icon_stealth
+material,icon_scout
+material,icon_armored
+
+material,mtl_lightning_chamber_glass
+material,mtl_lightning_chamber_main
+material,mtl_ray_gun
+material,mtl_ray_gun_battery
+material,mtl_red_dot
+material,mtl_tesla_metal
+material,mtl_vacuum_tube
+material,mtl_vacuum_tube_filament_inside
+material,mtl_vacuum_tube_filament_outside
+material,mtl_viewmodel_flamethrower
+material,mtl_viewmodel_flamethrower_hose
+material,mtl_weapon_crossbow
+material,mtl_weapon_flamethrower
+material,mw2_aa12_body
+material,mw3_sentry_gl_body
+
+material,objpoint_bomb
+
+material,rank_prestige_1
+material,rank_prestige_2
+material,rank_prestige_3
+material,rank_prestige_4
+material,rank_prestige_5
+material,rank_prestige_6
+material,rank_prestige_7
+material,rank_prestige_8
+material,rank_prestige_9
+material,rank_prestige_10
+material,rank_prestige_11
+material,rank_prestige_12
+material,rank_prestige_13
+material,rank_prestige_14
+material,rank_prestige_15
+material,rank_prestige_16
+material,rank_prestige_17
+material,rank_prestige_18
+material,rank_prestige_19
+material,rank_prestige_20
+material,rank_prestige_21
+material,rank_prestige_22
+material,rank_prestige_23
+material,rank_prestige_24
+material,rank_prestige_25
+material,rank_prestige_26
+material,rank_prestige_27
+material,rank_prestige_28
+material,rank_prestige_29
+material,rank_prestige_30
+material,rank_prestige_31
+material,rank_prestige_32
+material,rank_prestige_33
+material,rank_prestige_34
+material,rank_prestige_35
+material,rank_prestige_36
+material,rank_prestige_37
+material,rank_prestige_38
+material,rank_prestige_39
+material,rank_prestige_40
+material,rank_prestige_41
+material,rank_prestige_42
+material,rank_prestige_43
+material,rank_prestige_44
+material,rank_prestige_45
+
+material,overlay_armored
+//material,overlay_shocked
+
+material,weapon_crossbow
+material,weapon_mw2_f2000_body
+material,weapon_mw2_f2000_sight
+material,weapon_tomahawk
+
+
+stringtable,mp/ranktable.csv
+stringtable,mp/ChallengeTable.csv
+stringtable,mp/rankicontable.csv
+
+
+rawfile,scripts/bots/_bots.gsc
+rawfile,scripts/bots/_debug.gsc
+rawfile,scripts/bots/_types.gsc
+rawfile,scripts/clients/_clients.gsc
+rawfile,scripts/extras/_antiafk.gsc
+rawfile,scripts/extras/_rotustats.gsc
+rawfile,scripts/gamemodes/_gamemodes.gsc
+rawfile,scripts/gamemodes/_hud.gsc
+rawfile,scripts/gamemodes/_lastchance.gsc
+rawfile,scripts/gamemodes/_mysterybox.gsc
+rawfile,scripts/gamemodes/_survival.gsc
+rawfile,scripts/gamemodes/_upgradables.gsc
+rawfile,scripts/gamemodes/_waves.gsc
+rawfile,scripts/include/admin.gsc
+rawfile,scripts/include/data.gsc
+rawfile,scripts/include/entities.gsc
+rawfile,scripts/include/hud.gsc
+rawfile,scripts/include/math.gsc
+rawfile,scripts/include/physics.gsc
+rawfile,scripts/include/strings.gsc
+rawfile,scripts/include/useful.gsc
+rawfile,scripts/include/waypoints.gsc
+rawfile,scripts/include/include/entities.gsc
+rawfile,scripts/include/include/physics.gsc
+rawfile,scripts/include/include/waypoints.gsc
+rawfile,scripts/level/_spectatecoords.gsc
+rawfile,scripts/players/_abilities.gsc
+rawfile,scripts/players/_barricades.gsc
+rawfile,scripts/players/_classes.gsc
+rawfile,scripts/players/_claymore.gsc
+rawfile,scripts/players/_damagefeedback.gsc
+rawfile,scripts/players/_infection.gsc
+rawfile,scripts/players/_menus.gsc
+rawfile,scripts/players/_persistence.gsc
+rawfile,scripts/players/_playermodels.gsc
+rawfile,scripts/players/_players.gsc
+rawfile,scripts/players/_rank.gsc
+rawfile,scripts/players/_shop.gsc
+rawfile,scripts/players/_spree.gsc
+rawfile,scripts/players/_teleporter.gsc
+rawfile,scripts/players/_turrets.gsc
+rawfile,scripts/players/_usables.gsc
+rawfile,scripts/players/_weapons.gsc
+rawfile,scripts/security/_security.gsc
+rawfile,scripts/server/_admin.gsc
+rawfile,scripts/server/_adminmenu.gsc
+rawfile,scripts/server/_custom.gsc
+rawfile,scripts/server/_environment.gsc
+rawfile,scripts/server/_maprotation.gsc
+rawfile,scripts/server/_maps.gsc
+rawfile,scripts/server/_mapvoting.gsc
+rawfile,scripts/server/_mapvoting_old.gsc
+rawfile,scripts/server/_ranks.gsc
+rawfile,scripts/server/_scoreboard.gsc
+rawfile,scripts/server/_server.gsc
+rawfile,scripts/server/_servername.gsc
+rawfile,scripts/server/_settings.gsc
+rawfile,scripts/server/_welcome.gsc
+
+
+rawfile,shock/toxic_gas_mp.shock
+rawfile,shock/teleporter.shock
+rawfile,shock/infection.shock
+rawfile,shock/boss.shock
+rawfile,shock/general_shock.shock
+
+
+sound,abilities,,all_mp
+sound,turrets,,all_mp
+sound,zombies_windows,,all_mp
+sound,bxmod,,all_mp
+sound,vo,,all_mp
+sound,cust_weaps,,all_mp
+
+
+menufile,ui/playerprofile.menu
+menufile,ui/choices_setup_common.menu
+menufile,ui/rotulogo.inc
+menufile,ui/rotuversion.inc
+menufile,ui/bg.inc
+menufile,ui_mp/challenges.menu
+menufile,ui_mp/controls_multi.menu
+menufile,ui_mp/createserver.menu
+menufile,ui_mp/hud.menu
+menufile,ui_mp/connect.menu
+menufile,ui_mp/main.menu
+menufile,ui_mp/settings_quick_war.menu
+menufile,ui_mp/teamicon_rotu.inc
+menufile,ui_mp/teamicon_rotu2.inc
+menufile,ui_mp/wm_quickmessage.menu
+//menufile,ui_mp/scriptmenus/admin.menu
+//menufile,ui_mp/scriptmenus/bxmod_admin.menu
+menufile,ui_mp/scriptmenus/changeclass_ability.menu
+menufile,ui_mp/scriptmenus/changeclass_marines_mw.menu
+menufile,ui_mp/scriptmenus/class.menu
+menufile,ui_mp/scriptmenus/clientcmd.menu
+menufile,ui_mp/scriptmenus/extras_shop.menu
+menufile,ui_mp/scriptmenus/playermenu.menu
+menufile,ui_mp/scriptmenus/quickstatements.menu
+menufile,ui_mp/scriptmenus/scoreboard.menu
+menufile,ui_mp/scriptmenus/skillpoints.menu
+menufile,ui_mp/scriptmenus/team_marinesopfor.menu
+
+
+rawfile,vision/boss.vision
+rawfile,vision/icbm_launch.vision
+rawfile,vision/inferno.vision
+rawfile,vision/rotu.vision
+rawfile,vision/finale.vision
+rawfile,vision/thunder.vision
+rawfile,vision/night.vision
+rawfile,vision/last_chance_revive.vision
+rawfile,vision/greyvision.vision
+//rawfile,vision/test1.vision
+//rawfile,vision/test2.vision
+//rawfile,vision/test3.vision
+//rawfile,vision/test4.vision
+
+
+// weapon,mp/ak47
+weapon,mp/at4_mp
+//weapon,mp/tnt_mp
+
+weapon,mp/bot_dog_run_mp
+weapon,mp/bot_dog_idle_mp
+weapon,mp/bot_zombie_walk_mp
+weapon,mp/bot_zombie_stand_mp
+weapon,mp/bot_zombie_run0_mp
+weapon,mp/bot_zombie_run1_mp
+// weapon,mp/bot_zombie_run1_mp
+// weapon,mp/bot_zombie_run2_mp
+// weapon,mp/bot_zombie_run3_mp
+// weapon,mp/bot_zombie_run4_mp
+weapon,mp/bot_zombie_melee_mp
+
+// weapon,mp/crossbow_mp
+
+weapon,mp/saw_bipod_stand_mp
+
+xanim,ai_zombie_attack_v2
+xanim,ai_zombie_attack_v4
+xanim,ai_zombie_quad_idle
+xanim,ai_zombie_quad_crawl_sprint
+xanim,ai_zombie_quad_crawl
+xanim,ai_zombie_quad_attack
+xanim,ai_zombie_sprint_v4
+xanim,ai_zombie_sprint_v5
+xanim,ai_zombie_walk_v3
+xanim,ai_zombie_walk_v4
+
+xanim,ai_zombie_jump_down_40
+
+xanim,ai_zombie_taunts_11
+
+xanim,death_stand_dropinplace
+
+xanim,german_shepherd_sitting_looking_idle
+// xanim,german_shepherd_run
+xanim,zombie_dog_run
+// xanim,german_shepherd_run_attack
+xanim,zombie_dog_run_attack
+// xanim,german_shepherd_death_front
+xanim,zombie_dog_death_front
+
+xanim,hunted_dazed_walk_A_zombie
+
+xanim,noweapon
+
+// xanim,pb_minigun_stand_idle
+// xanim,pb_minigun_crouch_idle
+// xanim,pb_minigun_stand_walk
+// xanim,pb_minigun_stand_walk_back
+// xanim,pb_minigun_crouch_run_forward
+// xanim,pb_minigun_crouch_run_back
+// xanim,pb_minigun_stand_run
+// xanim,pb_minigun_stand_run_back
+// xanim,pb_minigun_crouch_run_back
+// xanim,pb_minigun_crouch_turn_90right
+// xanim,pb_minigun_crouch_turn_90left
+// xanim,pb_minigun_stand_turn_90right
+// xanim,pb_minigun_stand_turn_90left
+// xanim,pb_minigun_runjump_takeoff
+// xanim,pb_minigun_standjump_takeoff
+
+xanim,pt_flamethrower_fire_center
+xanim,pt_flamethrower_crouch_fire_center
+
+// xanim,pt_minigun_stand_flinch_forward
+// xanim,pt_minigun_stand_flinch_back
+// xanim,pt_minigun_stand_flinch_left
+// xanim,pt_minigun_stand_flinch_right
+// xanim,pt_minigun_crouch_flinch_forward
+// xanim,pt_minigun_crouch_flinch_back
+// xanim,pt_minigun_crouch_flinch_left
+// xanim,pt_minigun_crouch_flinch_right
+
+// xanim,pt_minigun_stand_fire
+// xanim,pt_minigun_crouch_fire
+// xanim,pt_minigun_crouch_raise
+// xanim,pt_minigun_stand_raise
+
+// xanim,pt_minigun_stand_putaway
+// xanim,pt_minigun_crouch_putaway
+
+xanim,standunarmed_idle_loop
+
+xanim,unarmed_panickedrun_loop_V1
+
+xanim,viewmodel_aa12_ADS_down
+xanim,viewmodel_aa12_ADS_fire
+xanim,viewmodel_aa12_ADS_up
+xanim,viewmodel_aa12_fire
+xanim,viewmodel_aa12_idle
+xanim,viewmodel_aa12_pullout
+xanim,viewmodel_aa12_pullout_quick
+xanim,viewmodel_aa12_putaway
+xanim,viewmodel_aa12_reload
+xanim,viewmodel_aa12_sprint_in
+xanim,viewmodel_aa12_sprint_loop
+xanim,viewmodel_aa12_sprint_out
+
+xanim,viewmodel_crossbow_ADS_down
+xanim,viewmodel_crossbow_ADS_up
+xanim,viewmodel_crossbow_empty_pullout
+xanim,viewmodel_crossbow_empty_putaway
+xanim,viewmodel_crossbow_fire
+xanim,viewmodel_crossbow_idle
+xanim,viewmodel_crossbow_idle_empty
+xanim,viewmodel_crossbow_pullout
+xanim,viewmodel_crossbow_putaway
+xanim,viewmodel_crossbow_reload
+xanim,viewmodel_crossbow_sprint_in
+xanim,viewmodel_crossbow_sprint_loop
+xanim,viewmodel_crossbow_sprint_out
+
+xanim,viewmodel_f2000_idle
+xanim,viewmodel_f2000_fire
+xanim,viewmodel_f2000_fire
+xanim,viewmodel_f2000_reload
+xanim,viewmodel_f2000_pullout
+xanim,viewmodel_f2000_putaway
+xanim,viewmodel_f2000_pullout
+xanim,viewmodel_f2000_sprint_in
+xanim,viewmodel_f2000_sprint_loop
+xanim,viewmodel_f2000_sprint_out
+xanim,viewmodel_f2000_ads_fire
+xanim,viewmodel_f2000_ads_in
+xanim,viewmodel_f2000_ads_out
+
+xanim,viewmodel_flamethrower_idle
+xanim,viewmodel_flamethrower_fire
+xanim,viewmodel_flamethrower_pullout
+xanim,viewmodel_flamethrower_putaway
+xanim,viewmodel_flamethrower_pullout_fast
+xanim,viewmodel_flamethrower_putaway_fast
+xanim,viewmodel_flamethrower_ADS_up
+xanim,viewmodel_flamethrower_ADS_down
+
+xanim,viewmodel_g36_scope_ADS_up
+xanim,viewmodel_g36_scope_ADS_down
+
+xanim,viewmodel_M4m203_ADS_fire
+xanim,viewmodel_M4m203silencer_reflex_ADS_up
+xanim,viewmodel_M4m203silencer_reflex_ADS_down
+
+xanim,viewmodel_ray_gun_idle
+xanim,viewmodel_ray_gun_fire
+xanim,viewmodel_ray_gun_reload
+xanim,viewmodel_ray_gun_raise
+xanim,viewmodel_ray_gun_drop
+xanim,viewmodel_ray_gun_ADS_up
+xanim,viewmodel_ray_gun_ADS_down
+
+xanim,viewmodel_tesla_pullout
+xanim,viewmodel_tesla_pullout_fast
+xanim,viewmodel_tesla_putaway
+xanim,viewmodel_tesla_putaway_fast
+xanim,viewmodel_tesla_reload
+xanim,viewmodel_tesla_ADS_down
+xanim,viewmodel_tesla_ADS_fire
+xanim,viewmodel_tesla_ADS_up
+xanim,viewmodel_tesla_fire
+xanim,viewmodel_tesla_first_raise
+xanim,viewmodel_tesla_idle
+
+xanim,viewmodel_tomahawk_attack
+xanim,viewmodel_tomahawk_attack2
+xanim,viewmodel_tomahawk_pullout
+xanim,viewmodel_tomahawk_putaway
+xanim,viewmodel_tomahawk_idle
+xanim,viewmodel_tomahawk_sprint_in
+xanim,viewmodel_tomahawk_sprint_loop
+xanim,viewmodel_tomahawk_sprint_out
+
+// ## ZOMBIE WOLF
+xmodel,zombie_wolf
+
+material,mtl_zombie_wolf
+material,mtl_zombie_wolf_fur
+material,mtl_nazi_hellhound_eyes
+
+// ## Stock dead-model BODIES
+xmodel,body_sp_russian_loyalist_a_dead
+xmodel,body_sp_russian_loyalist_b_dead
+xmodel,body_sp_russian_loyalist_c_dead
+xmodel,body_sp_russian_loyalist_d_dead
+
+// ## Stock dead-model HEADS 
+xmodel,head_sp_loyalist_alex_helmet_body_a_dead
+xmodel,head_sp_loyalist_mackey_hat_body_b_dead
+xmodel,head_sp_loyalist_josh_helmet_body_c_dead
+xmodel,head_sp_loyalist_tom_hat_body_d_dead
+
+// ## German Nazi Zombie Body 1_1
+xmodel,char_ger_honorgd_bodyz1_1
+
+material,mtl_char_ger_headz1_1
+material,mtl_char_ger_honorguard_linen1_1
+material,mtl_char_ger_honorguard_lthr1_1
+material,mtl_char_ger_honorguard_metal1_1
+
+// ## German Nazi Zombie Body 2_1
+xmodel,char_ger_honorgd_bodyz2_1
+
+
+// ## German Nazi Zombie Body 2_2
+xmodel,char_ger_honorgd_bodyz2_2
+
+material,mtl_char_ger_honorguard_linen1_2
+material,mtl_char_ger_honorguard_lthr1_2
+material,mtl_char_ger_honorguard_metal1_2
+
+// ## German Nazi Zombie Head 1_1
+xmodel,char_ger_honorgd_zombiehead1_1
+
+material,mtl_char_ger_headz1_1
+material,mtl_char_ger_nazizombie_eyes
+
+// ## German Nazi Zombie Head 1_2
+xmodel,char_ger_honorgd_zombiehead1_2
+
+material,mtl_char_ger_headz1_2
+
+// ## German Nazi Zombie Head 1_3
+xmodel,char_ger_honorgd_zombiehead1_3
+
+material,mtl_char_ger_headz1_3
+
+// ## German Nazi Zombie Head 1_4
+xmodel,char_ger_honorgd_zombiehead1_4
+
+material,mtl_char_ger_headz1_4
+
+// ## BO1 Zombie Scientist
+material,bo1_mtl_c_rus_scientist_2_corpse
+xmodel,bo1_c_usa_pent_zombie_scientist_body
+
+// ## BO1 Napalm Zombie
+material,bo1_mtl_viet_zombie_napalm_body
+material,bo1_mtl_viet_zombie_napalm_head
+xmodel,bo1_c_viet_zombie_napalm
+// Head
+xmodel,bo1_c_viet_zombie_napalm_head
+
+// ## BO1 Cosmonaut HELL REPLACEMENT
+material,bo1_mtl_c_zom_cosmo_cosmonaut_body
+xmodel,bo1_c_zom_cosmo_cosmonaut_body
+// Heads
+material,bo1_mtl_c_cosmo_zombieheads
+material,bo1_mtl_gen_eye_cornea
+material,bo1_mtl_gen_eye_iris_blue
+xmodel,bo1_c_zom_cosmo_head1
+xmodel,bo1_c_zom_cosmo_head2
+xmodel,bo1_c_zom_cosmo_head3
+xmodel,bo1_c_zom_cosmo_head4
+
+// ## BO1 bo1_c_zom_george_romero_zombiefied_fb also known as BIG SEMI BOSS
+
+// xmodel,bo1_c_zom_george_romero_zombiefied_fb
+material,mtl_c_gen_insidemouth
+material,mtl_gen_eye_iris_darkbrown
+material,mtl_zom_barechest_body_skin_glow
+material,mtl_zom_romero_body_zombified
+material,mtl_zom_romero_glasses_lens
+material,mtl_zom_romero_glasses_rim
+material,mtl_zom_romero_head_hair
+material,mtl_zom_romero_head_ponytail
+material,mtl_zom_romero_head_zombiefied
+
+xmodel,zom_george_romero
+
+// ## BO1 officeworker replacing FAST ZOMBIES
+material,bo1_mtl_c_usa_pent_tie1
+material,bo1_mtl_c_zombie_pent_pants
+material,bo1_mtl_c_zombie_pent_shirt1
+xmodel,bo1_c_usa_pent_zombie_officeworker_body
+
+// ## BO1 Generic Normal Zombie Heads
+material,bo1_mtl_c_ger_zombie_eyes
+material,bo1_mtl_c_ger_zombie_head1
+xmodel,bo1_c_ger_zombie_head1
+xmodel,bo1_c_ger_zombie_head2
+xmodel,bo1_c_ger_zombie_head3
+xmodel,bo1_c_ger_zombie_head4
+
+material,bo1_mtl_c_zom_heads
+xmodel,bo1_c_zom_head_1
+xmodel,bo1_c_zom_head_2
+xmodel,bo1_c_zom_head_3
+xmodel,bo1_c_zom_head_4
+
+// ## BO1 Militarypolice replacing FAT ZOMBIE
+material,bo1_mtl_c_zom_militarypolice_body
+material,bo1_mtl_c_zom_militarypolice_gear
+xmodel,bo1_c_usa_pent_zombie_militarypolice_body
+
+// ## BO1 Female Zombie (GENERIC)
+material,bo1_mtl_c_viet_zombie_female_body
+material,bo1_mtl_c_viet_zombie_female_body_skin
+material,bo1_mtl_c_viet_zombie_female_head
+xmodel,bo1_c_viet_zombie_female
+// HEAD
+material,bo1_mtl_c_viet_zombie_female_hair
+xmodel,bo1_c_viet_zombie_female_head
+
+// ## BO1 NVA1 Zombie (GENERIC)
+material,bo1_mtl_c_zom_vtn_nva1_body
+xmodel,bo1_c_viet_zombie_nva1_body
+// HEAD
+material,bo1_mtl_c_zom_vtn_nva1_head
+xmodel,bo1_c_viet_zombie_nva1_head1
+
+// ## Tanky Speznaz Zombie body
+material,bo1_mtl_c_zom_cosmo_spetznaz_body
+xmodel,bo1_c_zom_cosmo_spetznaz_body
+
+// ## BO2 Avagadro Veins&Arteries Body model (electric zombie)
+// material,bo2_mtl_c_zom_avagadro_brain
+// material,bo2_mtl_c_zom_avagadro_veins
+// material,bo2_mtl_c_zom_avagadro_guts
+// xmodel,bo2_c_zom_avagadro_fb
+
+// ## Skeleton Model by Viking
+//material,mtl_skeleton
+//xmodel,skeleton
+
+// ## Invisible model (for use as 2nd damage hitbox for the boss)
+material,invisible
+material,invisible1
+material,invisible2
+xmodel,invisible_model
+
+// ## Gore-Splatter Effects
+material,mtl_fx_char_gib_chunks
+xmodel,fx_char_gib_chunk_fat
+xmodel,fx_char_gib_chunk_flesh01
+xmodel,fx_char_gib_chunk_flesh02
+xmodel,fx_char_gib_chunk_flesh03
+xmodel,fx_char_gib_chunk_meat01
+xmodel,fx_char_gib_chunk_meat02
+xmodel,fx_char_gib_chunk_meat03
+
+material,mtl_char_ger_pnzrgren_body1_1
+material,mtl_char_jap_impinf_gore_blend
+material,mtl_char_jap_impinf_gore_limbs
+xmodel,char_ger_pnzrgren_body1_g_llegspawn
+material,mtl_char_usa_raider_mp_head1
+xmodel,char_usa_marine_body1_m_g_rarmspawn
+xmodel,char_usa_marine_wet_body1_g_larmspawn
+
+// ## Gore-Splatter Effects BO1
+material,bo1_mtl_fx_char_gib_chunks
+xmodel,bo1_fx_char_gib_chunk_bone02
+xmodel,bo1_fx_char_gib_chunk_bone03
+xmodel,bo1_fx_char_gib_chunk_fat
+xmodel,bo1_fx_char_gib_chunk_flesh01
+xmodel,bo1_fx_char_gib_chunk_flesh02
+xmodel,bo1_fx_char_gib_chunk_flesh03
+xmodel,bo1_fx_char_gib_chunk_meat01
+xmodel,bo1_fx_char_gib_chunk_meat02
+
+// ## Experimental AVAGADRO BO2 TEST
+// material,bo2_mtl_c_zom_avagadro_brain
+// material,bo2_mtl_c_zom_avagadro_guts
+// material,bo2_mtl_c_zom_avagadro_veins
+// xmodel,bo2_c_zom_avagadro_fb
+
+xmodel,ammobox
+xmodel,bo_quad
+xmodel,body_complete_mp_spetsnaz_vlad
+xmodel,body_mp_opforce_support
+xmodel,body_mp_sas_urban_specops
+xmodel,body_mp_usmc_rifleman
+xmodel,body_mp_usmc_support
+xmodel,body_mp_usmc_woodland_sniper
+xmodel,body_mp_usmc_woodland_support
+xmodel,body_mp_usmc_woodland_recon
+xmodel,body_mp_usmc_woodland_specops
+xmodel,body_mp_usmc_sniper
+xmodel,bx_teleporter
+xmodel,bx_medkit
+xmodel,ch_tombstone3
+xmodel,com_barrel_metal
+xmodel,com_barrel_benzin
+xmodel,com_barrel_biohazard
+xmodel,cyclops
+xmodel,flamethrower_viewmodel
+xmodel,head_sp_usmc_zach_zach_body_goggles
+xmodel,head_sp_usmc_sami_goggles_zach_body
+xmodel,head_mp_usmc_ghillie
+xmodel,head_sp_opforce_derik_body_f
+xmodel,head_sp_sas_woodland_mac
+xmodel,head_sp_opforce_geoff_headset_body_c
+xmodel,head_sp_sas_woodland_peter
+xmodel,head_sp_sas_woodland_todd
+xmodel,head_sp_sas_woodland_hugh
+xmodel,head_sp_spetsnaz_collins_vladbody
+xmodel,mw2_aa12_worldmodel
+xmodel,mw2_aa12_viewmodel
+xmodel,mw2_mp5k_viewmodel
+xmodel,mw2_mp5k_worldmodel
+xmodel,mw2_mp5k_worldmodel_silencer
+xmodel,mw3_sentry_gl_base
+xmodel,mw3_sentry_gl_turret
+xmodel,projectile_tag
+xmodel,raygun_viewmodel
+xmodel,tesla_viewmodel
+xmodel,weapon_g36
+xmodel,viewmodel_g36c
+xmodel,viewmodel_m21SD
+xmodel,viewmodel_m4m203_silencer_reflex
+xmodel,viewmodel_p90_silencer
+xmodel,viewmodel_thundergun
+xmodel,weapon_bo_tomahawk
+xmodel,weapon_bo_tomahawk_wm
+xmodel,weapon_bo_tomahawk_wm_knife
+xmodel,weapon_crossbow_1
+xmodel,weapon_crossbow_viewhands
+xmodel,weapon_flamethrower
+xmodel,weapon_m4gre_sp_silencer_reflex
+xmodel,weapon_m21SD_woodland
+xmodel,weapon_mw2_f2000_wm
+xmodel,weapon_mw2_f2000
+xmodel,weapon_p90_sd
+xmodel,weapon_raygun
+xmodel,weapon_saw_MG_setup
+xmodel,weapon_tesla
+
+xmodel,worldmodel_thundergun
+
+////////////////////////////////
+////// Custom Weapons ////////
+///////////////////////////////
+
+
+//BF3 Sniper
+
+sound,l96,,all_mp
+
+xmodel,viewmodel_l96
+xmodel,weapon_l96
+
+xanim,viewmodel_l96_ads_down
+xanim,viewmodel_l96_ads_up
+xanim,viewmodel_l96_idle
+xanim,viewmodel_l96_pullout
+xanim,viewmodel_l96_pullout_first
+xanim,viewmodel_l96_pullout_quick
+xanim,viewmodel_l96_reload
+xanim,viewmodel_l96_reload_empty
+xanim,viewmodel_l96_sprint_in
+xanim,viewmodel_l96_sprint_loop
+xanim,viewmodel_l96_sprint_out
+xanim,viewmodel_l96_putaway
+xanim,viewmodel_l96_rechamber
+xanim,viewmodel_l96_fire
+
+// BO Enfield
+
+sound,enfield,,all_mp
+
+xanim,viewmodel_enfield_acog_ads_down
+xanim,viewmodel_enfield_acog_ads_up
+xanim,viewmodel_enfield_ads_down
+xanim,viewmodel_enfield_ads_fire
+xanim,viewmodel_enfield_ads_up
+xanim,viewmodel_enfield_dualclip_reload_empty_quick
+xanim,viewmodel_enfield_dualclip_reload_quick
+xanim,viewmodel_enfield_elbit_ads_down
+xanim,viewmodel_enfield_elbit_ads_up
+xanim,viewmodel_enfield_fire
+xanim,viewmodel_enfield_first_raise
+xanim,viewmodel_enfield_idle
+xanim,viewmodel_enfield_idle_loop
+xanim,viewmodel_enfield_last_shot
+xanim,viewmodel_enfield_pullout
+xanim,viewmodel_enfield_pullout_quick
+xanim,viewmodel_enfield_putaway
+xanim,viewmodel_enfield_putaway_quick
+xanim,viewmodel_enfield_sprint_in
+xanim,viewmodel_enfield_sprint_loop
+xanim,viewmodel_enfield_sprint_out
+material,mtl_iron_sights
+material,mtl_mag_wrap
+material,mtl_weapon_enfield
+material,mtl_weapon_enfield_plastic
+material,mtl_weapon_reflex_red_dot
+material,mtl_weapon_scope_acog_lens
+material,mtl_weapon_scope_elbit
+material,mtl_weapon_scope_reflex_lens
+material,mtl_weapon_scope_susat
+material,mtl_weapon_suppressor
+
+
+xmodel,worldmodel_bo_enfield
+xmodel,viewmodel_bo_enfield
+
+// MW2 .44 Magnum
+
+xmodel,viewmodel_mw2_magnum
+xmodel,worldmodel_mw2_magnum
+
+material,mtl_mw2_magnum
+material,hud_mw2_magnum
+
+xanim,viewmodel_mw2_magnum_ADS_down
+xanim,viewmodel_mw2_magnum_ADS_up
+xanim,viewmodel_mw2_magnum_fire
+xanim,viewmodel_mw2_magnum_idle
+xanim,viewmodel_mw2_magnum_pullout
+xanim,viewmodel_mw2_magnum_putaway
+xanim,viewmodel_mw2_magnum_reload
+xanim,viewmodel_mw2_magnum_sprint_in
+xanim,viewmodel_mw2_magnum_sprint_loop
+xanim,viewmodel_mw2_magnum_sprint_out
+
+sound,magnum_mw2,,all_mp
+
+
+//MW2 M4
+
+xmodel,viewmodel_mw2_m4
+xmodel,worldmodel_mw2_m4
+xmodel,worldmodel_mw2_m4_gl
+
+material,mtl_mw2_m4
+material,mtl_mw2_acog
+material,mtl_mw2_reflex
+material,mtl_mw2_silencer
+material,mtl_mw2_eotech
+material,mtl_mw2_eotech_lens
+material,mtl_weapon_mw2_eotech_dot
+material,mtl_mw2_m203
+
+sound,m4_mw2,,all_mp
+
+xanim,viewmodel_mw2_m4_ADS_up
+xanim,viewmodel_mw2_m4_ADS_fire
+xanim,viewmodel_mw2_m4_ADS_down
+xanim,viewmodel_mw2_reflex_m4_ADS_up
+xanim,viewmodel_mw2_reflex_m4_ADS_fire
+xanim,viewmodel_mw2_reflex_m4_ADS_down
+xanim,viewmodel_mw2_eotech_m4_ADS_up
+xanim,viewmodel_mw2_eotech_m4_ADS_fire
+xanim,viewmodel_mw2_eotech_m4_ADS_down
+xanim,viewmodel_mw2_acog_m4_ADS_up
+xanim,viewmodel_mw2_acog_m4_ADS_fire
+xanim,viewmodel_mw2_acog_m4_ADS_down
+xanim,viewmodel_mw2_m4_ADS_GL_fire
+
+
+//MW2 Scar-H
+
+xanim,viewmodel_scar_acog_ads_down
+xanim,viewmodel_scar_acog_ads_up
+xanim,viewmodel_scar_ads_down
+xanim,viewmodel_scar_ads_up
+xanim,viewmodel_scar_fire
+xanim,viewmodel_scar_idle
+xanim,viewmodel_scar_pullout
+xanim,viewmodel_scar_putaway
+xanim,viewmodel_scar_reflex_ads_down
+xanim,viewmodel_scar_reflex_ads_up
+xanim,viewmodel_scar_reload
+xanim,viewmodel_scar_reload_empty
+xanim,viewmodel_scar_sprint_in
+xanim,viewmodel_scar_sprint_loop
+xanim,viewmodel_scar_sprint_out
+
+xmodel,viewmodel_scar_h_mp
+xmodel,viewmodel_scar_h_sd_mp
+xmodel,weapon_scarh_mp
+xmodel,weapon_scarhsd_mp
+
+sound,scar,all_mp,all_mp
+
+
+//MW2 Vector
+
+material,mtl_mw2_tdi_vector
+material,mtl_mw2_tdi_vector_grip
+material,mtl_mw2_acog
+material,mtl_mw2_reflex
+material,mtl_mw2_silencer
+material,mtl_mw2_eotech
+material,mtl_mw2_eotech_lens
+material,mtl_weapon_mw2_eotech_dot
+
+xmodel,viewmodel_mw2_TDI_vector
+xmodel,worldmodel_mw2_TDI_vector
+
+xanim,viewmodel_mw2_tdi_vector_fire
+xanim,viewmodel_mw2_tdi_vector_idle
+xanim,viewmodel_mw2_tdi_vector_pullout
+xanim,viewmodel_mw2_tdi_vector_pullout_first
+xanim,viewmodel_mw2_tdi_vector_putaway
+xanim,viewmodel_mw2_tdi_vector_reload
+xanim,viewmodel_mw2_tdi_vector_reload_empty
+xanim,viewmodel_mw2_tdi_vector_sprint_in
+xanim,viewmodel_mw2_tdi_vector_sprint_loop
+xanim,viewmodel_mw2_tdi_vector_sprint_out
+xanim,viewmodel_mw2_tdi_vector_ADS_down
+xanim,viewmodel_mw2_tdi_vector_ADS_fire
+xanim,viewmodel_mw2_tdi_vector_ADS_up
+xanim,viewmodel_mw2_tdi_vector_reflex_ADS_down
+xanim,viewmodel_mw2_tdi_vector_reflex_ADS_fire
+xanim,viewmodel_mw2_tdi_vector_reflex_ADS_up
+xanim,viewmodel_mw2_tdi_vector_eotech_ADS_down
+xanim,viewmodel_mw2_tdi_vector_eotech_ADS_fire
+xanim,viewmodel_mw2_tdi_vector_eotech_ADS_up
+xanim,viewmodel_mw2_tdi_vector_acog_ADS_down
+xanim,viewmodel_mw2_tdi_vector_acog_ADS_fire
+xanim,viewmodel_mw2_tdi_vector_acog_ADS_up
+
+sound,TDI_Vector_mw2,,all_mp
+
+
+//Monkey Bomb
+
+fx,monkey_grenade/monkey_grenade_onfloor
+
+
+material,hud_icon_monkey
+material,mtl_monkey_bomb_clothes
+material,mtl_monkey_bomb_metal
+material,mtl_monkey_bomb_fur
+material,mtl_monkey_bomb_explosive
+
+sound,monkey,,all_mp
+
+xanim,viewmodel_zombie_monkeybomb_throw
+xanim,viewmodel_zombie_monkeybomb_idle
+xanim,viewmodel_zombie_monkeybomb_pullpin
+
+xmodel,monkey_bomb_waw
+xmodel,weapon_monkey_bomb
+
+//Bo Crossbow
+
+fx,bo_crossbow/smoke_geotrail_crossbow
+fx,bo_crossbow/light_crossbow_blink
+
+material,mtl_bo_crossbow
+material,mtl_bo_crossbow_for_arrow
+material,hud_bo_explosive_arrow
+material,mtl_bo_gredfield_scope_interior_lens
+material,mtl_bo_rail_n_bracket
+material,mtl_bo_redfield_scope
+
+
+
+sound,crossbow_bo,,all_mp
+
+
+xanim,viewmodel_bo_crossbow_ADS_down
+xanim,viewmodel_bo_crossbow_ADS_up
+xanim,viewmodel_bo_crossbow_scope_ADS_down
+xanim,viewmodel_bo_crossbow_scope_ADS_up
+xanim,viewmodel_bo_crossbow_fire
+xanim,viewmodel_bo_crossbow_idle
+xanim,viewmodel_bo_crossbow_pullout
+xanim,viewmodel_bo_crossbow_putaway
+xanim,viewmodel_bo_crossbow_reload
+xanim,viewmodel_bo_crossbow_scope_reload
+xanim,viewmodel_bo_crossbow_sprint_in
+xanim,viewmodel_bo_crossbow_sprint_loop
+xanim,viewmodel_bo_crossbow_sprint_out
+
+
+xmodel,viewmodel_bo_crossbow
+xmodel,worldmodel_bo_crossbow
+xmodel,projectile_bo_arrow_explosive
+
+
+//Custom Desert Eagle
+
+xmodel,Viewmodel_Deagle_mp
+
+material,deagle_frame
+material,deagle_front
+material,deagle_grip
+material,deagle_nophongframe
+material,desert_eagle_new
+
+// HK 21
+sound,hk21,,all_mp
+
+xanim,viewmodel_hk21_acog_ads_down
+xanim,viewmodel_hk21_acog_ads_up
+xanim,viewmodel_hk21_ads_down
+xanim,viewmodel_hk21_ads_fire
+xanim,viewmodel_hk21_ads_up
+xanim,viewmodel_hk21_elbit_ads_down
+xanim,viewmodel_hk21_elbit_ads_up
+xanim,viewmodel_hk21_extclip_reload
+xanim,viewmodel_hk21_extclip_reload_empty
+xanim,viewmodel_hk21_fire
+xanim,viewmodel_hk21_first_raise
+xanim,viewmodel_hk21_idle
+xanim,viewmodel_hk21_idle_loop
+xanim,viewmodel_hk21_last_shot
+xanim,viewmodel_hk21_pullout
+xanim,viewmodel_hk21_pullout_quick
+xanim,viewmodel_hk21_putaway
+xanim,viewmodel_hk21_putaway_quick
+xanim,viewmodel_hk21_sprint_in
+xanim,viewmodel_hk21_sprint_loop
+xanim,viewmodel_hk21_sprint_out
+
+xmodel,viewmodel_bo_hk21
+xmodel,worldmodel_bo_hk21
+
+// Minigun
+
+xanim,viewmodel_minigun_fire
+xanim,viewmodel_minigun_idle
+xanim,viewmodel_minigun_pullout
+xanim,viewmodel_minigun_putaway
+xanim,viewmodel_minigun_sprint_in
+xanim,viewmodel_minigun_sprint_loop
+xanim,viewmodel_minigun_sprint_out
+xmodel,viewmodel_bo_minigun
+xmodel,worldmodel_bo_minigun
+material,mtl_bo_minigun
+material,mtl_bo_minigun_bullet
+material,mtl_bo_minigun_decals
+material,mtl_bo_minigun_for_bullets
+sound,minigun_bo,,all_mp
+
+// BO Steyr AUG
+material,attachment_bo_aug_scope
+material,attachment_bo_iron_sights
+material,attachment_bo_reflex_sight
+material,attachment_bo_suppressor
+material,weapon_bo_aug
+
+sound,bo_aug,,all_mp
+
+xanim,viewmodel_aug_grip_ads_down
+xanim,viewmodel_aug_grip_ads_fire
+xanim,viewmodel_aug_grip_ads_up
+xanim,viewmodel_aug_grip_fire
+xanim,viewmodel_aug_grip_first_raise
+xanim,viewmodel_aug_grip_idle
+xanim,viewmodel_aug_grip_idle_loop
+xanim,viewmodel_aug_grip_last_shot
+xanim,viewmodel_aug_grip_mantle
+xanim,viewmodel_aug_grip_pullout
+xanim,viewmodel_aug_grip_pullout_quick
+xanim,viewmodel_aug_grip_putaway
+xanim,viewmodel_aug_grip_putaway_quick
+xanim,viewmodel_aug_grip_reload
+xanim,viewmodel_aug_grip_reload_empty
+xanim,viewmodel_aug_grip_sprint_in
+xanim,viewmodel_aug_grip_sprint_loop
+xanim,viewmodel_aug_grip_sprint_out
+xanim,viewmodel_aug_reflex_ads_down
+xanim,viewmodel_aug_reflex_ads_up
+
+xmodel,viewmodel_bo_aug_hbar
+xmodel,worldmodel_bo_aug_hbar
+
+// BO2 Sentry Turret
+material,mtl_bo2_sentry_gun_minigun
+material,mtl_bo2_turret_sentry_gun_ammo
+material,mtl_bo2_turret_sentry_gun_base
+
+xmodel,bo2_turret_sentry_gun
+
+// MW2 Intervention
+sound,cheytac,,all_mp
+
+xmodel,viewmodel_cheytac
+xmodel,weapon_cheytac
+
+xanim,viewmodel_cheytac_idle
+xanim,viewmodel_cheytac_fire
+xanim,viewmodel_cheytac_rechamber
+xanim,viewmodel_cheytac_reload
+xanim,viewmodel_cheytac_reload_empty
+xanim,viewmodel_cheytac_pullout
+xanim,viewmodel_cheytac_putaway
+xanim,viewmodel_cheytac_pullout_quick
+xanim,viewmodel_cheytac_putaway_quick
+xanim,viewmodel_cheytac_sprint_in
+xanim,viewmodel_cheytac_sprint_loop
+xanim,viewmodel_cheytac_sprint_out
+xanim,viewmodel_cheytac_fire_ads
+xanim,viewmodel_cheytac_rechamber_ads
+xanim,viewmodel_cheytac_ADS_up
+xanim,viewmodel_cheytac_ADS_down
+xanim,viewmodel_cheytac_acog_ADS_up
+xanim,viewmodel_cheytac_acog_ADS_down
+xanim,viewmodel_cheytac_thermal_ADS_up
+xanim,viewmodel_cheytac_thermal_ADS_down
+
+// MW2 Striker
+sound,striker,,all_mp
+
+xanim,viewmodel_striker_ads_down
+xanim,viewmodel_striker_ads_up
+xanim,viewmodel_striker_eotech_ads_down
+xanim,viewmodel_striker_eotech_ads_up
+xanim,viewmodel_striker_fire
+xanim,viewmodel_striker_fire_ads
+xanim,viewmodel_striker_idle
+xanim,viewmodel_striker_pullout
+xanim,viewmodel_striker_pullout_quick
+xanim,viewmodel_striker_putaway
+xanim,viewmodel_striker_putaway_quick
+xanim,viewmodel_striker_reflex_ads_down
+xanim,viewmodel_striker_reflex_ads_up
+xanim,viewmodel_striker_reload_intro
+xanim,viewmodel_striker_reload_loop
+xanim,viewmodel_striker_reload_out
+xanim,viewmodel_striker_sprint_in
+xanim,viewmodel_striker_sprint_loop
+xanim,viewmodel_striker_sprint_out
+
+xmodel,viewmodel_striker_mw2
+xmodel,weapon_striker_mw2
+
+// Wounded Viewhands
+xmodel,viewmodel_base_viewhands
+material,mtl_viewhands_wounded_cloth
+material,mtl_viewhands_wounded_skin

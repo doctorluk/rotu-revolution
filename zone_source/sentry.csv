@@ -1,0 +1,5 @@
+material,mw2_sentry_body
+xmodel,mw2_sentry_quadpod
+xmodel,mw2_sentry_turret
+fx,impacts\large_metalhit_1
+fx,smoke\heli_engine_smolder

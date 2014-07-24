@@ -1,0 +1,128 @@
+#include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
+#include "ui_mp/menustyle.inc"
+{
+	menuDef 
+	{
+		name			"saysquad"
+		fullscreen		0
+		rect			0 0 640 480
+		style			1
+//		blurWorld		4.0
+		border			0
+
+		onOpen
+		{
+		}
+		onEsc  
+		{
+			scriptMenuResponse "exit";
+			close saysquad;
+		}
+		itemDef 
+		{
+			visible			1
+			origin			8 200
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.36
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT	
+			dvar			"ui_saysquad"
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			origin			8 230
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.32
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			text			"^3Press '=' for space '  '."
+			decoration
+		}
+		itemDef 
+		{
+			visible			1
+			origin			8 245
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.32
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			text			"^3Press '-' to send message."
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			origin			8 260
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.32
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			text			"^3Press ';' to undo."
+			decoration
+		}
+
+		// Numbers
+		execKey "0" { scriptMenuResponse "0" }
+		execKey "1" { scriptMenuResponse "1" }
+		execKey "2" { scriptMenuResponse "2" }
+		execKey "3" { scriptMenuResponse "3" }
+		execKey "4" { scriptMenuResponse "4" }
+		execKey "5" { scriptMenuResponse "5" }
+		execKey "6" { scriptMenuResponse "6" }
+		execKey "7" { scriptMenuResponse "7" }
+		execKey "8" { scriptMenuResponse "8" }
+		execKey "9" { scriptMenuResponse "9" }
+
+		// Letters
+		execKey "a" { scriptMenuResponse "a" }
+		execKey "b" { scriptMenuResponse "b" }
+		execKey "c" { scriptMenuResponse "c" }
+		execKey "d" { scriptMenuResponse "d" }
+		execKey "e" { scriptMenuResponse "e" }
+		execKey "f" { scriptMenuResponse "f" }
+		execKey "g" { scriptMenuResponse "g" }
+		execKey "h" { scriptMenuResponse "h" }
+		execKey "i" { scriptMenuResponse "i" }
+		execKey "j" { scriptMenuResponse "j" }
+		execKey "k" { scriptMenuResponse "k" }
+		execKey "l" { scriptMenuResponse "l" }
+		execKey "m" { scriptMenuResponse "m" }
+		execKey "n" { scriptMenuResponse "n" }
+		execKey "o" { scriptMenuResponse "o" }
+		execKey "u" { scriptMenuResponse "u" }
+		execKey "p" { scriptMenuResponse "p" }
+		execKey "r" { scriptMenuResponse "r" }
+		execKey "s" { scriptMenuResponse "s" }
+		execKey "t" { scriptMenuResponse "t" }
+		execKey "w" { scriptMenuResponse "w" }
+		execKey "v" { scriptMenuResponse "v" } // BraX: There is no V or Q letter in Polish alphabet :P
+		execKey "x" { scriptMenuResponse "x" }
+		execKey "y" { scriptMenuResponse "y" }
+		execKey "q" { scriptMenuResponse "q" }
+		execKey "z" { scriptMenuResponse "z" }
+
+		// Other chars
+		execKey "[" { scriptMenuResponse "[" }
+		execKey "]" { scriptMenuResponse "]" }
+//		execKey ";" { scriptMenuResponse ";" }
+		execKey "'" { scriptMenuResponse "'" }
+		execKey "," { scriptMenuResponse "," }
+		execKey "." { scriptMenuResponse "." }
+		execKey "/" { scriptMenuResponse "/" }
+
+
+		// For script
+		execKey "-" { scriptMenuResponse "send" }  // send
+		execKey "=" { scriptMenuResponse "space" }  // space
+		execKey ";" { scriptMenuResponse "undo" }  // undo
+	}
+}

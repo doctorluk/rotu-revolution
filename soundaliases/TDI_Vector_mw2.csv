@@ -1,0 +1,28 @@
+name,sequence,file,vol_min,vol_max,vol_mod,pitch_min,pitch_max,dist_min,dist_max,channel,type,probability,loop,masterslave,loadspec,subtitle,compression,secondaryaliasname,volumefalloffcurve,startdelay,speakermap,reverb,lfe percentage,center percentage,platform,envelop_min,envelop_max,envelop percentage,conversion
+
+
+,MW2 TDI VECTOR
+
+# RELOAD
+weap_mw2_tdi_vector_clip_out_plr,,weps/TDI_Vector_mw2/weap_mw2_tdi_vector_clip_out.wav,0.5,0.55,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_mw2_tdi_vector_clip_in_plr,,weps/TDI_Vector_mw2/weap_mw2_tdi_vector_clip_in.wav,0.5,0.55,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_mw2_tdi_vector_chamber_plr,,weps/TDI_Vector_mw2/weap_mw2_tdi_vector_chamber.wav,0.5,0.55,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_mw2_tdi_vector_stock_plr,,weps/TDI_Vector_mw2/weap_mw2_tdi_vector_stock.wav,0.5,0.55,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+
+
+# FIRE
+weap_mw2_tdi_vector_fire_plr,,weps/TDI_Vector_mw2/weap_mw2_tdi_vector_fire.wav,0.63,0.72,wpnplyr,1.05,1.15,500000,,local,,,,0.85,,,,,weapon2,,,,
+weap_mw2_tdi_vector_fire_npc,,weps/TDI_Vector_mw2/weap_mw2_tdi_vector_fire.wav,0.84,0.9,wpnai,1.05,1.15,35,8400,weapon,,,,0.7,!ac130 all_mp,,,,weapon4
+weap_mw2_tdi_vector_fire_npc,,weps/TDI_Vector_mw2/weap_mw2_tdi_vector_fire.wav,0.84,0.9,wpnai,1.05,1.15,35,10920,weapon,,,,0.7,all_mp,,,,weapon4
+
+
+# FIRE SILENCED (USED M4 MW2 FIRESOUND)
+#weap_mw2_tdi_vector_fire_sil_plr,,weps/m4_mw2/weap_mw2_m4_fire_sil.wav,0.25,0.45,wpnplyr,0.7,1,500000,,local,,,,0.85,,,,,weapon2
+
+#weap_mw2_tdi_vector_fire_sil_npc,,weps/m4_mw2/weap_mw2_m4_fire_sil.wav,0.46,0.52,wpnai,0.7,1,35,8400,weapon,,,,0.7,!ac130 all_mp,,,,weapon4
+#weap_mw2_tdi_vector_fire_sil_npc,,weps/m4_mw2/weap_mw2_m4_fire_sil.wav,0.36,0.42,wpnai,0.7,1,35,2000,weapon,,,,0.7,all_mp,,,,weapon4
+
+
+# FOR NPC RELOAD
+weap_mw2_tdi_vector_reload_npc,,weps/TDI_Vector_mw2/weap_mw2_tdi_vector_clip_out.wav,0.55,0.6,wpnai,1,1,7,500,reload,,,,0.7,all_mp,,,weap_mw2_tdi_vector_clip_in_npc,weapon2,50
+weap_mw2_tdi_vector_clip_in_npc,,weps/TDI_Vector_mw2/weap_mw2_tdi_vector_clip_in.wav,0.55,0.6,wpnai,1,1,7,500,auto,,,,0.7,all_mp,,,,weapon2,600

@@ -1,0 +1,21 @@
+VERSION             "1"
+CONFIG              "C:\trees\cod3\cod3\bin\StringEd.cfg"
+FILENOTES           ""
+
+REFERENCE			SPEND_FIRE
+LANG_ENGLISH		"Press^3 [{+attack}] (FIRE) ^7to pay the fees for &&1!"
+
+REFERENCE			SPEND_FIRE_YOURSELF
+LANG_ENGLISH		"Press^3 [{+attack}] (FIRE) ^7to pay yourself free!"
+
+REFERENCE			TIMER
+LANG_ENGLISH		"Will you be able to call the saving Phoenix?"
+
+REFERENCE			SPEND_AMOUNT
+LANG_ENGLISH		"Required points to pay the death fee: ^3&&1"
+
+REFERENCE			SPEND_AMOUNT_CANT_PAY
+LANG_ENGLISH		"You do not have ^3&&1^7 points to pay your fees!"
+
+REFERENCE			YOU_GOT_SAVED_BY
+LANG_ENGLISH		"^2Luck you! ^3&&1 ^7has paid your fees!"

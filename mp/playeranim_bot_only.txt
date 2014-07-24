@@ -1,0 +1,58 @@
+		playerAnimType bot_quad_idle
+		{
+			both ai_zombie_quad_idle
+
+		}
+ 	 	 playerAnimType bot_boss_jump 
+		 { 
+ 	 	 	 both boss_jump
+ 	 	 }
+		playerAnimType bot_quad_sprint
+		{
+			both ai_zombie_quad_crawl_sprint
+		}
+		playerAnimType bot_quad_crawl
+		{
+			both ai_zombie_quad_crawl
+		}
+		playerAnimType bot_quad_attack
+		{
+			both ai_zombie_quad_attack
+		}
+		playerAnimType bot_zom_walk
+		{
+			both hunted_dazed_walk_A_zombie
+			
+		}
+		playerAnimType bot_zom_stand
+		{
+			both standunarmed_idle_loop
+		}
+		playerAnimType bot_zom_run0
+		{
+			both ai_zombie_sprint_v5
+		}
+		playerAnimType bot_zom_run1
+		{
+			both ai_zombie_sprint_v4
+		}
+		playerAnimType bot_zom_runfast
+		{
+			both unarmed_panickedrun_loop_V1
+		}
+		playerAnimType bot_zom_melee
+		{
+			both ai_zombie_attack_v1
+		}
+		playerAnimType bot_dog_run
+		{
+			both german_shepherd_run
+		}
+		playerAnimType bot_dog_attack
+		{
+			both german_shepherd_run_attack
+		}
+		playerAnimType bot_dog_idle
+		{
+			both german_shepherd_sitting_looking_idle
+		}

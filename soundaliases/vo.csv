@@ -1,0 +1,123 @@
+"#""If the first column for a row is blank"," then the row is ignored""",
+# The first non-comment line of a sound alias file specifies the key name for all values appearing in this column.,,
+"# This means it is safe to swap entire columns around, though you should never swap partial columns.",,
+"# You can invent new keys, but the game will ignore them if it doesn't know about them.",,
+"# You can leave out keys, but the ""name"" and ""file"" keys must always be present.",,
+
+,name,name of the alias that is used to play this sound (required)
+,sequence,"used to uniquely identify alias entries when more than one sound goes to an alias, used only to catch unwanted duplicates (default = 0)"
+,file,the name of the file that contains the sound data (required)
+,vol_min,"0 is silent, 1 is full volume (default = 1)"
+,vol_max,"0 is silent, 1 is full volume (default = same as vol_min)"
+,vol_mod,"blank causes no effect on vol_min and vol_max, otherwise the string must match a string in the volumemodgroups.def file and the value in that file corresponding to that string will be used to adjust vol_min and vol_max, clamped to the valid range"
+,pitch_min,"1 is normal playback, 2 is twice as fast, 0.5 is half as fast (default = 1)"
+,pitch_max,"1 is normal playback, 2 is twice as fast, 0.5 is half as fast (default = same as pitch_min)"
+,dist_min,"within this distance in inches, the sound is always full volume (default = 120)"
+,dist_max,"outside this distance in inches, the sound is not started.  If left blank or set to 0, the sound will play from any distance.  This does not affect sound volume falloff."
+,channel,"auto, menu, weapon, voice, item, body, local, music, announcer (default = auto)"
+,type,primed (a streamed sound which gets primed on some platforms) / streamed / loaded (default = loaded)
+,probability,weight to use for the weighted probability of playing this sound instead of another sound (default = 1)
+,loop,"whether this sound is ""looping"" or ""nonlooping"" (default = ""nonlooping"")"
+,masterslave,"if ""master"", this is a master sound.  If a number, then this sound's volume will be multiplied by that number (a percentage between 0 and 1) any master sound is playing.  If blank, then neither master nor slave."
+,loadspec,"space-separated list of which maps should use this alias; eg, ""burnville dawnville"".  If blank, the alias is used on all maps."
+,compression,"a string corresponding to an entry in ""XMAUpdate.tbl"" which is used to determine compression by XMAUpdate.exe"
+,secondaryaliasname,"defined the name of an additional sound alias to play in addition to the current alias being played. Note that it is an error for the secondaryalias to also define a secondaryaliasname (eg, if B is a secondaryalias of A, B is not allowed to have its own secondaryalias)."
+,volumefalloffcurve,if blank uses the linear curve which can not be changed. A string 'XXXX' corresponds to the curve defined by the file 'soundaliases/XXXX.vfcurve'
+,startdelay,defaults to no delay. The value is the number of milliseconds to delay starting the sound by
+,speakermap,if blank uses the default speakermappings which cannot be changed. A string 'XXXX' corresponds to the speakermap defined by the file 'soundaliases/XXXX.spkrmap'. 
+,reverb,"blank means the alias is affected normally by wet and dry levels, ""fulldrylevel"" forces the alias to use a full drylevel (ignoring the global drylevel), ""nowetlevel"" forces the alias to use no wetlevel (ignoring the global wetlevel)"
+,lfe percentage,this determines what percentage of the highest calculated spatialized speaker volume should be passed to the LFE. blank means no LFE for the sound
+,center percentage,this determines what percentage of the volume should be redirected to the center channel (equal percentage taken from all speakers).
+,platform,"used by XMAUpdate to determine whether the alias should be processed for a particular platform.  If blank, process for all platforms.  Platforms are PC, XB, PS, WI.  Multiple values should be separated by spaces.  !PC will exclude alias from PC but include in all other platforms.  PC will only include alias for PC.  !PC XB is invalid."
+,envelop_min,any sounds within this distance of the listener will use the full envelop percentage
+,envelop_max,sounds between enevlop_min and envelop_max use a fraction of the envelop percentage,,,,,,,,,,,,,,,,,,,,,,,,,,
+,envelop percentage,amount of omnidirectionality to apply,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+name,sequence,file,vol_min,vol_max,vol_mod,pitch_min,pitch_max,dist_min,dist_max,channel,type,probability,loop,masterslave,loadspec,subtitle,compression,secondaryaliasname,volumefalloffcurve,startdelay,speakermap,reverb,lfe percentage,center percentage,platform,envelop_min,envelop_max,envelop percentage
+
+## -- USE BY SELF -- ##
+
+## MEDIC REQUEST SHOUTS ##
+need_medic,1,vo/requests/need_medic0.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_medic,2,vo/requests/need_medic1.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_medic,3,vo/requests/need_medic2.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_medic,4,vo/requests/need_medic3.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_medic,5,vo/requests/need_medic4.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+
+## MEDIC REQUEST SHOUTS WHILE DOWN ##
+need_medic_down,1,vo/requests/need_medic_down0.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_medic_down,2,vo/requests/need_medic_down1.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_medic_down,3,vo/requests/need_medic_down2.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_medic_down,4,vo/requests/need_medic_down3.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_medic_down,5,vo/requests/need_medic_down4.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+
+## AMMO REQUEST SHOUTS ##
+need_ammo,1,vo/requests/need_ammo0.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_ammo,2,vo/requests/need_ammo1.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_ammo,3,vo/requests/need_ammo2.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_ammo,4,vo/requests/need_ammo3.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_ammo,5,vo/requests/need_ammo4.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_ammo,6,vo/requests/need_ammo5.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+need_ammo,7,vo/requests/need_ammo6.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+
+## THANKS ##
+thanks,1,vo/requests/thanks_0.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+thanks,2,vo/requests/thanks_1.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+thanks,3,vo/requests/thanks_2.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+thanks,4,vo/requests/thanks_3.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+thanks,5,vo/requests/thanks_4.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+
+## -- USE BY AUTOTRIGGER -- ##
+
+## SAYING THANKS AFTER BEING REVIVED ## 
+self_thanks_revived,1,vo/autotrigger/self_thanks_revived0.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_thanks_revived,2,vo/autotrigger/self_thanks_revived1.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_thanks_revived,3,vo/autotrigger/self_thanks_revived2.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_thanks_revived,4,vo/autotrigger/self_thanks_revived3.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_thanks_revived,5,vo/autotrigger/self_thanks_revived4.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_thanks_revived,6,vo/autotrigger/self_thanks_revived5.mp3,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+
+## SAYING TAKE AMMO WHEN AMMO IS THROWN ##
+take_ammo,1,vo/autotrigger/take_ammo0.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_ammo,2,vo/autotrigger/take_ammo1.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_ammo,3,vo/autotrigger/take_ammo2.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_ammo,4,vo/autotrigger/take_ammo3.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_ammo,5,vo/autotrigger/take_ammo4.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_ammo,6,vo/autotrigger/take_ammo5.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+
+## SAYING TAKE MEDIC WHEN MEDIC IS THROWN ##
+take_medkit,1,vo/autotrigger/take_medkit0.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_medkit,2,vo/autotrigger/take_medkit1.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_medkit,3,vo/autotrigger/take_medkit2.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_medkit,4,vo/autotrigger/take_medkit3.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_medkit,5,vo/autotrigger/take_medkit4.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_medkit,6,vo/autotrigger/take_medkit5.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+take_medkit,7,vo/autotrigger/take_medkit6.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+
+## SAYING FIRE IN THE HOLE WHEN GRENADE IS BEING THROWN ##
+throw_grenade,1,vo/autotrigger/throw_grenade0.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+throw_grenade,2,vo/autotrigger/throw_grenade1.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+throw_grenade,3,vo/autotrigger/throw_grenade2.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+throw_grenade,4,vo/autotrigger/throw_grenade3.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+throw_grenade,5,vo/autotrigger/throw_grenade4.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+throw_grenade,6,vo/autotrigger/throw_grenade5.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+throw_grenade,7,vo/autotrigger/throw_grenade6.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+throw_grenade,8,vo/autotrigger/throw_grenade7.wav,1,1,,,,100,1500,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+
+## HURT SOUND WHEN HURT ##
+self_hurt,1,vo/autotrigger/self_hurt0.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_hurt,2,vo/autotrigger/self_hurt1.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_hurt,3,vo/autotrigger/self_hurt2.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_hurt,4,vo/autotrigger/self_hurt3.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_hurt,5,vo/autotrigger/self_hurt4.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_hurt,6,vo/autotrigger/self_hurt5.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_hurt,7,vo/autotrigger/self_hurt6.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_hurt,8,vo/autotrigger/self_hurt7.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_hurt,9,vo/autotrigger/self_hurt8.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+
+## DEATH SOUND WHEN GOING DOWN
+self_down,1,vo/autotrigger/self_down0.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_down,2,vo/autotrigger/self_down1.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_down,3,vo/autotrigger/self_down2.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_down,4,vo/autotrigger/self_down3.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5
+self_down,6,vo/autotrigger/self_down4.wav,1,1,,,,100,600,voice,streamed,,,master,all_mp,,,,,,,,,0.5

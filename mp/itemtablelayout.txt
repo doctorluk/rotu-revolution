@@ -1,0 +1,9 @@
+id,name,class,model,shopvalue
+
+groups:
+0 - regular items (white) value 0 - 100
+1 - better items (green) value 100 - 300
+2 - good items (blue) value 200 - 500
+3 - super items (red) value 400 - 1000
+4 - rare items (gold) value 1000-3000
+5 - ultimate items (black) value 5000-10000

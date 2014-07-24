@@ -1,0 +1,29 @@
+{
+	map			"mp_surv_bridge"
+	longname	"MPUI_BRIDGE"
+	gametype	"surv"
+}
+
+{
+	map			"mp_surv_crashed"
+	longname	"MPUI_CRASHED"
+	gametype	"surv"
+}
+
+{
+	map			"mp_hospital"
+	longname	"MPUI_HOSPITAL"
+	gametype	"surv"
+}
+
+{
+	map			"mp_surv_swamp"
+	longname	"MPUI_SWAMP"
+	gametype	"surv"
+}
+
+{
+	map			"mp_surv_village"
+	longname	"MPUI_VILLAGE"
+	gametype	"surv"
+}

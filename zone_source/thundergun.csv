@@ -1,0 +1,5 @@
+material,hud_thundergun_dpad
+material,hud_icon_thundergun
+xmodel,worldmodel_thundergun
+xmodel,viewmodel_thundergun
+fx,muzzleflashes\thundergun

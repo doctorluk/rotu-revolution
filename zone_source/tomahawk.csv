@@ -1,0 +1,14 @@
+xmodel,weapon_bo_tomahawk
+xmodel,weapon_bo_tomahawk_wm
+xmodel,weapon_bo_tomahawk_wm_knife
+xanim,viewmodel_tomahawk_attack
+xanim,viewmodel_tomahawk_attack2
+xanim,viewmodel_tomahawk_pullout
+xanim,viewmodel_tomahawk_putaway
+xanim,viewmodel_tomahawk_idle
+xanim,viewmodel_tomahawk_sprint_in
+xanim,viewmodel_tomahawk_sprint_loop
+xanim,viewmodel_tomahawk_sprint_out
+material,hud_icon_tomahawk
+material,hud_tomahawk_dpad
+material,weapon_tomahawk

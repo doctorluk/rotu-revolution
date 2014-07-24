@@ -1,0 +1,126 @@
+// Description text of the vending machine (Upgrade Shop)
+REFERENCE           TITLE
+LANG_ENGLISH        "CHOOSE AN ITEM"
+
+REFERENCE           DESC_DEFAULT
+LANG_ENGLISH        "Hover over one available item to reveal more information about it."
+
+REFERENCE           RESTOREHEALTH
+LANG_ENGLISH        "Restore Health"
+
+REFERENCE           DESC_RESTOREHEALTH
+LANG_ENGLISH        "This will slowly increase your health until it is completely filled up."
+
+REFERENCE           DESC_RESTOREHEALTH_TITLE
+LANG_ENGLISH        "Restore Health"
+
+REFERENCE           RESTOREAMMO
+LANG_ENGLISH        "Restore Ammo"
+
+REFERENCE           DESC_RESTOREAMMO
+LANG_ENGLISH        "Out of ammo? This item will completely fill up all the weapons you carry! (Except for special weapons!)"
+
+REFERENCE           DESC_RESTOREAMMO_TITLE
+LANG_ENGLISH        "Restore Ammo"
+
+REFERENCE           CUREINFECTION
+LANG_ENGLISH        "Cure Infection"
+
+REFERENCE           DESC_CUREINFECTION
+LANG_ENGLISH        "Oh, a fever? Boy, get some pills here! Instantly killing all malicious Zombie gems inside you!"
+
+REFERENCE           DESC_CUREINFECTION_TITLE
+LANG_ENGLISH        "Cure Infection"
+
+REFERENCE           FRAG
+LANG_ENGLISH        "Frag Grenades"
+
+REFERENCE           DESC_FRAG
+LANG_ENGLISH        "Providing you with Frag Grenades for more collateral damage. Also works as an Explosive for the Boss/es."
+
+REFERENCE           DESC_FRAG_TITLE
+LANG_ENGLISH        "Frag Grenades"
+
+REFERENCE           CLAYMORE
+LANG_ENGLISH        "Claymores"
+
+REFERENCE           DESC_CLAYMORE
+LANG_ENGLISH        "Claymores can be placed all over the map and act as traps that explode when a Zombie or a Boss comes close to it."
+
+REFERENCE           DESC_CLAYMORE_TITLE
+LANG_ENGLISH        "Claymores"
+
+REFERENCE           C4
+LANG_ENGLISH        "C4"
+
+REFERENCE           DESC_C4
+LANG_ENGLISH        "C4 helps when dealing with massive hordes of Zombies and is also a useful tool against the Bosses."
+
+REFERENCE           DESC_C4_TITLE
+LANG_ENGLISH        "C4"
+
+REFERENCE           RAYGUN
+LANG_ENGLISH        "Ray Gun"
+
+REFERENCE           DESC_RAYGUN
+LANG_ENGLISH        "The Raygun, known from WaW and newer CoD Zombie Modes, is a powerful weapon agains all kinds of zombies. It provides areal damage aswell as direct hit damage.\nIt can be ^3Upgraded ^7at the Upgrade Box!"
+
+REFERENCE           DESC_RAYGUN_TITLE
+LANG_ENGLISH        "Raygun"
+
+REFERENCE           BARREL
+LANG_ENGLISH        "Barrel"
+
+REFERENCE           DESC_BARREL
+LANG_ENGLISH        "Barrels are able to block off the routes that Zombies take. Instead of walking by, Zombies are forced to destroy barrels in order to make their way through."
+
+REFERENCE           DESC_BARREL_TITLE
+LANG_ENGLISH        "Barrel"
+
+REFERENCE           EXPLODINGBARREL
+LANG_ENGLISH        "Explosive Barrel"
+
+REFERENCE           DESC_EXPLODINGBARREL
+LANG_ENGLISH        "They have the same functionality like ordinary barrels, but these ones explode and damage the attacker when being destroyed. They also work as a damage source against the Bosses."
+
+REFERENCE           DESC_EXPLODINGBARREL_TITLE
+LANG_ENGLISH        "Explosive Barrel"
+
+REFERENCE           SENTRYTURRET
+LANG_ENGLISH        "Sentry Turret"
+
+REFERENCE           DESC_SENTRYTURRET
+LANG_ENGLISH        "The US Army has developed an autonomic self-aiming minigun turret that will surely care about all those zombies around it.\n^1Turrets ^1are ^1disabled ^1during ^1the ^1dark ^1Interferences ^1wave!"
+
+REFERENCE           DESC_SENTRYTURRET_TITLE
+LANG_ENGLISH        "Sentry Turret"
+
+REFERENCE           GLTURRET
+LANG_ENGLISH        "GL Turret"
+
+REFERENCE           DESC_GLTURRET
+LANG_ENGLISH        "The GL Turret is a whole lot stronger than the Sentry Turret and deals areal damage. Very effective against large hordes!\n^1Turrets ^1are ^1disabled ^1during ^1the ^1dark ^1Interferences ^1wave!"
+
+REFERENCE           DESC_GLTURRET_TITLE
+LANG_ENGLISH        "GL Turret"
+
+REFERENCE           MGBARREL
+LANG_ENGLISH        "Barrel + MG"
+
+REFERENCE           DESC_MGBARREL
+LANG_ENGLISH        "The MG-Barrel provides a mountable gun that can be placed almost everywhere on the map. While keeping the gun from overheating, you can easily decimate the amount of Zombies in front of you!"
+
+REFERENCE           DESC_MGBARREL_TITLE
+LANG_ENGLISH        "MG Barrel"
+
+REFERENCE           PORTAL
+LANG_ENGLISH        "Portal"
+
+REFERENCE           DESC_PORTAL
+LANG_ENGLISH        "You want to easily get from A to B, or from A to spawn? Use this MK IV Energetic Portal to easily transfer the players' matter from one position to another!"
+
+REFERENCE           DESC_PORTAL_TITLE
+LANG_ENGLISH        "Portal"
+
+REFERENCE           EXIT
+LANG_ENGLISH        "Exit"

@@ -1,0 +1,63 @@
+VERSION             "1"
+CONFIG              "C:\trees\cod3\cod3\bin\StringEd.cfg"
+FILENOTES           ""
+
+REFERENCE           TITLE
+LANG_ENGLISH        "DID YOU KNOW?"
+
+REFERENCE           1
+LANG_ENGLISH        "You can activate your special by holding your ^3USE^7 (DEFAULT: F) button."
+
+REFERENCE           2
+LANG_ENGLISH        "The Ray Gun can be upgraded to several other Special Weapons at the Upgrade Box."
+
+REFERENCE           3
+LANG_ENGLISH        "The Monkey Bomb originates from Call of Duty World at War's Zombie Mode."
+
+REFERENCE           4
+LANG_ENGLISH        "The Boss' hitbox consists of two bots on top of each other."
+
+REFERENCE           5
+LANG_ENGLISH        "Medics can cure infections, but not their own."
+
+REFERENCE           6
+LANG_ENGLISH        "The Boss can always be a little bit damaged with Knives, even if his stage doesn't imply it."
+
+REFERENCE           7
+LANG_ENGLISH        "The Soldier is the only person who can become immune to the Zombies' Virus."
+
+REFERENCE           8
+LANG_ENGLISH        "You reached level 55 and have a full XP bar? Press ESC and go to the next Prestige!"
+
+REFERENCE           9
+LANG_ENGLISH        "Zombie Crawlers are weak alone, but can be devastating when they attack in hordes due to their toxic smoke!"
+
+REFERENCE           10
+LANG_ENGLISH        "It might not always be the end if everyone dies. The holy ^1Phoenix ^7can save you eventually!"
+
+REFERENCE           11
+LANG_ENGLISH        "Soldiers are able to gain full control of their rockets. They will gain 100% accuracy!"
+
+REFERENCE           12
+LANG_ENGLISH        "Turrets are not active when interferences happen and are only reactivated when the wave is over!"
+
+REFERENCE           13
+LANG_ENGLISH        "GL Turrets have an angular range (up & down) of 45 degrees and Sentry Turrets of 30 degrees."
+
+REFERENCE           14
+LANG_ENGLISH        "If you do enough damage to the Zombies' head, they may explode into pieces of rotten flesh!"
+
+REFERENCE           15
+LANG_ENGLISH        "You are at a low level? You have no Prestige, yet? ^3Be aware!^7 Your ^3Special^7 might not be available, yet!"
+
+REFERENCE           16
+LANG_ENGLISH        "Keep your distance when killing Inferno Zombies! Their guts have become unstable and explode!"
+
+REFERENCE           17
+LANG_ENGLISH        "You are level 55, but you can't press Prestige? Make sure that your XP bar is completely filled up! A little '^3Prestige Ready^7' text will appear below the minimap!"
+
+REFERENCE           18
+LANG_ENGLISH        "C4 and Claymores are both added to the second Actionslot (default ^36^7). You can cycle through them both by pressing ^36^7 multiple times!"
+
+REFERENCE           19
+LANG_ENGLISH        "Using a Mac? You will totally miss the experience of RotU-R as it is supposed to be. Play games on a Windows PC, you twat!"

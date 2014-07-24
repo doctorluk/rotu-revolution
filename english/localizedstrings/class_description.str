@@ -1,0 +1,60 @@
+// While selecting your class, you get a display about how many players are playing each class
+// + on-hover description of it
+REFERENCE           CHOOSE_ROLE
+LANG_ENGLISH        "CHOOSE YOUR ROLE"
+
+REFERENCE           AVAILABLE_ROLES
+LANG_ENGLISH        "Available Roles"
+
+REFERENCE           CLASS_PLAYERCOUNT
+LANG_ENGLISH        "Amount of Players"
+
+REFERENCE           CLASS_DESCRIPTION_DEFAULT
+LANG_ENGLISH        "Hover over one of the roles on the left to show details."
+
+REFERENCE           CLASS_DISPLAY_PLAYER
+LANG_ENGLISH        "Player"
+
+REFERENCE           CLASS_DISPLAY_PLAYERS
+LANG_ENGLISH        "Players"
+
+
+REFERENCE           SOLDIER_DESCRIPTION
+LANG_ENGLISH        "The Soldier is known for his great weapon handling and his ability to quickly exchange magazines.\nHis ^3Special ^7provides him with a temporary firepower boost in the form of doubled firespeed!"
+
+REFERENCE           SOLDIER_DESCRIPTION_TITLE
+LANG_ENGLISH        "Soldier Description"
+
+
+REFERENCE           STEALTH_DESCRIPTION
+LANG_ENGLISH        "The Assassin can hide from the Zombies by being silent for a certain amount of time.\nHis ^3Special ^7makes him invisible, thus untargetable for the Zombie horde for a short period of time."
+
+REFERENCE           STEALTH_DESCRIPTION_TITLE
+LANG_ENGLISH        "Assassin Description"
+
+
+REFERENCE           ARMORED_DESCRIPTION
+LANG_ENGLISH        "Armored players are equipped with a health-shield that reduces the damage taken by Zombies.\nTheir ^3Special ^7provides infinite armor to prevent any damage thus making them a reliable help in critical situations."
+
+REFERENCE           ARMORED_DESCRIPTION_TITLE
+LANG_ENGLISH        "Armored Description"
+
+REFERENCE           ENGINEER_DESCRIPTION
+LANG_ENGLISH        "Engineers provide ammo for their team to sustain in long fights without the need to return to the vending machine!\nTheir ^3Special ^7makes use of the turrets and pimps them to increase fire rate and damage!"
+
+
+REFERENCE           ENGINEER_DESCRIPTION_TITLE
+LANG_ENGLISH        "Engineer Description"
+
+REFERENCE           SCOUT_DESCRIPTION
+LANG_ENGLISH        "Providing intel for their team and being able to distract the Zombies makes them valuable for the whole team.\nAn incredible speed bonus gained by the ^3Special^7 provides them with the capability to escape the Zombie hordes quickly."
+
+REFERENCE           SCOUT_DESCRIPTION_TITLE
+LANG_ENGLISH        "Scout Description"
+
+
+REFERENCE           MEDIC_DESCRIPTION
+LANG_ENGLISH        "The Medics are the doctors of the team. They provide health for the team members, cure them from all diseases and can revive quickly.\nTheir ^3Special^7 spawns a healing aura that will slowly heal everyone close to it!"
+
+REFERENCE           MEDIC_DESCRIPTION_TITLE
+LANG_ENGLISH        "Medic Description"

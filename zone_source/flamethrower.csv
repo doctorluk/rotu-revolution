@@ -1,0 +1,17 @@
+xanim,pt_flamethrower_fire_center
+xanim,pt_flamethrower_crouch_fire_center
+fx,flamethrower\muzzle
+xmodel,flamethrower_viewmodel
+xmodel,weapon_flamethrower
+xanim,viewmodel_flamethrower_idle
+xanim,viewmodel_flamethrower_fire
+xanim,viewmodel_flamethrower_pullout
+xanim,viewmodel_flamethrower_putaway
+xanim,viewmodel_flamethrower_pullout_fast
+xanim,viewmodel_flamethrower_putaway_fast
+xanim,viewmodel_flamethrower_ADS_up
+xanim,viewmodel_flamethrower_ADS_down
+material,hud_flamethrower_reticle
+material,mtl_viewmodel_flamethrower
+material,mtl_viewmodel_flamethrower_hose
+material,mtl_weapon_flamethrower

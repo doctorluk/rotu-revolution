@@ -1,0 +1,1 @@
+- Move the stats (used for the after-game-stats-display) into a spawnstruct entity or in an array with keywords as keys

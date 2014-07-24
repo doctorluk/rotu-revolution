@@ -1,0 +1,4 @@
+name,sequence,file,vol_min,vol_max,vol_mod,pitch_min,pitch_max,dist_min,dist_max,channel,type,probability,loop,masterslave,loadspec,subtitle,compression,secondaryaliasname,volumefalloffcurve,startdelay,speakermap,reverb,lfe percentage,center percentage,platform,envelop_min,envelop_max,envelop percentage
+
+## --- MEDIC --- ##
+aura_spawn,1,misc\abilities\medic_aura.mp3,0.7,0.7,,0.85,1.15,360,600,voice,streamed,,,master,all_mp,,,,,,,,,0.1

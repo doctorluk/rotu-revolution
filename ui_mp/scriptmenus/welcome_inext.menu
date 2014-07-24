@@ -1,0 +1,282 @@
+#include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
+#include "ui_mp/menustyle.inc"
+
+#define ORIGIN_BANNER		108 46
+#define ORIGIN_DESCRIPTION		(CHOICE_X_START + 15) 190
+#define HEIGHT_1			70
+
+#define INDEX_TIME_PLAYED_OTHER 2313
+#define STATTODVAR_TIME_PLAYED_OTHER execNow "statGetInDvar 2313 ui_stat_time_played_other"
+#define INDEX_TIME_PLAYED_OPFOR 2312
+#define STATTODVAR_TIME_PLAYED_OPFOR execNow "statGetInDvar 2312 ui_stat_time_played_opfor"
+#define INDEX_TIME_PLAYED_ALLIES 2311
+#define STATTODVAR_TIME_PLAYED_ALLIES execNow "statGetInDvar 2311 ui_stat_time_played_allies"
+#define INDEX_SUICIDES 2310
+#define STATTODVAR_SUICIDES execNow "statGetInDvar 2310 ui_stat_suicides"
+#define INDEX_TEAMKILLS 2309
+#define STATTODVAR_TEAMKILLS execNow "statGetInDvar 2309 ui_stat_teamkills"
+#define INDEX_HEADSHOTS 2308
+#define STATTODVAR_HEADSHOTS execNow "statGetInDvar 2308 ui_stat_headshots"
+#define INDEX_ASSISTS 2307
+#define STATTODVAR_ASSISTS execNow "statGetInDvar 2307 ui_stat_assists"
+#define INDEX_DEATH_STREAK 2306
+#define STATTODVAR_DEATH_STREAK execNow "statGetInDvar 2306 ui_stat_death_streak"
+#define INDEX_DEATHS 2305
+#define STATTODVAR_DEATHS execNow "statGetInDvar 2305 ui_stat_deaths"
+#define INDEX_KILL_STREAK 2304
+#define STATTODVAR_KILL_STREAK execNow "statGetInDvar 2304 ui_stat_kill_streak"
+#define INDEX_KILLS 2303
+#define STATTODVAR_KILLS execNow "statGetInDvar 2303 ui_stat_kills"
+#define INDEX_SCORE 2302
+#define STATTODVAR_SCORE execNow "statGetInDvar 2302 ui_stat_score"
+#define INDEX_RANKXP 2301
+#define STATTODVAR_RANKXP execNow "statGetInDvar 2301 ui_stat_rankxp"
+
+#define STAT_UPDATE \
+	STATTODVAR_TIME_PLAYED_OTHER; \
+	STATTODVAR_TIME_PLAYED_OPFOR; \
+	STATTODVAR_TIME_PLAYED_ALLIES; \
+	STATTODVAR_TEAMKILLS; \
+	STATTODVAR_HEADSHOTS; \
+	STATTODVAR_ASSISTS; \
+	STATTODVAR_DEATH_STREAK; \
+	STATTODVAR_DEATHS; \
+	STATTODVAR_KILL_STREAK; \
+	STATTODVAR_KILLS; \
+	STATTODVAR_SCORE; \
+	STATTODVAR_RANKXP;
+
+{
+	menuDef
+	{
+		name			"welcome_inext"
+		rect			0 0 640 480
+		focuscolor		COLOR_FOCUSED
+		style			WINDOW_STYLE_EMPTY
+		blurWorld		7.0
+		onOpen
+		{
+			STAT_UPDATE
+			focusFirst;
+		}
+		onEsc 
+		{
+			scriptMenuResponse "back";
+		}
+		
+		// background overlay
+		itemDef
+		{
+			style			WINDOW_STYLE_SHADER
+			rect			0 0 640 480 HORIZONTAL_ALIGN_FULLSCREEN VERTICAL_ALIGN_FULLSCREEN
+			background		"inextcenter_background"
+			visible			1
+			decoration
+		}
+
+		// gradient_top
+		itemDef
+		{
+			style			WINDOW_STYLE_SHADER
+			rect			0 0 854 50 HORIZONTAL_ALIGN_FULLSCREEN 0
+			forecolor		1 1 1 0.85
+			background		"gradient_top"
+			visible			1
+			decoration
+		}
+
+		// gradient_bottom
+		itemDef
+		{
+			style			WINDOW_STYLE_SHADER
+			rect			0 430 854 50 HORIZONTAL_ALIGN_FULLSCREEN 0
+			forecolor		1 1 1 0.85
+			background		"gradient_bottom"
+			visible			1
+			decoration
+		}
+		
+
+		itemDef	{
+			style			WINDOW_STYLE_SHADER
+			rect			ORIGIN_BANNER 400 0.5
+			background		"line_horizontal"
+			forecolor		1 1 1 0.85
+			visible			1	decoration	}
+		itemDef	{
+			style			WINDOW_STYLE_SHADER
+			rect			ORIGIN_BANNER 340 10
+			origin			30 0
+			background		"line_horizontal"
+			forecolor		1 1 1 0.85
+			visible			1
+			decoration	}
+		itemDef	{
+			style			WINDOW_STYLE_SHADER
+			rect			ORIGIN_BANNER 400 0.5
+			origin			1 11
+			background		"line_horizontal"
+			forecolor		1 1 1 0.85
+			visible			1	decoration	}
+			
+		itemDef	{
+			rect			-400 46 800 0 HORIZONTAL_ALIGN_CENTER VERTICAL_ALIGN_TOP
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textscale		TEXTSIZE_TITLE
+			textalign		ITEM_ALIGN_CENTER
+			forecolor		1 1 1 0.85
+			exp text ( dvarstring("ui_wci_title") );
+			visible			1	decoration	}
+		
+		// ------------------ TREE TITLE ------------------
+		
+		//CHOICE_MENU_TITLE( "@MENU_OPTIONS_UPPER_CASE" )
+		
+		/*itemDef	{
+			rect			-220 (HEIGHT_1+16) 140 0 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textscale		TEXTSIZE_TITLE
+			textalign		ITEM_ALIGN_CENTER
+			forecolor		1 1 1 0.85
+			text			"@INEXT_SERVERINFO"
+			visible			1	decoration	
+		}
+		
+		itemDef	{
+			rect			-220 306 140 0 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textscale		TEXTSIZE_TITLE
+			textalign		ITEM_ALIGN_CENTER
+			forecolor		1 1 1 0.85
+			text			"@INEXT_USERINFO"
+			visible			1	decoration	
+		}
+		
+
+		
+		itemDef	{
+			rect			40 306 140 0 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textscale		TEXTSIZE_TITLE
+			textalign		ITEM_ALIGN_CENTER
+			forecolor		1 1 1 0.85
+			text			"@INEXT_FORUMTOPICS"
+			visible			1	decoration	
+		}*/
+		
+		itemDef	{
+			rect			40 (HEIGHT_1+16) 140 0 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textscale		TEXTSIZE_TITLE
+			textalign		ITEM_ALIGN_CENTER
+			forecolor		1 1 1 0.85
+			text			"@INEXT_SERVERS"
+			visible			1	decoration	
+		}
+		
+		#define SERVER_ITEM(index, indexstr) \
+		itemDef \
+		{ \
+			text			"Join!" \
+			textfont		UI_FONT_NORMAL \
+			textstyle		ITEM_TEXTSTYLE_SHADOWED \
+			rect			168 (HEIGHT_1+(index*32)) 32 20 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP \
+			type			ITEM_TYPE_BUTTON \
+			style			WINDOW_STYLE_FILLED	\
+			textalign		ITEM_ALIGN_LEFT \
+			textscale		TEXTSIZE_SMALL \
+			forecolor		1 1 1 1 \
+			textaligny		18 \
+			visible			when(dvarint(ui_wci_servers) >(index-1)) \
+			mouseEnter		{ play "mouse_over"; } \
+			action  \
+			{ \
+				play "mouse_click"; \
+			} \
+		} \
+		itemDef \
+		{ \
+			exp 			text(dvarstring("ui_wci_serv"indexstr)) \
+			textfont		UI_FONT_NORMAL \
+			textstyle		ITEM_TEXTSTYLE_SHADOWED \
+			rect			16 (HEIGHT_1+(index*32)) 104 20 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP \
+			textalign		ITEM_ALIGN_LEFT \
+			textscale		TEXTSIZE_SMALL \
+			forecolor		1 1 1 1 \
+			textaligny		18 \
+			visible			when(dvarint(ui_wci_servers) >(index-1)) decoration \
+		} \
+		itemDef \
+		{ \
+			text			"5/32" \
+			textfont		UI_FONT_NORMAL \
+			textstyle		ITEM_TEXTSTYLE_SHADOWED \
+			rect			128 (HEIGHT_1+(index*32)) 40 20 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP \
+			textalign		ITEM_ALIGN_LEFT \
+			textscale		TEXTSIZE_SMALL \
+			forecolor		1 1 1 1 \
+			textaligny		18 \
+			visible			when(dvarint(ui_wci_servers) >(index-1)) decoration \
+		} 
+					
+
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			8 (HEIGHT_1+24) 200 0 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP
+			exp				rect H( 32*dvarint(ui_wci_servers)+8 )
+			backcolor		0 0 0 .5
+			visible			1
+			decoration
+		}
+		
+		itemDef
+		{
+			
+			style			WINDOW_STYLE_SHADER
+			rect			8 (HEIGHT_1+24) 198 0 HORIZONTAL_ALIGN_LEFT VERTICAL_ALIGN_TOP
+			exp				rect H( 32*dvarint(ui_wci_servers)+6 )
+			background		"white"
+			forecolor		.5 .5 .5 0.15
+			border			1
+			bordersize		1
+			bordercolor		0.5 0.5 0.5 0.7
+			visible			1
+			decoration
+		}
+
+		//CHOICE_BUTTON_VIS_NOHI( 2, dvarstring("ui_wci_serv"index), exec "vstr wci_joinservindex", when( dvarint( ui_wci_servers ) > (index-1) ) ) \
+		SERVER_ITEM(1, "1")
+		SERVER_ITEM(2, "2")
+		SERVER_ITEM(3, "3")
+		SERVER_ITEM(4, "4")
+		SERVER_ITEM(5, "5")
+		SERVER_ITEM(6, "6")
+		SERVER_ITEM(7, "7")
+		SERVER_ITEM(8, "8")
+		SERVER_ITEM(9, "9")
+		SERVER_ITEM(10, "10")
+		
+		#include "ui_mp/player_info_rotu.inc"
+		
+		/*itemDef 
+		{ 
+			name			serv_playersindex 
+			text			"5/32" 
+			type			ITEM_TYPE_TEXT 
+			textfont		UI_FONT_NORMAL 
+			style			WINDOW_STYLE_FILLED	
+			textstyle		ITEM_TEXTSTYLE_SHADOWED 
+			rect			128 128 40 20 HORIZONTAL_ALIGN_DEFAULT VERTICAL_ALIGN_DEFAULT 
+			textalign		ITEM_ALIGN_LEFT 
+			textscale		TEXTSIZE_SMALL 
+			textalignx		0 
+			textaligny		18 
+			forecolor		1 1 1 1 
+			visible			1 
+		} */
+		//#include "ui/safearea.menu"
+	}
+
+}

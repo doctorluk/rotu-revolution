@@ -1,0 +1,15 @@
+xmodel,raygun_viewmodel
+xmodel,weapon_raygun
+material,mtl_ray_gun
+material,mtl_ray_gun_battery
+material,mtl_red_dot
+xanim,viewmodel_ray_gun_idle
+xanim,viewmodel_ray_gun_fire
+xanim,viewmodel_ray_gun_reload
+xanim,viewmodel_ray_gun_raise
+xanim,viewmodel_ray_gun_drop
+xanim,viewmodel_ray_gun_ADS_up
+xanim,viewmodel_ray_gun_ADS_down
+fx,raygun\raygun_trail
+fx,raygun\raygun_muzzle
+fx,raygun\raygun_impact

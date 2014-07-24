@@ -1,0 +1,21 @@
+VERSION             "1"
+CONFIG              "C:\trees\cod3\cod3\bin\StringEd.cfg"
+FILENOTES           ""
+
+REFERENCE           SERVERS
+LANG_ENGLISH        "Servers:"
+
+REFERENCE           FORUMTOPICS
+LANG_ENGLISH        "Latest forum topics:"
+
+REFERENCE           SERVERINFO
+LANG_ENGLISH        "Server information:"
+
+REFERENCE           USERINFO
+LANG_ENGLISH        "User information:"
+
+REFERENCE           GUID
+LANG_ENGLISH        "Guid:"
+
+REFERENCE           USERGROUP
+LANG_ENGLISH        "Usergroup:"

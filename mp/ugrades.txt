@@ -1,0 +1,4 @@
+102,Mini-Uzi SD,weapon_mini_uzi_silencer,110
+104,M9 SD,weapon_beretta,70
+106,Usp SD,weapon_usp_silencer,100
+203,W1200 + Grip,weapon_winchest1200_foregrip,185

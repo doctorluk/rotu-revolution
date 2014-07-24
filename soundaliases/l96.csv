@@ -1,0 +1,18 @@
+name,sequence,file,vol_min,vol_max,vol_mod,pitch_min,pitch_max,dist_min,dist_max,channel,type,probability,loop,masterslave,loadspec,subtitle,compression,secondaryaliasname,volumefalloffcurve,startdelay,speakermap,reverb,lfe percentage,center percentage,platform,envelop_min,envelop_max,envelop percentage,conversion
+
+# L96
+weap_l96_fire_plr,,weps/l96/weap_l96_fire.wav,1,1,wpnplyr,1,1,500000,,local,,,,0.85,,,,,weapon2,,,,
+weap_l96_fire_npc,,weps/l96/weap_l96_fire.wav,0.84,0.9,wpnai,1,1,35,8400,weapon,,,,0.7,!ac130 all_mp,,,,weapon4
+weap_l96_fire_npc,,weps/l96/weap_l96_fire.wav,0.84,0.9,wpnai,1,1,35,10920,weapon,,,,0.7,all_mp,,,,weapon4
+
+weap_l96_fire_sil_plr,,weps/l96/weap_l96_fire_sd.wav,1,1,wpnplyr,1,1,500000,,local,,,,0.85,,,,,weapon2,,,,
+weap_l96_fire_sil_npc,,weps/l96/weap_l96_fire_sd.wav,0.56,0.7,wpnai,1,1,35,8400,weapon,,,,0.7,!ac130 all_mp,,,,weapon4
+weap_l96_fire_sil_npc,,weps/l96/weap_l96_fire_sd.wav,0.56,0.7,wpnai,1,1,35,10920,weapon,,,,0.7,all_mp,,,,weapon4
+
+weap_l96_reload_bolt_out_plr,,weps/l96/weap_l96_bolt_out.wav,1,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_l96_reload_clip_out_plr,,weps/l96/weap_l96_clip_out.wav,1,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_l96_reload_clip_in_plr,,weps/l96/weap_l96_clip_in.wav,1,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_l96_reload_bolt_in_plr,,weps/l96/weap_l96_bolt_in.wav,1,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_l96_pullout_1st_plr,,weps/l96/weap_l96_pullout.wav,1,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,weap_l96_rechamber_plr,weapon2,100
+weap_l96_lift_plr,,weps/l96/weap_l96_pullout.wav,1,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_l96_rechamber_plr,,weps/l96/weap_l96_bolt.wav,1,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100

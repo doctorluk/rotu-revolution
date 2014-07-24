@@ -1,0 +1,106 @@
+#include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
+
+#define MENU_TITLE_TEXT "SURVIVAL OPTIONS"
+#define GAME_OPTIONS_MENU_NAME "settings_quick_war"
+#include "ui_mp/common_game_options.inc"
+
+#define TEAMBASED 1
+#define NUMLIVES_DVAR		"scr_war_numlives"
+#define PLAYERRESPAWN_DVAR 	"scr_war_playerrespawndelay"
+#define WAVERESPAWN_DVAR	"scr_war_waverespawndelay"
+#define GAMETYPE_OPTIONS	"@MPUI_SURV"
+
+// --- gameplay options
+#define CHOICE1_TEXT		"@MPUI_INITIALZOMBS"
+#define CHOICE1_DVAR		surv_waveInitialZombies
+#define CHOICE1_DVARTEXT	CHOICE1_DVAR"_text"
+#define CHOICE1_SHOW		1
+#define CHOICE1_STR1		"10 Zombies"
+#define CHOICE1_STR2		"15 Zombies" 
+#define CHOICE1_STR3		"20 Zombies"
+#define CHOICE1_STR4		"25 Zombies"
+#define CHOICE1_STR5		"30 Zombies"
+#define CHOICE1_STR6		"40 Zombies"
+#define CHOICE1_VAL1		10
+#define CHOICE1_VAL2		15
+#define CHOICE1_VAL3		20
+#define CHOICE1_VAL4		25
+#define CHOICE1_VAL5		30
+#define CHOICE1_VAL6		40
+#define CHOICE1_EXEC		open GAME_OPTIONS_MENU_NAME"_"CHOICE1_TEXT; play "mouse_click";
+#define CHOICE1_STRLIST		{ CHOICE1_STR1 CHOICE1_VAL1 CHOICE1_STR2 CHOICE1_VAL2 CHOICE1_STR3 CHOICE1_VAL3 CHOICE1_STR4 CHOICE1_VAL4 CHOICE1_STR5 CHOICE1_VAL5 CHOICE1_STR6 CHOICE1_VAL6 }
+#define CHOICE1_NUMVALS		6
+#define CHOICE1_POPUP		1
+
+#define CHOICE2_TEXT		"@MPUI_PREPARETIME"
+#define CHOICE2_DVAR		surv_wavePrepareTime
+#define CHOICE2_DVARTEXT	CHOICE2_DVAR"_text"
+#define CHOICE2_SHOW		1
+#define CHOICE2_STR1		"@MPUI_RULES_5SECONDS"
+#define CHOICE2_STR2		"@MPUI_RULES_15SECONDS"
+#define CHOICE2_STR3		"@MPUI_RULES_30SECONDS"
+#define CHOICE2_STR4		"@MPUI_RULES_45SECONDS"
+#define CHOICE2_STR5		"@MPUI_RULES_1MINUTE"
+#define CHOICE2_STR6		""
+#define CHOICE2_VAL1		5
+#define CHOICE2_VAL2		15
+#define CHOICE2_VAL3		30
+#define CHOICE2_VAL4		45
+#define CHOICE2_VAL5		60
+#define CHOICE2_VAL6		0
+#define CHOICE2_EXEC		open GAME_OPTIONS_MENU_NAME"_"CHOICE2_TEXT; play "mouse_click";
+#define CHOICE2_STRLIST		{ CHOICE2_STR1 CHOICE2_VAL1 CHOICE2_STR2 CHOICE2_VAL2 CHOICE2_STR3 CHOICE2_VAL3 CHOICE2_STR4 CHOICE2_VAL4 CHOICE2_STR5 CHOICE2_VAL5 CHOICE2_STR6 CHOICE2_VAL6 }
+#define CHOICE2_NUMVALS		5
+#define CHOICE2_POPUP		1
+
+
+#define CHOICE3_TEXT		"@MPUI_SPAWNSPEED"
+#define CHOICE3_DVAR		surv_waveInitialSPM
+#define CHOICE3_DVARTEXT	CHOICE3_DVAR"_text"
+#define CHOICE3_SHOW		1
+#define CHOICE3_STR1		"10"
+#define CHOICE3_STR2		"20" 
+#define CHOICE3_STR3		"30"
+#define CHOICE3_STR4		"40"
+#define CHOICE3_STR5		"50"
+#define CHOICE3_STR6		""
+#define CHOICE3_VAL1		10
+#define CHOICE3_VAL2		20
+#define CHOICE3_VAL3		30
+#define CHOICE3_VAL4		40
+#define CHOICE3_VAL5		50
+#define CHOICE3_VAL6		0
+#define CHOICE3_EXEC		open GAME_OPTIONS_MENU_NAME"_"CHOICE3_TEXT; play "mouse_click";
+#define CHOICE3_STRLIST		{ CHOICE3_STR1 CHOICE3_VAL1 CHOICE3_STR2 CHOICE3_VAL2 CHOICE3_STR3 CHOICE3_VAL3 CHOICE3_STR4 CHOICE3_VAL4 CHOICE3_STR5 CHOICE3_VAL5 CHOICE3_STR6 CHOICE3_VAL6 }
+#define CHOICE3_NUMVALS		5
+#define CHOICE3_POPUP		1
+
+#define CHOICE4_TEXT		"@MPUI_HEALTHINCREASE"
+#define CHOICE4_DVAR		surv_waveHealthIncrease
+#define CHOICE4_DVARTEXT	CHOICE4_DVAR"_text"
+#define CHOICE4_SHOW		1
+#define CHOICE4_STR1		"Very Few"
+#define CHOICE4_STR2		"Few"
+#define CHOICE4_STR3		"Regular"
+#define CHOICE4_STR4		"Much"
+#define CHOICE4_STR5		"Very Much"
+#define CHOICE4_STR6		""
+#define CHOICE4_VAL1		0.02
+#define CHOICE4_VAL2		0.05
+#define CHOICE4_VAL3		0.1
+#define CHOICE4_VAL4		0.2
+#define CHOICE4_VAL5		0.3
+#define CHOICE4_VAL6		0
+#define CHOICE4_EXEC		open GAME_OPTIONS_MENU_NAME"_"CHOICE4_TEXT; play "mouse_click";
+#define CHOICE4_STRLIST		{ CHOICE4_STR1 CHOICE4_VAL1 CHOICE4_STR2 CHOICE4_VAL2 CHOICE4_STR3 CHOICE4_VAL3 CHOICE4_STR4 CHOICE4_VAL4 CHOICE4_STR5 CHOICE4_VAL5 CHOICE4_STR6 CHOICE4_VAL6 }
+#define CHOICE4_NUMVALS		5
+#define CHOICE4_POPUP		1
+
+//#include "ui_mp/settings_team.inc"
+//#include "ui_mp/settings_player.inc"
+#include "ui_mp/settings_weapon.inc"
+
+{
+	#include "ui_mp/game_options.inc"
+}

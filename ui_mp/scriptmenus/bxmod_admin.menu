@@ -1,0 +1,781 @@
+#include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
+#include "ui_mp/menustyle.inc"
+{
+	menuDef 
+	{
+		name			"bxmod_admin"
+		fullscreen		0
+		rect			0 0 640 480	
+		style			1
+		blurWorld		4.0
+		border			0
+
+		onEsc  
+		{
+			close bxmod_admin;
+		}
+
+		itemDef
+		{
+			rect			12 130 225 188
+			style			WINDOW_STYLE_FILLED
+			border			1
+			bordercolor		.5 .5 .5 .5
+			backcolor		.1 .1 .1 1
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			rect			14 132 221 20 
+			style			WINDOW_STYLE_FILLED
+			border			1
+			bordercolor		.1 .1 .1 .2
+			backcolor		.3 0.5 0.2 0.5
+			visible			1
+			decoration
+		}
+
+
+		itemDef 
+		{
+			text			"Selected Player Info"
+			style			0
+			decoration
+			textscale		.3
+			//rect			3 134 110 20
+			origin			118.5 134
+			textalign		ITEM_ALIGN_CENTER
+			//textalignx		117
+			textaligny		16
+			visible			1
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			22 150 128 24
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.3
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			textaligny		20
+			dvar			"ui_bxmod_selectedplayer_name"
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			22 170 128 24
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.3
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			textaligny		20
+			dvar			"ui_bxmod_selectedplayer_guid"
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			22 190 128 24
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.3
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			textaligny		20
+			dvar			"ui_bxmod_selectedplayer_num"
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			22 210 128 24
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.3
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			textaligny		20
+			dvar			"ui_bxmod_selectedplayer_team"
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			22 230 128 24
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.3
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			textaligny		20
+			dvar			"ui_bxmod_selectedplayer_status"
+			decoration
+		}
+
+
+		itemDef 
+		{
+			visible			1
+			rect			22 250 128 24
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.3
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			textaligny		20
+			dvar			"ui_bxmod_selectedplayer_score"
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			22 270 128 24
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.3
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			textaligny		20
+			dvar			"ui_bxmod_selectedplayer_deaths"
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			22 290 128 24
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.3
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_LEFT
+			textaligny		20
+			dvar			"ui_bxmod_selectedplayer_health"
+			decoration
+		}
+
+
+
+
+
+		itemDef
+		{
+			rect			-10 370 650 135
+			style			WINDOW_STYLE_FILLED
+			border			1
+			bordercolor		.5 .5 .5 .5
+			//forecolor		1 1 1 1
+			backcolor		.1 .1 .1 1
+			visible			1
+			decoration
+		}
+		itemDef 
+		{
+			rect			-10 372 660 20 
+			style			WINDOW_STYLE_FILLED
+			border			1
+			bordercolor		.1 .1 .1 .2
+			//forecolor		1 1 1 1
+			backcolor		.3 0.5 0.2 0.5
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			origin			320 374
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.32
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_CENTER	
+			textaligny		16
+			text			"Admin Tools"
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			origin			320 40
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.6
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_CENTER	
+			text			"Admin Menu"
+			decoration
+		}
+
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			20 400 80 20
+			backcolor		0 0 0.74 1
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Previous Player"
+			origin			60 415
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			20 400 80 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_select_previous_player";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+
+
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			110 400 80 20
+			backcolor		0 0 0.74 1
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Next Player"
+			origin			150 415
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			110 400 80 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_select_next_player";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+
+
+////////// KICK ////////////////////
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			220 400 30 20
+			backcolor		.75 .25 .25 .75
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Kick"
+			origin			235 415
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER		
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			220 400 30 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_kick_player";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+
+////////// BAN /////////////////////
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			260 400 30 20
+			backcolor		.75 .25 .25 .75
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Ban"
+			origin			275 415
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER		
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			260 400 30 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_ban_player";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+
+////////// KILL /////////////////////
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			310 400 30 20
+			backcolor		.75 .25 .25 .75
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Kill"
+			origin			325 415
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER		
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			310 400 30 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_kill_player";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+
+////////// SLAP /////////////////////
+		itemDef 
+		{
+			name			"slap_bg"
+			group			"slap"
+			style			WINDOW_STYLE_FILLED
+			rect			350 400 30 20
+			backcolor		.75 .25 .25 .75
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Slap"
+			origin			365 415
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER		
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			name			"slap_button"
+			group			"slap"
+			visible			1
+			rect			350 400 30 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_slap_player";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+
+
+////////// Enable/disable Weapons /////////////////////
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			400 400 100 20
+			backcolor		.75 .25 .25 .75
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Enable/disable weapons"
+			origin			450 415
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER		
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			400 400 100 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_enable_or_disable_players_weapons";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+/*
+////////// Execute Dvar on player /////////////////////
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			520 400 60 20
+			backcolor		.75 .25 .25 .75
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Execute Dvar"
+			origin			550 415
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER		
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			520 400 100 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_exec_dvar_on_player1";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+*/
+
+////////// MOVE TO TEAM /////////////////////
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			20 430 70 20
+			backcolor		.75 .25 .25 .75
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Move to Spectator"
+			origin			55 445
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			20 430 70 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_move_spect";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			100 430 70 20
+			backcolor		.75 .25 .25 .75
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Move to Allies"
+			origin			135 445
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			100 430 70 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_move_allies";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+/*
+		itemDef 
+		{
+			style			WINDOW_STYLE_FILLED
+			rect			180 430 70 20
+			backcolor		.75 .25 .25 .75
+			visible			1
+			decoration
+		}
+
+		itemDef 
+		{
+			style			0
+			text			"Move to Axis"
+			origin			215 445
+			type			ITEM_TYPE_BUTTON
+			textalign		ITEM_ALIGN_CENTER
+			textfont		1
+			textscale		.25
+			decoration
+			backcolor		.1 .1 .1 .25
+			visible			1 
+		}
+
+		itemDef 
+		{
+			visible			1
+			rect			180 430 70 20
+			style			0
+			type			ITEM_TYPE_BUTTON
+			text " "
+			textfont		1
+			textscale		.20
+			textalignx		45
+			textaligny		24
+			textalign		ITEM_ALIGN_CENTER
+			action
+			{
+				play "mouse_click";
+				scriptMenuResponse "bxmod_admin_move_axis";
+			}
+			onFocus
+			{
+				play "mouse_over";
+			}
+		}
+*/
+		itemDef 
+		{
+			visible			1
+			origin			420 435
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.5
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_CENTER	
+			textaligny		20
+			dvar			"ui_bxmod_info"
+			decoration
+		}
+
+		itemDef 
+		{
+			visible			1
+			origin			637 477
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.22
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_RIGHT	
+			text			"ROTU Admin Menu by BraX, Xfire: maciusiak"
+			decoration
+		}
+
+/*
+		itemDef 
+		{
+			visible			1
+			origin			320 330
+			type			ITEM_TYPE_TEXT
+			textfont		1
+			textscale		.32
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalign		ITEM_ALIGN_CENTER	
+			textaligny		20
+			dvar			"ui_bxmod_info"
+			decoration
+		}
+*/
+	}
+}

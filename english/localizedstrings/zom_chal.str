@@ -1,0 +1,9 @@
+VERSION             "1"
+CONFIG              "C:\trees\cod3\cod3\bin\StringEd.cfg"
+FILENOTES           ""
+
+REFERENCE           GENERAL
+LANG_ENGLISH        "General"
+
+REFERENCE           GENERAL_CHALLENGES
+LANG_ENGLISH        "General Challenges"

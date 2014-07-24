@@ -1,0 +1,6 @@
+name,sequence,file,vol_min,vol_max,vol_mod,pitch_min,pitch_max,dist_min,dist_max,channel,type,probability,loop,masterslave,loadspec,subtitle,compression,secondaryaliasname,volumefalloffcurve,startdelay,speakermap,reverb,lfe percentage,center percentage,platform,envelop_min,envelop_max,envelop percentage,conversion
+
+,MINIGUN
+
+weap_minigun_fire_plr,,weps/minigun/wpn_minigun_fire.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
+weap_minigun_spin_over_plr,,weps/minigun/wpn_minigun_spin_over.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,

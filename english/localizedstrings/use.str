@@ -1,0 +1,31 @@
+VERSION             "1"
+CONFIG              "C:\trees\cod3\cod3\bin\StringEd.cfg"
+FILENOTES           ""
+
+REFERENCE			GETWEAPON
+LANG_ENGLISH		"Press^3 [{+activate}] ^7to get a weapon!"
+
+REFERENCE			UPGRADEWEAPON
+LANG_ENGLISH		"Press^3 [{+activate}] ^7to upgrade your weapon!"
+
+REFERENCE			GETAMMO
+LANG_ENGLISH		"Hold^3 [{+activate}] ^7to restock ammo!"
+
+REFERENCE			BUYUPGRADES
+LANG_ENGLISH		"Press^3 [{+activate}] ^7to buy upgrades!"
+
+REFERENCE			REBUILDBARRIER
+LANG_ENGLISH		"Hold^3 [{+activate}] ^7to rebuild!"
+
+REFERENCE			REVIVE
+LANG_ENGLISH		"Hold^3 [{+activate}] ^7to revive!"
+
+REFERENCE			CURE
+LANG_ENGLISH		"Press^3 [{+activate}] ^7to cure infection!"
+
+REFERENCE			PORTAL
+LANG_ENGLISH		"Press^3 [{+activate}] ^7to teleport!"
+
+REFERENCE			TURRET
+LANG_ENGLISH		"Press^3 [{+activate}] ^7to pick up turret!"
+

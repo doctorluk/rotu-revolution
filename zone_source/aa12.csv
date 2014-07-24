@@ -1,0 +1,15 @@
+xmodel,mw2_aa12_worldmodel
+xmodel,mw2_aa12_viewmodel
+material,mw2_aa12_body
+xanim,viewmodel_aa12_ADS_down
+xanim,viewmodel_aa12_ADS_fire
+xanim,viewmodel_aa12_ADS_up
+xanim,viewmodel_aa12_fire
+xanim,viewmodel_aa12_idle
+xanim,viewmodel_aa12_pullout
+xanim,viewmodel_aa12_pullout_quick
+xanim,viewmodel_aa12_putaway
+xanim,viewmodel_aa12_reload
+xanim,viewmodel_aa12_sprint_in
+xanim,viewmodel_aa12_sprint_loop
+xanim,viewmodel_aa12_sprint_out

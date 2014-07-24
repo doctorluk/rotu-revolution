@@ -1,0 +1,149 @@
+#include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
+
+
+#include "ui_mp/menustyle.inc"
+#include "ui/choices_setup_common.menu"
+
+
+{
+	menuDef
+	{
+		name			"pickweapon"
+		rect			0 0 640 480
+		focuscolor		COLOR_FOCUSED
+		style			WINDOW_STYLE_EMPTY
+		blurWorld		7.0
+		onOpen
+		{
+		}
+		onEsc 
+		{
+			close self;
+		}
+		
+		
+		#include "ui_mp/popupstyle.inc"	
+		#include "ui/choices_setup_popmenu.menu"
+
+
+		#undef CHOICE_SIZE_X
+		#define CHOICE_SIZE_X	250
+		
+		#undef CHOICE_HORIZONTAL_ALIGN
+		#define CHOICE_HORIZONTAL_ALIGN	HORIZONTAL_ALIGN_CENTER
+		#undef CHOICE_VERTICAL_ALIGN
+		#define CHOICE_VERTICAL_ALIGN	VERTICAL_ALIGN_CENTER
+		
+		CENTER_POPUP_SETUP( pickweapon, 17, scriptMenuResponse "noweapon";, 1 )
+
+		CHOICE_POPMENU_SUBTITLE( "Primary weapons:" )
+		//CHOICE_MENU_TITLE( "Pick your weapon" )
+
+		
+		//=========================================================================
+		//================ MENU SELECTION FOR ONLINE/OFFLINE GAME =================
+		//=========================================================================
+		
+		/* =================================== default classes ================================= */		
+		//CHOICE_SECTION_TITLE( 1, "Available weapons:" )
+		
+		CHOICE_BUTTON_BG( 2, when (dvarstring("weapon0") != "") )
+		CHOICE_HIGHLIGHT( 2, when (dvarstring("weapon0") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 2, dvarstring("weapon0"), scriptMenuResponse "weap0";, when( dvarBool( allow_weapon0 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 2, dvarstring("weapon0"), when( !dvarBool( allow_weapon0 ) ) )
+		
+		CHOICE_BUTTON_BG( 3, when (dvarstring("weapon1") != "") )
+		CHOICE_HIGHLIGHT( 3, when (dvarstring("weapon1") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 3, dvarstring("weapon1"), scriptMenuResponse "weap1";, when( dvarBool( allow_weapon1 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 3, dvarstring("weapon1"), when( !dvarBool( allow_weapon1 ) ) )
+		
+		CHOICE_BUTTON_BG( 4, when (dvarstring("weapon2") != "") )
+		CHOICE_HIGHLIGHT( 4, when (dvarstring("weapon2") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 4, dvarstring("weapon2"), scriptMenuResponse "weap2";, when( dvarBool( allow_weapon2 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 4, dvarstring("weapon2"), when( !dvarBool( allow_weapon2 ) ) )
+		
+		CHOICE_BUTTON_BG( 5, when (dvarstring("weapon3") != "") )
+		CHOICE_HIGHLIGHT( 5, when (dvarstring("weapon3") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 5, dvarstring("weapon3"), scriptMenuResponse "weap3";, when( dvarBool( allow_weapon3 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 5, dvarstring("weapon3"), when( !dvarBool( allow_weapon3 ) ) )
+		
+		CHOICE_BUTTON_BG( 6, when (dvarstring("weapon4") != "") )
+		CHOICE_HIGHLIGHT( 6, when (dvarstring("weapon4") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 6, dvarstring("weapon4"), scriptMenuResponse "weap4";, when( dvarBool( allow_weapon4 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 6, dvarstring("weapon4"), when( !dvarBool( allow_weapon4 ) ) )
+		
+		CHOICE_BUTTON_BG( 7, when (dvarstring("weapon5") != "") )
+		CHOICE_HIGHLIGHT( 7, when (dvarstring("weapon5") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 7, dvarstring("weapon5"), scriptMenuResponse "weap5";, when( dvarBool( allow_weapon5 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 7, dvarstring("weapon5"), when( !dvarBool( allow_weapon5 ) ) )
+		
+		CHOICE_BUTTON_BG( 8, when (dvarstring("weapon6") != "") )
+		CHOICE_HIGHLIGHT( 8, when (dvarstring("weapon6") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 8, dvarstring("weapon6"), scriptMenuResponse "weap6";, when( dvarBool( allow_weapon6 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 8, dvarstring("weapon6"), when( !dvarBool( allow_weapon6 ) ) )
+		
+		CHOICE_BUTTON_BG( 9, when (dvarstring("weapon7") != "") )
+		CHOICE_HIGHLIGHT( 9, when (dvarstring("weapon7") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 9, dvarstring("weapon7"), scriptMenuResponse "weap7";, when( dvarBool( allow_weapon7 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 9, dvarstring("weapon7"), when( !dvarBool( allow_weapon7 ) ) )
+		
+		CHOICE_BUTTON_BG( 10, when (dvarstring("weapon8") != "") )
+		CHOICE_HIGHLIGHT( 10, when (dvarstring("weapon8") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 10, dvarstring("weapon8"), scriptMenuResponse "weap8";, when( dvarBool( allow_weapon8 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 10, dvarstring("weapon8"), when( !dvarBool( allow_weapon8 ) ) )
+		
+		CHOICE_BUTTON_BG( 11, when (dvarstring("weapon9") != "") )
+		CHOICE_HIGHLIGHT( 11, when (dvarstring("weapon9") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 11, dvarstring("weapon9"), scriptMenuResponse "weap9";, when( dvarBool( allow_weapon9 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 11, dvarstring("weapon9"), when( !dvarBool( allow_weapon9 ) ) )
+		
+		CHOICE_BUTTON_BG( 12, when (dvarstring("weapon10") != "") )
+		CHOICE_HIGHLIGHT( 12, when (dvarstring("weapon10") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 12, dvarstring("weapon10"), scriptMenuResponse "weap10";, when( dvarBool( allow_weapon10 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 12, dvarstring("weapon10"), when( !dvarBool( allow_weapon10 ) ) )
+		
+		CHOICE_BUTTON_BG( 13, when (dvarstring("weapon11") != "") )
+		CHOICE_HIGHLIGHT( 13, when (dvarstring("weapon11") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 13, dvarstring("weapon11"), scriptMenuResponse "weap11";, when( dvarBool( allow_weapon11 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 13, dvarstring("weapon11"), when( !dvarBool( allow_weapon11 ) ) )
+		
+		CHOICE_BUTTON_BG( 14, when (dvarstring("weapon12") != "") )
+		CHOICE_HIGHLIGHT( 14, when (dvarstring("weapon12") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 14, dvarstring("weapon12"), scriptMenuResponse "weap12";, when( dvarBool( allow_weapon12 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 14, dvarstring("weapon12"), when( !dvarBool( allow_weapon12 ) ) )
+		
+		CHOICE_BUTTON_BG( 15, when (dvarstring("weapon13") != "") )
+		CHOICE_HIGHLIGHT( 15, when (dvarstring("weapon13") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 15, dvarstring("weapon13"), scriptMenuResponse "weap13";, when( dvarBool( allow_weapon13 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 15, dvarstring("weapon13"), when( !dvarBool( allow_weapon13 ) ) )
+		
+		CHOICE_BUTTON_BG( 16, when (dvarstring("weapon14") != "") )
+		CHOICE_HIGHLIGHT( 16, when (dvarstring("weapon14") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 16, dvarstring("weapon14"), scriptMenuResponse "weap14";, when( dvarBool( allow_weapon14 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 16, dvarstring("weapon14"), when( !dvarBool( allow_weapon14 ) ) )
+		
+		CHOICE_BUTTON_BG( 17, when (dvarstring("weapon15") != "") )
+		CHOICE_HIGHLIGHT( 17, when (dvarstring("weapon15") != "") )
+		CHOICE_BUTTON_VIS_NOHI( 17, dvarstring("weapon15"), scriptMenuResponse "weap15";, when( dvarBool( allow_weapon15 ) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 17, dvarstring("weapon15"), when( !dvarBool( allow_weapon15 ) ) )
+		
+		/*CHOICE_BUTTON_VIS( 2, dvarstring("weapon0"), ;, when( dvarstring("weapon0") != "" ) )
+		CHOICE_BUTTON_VIS( 3, dvarstring("weapon1"), ;, when( dvarstring("weapon1") != "" ) )
+		CHOICE_BUTTON_VIS( 4, dvarstring("weapon2"), ;, when( dvarstring("weapon2") != "" ) )
+		CHOICE_BUTTON_VIS( 5, dvarstring("weapon3"), ;, when( dvarstring("weapon3") != "" ) )
+		CHOICE_BUTTON_VIS( 6, dvarstring("weapon4"), ;, when( dvarstring("weapon4") != "" ) )
+		CHOICE_BUTTON_VIS( 7, dvarstring("weapon5"), ;, when( dvarstring("weapon5") != "" ) )
+		CHOICE_BUTTON_VIS( 8, dvarstring("weapon6"), ;, when( dvarstring("weapon6") != "" ) )
+		CHOICE_BUTTON_VIS( 9, dvarstring("weapon7"), ;, when( dvarstring("weapon7") != "" ) )
+		CHOICE_BUTTON_VIS( 10, dvarstring("weapon8"), ;, when( dvarstring("weapon8") != "" ) )
+		CHOICE_BUTTON_VIS( 11, dvarstring("weapon9"), ;, when( dvarstring("weapon9") != "" ) )
+		CHOICE_BUTTON_VIS( 12, dvarstring("weapon10"), ;, when( dvarstring("weapon10") != "" ) )
+		CHOICE_BUTTON_VIS( 13, dvarstring("weapon11"), ;, when( dvarstring("weapon11") != "" ) )
+		CHOICE_BUTTON_VIS( 14, dvarstring("weapon12"), ;, when( dvarstring("weapon12") != "" ) )
+		CHOICE_BUTTON_VIS( 15, dvarstring("weapon13"), ;, when( dvarstring("weapon13") != "" ) )
+		CHOICE_BUTTON_VIS( 16, dvarstring("weapon14"), ;, when( dvarstring("weapon14") != "" ) )
+		CHOICE_BUTTON_VIS( 17, dvarstring("weapon15"), ;, when( dvarstring("weapon15") != "" ) )*/
+
+	}
+}

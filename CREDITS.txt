@@ -1,0 +1,174 @@
+//
+// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
+// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
+// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
+// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
+// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
+//
+
+Reign of the Undead - Revolution is a project by Luk [owner of the former LukServers Community].
+
+The aim of it was to eliminate long-lasting bugs, make it actually look like a zombie survival mod, add new features and make quality-of-life changes.
+
+Reign of the Undead - Revolution is based on the unfinished source code of Reign of the Undead 2.1 and NOT on the (later published) Open Source version of RotU.
+
+
+Thanks to all these people who made it possible for RotU to be developed even further!
+
+=======================================================================
+======== > THE ORIGINAL CREATORS OF REIGN OF THE UNDEAD 2.1: < ========
+=======================================================================
+
+Bipo, Etheross, Brax, Mr-X, Hacker22, Red Beret, H0ly
+
+========================================
+======== > INDIVIDUAL CREDIT: < ========
+========================================
+
+======== > Puffy:
+- Providing a friendly forum that looks quite familiar and keeps all the old LukServers friends together
+- Providing a test server for selected members and the public to look for crucial bugs
+- Ripping a massive amount of zombies from BO1 - SO AWESOME!
+
+======== > RomDrTab:
+- Making the awesome RotU-Revolution Logo
+
+======== > Puffyforum Community puffyforum.com:
+- Providing lots of suggestions and great ideas
+
+======== > Jpeg94:
+- Occasional help solving logical problems
+
+======== > 3aGl3:
+- Providing new effects for the Raygun
+
+======== > AoD Rycoon:
+- Scripting help
+- Re-doing the burning-fx of inferno zombies
+- Armored mesh-overlay
+- Providing his Hostname-Plugin originally for Deathrun to be used with RotU
+
+======== > Viking:
+- Scripting help and understanding of the IW Engine
+- Adding a description box to the "Select a Class" menu, further explaining how menus work & kindly editing the currents ones to fit my needs
+- Ripping Monkey Bomb from CoD WaW
+- Help making the Monkey Bomb explode in CoD4
+- Fixing bad rig-weights on the zombie_wolf
+
+======== > Punk:
+- Supporting me at the beginning of making "RotU 2.5" as it was called back then
+- Implementing new weapons and creating new useful abilities
+- Being there :)
+
+======== > Samuel:
+- Explaining that weapon sounds (wpnai, wpnplyr) are inside the mod.ff and don't have to be added into an .iwd
+
+======== > Infinity Ward/Treyarch:
+- Providing the necessary tools to modify the game
+- Providing software that enables everyone to host their own gameservers
+- Making games that were good and still are due to excessive modding and a great community
+
+======== > PeZBOT:
+- Providing the waypathing algorithm for the zombies
+
+======== > Tom-BMX:
+- Making tools like Lime and others to enable modders to easily port models and animations from newer CoD titles to CoD4. This mod made excessive use of his tools, thank you!
+Website: http://www.tom-bmx.com/
+
+======== > Map makers all over the world:
+THANK YOU for constantly providing the playground for us players with new challenging designs and ideas! Please keep them coming.
+You know what we would like to see more? Objective maps like mp_surv_trap! What would also be cool? If there is interest, I (Luk) would like to try to create dynamic rooms like in WaW where spawnpoints are unlocked as soon as a player pays xxx upgradepoints to unlock a new area of the map instead of having zombies run through barriers and walls and having to run all over the map.
+
+=============================
+======== > ASSETS: < ========
+=============================
+
+MW2 Intervention:
+From openwarfaremod-forums:
+"DarkRaptor: Porting the texture, model, animations, making the weapon files, compiling, packcaging everything.
+
+Tom-BMX: Creating the tool called LIME that allowed me to do a better rip of the models. Creating "Xanim Exporter" which lets me import the MW2 anims he ripped.
+
+Susel: Supporting me. Helping me to get the ADS anims ready. Helping me by providing the correct material settings for the acog reticle and base, and giving me the idea of modifying the lens material to get the current result. Ripping the sounds."
+Link: http://cfgfactory.com/skins/show/51f428963ff91
+
+Wounded Hands Viewmodel:
+Author: kalaboKK
+Link: http://cfgfactory.com/skins/show/50e097a6e5365
+
+Battlefield 3 L96:
+Author: 3aGl3
+Link: http://cod4.cfgfactory.com/skins/show/50b273ab0d906
+
+BO Enfield:
+Author: Tito
+Link: http://cod4.cfgfactory.com/skins/show/507d73825b9db
+
+Minigun:
+Author: Sanya
+Link: http://cod4.cfgfactory.com/skins/show/507135f259a2d
+
+Scar-H:
+Author: Red Beret
+Link: http://cod4.cfgfactory.com/skins/show/4fedd5fcc43ee
+
+MW2 Vector:
+Author: Sanya
+Link: http://cod4.cfgfactory.com/skins/show/4fe47196c22b2
+
+MW2 M4:
+Author: Sanya
+Link: http://cod4.cfgfactory.com/skins/show/4f6ce5e5a8986
+
+Steyr AUG:
+Author: =|SF|= Phoenix
+Link: http://cod4.cfgfactory.com/skins/show/4f5ba9e45dd35
+
+Sentry Gun:
+Author: Str1k3r
+Link: http://openwarfaremod.com/owforum/viewtopic.php?f=82&t=10971&st=0&sk=t&sd=a&hilit=sentry+gun&start=0
+
+Striker:
+Author: tito
+Link: http://openwarfaremod.com/owforum/viewtopic.php?f=82&t=11937
+
+============================
+======== > MUSIC: < ========
+============================
+
+Ambient Inferno Zombies:
+Immediate Music - Def Con
+Immediate Music - Heaven's Warrior
+City Of The Fallen - Cry Of The Prophets
+
+Ambient Grouped Zombies:
+Charlie Parra del Riego - Call of Duty Black OPS II The Metal Remix
+http://charlieparradelriego.bandcamp.com/ 
+
+Ambient Finale Wave:
+Brand X Music - Bring The Pain
+Brand X Music - Knuckle Up
+Epic Score - Ultimate Power
+
+Ambient Toxic Wave:
+Brand X Music - Mythos
+
+Ambient Hell Wave:
+Two Steps From Hell - Portals Over Earth
+Brand X Music - Apocalyptic
+
+Ambient Boss:
+E.S. Posthumus - Ushas
+
+Main Menu Theme:
+Resident Evil 4 - Save Theme
+
+=================================
+======== > Forgot you? < ========
+=================================
+
+Unfortunately I was unable to reverse-engineer the origin of custom stuff used in this mod that was already there when I got it.
+If you see your work within this mod that has not been credited, please accept my apology and feel free to contact me with proof that you are the creator and I will surely add you to the list!
+You will most likely find me at http://puffyforum.com or on Xfire: lukluk1992

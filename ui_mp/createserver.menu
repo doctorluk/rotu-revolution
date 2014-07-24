@@ -1,0 +1,239 @@
+#include "ui/menudef.h"
+#include "ui_mp/common_macro.inc"
+
+#define CHOICE_X_START			0
+#define CHOICE_Y_START			34
+	
+#define CHOICE_SEP_1			7
+#define CHOICE_SEP_2			11
+
+#define CHOICE_GROUP			"createserver"
+
+#define STYLE_PC	1
+#include "ui_mp/menustyle.inc"
+#include "ui/choices_setup_common.menu"
+
+{
+	// Server Creation //
+	menuDef 
+	{
+		name			"createserver"
+		fullscreen		1	
+		rect			0 0 640 480
+		soundloop 		"music_mainmenu_mp"
+		focuscolor		COLOR_FOCUSED
+		style			1
+		border			0
+		onEsc  			{ close self; }
+		onOpen 
+		{ 
+			uiScript loadArenas;
+			execnow "set sv_punkbuster 0; set g_allowvote 0; dvar_int zom_count 20 1 50; set zom_difficulty normal; dvar_int zom_health 150 0 9999; dvar_bool zom_developer 0; set zom_developer 0; dvar_int surv_waveInitialZombies 20 0 100; dvar_int surv_wavePrepareTime 15 5 120; dvar_int surv_waveInitialSPM 20 10 100;; dvar_float surv_waveHealthIncrease 0.05 0 0.5";
+			//open createserver_buttons;
+			//open createserver_maps;	
+			//open createserver_serversettings;
+		}
+		onClose
+		{
+			/*close settings_dm;
+			close settings_tdm;
+			close settings_sd;
+			close settings_hq;
+			close settings_hqt;
+			close settings_ctf;
+			close createserver_maps;
+			close createserver_buttons;
+			close createserver_serversettings;*/
+			
+			open main_text;
+		}
+		
+		#include "ui/blurredbg.inc"
+		#define 	BACK_ENABLE		0
+		#include "ui_mp/navcontrols.inc"
+		CHOICE_MENU_TITLE( "@MENU_START_NEW_SERVER" )
+		
+		// server settings =========================================
+		CHOICE_DVARLIST_VIS( 		1, "@MENU_GAME_TYPE", "", ITEM_TYPE_MULTI, ownerdraw UI_NETGAMETYPE textaligny 20, ;, 1 )
+		CHOICE_DVAREDIT_VIS( 		2, "@MENU_SERVER_NAME", "sv_hostname", 20, 20, ;, 1 )
+		CHOICE_DVARFLOATLIST( 		3, "@MENU_DEDICATED", "ui_dedicated", { "@MENU_NO" 0 "@MENU_LAN" 1 "@MENU_INTERNET" 2 }, ; )
+		//CHOICE_DVARYESNO( 			4, "@MENU_PURE", "sv_pure", ; )
+		CHOICE_DVAREDIT_NUMERIC( 	4, "@MENU_MAXIMUM_PLAYERS", "sv_maxclients", 3, ; )
+		CHOICE_DVAREDIT_NUMERIC( 	5, "@ZOMBIE_ZOMCOUNT", "zom_count", 3, ; )
+		CHOICE_DVAREDIT_NUMERIC( 	6, "@MENU_MINIMUM_PING", "sv_minping", 4, ; )
+		CHOICE_DVAREDIT_NUMERIC( 	7, "@MENU_MAXIMUM_PING", "sv_maxping", 4, ; )		//CHOICE_DVAREDIT_NUMERIC( 8, "@MENU_MAXIMUM_RATE", "sv_maxrate", 8, ; )
+		CHOICE_DVAREDIT_VIS( 		8, "@MENU_PASSWORD1", "g_password", 12, 12, ;, 1 )	//CHOICE_DVARYESNO( 10, "@MENU_FRIENDLY_INDICATORS", "scr_drawfriend", ; )
+				
+		CHOICE_SEPARATOR( CHOICE_SEP_1 )
+				
+		//CHOICE_DVARFLOATLIST( 	8, "@MENU_FRIENDLY_FIRE", "scr_friendlyfire", { "@MENU_OFF" 0 "@MENU_ON" 1 "@MENU_REFLECT" 2 "@MENU_SHARED" 3 }, ; )	
+		CHOICE_DVARYESNO( 			9, "@MENU_VOICECHATCOLON", "sv_voice", ; )
+		CHOICE_DVARSTRINGLIST( 		10, "@ZOMBIE_DIFFICULTY", "zom_difficulty", { "@ZOMBIE_EASY" easy "@ZOMBIE_NORMAL" normal "@ZOMBIE_HARD" hard "@ZOMBIE_VERYHARD" veryhard }, ; )
+		CHOICE_DVAREDIT_NUMERIC( 	11, "@ZOMBIE_HEALTH", "zom_health", 4, ; )
+		//CHOICE_DVARYESNO( 		9, "@MENU_FORCE_RESPAWNING", "scr_forcerespawn", ; )
+		//CHOICE_DVARYESNO( 		10, "@MENU_KILLCAM", "scr_killcam", ; )
+		//CHOICE_DVARYESNO( 			9, "@MENU_AUTOBALANCE_TEAMS", "scr_teambalance", ; )
+		//CHOICE_DVARYESNO( 			10, "@MENU_ALLOW_VOTING", "g_allowvote", ; )
+		//CHOICE_DVARYESNO( 		11, "@MENU_ALLOW_ENEMY_SPECTATING", "scr_spectateenemy", ; ) //CHOICE_DVARYESNO( 16, "@MENU_ALLOW_FREE_SPECTATING", "scr_spectatefree", ; )
+		//CHOICE_DVARYESNO( 			11, "@MPUI_PUNKBUSTERWITHCOLONANDTWOSPACES", "sv_punkbuster", ; )		
+		
+		CHOICE_SEPARATOR( CHOICE_SEP_2 )
+		
+		#define LOCAL_RULES_ACTION\
+				uiScript openMenuOnDvar "ui_netGametypeName" surv "settings_quick_war";
+				/*uiScript openMenuOnDvar "ui_netGametypeName" sab "settings_quick_sab";\
+				uiScript openMenuOnDvar "ui_netGametypeName" koth "settings_quick_koth";\
+				uiScript openMenuOnDvar "ui_netGametypeName" dom "settings_quick_dom";\
+				uiScript openMenuOnDvar "ui_netGametypeName" dm "settings_quick_dm";\
+				uiScript openMenuOnDvar "ui_netGametypeName" ctf "settings_quick_ctf";*/
+				
+		CHOICE_BUTTON( 			12, "@MENU_GAME_TYPE_SETTINGS", LOCAL_RULES_ACTION )
+		//CHOICE_BUTTON(			13, "@MENU_RESET_TO_DEFAULT", open reset_gamesettings; )
+			
+		// map selection ===========================================
+		
+		itemDef 
+		{
+			name			maplist
+			rect			-260 266 200 160 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP //404 271 192 130
+			type			ITEM_TYPE_LISTBOX
+			style			WINDOW_STYLE_FILLED
+			elementwidth 	120
+			elementheight 	22
+			origin			0 0
+			textfont		UI_FONT_NORMAL
+			textscale		CHOICE_TEXTSIZE
+			elementtype		LISTBOX_TEXT
+			feeder			FEEDER_ALLMAPS
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			textalignx 		6
+			textaligny 		0
+			outlinecolor	1 1 1 0.2
+			forecolor 		CHOICE_TEXTCOLOR
+			backcolor 		0 0 0 0
+			border			1
+			bordersize		1
+			bordercolor		1 1 1 0.15
+			visible			1
+			columns			1 2 190 25
+			mouseEnter 		{ play "mouse_over"; setitemcolor maplist bordercolor 1 1 1 0.55 }
+			mouseExit 		{ setitemcolor maplist bordercolor 1 1 1 0.15 }
+			doubleclick		{ play "mouse_click"; uiScript StartServer; }
+		}		
+
+		itemDef 
+		{
+			name			mappreview
+			style			0
+			ownerdraw		UI_MAPPREVIEW
+			rect			-260 106 200 135 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_TOP
+			border			0
+			bordercolor		.5 .5 .5 .5
+			origin			0 0
+			visible			1
+			decoration
+		}
+		
+		// buttons =================================================
+
+		itemDef {
+			name			back
+			text			"@MENU_BACK"
+			type			1
+			style			WINDOW_STYLE_FILLED
+			forecolor		TEXTBUTTON_COLOR
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			rect			-250 -26 40 20 HORIZONTAL_ALIGN_CENTER VERTICAL_ALIGN_BOTTOM
+			textfont		UI_FONT_NORMAL
+			textalign		ITEM_ALIGN_LEFT
+			textscale		TEXTSIZE_SMALL
+			textaligny		18
+			visible			1
+			mouseEnter		{ play "mouse_over"; }
+			action 
+			{
+				play "mouse_click";
+				close self;
+			}	
+		}    
+		/*
+		itemDef 
+		{
+			name			button_serversettings
+			text			"@MENU_GAME_TYPE_SETTINGS"
+			type			ITEM_TYPE_BUTTON
+			textfont		UI_FONT_NORMAL
+			textscale		TEXTSIZE_SMALL
+			style			WINDOW_STYLE_FILLED
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			rect			-80 -26 140 20 HORIZONTAL_ALIGN_CENTER VERTICAL_ALIGN_BOTTOM
+			textalign		ITEM_ALIGN_LEFT
+			textalignx		0
+			textaligny		18
+			forecolor		TEXTBUTTON_COLOR
+			visible			1
+			mouseEnter		{ play "mouse_over"; } 
+			action
+			{ 
+				//hide button_serversettings; 
+				//show button_gametypesettings; 
+				//close createserver_serversettings;
+				//openForGameType "settings_%s";
+				
+				uiScript openMenuOnDvar "ui_netGametypeName" war "settings_quick_war";
+				uiScript openMenuOnDvar "ui_netGametypeName" sd "settings_quick_sd";
+				uiScript openMenuOnDvar "ui_netGametypeName" sab "settings_quick_sab";
+				uiScript openMenuOnDvar "ui_netGametypeName" koth "settings_quick_koth";
+				uiScript openMenuOnDvar "ui_netGametypeName" dom "settings_quick_dom";
+				uiScript openMenuOnDvar "ui_netGametypeName" dm "settings_quick_dm";
+				uiScript openMenuOnDvar "ui_netGametypeName" ctf "settings_quick_ctf";
+				
+				play "mouse_click" ; 
+			}
+		}*/
+
+		itemDef 
+		{
+			name			accept
+			text			"@MENU_START"
+			type			ITEM_TYPE_BUTTON
+			textfont		UI_FONT_NORMAL
+			style			WINDOW_STYLE_FILLED	
+			textstyle		ITEM_TEXTSTYLE_SHADOWED
+			rect			220 -26 40 20 HORIZONTAL_ALIGN_CENTER VERTICAL_ALIGN_BOTTOM
+			textalign		ITEM_ALIGN_LEFT
+			textscale		TEXTSIZE_SMALL
+			textalignx		0
+			textaligny		18
+			forecolor		TEXTBUTTON_COLOR
+			visible			1
+			mouseEnter		{ play "mouse_over"; }
+			action 
+			{
+				play "mouse_click";
+				uiScript StartServer
+			}	
+		}
+	}
+	
+	#include "ui_mp/popupstyle.inc"	
+	#include "ui/choices_setup_popmenu.menu"
+
+
+	#undef CHOICE_SIZE_X
+	#define CHOICE_SIZE_X	250
+	
+	#undef CHOICE_HORIZONTAL_ALIGN
+	#define CHOICE_HORIZONTAL_ALIGN	HORIZONTAL_ALIGN_CENTER
+	#undef CHOICE_VERTICAL_ALIGN
+	#define CHOICE_VERTICAL_ALIGN	VERTICAL_ALIGN_CENTER
+	
+	menuDef
+	{
+		CENTER_POPUP_SETUP( reset_gamesettings, 3, ;, 1 )
+
+		CHOICE_POPMENU_SUBTITLE( "@MENU_RESET_TO_DEFAULT" )
+		CHOICE_BUTTON( 2, "@MENU_YES", exec "exec default_mp_gamesettings.cfg"; close self )
+		CHOICE_BUTTON( 3, "@MENU_NO", close self )
+	}
+}

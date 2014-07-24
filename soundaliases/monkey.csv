@@ -1,0 +1,107 @@
+,,"If the first column for a row is blank, then the row is ignored"
+,"If the first column for a row is blank, then the row is ignored",
+# The first non-comment line of a sound alias file specifies the key name for all values appearing in this column.,,
+"# This means it is safe to swap entire columns around, though you should never swap partial columns.",,
+"# You can invent new keys, but the game will ignore them if it doesn't know about them.",,
+"# You can leave out keys, but the ""name"" and ""file"" keys must always be present.",,
+
+,name,name of the alias that is used to play this sound (required)
+,sequence,"used to uniquely identify alias entries when more than one sound goes to an alias, used only to catch unwanted duplicates (default = 0)"
+,file,the name of the file that contains the sound data (required)
+,vol_min,"0 is silent, 1 is full volume (default = 1)"
+,vol_max,"0 is silent, 1 is full volume (default = same as vol_min)"
+,vol_mod,"blank causes no effect on vol_min and vol_max, otherwise the string must match a string in the volumemodgroups.def file and the value in that file corresponding to that string will be used to adjust vol_min and vol_max, clamped to the valid range"
+,pitch_min,"1 is normal playback, 2 is twice as fast, 0.5 is half as fast (default = 1)"
+,pitch_max,"1 is normal playback, 2 is twice as fast, 0.5 is half as fast (default = same as pitch_min)"
+,dist_min,"within this distance in inches, the sound is always full volume (default = 120)"
+,dist_max,"outside this distance in inches, the sound is not started.  If left blank or set to 0, the sound will play from any distance.  This does not affect sound volume falloff."
+,channel,"auto, menu, weapon, voice, item, body, local, music, announcer (default = auto)"
+,type,primed (a streamed sound which gets primed on some platforms) / streamed / loaded (default = loaded)
+,probability,weight to use for the weighted probability of playing this sound instead of another sound (default = 1)
+,loop,"whether this sound is ""looping"" or ""nonlooping"" (default = ""nonlooping"")"
+,masterslave,"if ""master"", this is a master sound.  If a number, then this sound's volume will be multiplied by that number (a percentage between 0 and 1) any master sound is playing.  If blank, then neither master nor slave."
+,loadspec,"space-separated list of which maps should use this alias; eg, ""burnville dawnville"".  If blank, the alias is used on all maps."
+,compression,"a string corresponding to an entry in ""XMAUpdate.tbl"" which is used to determine compression by XMAUpdate.exe"
+,secondaryaliasname,"defined the name of an additional sound alias to play in addition to the current alias being played. Note that it is an error for the secondaryalias to also define a secondaryaliasname (eg, if B is a secondaryalias of A, B is not allowed to have its own secondaryalias)."
+,volumefalloffcurve,if blank uses the linear curve which can not be changed. A string 'XXXX' corresponds to the curve defined by the file 'soundaliases/XXXX.vfcurve'
+,startdelay,defaults to no delay. The value is the number of milliseconds to delay starting the sound by
+,speakermap,if blank uses the default speakermappings which cannot be changed. A string 'XXXX' corresponds to the speakermap defined by the file 'soundaliases/XXXX.spkrmap'. 
+,reverb,"blank means the alias is affected normally by wet and dry levels, ""fulldrylevel"" forces the alias to use a full drylevel (ignoring the global drylevel), ""nowetlevel"" forces the alias to use no wetlevel (ignoring the global wetlevel)"
+,lfe percentage,this determines what percentage of the highest calculated spatialized speaker volume should be passed to the LFE. blank means no LFE for the sound
+,center percentage,this determines what percentage of the volume should be redirected to the center channel (equal percentage taken from all speakers).
+,platform,"used by XMAUpdate to determine whether the alias should be processed for a particular platform.  If blank, process for all platforms.  Platforms are PC, XB, PS, WI.  Multiple values should be separated by spaces.  !PC will exclude alias from PC but include in all other platforms.  PC will only include alias for PC.  !PC XB is invalid."
+,envelop_min,any sounds within this distance of the listener will use the full envelop percentage,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,envelop_max,sounds between enevlop_min and envelop_max use a fraction of the envelop percentage,,,,,,,,,,,,,,,,,,,,,,,,,,,
+,envelop percentage,amount of omnidirectionality to apply,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+name,sequence,file,vol_min,vol_max,vol_mod,pitch_min,pitch_max,dist_min,dist_max,channel,type,probability,loop,masterslave,loadspec,subtitle,compression,secondaryaliasname,volumefalloffcurve,startdelay,speakermap,reverb,lfe percentage,center percentage,platform,envelop_min,envelop_max,envelop percentage,conversion
+
+null,,null.wav,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+monk_cymb_1,1,weps/monkey/monk_cymb_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_cymb_2,2,weps/monkey/monk_cymb_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_cymb_3,3,weps/monkey/monk_cymb_02.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_cymb_4,4,weps/monkey/monk_cymb_03.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_cymb_5,5,weps/monkey/monk_cymb_04.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,1,weps/monkey/explo_vox_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,2,weps/monkey/explo_vox_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,3,weps/monkey/explo_vox_02.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,4,weps/monkey/explo_vox_03.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,5,weps/monkey/explo_vox_04.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_land_vox,1,weps/monkey/land_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_land_vox,2,weps/monkey/land_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_land_vox,3,weps/monkey/land_02.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_land_vox,4,weps/monkey/land_03.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,6,weps/monkey/explo_vox_05.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,7,weps/monkey/explo_vox_06.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,8,weps/monkey/explo_vox_07.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,9,weps/monkey/explo_vox_08.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,10,weps/monkey/explo_vox_09.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,11,weps/monkey/explo_vox_10.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,12,weps/monkey/explo_vox_11.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise,,weps/monkey/monkey_raise.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_plr,,weps/monkey/monkey_raise_plr.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_throw,,weps/monkey/throw_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,,
+monk_turn_key,,weps/monkey/monkey_ratchet.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_push_fez,,null.wav,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+monkey_raise_vox_plr,1,weps/monkey/raise_vox_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,2,weps/monkey/raise_vox_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,3,weps/monkey/raise_vox_02.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,4,weps/monkey/raise_vox_03.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,5,weps/monkey/raise_vox_04.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,6,weps/monkey/raise_vox_05.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,7,weps/monkey/raise_vox_06.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,8,weps/monkey/raise_vox_07.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,9,weps/monkey/raise_vox_08.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,10,weps/monkey/raise_vox_09.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,11,weps/monkey/raise_vox_10.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+
+monkey_land_wood,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_rock,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_dirt,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_default,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_bark,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_brick,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_carpet,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_cloth,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_concrete,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_foliage,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_glass,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_grass,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_gravel,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_ice,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_metal,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_mud,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_paper,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_plaster,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_sand,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_snow,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_water,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_asphalt,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_ceramic,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_plastic,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_rubber,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_cushion,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_fruit,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_paintedmetal,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,

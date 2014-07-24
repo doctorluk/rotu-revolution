@@ -1,0 +1,15 @@
+VERSION             "1"
+CONFIG              "C:\trees\cod3\cod3\bin\StringEd.cfg"
+FILENOTES           ""
+
+REFERENCE			CHOOSE_ROLE
+LANG_ENGLISH		"^3Change Role"
+
+REFERENCE			JOIN
+LANG_ENGLISH		"^5Join"
+
+REFERENCE			GOSPEC
+LANG_ENGLISH		"^3Spectate"
+
+REFERENCE			STOPQUEUE
+LANG_ENGLISH		"^1Cancel Join"

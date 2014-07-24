@@ -1,0 +1,39 @@
+group0,4,0,0
+0,Skorpion,weapon_skorpion,75
+1,Mini-Uzi,weapon_mini_uzi,100
+2,M9,weapon_beretta,60
+3,Usp,weapon_usp,90
+group1,8,0,0
+40,Ak47,weapon_ak47,125
+41,G36c,weapon_g36,195
+42,Winchester 1200,weapon_winchest1200,155
+43,Mp5,weapon_mp5,180
+44,Dragunov,weapon_dragunov,265
+45,M1911 .45,weapon_colt1911_black,200
+46,Mp44,weapon_mp44,135
+47,M16,weapon_m16basic_sp,255
+group2,9,0,0
+80,Crossbow,weapon_crossbow_1,400
+81,Chainsaw,weapon_saw_new_rescue,425
+82,Mp5SD,weapon_mp5sd_reflex,250
+83,M21,weapon_m14_mp,350
+84,M40a3,weapon_m40a3,370
+85,M4,weapon_m4_mp,300
+86,Rpd,weapon_rpd,450
+87,G3,weapon_g3,410
+88,Ak74u,weapon_ak74u,390
+group3,5,0,0
+120,Remington 700,weapon_remington700,700
+121,P90SD,weapon_p90_sd,525
+122,M249 SAW,viewmodel_m249_mp,670
+123,M60E4,weapon_m60,750
+124,M1014,weapon_benelli_super_90,500
+group4,5,0,0
+160,Ak47 Gold,weapon_ak47_gold,3100
+161,Mini-Uzi Gold,weapon_mini_uzi_gold,2400
+162,M1014 Gold,weapon_benelli_super_90_gold,2600
+163,Dragunov Gold,weapon_dragunov_gold,3200
+164,M60E4 Gold,weapon_m60_gold,5000
+group5,1,0,0
+200,Barrett .50cal,weapon_m82,2000
+

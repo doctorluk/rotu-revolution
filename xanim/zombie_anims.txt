@@ -1,0 +1,23 @@
+melee:
+v1 = slow multihit
+v2 = default
+v3 = headbutt
+v4 = cool sidepunch
+v5 = hektisches rumgefuchtel
+v6 = three punches, right, left, right
+v7 = crawling, one hit
+v8 = crawling, multiple rumfuchteln
+
+walk:
+v1 = quite cool
+v2 = not very intense
+v3 = fucking cool
+v4 = default
+v5 = Does not exist
+v6 = similar to v4, but very slow
+v7 = similar to v4, but quite slow, humpelnd
+v8 = drunken soldier
+v9 = a bit slow, but cool
+
+run:
+v4 & v5 = default
