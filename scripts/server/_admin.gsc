@@ -39,6 +39,7 @@ init()
 	addCmd("resetlevel", scripts\players\_rank::fullResetRcon);
 	addCmd("setrank", scripts\players\_rank::overwriteRank);
 	addCmd("setprestige", scripts\players\_rank::overwritePrestige);
+	addCmd("getprestige", ::getPrestige);
 	// addCmd("slap", ::slap);
 	addCmd("kill_zombies", ::killZombies);
 	precache();
@@ -109,6 +110,20 @@ setSpec(args)
 		{
 			iprintln("Player ^3" + players[i].name + "^7 has been moved to Spectators." );
 			players[i] thread scripts\players\_players::joinSpectator();
+		}
+	}
+}
+/* 	Prints out the prestige level of a player in the iprintln area
+	Syntax: rcon getprestige <player_id>
+ */
+getPrestige(args)
+{
+	players = getentarray("player", "classname");
+	for (i = 0; i<players.size; i++)
+	{
+		if (players[i] getEntityNumber() == int(args[0]))
+		{
+			iprintln("^3" + players[i].name + "'s^7 Prestige level is " + players[i].pers["prestige"] );
 		}
 	}
 }
