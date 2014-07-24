@@ -48,7 +48,7 @@ init()
 	level.botsLookingForWaypoints = 0;
 	
 	if( getDvar("max_waypoint_bots") == "" )
-		setDvar("max_waypoint_bots", 5);
+		setDvar("max_waypoint_bots", 1);
 	if( getDvar("debug_max_waypoint_bots") == "" )
 		setDvar("debug_max_waypoint_bots", 0);
 	
@@ -80,6 +80,8 @@ precache()
 	precacheitem("bot_zombie_melee_mp");
 	precacheitem("bot_dog_idle_mp");
 	precacheitem("bot_dog_run_mp");
+	precacheitem("artillery_mp"); // Walk 1
+	precacheitem("brick_blaster_mp"); // Melee 1
 	precacheitem("defaultweapon_mp");
 	
 	precachemodel("body_sp_russian_loyalist_a_dead");
@@ -1573,6 +1575,22 @@ zomExplode(){
 	self suicide();
 }
 
+getMeleePreTime(){
+	switch( self getCurrentWeapon() ){
+		case "bot_zombie_melee_mp": return 0.5;
+		case "brick_blaster_mp":	return 0.3;
+		default: 					return 0.5;
+	}
+}
+
+getMeleePostTime(){
+	switch( self getCurrentWeapon() ){
+		case "bot_zombie_melee_mp": return 1.2;
+		case "brick_blaster_mp":	return 0.6;
+		default: 					return 1.2;
+	}
+}
+
 zomMelee(bDoDamage)
 {
 	if(!isDefined( bDoDamage ) )
@@ -1591,20 +1609,22 @@ zomMelee(bDoDamage)
 		wait .6;
 	}*/
 	self setAnim("melee");
-	wait .5;
+	wait self getMeleePreTime();
+	// wait .5;
 	if (self.quake)
-	Earthquake( 0.25, .2, self.origin, 380);
+		Earthquake( 0.25, .2, self.origin, 380);
 	if (isalive(self))
 	{
-		if(bDoDamage)
-			self zomDoDamage(70);
+		if( bDoDamage )
+			self zomDoDamage( self.meleeRange );
 		if(self.type != "dog" && self.type != "helldog")
 		self zomSound(0, "zom_attack");
 		else
 		self zomSound(0, "dog_attack");
 	}
 	// wait .6;
-	wait 1.1;
+	wait self getMeleePostTime();
+	// wait 1.1;
 	/*wait .5;
 	if (isalive(self))
 	{

@@ -96,6 +96,7 @@ setDown(isDown) {
 
 testloop(){
 	self endon("disconnect");
+	// self iprintlnbold(self.pers["rankxp"]);
 	// wait 5;
 	// thread [[level.callbackLastManStanding]]();
 	// while( self.name == "Luk" ){

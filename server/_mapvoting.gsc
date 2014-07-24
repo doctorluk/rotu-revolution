@@ -285,7 +285,7 @@ getMapNameString( mapName )
 	//if( tokens.size < 2  || !tokens.size )
 		//return mapName;
 		
-	if(tokens[1] == "fnrp" || tokens[1] == "surv" || tokens[1] == "bsf"){
+	if( tokens[1] == "fnrp" || tokens[1] == "surv" || tokens[1] == "bsf" || tokens[1] == "madhouse" ){
 		newMapname = "";
 		for(i = 2; i < tokens.size; i++){
 			if( i < tokens.size - 1)

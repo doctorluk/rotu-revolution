@@ -313,7 +313,7 @@ preWave(wavetype, type){
 /* Once all bots have spawned, proper cleanup */
 postWave(wavetype, type){
 	if(type != "boss")
-		level thread killBuggedZombies();
+		thread killBuggedZombies();
 	
 	level waittill( "wave_finished" );
 	

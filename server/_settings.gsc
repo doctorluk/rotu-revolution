@@ -146,6 +146,7 @@ loadSettings()
 	dvarBool(	"surv",			"dynamic_finale_difficulty",		1); // Use game_difficulty settings or not
 	dvarInt(	"surv",			"finale_playerlimit",	7,	1, 64 ); // A minimum amount of players that have to play in order to start the final wave
 	dvarBool(	"surv",			"endround_revive",		1);
+	dvarBool(	"surv",			"rotu_stats",			0); // Enable RotU-R stats logging when a round ends?
 	
 	
 	dvarInt(	"shop", 		"item1_costs",	 		2000,		1,		100000); // Restore Health

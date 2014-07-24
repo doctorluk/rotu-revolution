@@ -100,6 +100,10 @@ getSpectateCoords(){
 			return "-2092,897,154;14,-33,0";
 		case "mp_surv_backlot":
 			return "490,381,290;33,-147,0";
+		case "mp_fnrp_quake3_arena":
+			return "-744,-654,495;27,34,0";
+		case "mp_surv_maniacmansion":
+			return "1310,292,451;20,-171,0";
 			
 			
 		default:

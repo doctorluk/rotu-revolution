@@ -409,66 +409,80 @@ giveRankXP( type, value )
 		);*/
 }
 
-checkSpree() {
-	self endon( "disconnect" );
-	self endon( "joined_team" );
-	self endon( "joined_spectators" );
-	self notify("end_spree");
-	self endon("end_spree");
-	self.spree++;
-	if (self.spree>1) {
-		switch (self.spree) {
-			case 2:
-				self playlocalsound("double_kill");
-				self scripts\players\_rank::giveRankXP("spree", 5);
-			break;
-			case 3:
-				self playlocalsound("triple_kill");
-				self scripts\players\_rank::giveRankXP("spree", 10);
-				self.laststreak = "Triple kill! ";
-			break;
-			case 4:
-				self playlocalsound("multikill");
-				self scripts\players\_rank::giveRankXP("spree", 50);
-				self.laststreak = "Multi kill! ";
-			break;
-			case 5:
-				self playlocalsound("megakill");
-				self scripts\players\_rank::giveRankXP("spree", 100);
-				self.laststreak = "Mega kill! ";
-			break;
-			case 6:
-				self playlocalsound("ultrakill");
-				self scripts\players\_rank::giveRankXP("spree", 250);
-				self.laststreak = "Ultra kill! ";
-			break;
-			case 7:
-				self playlocalsound("ludicrouskill");
-				self scripts\players\_rank::giveRankXP("spree", 500);
-				self.laststreak = "Ludicrous kill! ";
-			break;
-		
-		}
-	} else {self.laststreak = "";}
-	wait 1.25;
-	if (self.laststreak!="") {
-		iprintln(self.laststreak+self.name+"^7 killed "+self.spree+" enemies in a spree!");
+overwritePrestige(args){
+	if( args.size != 2 )
+		return;
+	
+	for( i = 0; i < level.players.size; i++ )
+		if( level.players[i] getEntityNumber() == int(args[0]) ){
+			player = level.players[i];
+			player endon("disconnect");
+			prestige = int(args[1]);
+				
+			if( prestige > level.maxPrestige )
+				prestige = level.maxPrestige;
+			
+			if( prestige < player.pers["prestige"] )
+				player fullReset();
+			
+			player.pers["prestige"] = prestige;
+			
+			player prestigeUp(true);
 	}
-	self.spree = 0;
-	self.laststreak = "";
 }
 
-prestigeUp() {
+overwriteRank(args){
+	if( args.size != 2 )
+		return;
+	
+	for( i = 0; i < level.players.size; i++ )
+		if( level.players[i] getEntityNumber() == int(args[0]) ){
+			player = level.players[i];
+			player endon("disconnect");
+			rank = int(args[1]);
+			
+			if( rank > 55 )
+				rank = 55;
+			else if( rank < 0 )
+				rank = 0;
+			
+			if( rank < player.pers["rank"] ){
+				oldPrestige = [];
+				oldPrestige[0] = args[0];
+				oldPrestige[1] = player.pers["prestige"];
+				overwritePrestige(oldPrestige);
+			}
+			player incRankXP( getXPNeededForRank(rank) - player.pers["rankxp"] );
+			player updateRank(true);
+	}
+}
+
+fullResetRcon(args){
+	if( args.size < 1 )
+		return;
+	
+	for( i = 0; i < level.players.size; i++ )
+		if( level.players[i] getEntityNumber() == int(args[0]) ){
+			player = level.players[i];
+			
+			player fullReset();
+	}
+}
+
+prestigeUp(force) {
 	//if (self.rankHacker)
 	//return;
+	if( !isDefined( force ) )
+		force = false;
 	
-	if (self.pers["prestige"] == level.maxPrestige)
-	return;
-	if (self getRank() < level.maxRank)
-	return;
+	if (self.pers["prestige"] == level.maxPrestige && !force)
+		return;
+	if (self getRank() < level.maxRank && !force)
+		return;
 	
 	//self.pers["rank"] = 0;
-	self.pers["prestige"]+=int(self.pers["rankxp"]/(getRankInfoMaxXp(level.maxRank)-10));
+	if( !force )
+		self.pers["prestige"]+=int(self.pers["rankxp"]/(getRankInfoMaxXp(level.maxRank)-10));
 	self setStat(2326, self.pers["prestige"]);
 	self setStat(210, self.pers["prestige"]);
 	/*rankId = 0;
@@ -497,6 +511,21 @@ prestigeUp() {
 	self thread resetRank(.5);
 }
 
+fullReset(){
+	self setStat( 2326, 0 );
+	self setStat( 210, 0 );
+	self scripts\players\_persistence::statSet( "rankxp", 0 );
+	self scripts\players\_persistence::statSet( "rank", 0 );
+	self scripts\players\_persistence::statSet( "minxp", int(level.rankTable[0][2]) );
+	self scripts\players\_persistence::statSet( "maxxp", int(level.rankTable[0][7]) );
+	self setStat( 252, 0 );
+	self setStat( 253, 0 );
+	self.pers["rank"] = 0;
+	self.pers["rankxp"] = 0;
+	self setRank( 0, 0 );
+	self scripts\players\_classes::resetSkillpoints();
+}
+
 resetRank(delay) {
 	self endon("disconnect");
 	wait delay;
@@ -504,12 +533,19 @@ resetRank(delay) {
 	self.pers["rank"] = rankId;
 	
 	self scripts\players\_classes::getSkillpoints(rankId);
+	self notify("reset_rank_over");
 }
 
-updateRank()
+updateRank( useWait )
 {
 	if (self.rankHacker)
 	return;
+	
+	if( !isDefined( useWait ) )
+		useWait = false;
+	
+	if( useWait )
+		self endon("disconnect");
 	
 	newRankId = self getRank();
 	if ( newRankId == self.pers["rank"] )
@@ -528,13 +564,13 @@ updateRank()
 		// set current new rank index to stat#252
 		self setStat( 252, rankId );
 		self setStat( 253, rankId );
-	
 		
-
 		rankId++;
+		if( useWait )
+			wait 0.05;
 	}
-	self logString( "promoted from " + oldRank + " to " + newRankId + " timeplayed: " + self scripts\players\_persistence::statGet( "time_played_total" ) );		
-
+	self logString( "promoted from " + oldRank + " to " + newRankId + " timeplayed: " + self scripts\players\_persistence::statGet( "time_played_total" ) );
+	
 	self setRank( newRankId, self.pers["prestige"] );
 	self scripts\players\_classes::getSkillpoints(newRankId);
 	return true;
@@ -575,7 +611,7 @@ updateRankAnnounceHUD()
 	rank_char = level.rankTable[self.pers["rank"]][1];
 	subRank = int(rank_char[rank_char.size-1]);
 	
-	self glowMessage(&"RANK_PROMOTED", "", (0,1,0), 5, 90, 2, "mp_level_up");
+	self glowMessage(&"ZOMBIE_PROMOTION", "", (0.9,0,0), 5, 90, 2, "rotu_level_up");
 	
 	rank_char = level.rankTable[self.pers["rank"]][1];
 	subRank = int(rank_char[rank_char.size-1]);
@@ -652,6 +688,17 @@ getRank()
 		return rankId;
 	else
 		return self getRankForXp( rankXp );
+}
+
+getXPNeededForRank( rankID ){
+	rankID -= 1;
+	
+	if( rankID < 0 )
+		rankID = 0;
+	else if( rankID > 54 )
+		rankID = 54;
+		
+	return getRankInfoMinXP( rankID );
 }
 
 getRankForXp( xpVal )

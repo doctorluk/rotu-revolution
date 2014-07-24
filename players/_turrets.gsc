@@ -137,7 +137,6 @@ placeTurret(turret_type, augmented)
 				self.carryObj unlink();
 				wait 0.2;
 				self.carryObj delete();
-				
 				self.canUse = true;
 				self enableweapons();
 				self notify("placed_turret");
@@ -147,7 +146,7 @@ placeTurret(turret_type, augmented)
 				self.carryObj unlink();
 				wait 0.2;
 				self.carryObj delete();
-				self.carryObj = undefined;
+				self.canUse = true;
 				self enableweapons();
 				return;
 			}

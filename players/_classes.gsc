@@ -29,6 +29,33 @@ init()
 	updateGlobalClassCounts();
 }
 
+resetSkillpoints(){
+	self endon("disconnect");
+	if ( !level.dvar["game_class_ranks"] )
+	{
+		self.skillpoints = 0;
+		self skillPointsNotify(self.skillpoints);
+		self setclientdvar("ui_skillpoints", self.skillpoints);
+		return;
+	}
+	self.rank["soldier"] = 0;
+	self.rank["stealth"] = 0;
+	self.rank["medic"] = 0;
+	self.rank["scout"] = 0;
+	self.rank["armored"] = 0;
+	self.rank["engineer"] = 0;
+	self setstat(level.player_stat_rank["soldier"], 0);
+	self setstat(level.player_stat_rank["stealth"], 0);
+	self setstat(level.player_stat_rank["medic"], 0);
+	self setstat(level.player_stat_rank["scout"], 0);
+	self setstat(level.player_stat_rank["armored"], 0);
+	self setstat(level.player_stat_rank["engineer"], 0);
+	self.skillpoints = 0;
+	
+	self skillPointsNotify(self.skillpoints);
+	self setclientdvar("ui_skillpoints", self.skillpoints);
+}
+
 getSkillpoints(rank)
 {
 	self endon("disconnect");

@@ -36,6 +36,9 @@ init()
 	addCmd("setspectator", ::setSpec);
 	addCmd("getendview", ::getplayerangles);
 	addCmd("saybold", ::saybold);
+	addCmd("resetlevel", scripts\players\_rank::fullResetRcon);
+	addCmd("setrank", scripts\players\_rank::overwriteRank);
+	addCmd("setprestige", scripts\players\_rank::overwritePrestige);
 	// addCmd("slap", ::slap);
 	addCmd("kill_zombies", ::killZombies);
 	precache();

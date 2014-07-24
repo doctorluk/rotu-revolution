@@ -397,6 +397,7 @@ endMap(endReasontext, win)
 	game["state"] = "postgame";
 	level notify("intermission");
 	level notify ( "game_ended" );
+	scripts\extras\_rotustats::saveGameStats(win);
 	
 	setGameEndTime( 0 );
 

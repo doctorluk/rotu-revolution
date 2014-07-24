@@ -38,6 +38,7 @@ init()
 
 precache()
 {
+	precachestring(&"ZOMBIE_PROMOTION");
 	precachestring(&"ZOMBIE_STREAK");
 	
 	precachestring(&"ZOMBIE_NEWWAVE0");

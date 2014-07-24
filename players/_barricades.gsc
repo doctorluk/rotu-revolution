@@ -86,7 +86,7 @@ placeBarrel()
 			barrel unlink();
 			wait 0.2;
 			barrel delete();
-			self.carryObj = undefined;
+			self.canUse = true;
 			self enableweapons();
 			return;
 		}
