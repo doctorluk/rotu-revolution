@@ -91,7 +91,6 @@ loadSettings()
 	dvarBool(	"game",			"class_ranks",			1);
 	dvarBool(	"game",			"changing_hostname",	0);
 	dvarInt(	"game",			"changing_hostname_time",10,	2,		60);
-	dvarBool(	"game",			"log_kills",			1);
 	
 	// AFK SETTINGS
 	dvarBool(	"game",			"afk_enabled",			1); 						// AFK Enabled?
