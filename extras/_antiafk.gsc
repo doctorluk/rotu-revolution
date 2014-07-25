@@ -41,24 +41,29 @@ antiAFK(){
 		handleTypeText = "KICKED";
 	else
 		handleTypeText = "PUT TO SPECTATOR";
-	
-	while(1){
-		if( self.isDown ){ wait 0.1; continue; }
 		
-		oldpos = self getOrigin();
-		oldangles = self getPlayerAngles();
-		oldstance = self getStance();
+	oldpos = self getOrigin();
+	
+	while(1){		
+		// oldangles = self getPlayerAngles();
+		oldweapon = self getCurrentWeapon();
 		
 		wait 0.05;
 		
-		if( self pressesAnyButton() || self getOrigin() != oldpos || self getPlayerAngles() != oldangles || self getStance() != oldstance ){
+		if( self.isDown ){ wait 0.05; continue; }
+		
+		// if( self pressesAnyButton() || self getOrigin() != oldpos || self getPlayerAngles() != oldangles || self getStance() != oldstance ){
+		if( self pressesAnyButton() || oldweapon != self getCurrentWeapon() ||  ( self.antiAFK % 100 == 0 && self.antiAFK && distance(oldpos, self getOrigin()) > 200 ) ){
+			oldpos = self getOrigin();
 			self.antiAFK = 0;
 			continue;
 		}
 		else
 			self.antiAFK++;
 			
-		if( self.antiAFK >= (level.dvar["game_afk_time_warn"] * 20) && self.antiAFK % 20 == 0 && self.antiAFK < ( (level.dvar["game_afk_time_warn"] + level.dvar["game_afk_warn_amount"]) * 20) )
+		if( self.antiAFK >= (level.dvar["game_afk_time_warn"] * 20) && 
+		self.antiAFK % 20 == 0 && 
+		self.antiAFK < ( (level.dvar["game_afk_time_warn"] + level.dvar["game_afk_warn_amount"]) * 20) )
 			self iprintlnbold("^1WARNING: ^7DO NOT BE AFK OR YOU WILL BE " + handleTypeText + "!");
 		
 		
