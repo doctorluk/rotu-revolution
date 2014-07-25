@@ -166,7 +166,7 @@ buildZomTypes(preset)
 	level.zom_typenames["fast"] = "quick Zombies";
 	level.zom_typenames["fat"] = "fat Zombies";
 	level.zom_typenames["burning"] = "inferno Zombies";
-	level.zom_typenames["helldog"] = "Helldogs";
+	level.zom_typenames["helldog"] = "Hellhounds";
 	level.zom_typenames["toxic"] = "crawler Zombies";
 	level.zom_typenames["tank"] = "hell Zombies";
 	level.zom_typenames["grouped"] = "grouped Zombies";

@@ -106,6 +106,8 @@ getSpectateCoords(){
 			return "1310,292,451;20,-171,0";
 		case "mp_fnrp_smurfs":
 			return "1243,-1281,342;25,121,0";
+		case "mp_fnrp_gas":
+			return "-1550,1014,374;20,-50,0";
 			
 			
 		default:
