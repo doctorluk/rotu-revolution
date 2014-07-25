@@ -738,6 +738,9 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	if(isDefined(self.effect))
 		self.effect delete();
 		
+	if( level.dvar["game_log_kills"] )		
+		logPrint( "K;;" + self getEntityNumber() + ";" + self.pers["team"] + ";" + self.name + ";" + attacker getGuid() + ";" + attacker getEntityNumber() + ";" + attacker.pers["team"] + ";" + attacker.name + ";" + sWeapon + ";" + iDamage + ";" + sMeansOfDeath + ";" + sHitLoc + "\n" );
+		
 	wait 0.1;
 	self.hasSpawned = false;
 	self.parent = undefined;
