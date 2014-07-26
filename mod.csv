@@ -1120,9 +1120,9 @@ xmodel,viewmodel_bo_aug_hbar
 xmodel,worldmodel_bo_aug_hbar
 
 // BO2 Sentry Turret
-material,mtl_bo2_sentry_gun_minigun
-material,mtl_bo2_turret_sentry_gun_ammo
-material,mtl_bo2_turret_sentry_gun_base
+material,bo2_mtl_t6_wpn_minigun
+material,bo2_mtl_t6_wpn_turret_sentry_gun_ammo
+material,bo2_mtl_t6_wpn_turret_sentry_gun_base
 
 xmodel,bo2_turret_sentry_gun
 

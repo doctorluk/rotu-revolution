@@ -211,12 +211,14 @@ hideUpperParts(){
 	/* Hides gun-part of Sentry Gun */
 	self hidePart("tag_aim");
 	self hidePart("tag_aim_pitch");
-	self hidePart("tag_swivel");
+	self hidePart("tag_spin");
 }
 
 hideLowerParts(){
+	self endon("death");
 	/* Hides bipod-part of Sentry Gun */
-	self hidePart("tag_base");
+	self hidePart("bi_base");
+	
 	wait 0.05;
 	playFXonTag(level.sentry_laser, self, "tag_flash");
 }
@@ -413,18 +415,6 @@ enableAgain(){
 	wait 3;
 	self thread disableEffects();
 }
-
-// createEffectEntity(effect, origin, type){
-	// if(isDefined(self.effect))
-		// return;
-	// self endon("death");
-	// self.effect = undefined;
-	// self.effect = spawn( "script_model", self getTagOrigin( origin ));
-	// self.effect setModel( "tag_origin" );
-	// wait 0.05;
-	// PlayFXOnTag( effect, self.effect, "tag_origin" );
-	// self.effect LinkTo( self );
-// }
 
 createEffectEntity(effect, origin, type){
 	if( !isDefined( self.effect ) )
