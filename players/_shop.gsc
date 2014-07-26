@@ -145,7 +145,7 @@ processResponse(response)
 				if(self.health < self.maxhealth){
 					self thread scripts\players\_players::fullHeal(3);
 					self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item1_costs"]);
-					self iprintlnbold("^2Health^7 restoring...");
+					self iprintlnbold("Restoring ^2health^7!");
 					self playsound("buy_upgradebox");
 				}
 				else

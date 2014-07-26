@@ -75,7 +75,7 @@ startFinalWave()
 	type = "finale";
 	
 	if( level.activePlayers < level.dvar["surv_finale_playerlimit"] ){
-		iprintln("^3Skipping ^7final wave, not enough players are playing!");
+		// iprintln("^3Skipping ^7final wave as not enough players are playing!");
 		return;
 	}
 	

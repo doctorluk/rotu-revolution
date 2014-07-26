@@ -307,14 +307,6 @@ getMapNameString( mapName )
 		newMapname = toUpper(getSubStr(newMapname, 0, 1)) + getSubStr(newMapname, 1);
 		return newMapname;
 	}
-
-//	if( tokens[1] != "deathrun" && tokens[1] != "dr" )
-//	{
-//		iPrintlnBold( "Map '" + mapName + " is not for use with Death Run Mod, please contact server administrator" );
-//		level.wrongMap = true;
-//	}
-	
-	//return tokens[2];
 }
 
 playerUpdateVotes() {
