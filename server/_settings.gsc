@@ -102,13 +102,10 @@ loadSettings()
 	dvarBool(	"hud",			"survivors_left",		1);
 	dvarBool(	"hud",			"survivors_down",		1);
 	dvarBool(	"hud",			"wave_number",			1);
-	
-	
-	dvarString( "server",		"provider",				"www.iNext-gaming.com");
+	dvarBool(	"hud",			"zombies_alive",		0);
 	
 	dvarBool(	"env", 			"ambient",	 			1);
 	dvarBool(	"env", 			"fog",	 				1);
-	dvarBool(	"env", 			"smoothfog",	 		1); // Enable/disable smooth fog transition
 	dvarInt(	"env", 			"fog_start_distance",	200,	0,		10000);
 	dvarInt(	"env", 			"fog_half_distance",	480,	0,		10000);
 	dvarInt(	"env", 			"fog_red",				5,		0,		255);
@@ -125,7 +122,7 @@ loadSettings()
 	dvarInt(	"surv", 		"zombies_initial",		10,		1,		1000);
 	dvarInt(	"surv", 		"zombies_perplayer",	10,		1,		1000);
 	dvarInt(	"surv", 		"zombies_perwave",		5,		1,		1000);
-	dvarFloat(	"surv",			"revivetime",	3,		0.25,	30);
+	dvarFloat(	"surv",			"revivetime",			3,		0.25,	30);
 	dvarInt(	"surv", 		"wavesystem",			2,		0,		2);
 	dvarInt(	"surv", 		"timeout",	 			30,		2,		120);
 	dvarInt(	"surv", 		"timeout_firstwave",	30,		0,		60);
@@ -144,9 +141,15 @@ loadSettings()
 	dvarInt(	"surv",			"stuck_tollerance",		30,		10,		360);
 	dvarInt(	"surv",			"waves_repeat",			2,		1,		100);
 	dvarBool(	"surv",			"dynamic_finale_difficulty",		1); // Use game_difficulty settings or not
-	dvarInt(	"surv",			"finale_playerlimit",	7,	1, 64 ); // A minimum amount of players that have to play in order to start the final wave
+	dvarInt(	"surv",			"finale_minplayers",	7,	1, 64 ); // A minimum amount of players that have to play in order to start the final wave
 	dvarBool(	"surv",			"endround_revive",		1);
 	dvarBool(	"surv",			"rotu_stats",			0); // Enable RotU-R stats logging when a round ends?
+	
+	dvarInt(	"surv",			"phoenix_minplayers",	3,	1, 64 );
+	dvarInt(	"surv",			"phoenix_minwave",	3,	1, 64 );
+	dvarFloat(	"surv",			"phoenix_base_percentage",	0.2, 0.01, 1.0 );
+	dvarInt(	"surv",			"phoenix_wave_stepsize",	2, 1, 100 );
+	dvarFloat(	"surv",			"phoenix_wave_percentage",	0.03, 0,  1 );
 	
 	
 	dvarInt(	"shop", 		"item1_costs",	 		2000,		1,		100000); // Restore Health
