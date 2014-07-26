@@ -67,16 +67,16 @@ lastChanceMain(){
 
 buildLastChanceRequirement(){
 	level.lastChance = true;
-	/* TODO: CHANGE TO ACTUALLY WORKING NUMBERS FOR PUBLIC USE */
-	if(level.currentWave <= 3 || level.activePlayers <= 3){
+	
+	if( level.currentWave < level.dvar["surv_phoenix_minwave"] || level.activePlayers < level.dvar["surv_phoenix_minplayers"] ){
 	// if(level.currentWave <= 0 || level.activePlayers <= 0){
 		level.lastChance = false;
 		return;
 	}
 	
 	/* Increase the percentage of required points by 3% each 2 waves passed */
-	waves = int(level.currentWave / 2);
-	requirement = 0.20 + (waves * 0.03);
+	waves = int(level.currentWave / level.dvar["surv_phoenix_wave_stepsize"]);
+	requirement = level.dvar["surv_phoenix_base_percentage"] + (waves * level.dvar["surv_phoenix_wave_percentage"]);
 	
 	/* We should not get over 80% of points earned */
 	if(requirement > 0.8)
@@ -155,15 +155,16 @@ postLastChance(){
 	
 	scripts\server\_environment::setVision(level.vision, 3);
 	/* Kill all zombies before reviving them */
-	for(i=0; i < level.bots.size; i++){
+	for( i = 0; i < level.bots.size; i++ ){
 		bot = level.bots[i];
-		if(bot.sessionstate == "playing" && bot.type != "boss")
+		if( bot.sessionstate == "playing" && bot.type != "boss" )
 			bot suicide();
 	}
 	playSoundOnAllPlayers("phoenix");
 	wait 1;
-	for (i=0; i < level.players.size; i++) {
+	for ( i = 0; i < level.players.size; i++ ) {
 		player = level.players[i];
+		
 		if( arrayContains(level.resurrectPeople, player) ){
 			level.resurrectPeople = removeFromArray(level.resurrectPeople, player);
 			if( !isReallyPlaying(player) )
@@ -176,6 +177,7 @@ postLastChance(){
 		else if( isReallyPlaying(player) && !player.isZombie )
 			player thread scripts\players\_infection::goInfected();
 	}
+	
 	for(i = 0; i < level.players.size; i++){
 		player = level.players[i];
 		player closeMenu();
@@ -183,14 +185,16 @@ postLastChance(){
 		player unfreezePlayerForRoundEnd();
 		player setclientdvar("ui_hud_hardcore", 0);
 	}
-	level thread scripts\server\_environment::setBlur(scripts\bots\_types::getBlurForType(level.currentType), 3);
+	
+	thread scripts\server\_environment::setBlur(scripts\bots\_types::getBlurForType(level.currentType), 3);
 	level.resurrectPeople = undefined;
 	level.lastChance = false;
-	if( isDefined( level.bossOverlay ) ){
+	
+	if( isDefined( level.bossOverlay ) )
 		level.bossOverlay thread fadein(1);
-	}
-	level thread scripts\gamemodes\_survival::watchEnd();
-	level thread scripts\players\_players::updateActiveAliveCounts();
+		
+	thread scripts\gamemodes\_survival::watchEnd();
+	thread scripts\players\_players::updateActiveAliveCounts();
 	if(level.currentType != "scary")
 		level.turretsDisabled = 0;
 	level.spawningDisabled = 0;

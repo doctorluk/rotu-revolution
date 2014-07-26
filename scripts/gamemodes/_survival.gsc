@@ -336,8 +336,7 @@ survivorsHUD()
 		overlay3 thread waveNumber();
 		overlay3 thread destroyOverlayOnEnd();
 	}
-	// if (level.dvar["hud_wave_number"]) {
-	if (false) {
+	if (level.dvar["hud_zombies_alive"]) {
 		overlay4 = overlayMessage(&"ZOMBIE_ZOMB_ALIVE", level.botsAlive, (0.5,0,0), 1.4);
 		overlay4.alignX = "right";
 		overlay4.horzAlign = "right";
