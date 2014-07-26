@@ -1072,7 +1072,7 @@ burnThrowback(){
 	
 	while(1){
 		level.bossThrowback = !level.bossThrowback;
-		iprintln("Throwback of burning boss is now " + level.bossThrowback);
+		// iprintln("Throwback of burning boss is now " + level.bossThrowback);
 		if(level.bossThrowback) // Make it turn off faster than turning on
 			wait 5 + randomfloat(20);
 		else

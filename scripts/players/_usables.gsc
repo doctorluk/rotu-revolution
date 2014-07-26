@@ -210,23 +210,13 @@ usableUse()
 			case "infected":
 				if (!self.curEnt.isDown)
 				{
-					iprintln("^2"+self.curEnt.name+"^2's infection has been cured by " + self.name);
+					iprintln("^2"+self.curEnt.name+"^2's infection has been cured by " + self.name + ".");
 					self.curEnt scripts\players\_infection::cureInfection();
 					self scripts\players\_players::incUpgradePoints(20*level.dvar["game_rewardscale"]);
 					self thread scripts\players\_rank::giveRankXP("revive");
 					
 				}
 			
-			break;
-			case "medicine":
-				if (self.curEnt.isDown)
-				return;
-				if (self.curEnt.health < 50){
-					self.curEnt iprintlnbold("^2You have been healed by" + self.name);
-					self.curEnt scripts\players\_abilities::heal(50);
-					self scripts\players\_players::incUpgradePoints(20*level.dvar["game_rewardscale"]);
-					self thread scripts\players\_rank::giveRankXP("revive");
-				}
 			break;
 			case "weaponpickup":
 				self scripts\players\_weapons::swapWeapons(self.curEnt.wep_type, self.curEnt.myWeapon);
@@ -406,7 +396,7 @@ finishRevive(player)
 	{
 		player thread scripts\players\_players::revive(self);
 		player notify ("damage", 0);
-		iprintln(player.name + "^7 got revived by " + self.name);
+		iprintln(player.name + " was revived by " + self.name + ".");
 		player setclientdvar("ui_infostring", "");
 		
 		self  thread scripts\players\_rank::giveRankXP("revive");

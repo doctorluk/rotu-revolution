@@ -107,7 +107,7 @@ placeBarrel()
 				self.carryObj = undefined;
 				self notify("used_usable");
 				
-				iprintln( "^2"+ self.name + " ^2placed an obstacle." );
+				iprintln( self.name + " placed an ^2obstacle^7." );
 				
 				self.canUse = true;
 				self enableweapons();

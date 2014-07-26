@@ -209,7 +209,7 @@ onPlayerConnect()
 					self setstat(253, rankId);
 				} else {
 					self.rankHacker = true;
-					iprintln(self.name + " was kicked for rank hacking");
+					iprintln(self.name + " was kicked for rank hacking.");
 					Kick( self getEntityNumber());
 				}
 			} else { if (stat != rankId) self setstat(253, rankId); }
@@ -226,7 +226,7 @@ onPlayerConnect()
 		
 		if (prestige!=self getstat(210)) {
 			self.rankHacker = true;
-			iprintln(self.name + " was kicked for prestige hacking");
+			iprintln(self.name + " was kicked for prestige hacking.");
 			Kick( self getEntityNumber());
 		}
 		
