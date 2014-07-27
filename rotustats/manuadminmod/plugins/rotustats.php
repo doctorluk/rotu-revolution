@@ -50,6 +50,9 @@ function writeRotuStatsGame($lineTokens){
 	$password = $mod->getCV("rotustats", "mysqlpassword");
 	$database = $mod->getCV("rotustats", "mysqldatabase");
 	
+	$ip = $mod->getCV("main", "ip");
+	$port = $mod->getCV("main", "port");
+	
 	$con = mysql_connect($server, $user, $password);
 	if(!$con){
 		$GLOBALS["logging"]->write(MOD_ERROR, "Could not connect to the rotustats-database!");
@@ -58,13 +61,16 @@ function writeRotuStatsGame($lineTokens){
 	
 	mysql_select_db($database, $con);
 	
-	$query = "INSERT INTO rotustats_game(id, version, win, zombiesKilled, gameDuration, waveNumber, mapname) VALUES(NULL, '" . 
-	$lineTokens[1] . "','" .
-	$lineTokens[2] . "','" .
-	$lineTokens[3] . "','" .
-	$lineTokens[4] . "','" .
-	$lineTokens[5] . "','" .
-	$lineTokens[6] . "');";
+	$query = "INSERT INTO rotustats_game(id, version, win, zombiesKilled, gameDuration, waveNumber, mapname, ip, port, date) VALUES(NULL, '" . 
+	$lineTokens[1] 		. "','" .
+	$lineTokens[2] 		. "','" .
+	$lineTokens[3] 		. "','" .
+	$lineTokens[4] 		. "','" .
+	$lineTokens[5] 		. "','" .
+	$lineTokens[6] 		. "','" .
+	$ip 				. "','" .
+	$port				. "','" .
+	date("Y-m-d H:i:s") . "');";
 	// $GLOBALS["logging"]->write(MOD_NOTICE, "writeRotuStatsGame query: $query");
 	mysql_query($query, $con);
 	
