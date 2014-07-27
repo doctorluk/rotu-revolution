@@ -40,6 +40,7 @@ init()
 	addCmd("setrank", scripts\players\_rank::overwriteRank);
 	addCmd("setprestige", scripts\players\_rank::overwritePrestige);
 	addCmd("getprestige", ::getPrestige);
+	addCmd("readconfig", ::readconfig);
 	// addCmd("slap", ::slap);
 	addCmd("kill_zombies", ::killZombies);
 	precache();
@@ -82,6 +83,12 @@ saybold(args){
 		return;
 	
 	iprintlnbold( args[0] );
+}
+/* 	Prints READCONFIG; to the games_mp.log . It is used in coorporation with a manu admin mod plugin to read the configs
+	Syntax: rcon readconfig 1
+ */
+readconfig(args){
+	logPrint( "READCONFIG;\n" );
 }
 /* 	Renames a player
 	Syntax: rcon rename <player_id>&<new_name>

@@ -26,9 +26,11 @@ init(){
 }
 
 onPlayerSpawn(){
-	level waittill("spawned", player);
-	player.antiAFK = 0;
-	player thread antiAFK();
+	while(1){
+		level waittill("spawned", player);
+		player.antiAFK = 0;
+		player thread antiAFK();
+	}
 }
 
 antiAFK(){
@@ -50,7 +52,7 @@ antiAFK(){
 		
 		wait 0.05;
 		
-		if( self.isDown ){ wait 0.05; continue; }
+		if( self.isDown || self.isZombie ){ wait 0.05; continue; }
 		
 		// if( self pressesAnyButton() || self getOrigin() != oldpos || self getPlayerAngles() != oldangles || self getStance() != oldstance ){
 		if( self pressesAnyButton() || oldweapon != self getCurrentWeapon() ||  ( self.antiAFK % 100 == 0 && self.antiAFK && distance(oldpos, self getOrigin()) > 200 ) ){
