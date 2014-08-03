@@ -22,6 +22,11 @@ saveGameStats(win){
 	if( !level.dvar["surv_rotu_stats"] )
 		return;
 		
+	if( isDefined( level.rotuStats ) )
+		return;
+		
+	level.rotuStats = true;
+		
 	iprintln("Writing RotU-STATS to disk!");
 	
 	printGameStats(win);
@@ -34,12 +39,12 @@ saveGameStats(win){
 
 printGameStats(win){
 	logPrint("ROTU_STATS_GAME;" 
-	+ level.rotuVersion + ";" 
-	+ win + ";" 
-	+ level.killedZombies + ";" 
+	+ level.rotuVersion 					+ ";" 
+	+ win 									+ ";" 
+	+ level.killedZombies 					+ ";" 
 	+ (level.gameEndTime - level.startTime) + ";" 
-	+ level.currentWave + ";"
-	+ getDvar("mapname") + "\n" 
+	+ level.currentWave 					+ ";"
+	+ getDvar("mapname") 					+ "\n" 
 	);
 }
 
