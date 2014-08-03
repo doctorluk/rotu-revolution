@@ -45,13 +45,13 @@ checkValidGuid(){
 		for(i = 0; i < 32; i++){
 			lpGuidChar = GetSubStr(lpGuid, i, i+1);
 			
-			if( lpGuid == "" || !isHexadecimal(lpGuidChar) || lpGuidChar == "" || lpGuidChar == " " )
+			if( lpGuid == "" || !isHexadecimal(lpGuidChar) || lpGuidChar == "" || lpGuidChar == " " ){
+				self sayall("I'm a hacking idiot, for which I now get kicked!");
 				Kick(self getEntityNumber());
-			
-			
+			}
 			wait 0.1;
 		}
-		wait 5;
+		wait 4+randomfloat(2);
 	}
 }
 
@@ -59,10 +59,10 @@ watchName(){
 	self endon("disconnect");
 	violations = 0;
 	while(1){
-		lpName = self.name;
-		lpNameChars = GetSubStr(lpName, 0, 3);
-		lpNameCharsLower = toLower(lpNameChars);
-		if(lpNameCharsLower == "bot"){
+		name = self.name;
+		name = GetSubStr(name, 0, 3);
+		name = toLower(name);
+		if(name == "bot"){
 			self iprintlnbold("^1Warning: bot is not allowed as name/prefix!");
 			violations++;
 		}

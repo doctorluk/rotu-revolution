@@ -300,10 +300,13 @@ spawnPartner(spawnpoint, bot){
 	bot.linkObj.origin = bot.origin;
 	bot.linkObj.angles = bot.angles;
 	
+	
 	bot.incdammod = 1;
 	wait 0.05;
 	bot linkto(bot.parent.attachment);
 	bot setanim("stand");
+	bot.linkObj hide();
+	bot hide();
 	
 	bot thread rotateWithParent();
 }
@@ -591,9 +594,6 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 }
 
 igniteBot(eAttacker){
-	self endon("disconnect");
-	self endon("death");
-	level endon("game_ended");
 	self.isOnFire = true;
 	self thread damageOverTime(eAttacker, (self.maxhealth * 0.05), 1, "fire");
 	if(self.type != "dog" && self.type != "helldog")
@@ -602,11 +602,7 @@ igniteBot(eAttacker){
 		self thread scripts\bots\_types::createEffectEntity(level.incendiary_FX, "j_head", (0,0,-35)); // Prevent effect from being too far up above the head
 }
 
-poisonBot(eAttacker)
-{
-	self endon("disconnect");
-	self endon("death");
-	level endon("game_ended");
+poisonBot(eAttacker){
 	self.isPoisoned = true;
 	self thread damageOverTime(eAttacker, (self.maxhealth * 0.05), 1, "poison");
 	if(self.type != "dog" && self.type != "helldog")
@@ -670,7 +666,7 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	if (isplayer(attacker) && attacker != self)
 	{
 		attacker.kills++;
-		
+		attacker.killedZombieTypes[self.type]++;
 		attacker thread scripts\players\_rank::giveRankXP("kill");
 		attacker thread scripts\players\_spree::checkSpree();
 		
