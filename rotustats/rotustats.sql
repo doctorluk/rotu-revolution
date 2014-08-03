@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `rotustats_player` (
   `assists` int(10) unsigned NOT NULL,
   `deaths` int(10) unsigned NOT NULL,
   `downtime` int(10) unsigned NOT NULL,
+  `revives` int(10) unsigned NOT NULL,
   `healsGiven` int(10) unsigned NOT NULL,
   `ammoGiven` int(10) unsigned NOT NULL,
   `damageDealt` int(10) unsigned NOT NULL,

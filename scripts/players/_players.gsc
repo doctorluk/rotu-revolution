@@ -896,6 +896,15 @@ spawnPlayer(forceSpawn)
 		self.barriersRestored = 0;
 		self.upgradeHudPoints = 0;
 		
+		self.killedZombieTypes = [];
+		self.killedZombieTypes["zombie"] 	= 0;
+		self.killedZombieTypes["dog"] 		= 0;
+		self.killedZombieTypes["tank"] 		= 0;
+		self.killedZombieTypes["burning"] 	= 0;
+		self.killedZombieTypes["toxic"] 	= 0;
+		self.killedZombieTypes["napalm"] 	= 0;
+		self.killedZombieTypes["helldog"] 	= 0;
+		self.killedZombieTypes["halfboss"] 	= 0;
 		// self.poisonKills = 0;
 		// self.incendiaryKills = 0;
 	}
@@ -1448,6 +1457,7 @@ revive(by)
 		self.spawnProtectionTime = getTime();
 		if( isReallyPlaying(by) && by.curClass == "medic" )
 			by scripts\players\_abilities::rechargeSpecial(8);
+		by.revives++;
 	}
 	wait .05;
 	self switchtoweapon(self.lastStandWeapon);

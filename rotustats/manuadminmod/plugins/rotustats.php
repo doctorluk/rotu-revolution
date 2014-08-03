@@ -104,7 +104,7 @@ function writeRotuStatsPlayer($lineTokens){
 	
 	mysql_select_db($database, $con);
 	
-	$query = "INSERT INTO rotustats_player(id, guid, name, role, kills, assists, deaths, downtime, healsGiven, ammoGiven, damageDealt, damageDealtToBoss, turretKills, upgradepoints, upgradepointsspent, explosiveKills, knifeKills, timesZombie, ignitions, poisons, headshotKills, barriersRestored) VALUES('" . $rotustats->getID() . "'";
+	$query = "INSERT INTO rotustats_player(id, guid, name, role, kills, assists, deaths, downtime, revives, healsGiven, ammoGiven, damageDealt, damageDealtToBoss, turretKills, upgradepoints, upgradepointsspent, explosiveKills, knifeKills, timesZombie, ignitions, poisons, headshotKills, barriersRestored) VALUES('" . $rotustats->getID() . "'";
 	for( $i = 1; $i < count($lineTokens); $i++ )
 		$query .= ( ", '" . mysql_real_escape_string($lineTokens[$i]) . "'" );
 	$query .= ");";

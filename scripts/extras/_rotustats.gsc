@@ -57,6 +57,7 @@ printPlayerStats(){
 	assists 			= int(self.assists);
 	deaths 				= int(self.deaths);
 	downtime 			= int(self.downtime);
+	revives				= int(self.revives);
 	healsGiven 			= int(self.healsGiven);
 	ammoGiven 			= int(self.ammoGiven);
 	damagedealt 		= int(self.damagedealt);
@@ -84,6 +85,7 @@ printPlayerStats(){
 	+ assists + ";"
 	+ deaths + ";"
 	+ downtime + ";"
+	+ revives + ";"
 	+ healsGiven + ";"
 	+ ammoGiven + ";"
 	+ damagedealt + ";"
