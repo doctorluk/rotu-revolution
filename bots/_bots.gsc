@@ -167,9 +167,9 @@ precache()
 
 // LOADING BOTS
 
-loadBots(ammount)
+loadBots(amount)
 {
-	for (i=0; i<ammount; i++)
+	for ( i = 0; i < amount; i++ )
 	{
 
 		bot = addtestclient();

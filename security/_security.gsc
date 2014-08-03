@@ -25,8 +25,10 @@ init(){
 }
 
 onPlayerConnect(){
-	level waittill("connected", player);
-	player thread check();
+	while(1){
+		level waittill("connected", player);
+		player thread check();
+	}
 }
 
 check(){
