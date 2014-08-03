@@ -666,7 +666,10 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	if (isplayer(attacker) && attacker != self)
 	{
 		attacker.kills++;
-		attacker.killedZombieTypes[self.type]++;
+		
+		if( isDefined( attacker.killedZombieTypes[self.type] ) )
+			attacker.killedZombieTypes[self.type]++;
+			
 		attacker thread scripts\players\_rank::giveRankXP("kill");
 		attacker thread scripts\players\_spree::checkSpree();
 		
