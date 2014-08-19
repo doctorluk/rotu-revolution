@@ -21,7 +21,8 @@
 #include scripts\include\strings;
 
 init(){
-	thread onPlayerConnect();
+	if( !level.dvar["game_lan_mode"] )
+		thread onPlayerConnect();
 }
 
 onPlayerConnect(){
