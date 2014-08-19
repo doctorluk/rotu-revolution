@@ -48,6 +48,8 @@ loadSettings()
 	dvarFloat(	"zom",			"spawnprot_time",		6,		0,		30);
 	dvarBool(	"zom",			"spawnprot_tank",		0);
 	
+	dvarBool(	"game",			"lan_mode",				1);
+	
 	dvarInt(	"game",			"max_soldiers",			players,		0,		getDvarInt("sv_maxclients"));
 	dvarInt(	"game",			"max_assassins",		players,		0,		getDvarInt("sv_maxclients"));
 	dvarInt(	"game",			"max_armored",			players,		0,		getDvarInt("sv_maxclients"));

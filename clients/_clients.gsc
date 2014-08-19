@@ -76,13 +76,9 @@ Callback_PlayerConnect()
 	
 	if (!self.isBot)
 	{
-		self scripts\server\_ranks::loadPlayerRank();
 		self scripts\players\_weapons::initPlayerWeapons();
-
-		if (self.title == "")
+		
 		iPrintln( self.name + " ^7connected." );
-		else
-		iPrintln( self.name + "^7[" + self.title + "^7] connected." );
 		
 		self setClientDvars( "cg_drawSpectatorMessages", 1,
 							 "ui_hud_hardcore", 0,

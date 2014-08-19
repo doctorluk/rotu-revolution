@@ -1127,7 +1127,6 @@ resetUnlocks() {
 
 setStatusIcon(icon)
 {
-	if (self.overrideStatusIcon == "")
 	self.statusicon = icon;
 }
 

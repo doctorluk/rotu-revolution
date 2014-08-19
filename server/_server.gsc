@@ -20,15 +20,12 @@
 
 init()
 {
-	// setdvar("developer_script", 0);
 	thread scripts\server\_settings::init();
-	thread scripts\server\_ranks::init();
 	thread scripts\server\_welcome::init();
 	thread scripts\server\_maps::init();
 	thread scripts\server\_environment::init();
 	thread scripts\server\_admin::init();
 	thread scripts\server\_adminmenu::init();
-	// thread scripts\server\_custom::init();
 	thread scripts\server\_scoreboard::init();
 	thread scripts\server\_servername::init();
 	thread scripts\security\_security::init();
@@ -41,8 +38,8 @@ init()
 // General information broadcast
 broadcastVersion(){
 	level endon("game_ended");
-	level.rotuVersion = "RotU-Revolution Alpha 0.6 (03.08.14@21:55)";
-	level.rotuVersion_short = "RotU-R Alpha 0.6 (03.08.14@21:55)";
+	level.rotuVersion = "RotU-Revolution Alpha 0.6";
+	level.rotuVersion_short = "RotU-R Alpha 0.6";
 	level.rotuVersion_hostname = "RotU-Revolution 0.6-alpha";
 	level.rotuVersion_hostname_short = "0.6-alpha";
 	switch( getDvar("net_ip") ){
