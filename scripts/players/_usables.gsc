@@ -371,7 +371,7 @@ restoreBarricade()
 {
 	if (self.curEnt scripts\players\_barricades::restorePart()){
 		self scripts\players\_players::incUpgradePoints(3*level.dvar["game_rewardscale"]);
-		self.barriersRestored++;
+		self.stats["barriersRestored"]++;
 	}
 }
 
@@ -403,7 +403,7 @@ finishRevive(player)
 		self scripts\players\_players::incUpgradePoints(40*level.dvar["game_rewardscale"]);
 	}
 	wait .5;
-	self.revives++;
+	self.stats["revives"]++;
 	self EnableWeapons();
 	self thread usableAbort();
 }

@@ -230,7 +230,7 @@ aThing(){
 				level.players[i].hinttext destroy();
 			if(level.players[i].infected) // Prevent infected Players from going Zombie
 				level.players[i] notify("infection_cured");
-			level.players[i].timeplayed += getTime() - level.players[i].playtimeStart;
+			level.players[i].stats["timeplayed"] += getTime() - level.players[i].stats["playtimeStart"];
 		}
 		level.players[i] scripts\include\useful::freezePlayerForRoundEnd();
 	}

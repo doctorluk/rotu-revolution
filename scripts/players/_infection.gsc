@@ -191,7 +191,7 @@ playerGoZombie()
 	
 	self detachall();
 	// self setmodel("skeleton");
-	self.timesZombie++;
+	self.stats["timesZombie"]++;
 	self setclientdvar("cg_thirdperson", 1);
 	
 	wait 0.05;
