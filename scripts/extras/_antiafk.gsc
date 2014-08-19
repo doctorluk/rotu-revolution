@@ -47,14 +47,12 @@ antiAFK(){
 	oldpos = self getOrigin();
 	
 	while(1){		
-		// oldangles = self getPlayerAngles();
 		oldweapon = self getCurrentWeapon();
 		
 		wait 0.05;
 		
 		if( self.isDown || self.isZombie ){ wait 0.05; continue; }
 		
-		// if( self pressesAnyButton() || self getOrigin() != oldpos || self getPlayerAngles() != oldangles || self getStance() != oldstance ){
 		if( self pressesAnyButton() || oldweapon != self getCurrentWeapon() ||  ( self.antiAFK % 100 == 0 && self.antiAFK && distance(oldpos, self getOrigin()) > 200 ) ){
 			oldpos = self getOrigin();
 			self.antiAFK = 0;

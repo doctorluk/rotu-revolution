@@ -16,7 +16,7 @@ Author: Luk
 Website: http://puffyforum.com
 Version: 0.6
 Development state: ALPHA
-Last Update: 11.06.2014 (dd.mm.yyyy, down with 'murica's mm/dd/yyyy!)
+Last Update: 03.08.14 (dd.mm.yyyy, down with 'murica's mm/dd/yyyy!)
 Changelog: http://puffyforum.com/index.php?page=Thread&threadID=35
 Contact:
 	Xfire: lukluk1992 | Web: http://puffyforum.com
@@ -81,7 +81,7 @@ rcon getendview <playerID>
 rcon revive <playerID>
 
 // Kills the given amount of zombies. If you set 0 all zombies will be killed
-rcon kill_zombies amount
+rcon kill_zombies <amount>
 
 // Renames a player to the given name
 rcon rename <playerID>&<name>
@@ -111,7 +111,7 @@ It may be likely that, once this mod is released, the development of it comes to
 //		Decompilation of sources		//
 //										//
 
-I personally do not hate the decompilation of sources. I myself have decompiled many mods and maps in order to begin scripting for Call of Duty 4 myself. Without official documentation and only limited basic tutorials it is extremely hard to try out stuff. The easiest way is by decompiling a mod, understanding it's structure and adding new features that often fail at first, but will motivate once they actually work!
+I personally do not hate the decompilation of sources. I myself have decompiled many mods and maps in order to begin scripting for Call of Duty 4 myself. Without official documentation and only limited basic tutorials it is extremely hard to try out stuff. The easiest way is by decompiling a mod, understanding its structure and adding new features that often fail at first, but will motivate once they actually work!
 The only thing I want you to do when you use any of the sources of this mod, no matter who made them, credit them accordingly!
 
 --------------------------------

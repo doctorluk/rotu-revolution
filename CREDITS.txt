@@ -127,8 +127,8 @@ Author: =|SF|= Phoenix
 Link: http://cod4.cfgfactory.com/skins/show/4f5ba9e45dd35
 
 Sentry Gun:
-Author: Str1k3r
-Link: http://openwarfaremod.com/owforum/viewtopic.php?f=82&t=10971&st=0&sk=t&sd=a&hilit=sentry+gun&start=0
+Ripped by: Str1k3r
+Link: http://openwarfaremod.com/owforum/viewtopic.php?p=62155#p62155
 
 Striker:
 Author: tito
