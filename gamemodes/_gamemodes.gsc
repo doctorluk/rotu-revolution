@@ -375,7 +375,7 @@ isWave(waveNumber){
 
 stopDownTimer(){
 
-	self.downtime += level.gameEndTime - self.lastDowntime;
+	self.stats["downtime"] += level.gameEndTime - self.stats["lastDowntime"];
 }
 
 endMap(endReasontext, win)
@@ -496,7 +496,7 @@ endMap(endReasontext, win)
 					p.hinttext destroy();
 				if(p.infected) // Prevent infected Players from going Zombie
 					p notify("infection_cured");
-				p.timeplayed += getTime() - p.playtimeStart;
+				p.stats["timeplayed"] += getTime() - p.stats["playtimeStart"];
 				thread soulSpawnOnEnd(p.origin);
 				p thread setupSpectateView();
 			}
@@ -560,7 +560,7 @@ endMap(endReasontext, win)
 					players[i].hinttext destroy();
 				if(players[i].infected) // Prevent infected Players from going Zombie
 					players[i] notify("infection_cured");
-				players[i].timeplayed += getTime() - players[i].playtimeStart;
+				players[i].stats["timeplayed"] += getTime() - players[i].stats["playtimeStart"];
 			}
 			players[i] freezePlayerForRoundEnd();
 

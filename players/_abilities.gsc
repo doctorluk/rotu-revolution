@@ -1360,7 +1360,7 @@ healPlayer(player, heal)
 	player updateHealthHud(player.health/player.maxhealth);
 	if (player != self){
 		self scripts\players\_players::incUpgradePoints(getRewardForHeal(healed)*level.dvar["game_rewardscale"]);
-		self.healsGiven += healed;
+		self.stats["healsGiven"] += healed;
 	}
 	if (self.curClass == "medic" && player != self)
 	{
@@ -1402,7 +1402,7 @@ restoreAmmoClip(player)
 		player playlocalsound("weap_pickup");
 		if (player != self && self.curClass == "engineer"){
 			self scripts\players\_players::incUpgradePoints(int(4*perc)*level.dvar["game_rewardscale"]);
-			self.ammoGiven += rest;
+			self.stats["ammoGiven"] += rest;
 			self scripts\players\_abilities::rechargeSpecial(8*perc);
 		}
 		

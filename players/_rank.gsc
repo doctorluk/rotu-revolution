@@ -237,7 +237,7 @@ onPlayerConnect()
 		
 		
 		//player updateChallenges();
-		//player.explosiveKills[0] = 0;
+		//player.stats["explosiveKills"][0] = 0;
 		self.xpGains = [];
 		
 		self thread onJoinedTeam();

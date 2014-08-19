@@ -546,7 +546,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 								if( (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) )
 									if( !scripts\players\_weapons::isExplosive(sWeapon) ){
 											self igniteBot(eAttacker);
-											eAttacker.ignitions++;
+											eAttacker.stats["ignitions"]++;
 										}
 		if( self.type != "toxic" && self.type != "boss" && self.type != "halfboss" )
 				if( eAttacker.bulletMod == "poison" )
@@ -556,7 +556,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 								if( (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) )
 									if( !scripts\players\_weapons::isExplosive(sWeapon) ){
 											self poisonBot(eAttacker);
-											eAttacker.poisons++;
+											eAttacker.stats["poisons"]++;
 										}
 	}
 
@@ -569,8 +569,8 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 			iDamage = 1;
 		
 		// Total Damage Stats
-		if( isDefined( eAttacker.damagedealt ) )
-			eAttacker.damagedealt += iDamage;
+		if( isDefined( eAttacker.stats["damageDealt"] ) )
+			eAttacker.stats["damageDealt"] += iDamage;
 			
 		// Medic Transfusion
 		if( eInflictor == eAttacker && !eAttacker.isDown && eAttacker.health < eAttacker.maxhealth && eAttacker.transfusion && (eAttacker.lastTransfusion + 1000 < getTime()) && randomfloat(1) <= 0.2 ){
@@ -655,7 +655,7 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		sMeansOfDeath = "MOD_HEAD_SHOT";
 	
 	if(sMeansOfDeath == "MOD_HEAD_SHOT")
-		attacker.headshotKills++;
+		attacker.stats["headshotKills"]++;
 
 	if (level.dvar["zom_orbituary"])
 		obituary(self, attacker, sWeapon, sMeansOfDeath);
@@ -667,8 +667,8 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	{
 		attacker.kills++;
 		
-		if( isDefined( attacker.killedZombieTypes[self.type] ) )
-			attacker.killedZombieTypes[self.type]++;
+		if( isDefined( attacker.stats.killedZombieTypes[self.type] ) )
+			attacker.stats.killedZombieTypes[self.type]++;
 			
 		attacker thread scripts\players\_rank::giveRankXP("kill");
 		attacker thread scripts\players\_spree::checkSpree();
@@ -685,13 +685,13 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		
 		/* STATS MONITOR */
 		if(isDefined(eInflictor.isTurret))
-			attacker.turretKills++;
+			attacker.stats["turretKills"]++;
 			
 		if( scripts\players\_weapons::isExplosive(sWeapon) && sMeansOfDeath != "MOD_MELEE" && !attacker.isDown)
-			attacker.explosiveKills++;
+			attacker.stats["explosiveKills"]++;
 			
 		if(sMeansOfDeath == "MOD_MELEE")
-			attacker.knifeKills++;
+			attacker.stats["knifeKills"]++;
 			
 		if (attacker.curClass=="scout" && sMeansOfDeath == "MOD_HEAD_SHOT" && !attacker.isDown) {
 				attacker scripts\players\_abilities::rechargeSpecial(10);

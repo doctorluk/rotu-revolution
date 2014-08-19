@@ -1238,8 +1238,10 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 				self thread nextBossStatus();
 				return 1;
 			}
-			eAttacker.damageDealtToBoss += iDamage;
+			
+			eAttacker.stats["damageDealtToBoss"] += iDamage;
 			return 0;
+			
 		default:
 		return 1;
 	}

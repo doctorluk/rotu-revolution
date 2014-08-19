@@ -218,7 +218,7 @@ Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon,
 	iPrintln( self.name + " ^7is down!" );
 	self.deaths ++;
 	self.isAlive = false;
-	self.lastDowntime = getTime();
+	self.stats["lastDowntime"] = getTime();
 	self setStatusIcon("icon_down");
 	
 	self removeTimers();
@@ -476,55 +476,55 @@ getBestPlayer(type, returns){
 				}
 				break;
 			case "downtime":
-				if(level.players[i].downtime > amount && level.players[i].downtime > 1000){
+				if(level.players[i].stats["downtime"] > amount && level.players[i].stats["downtime"] > 1000){
 					player = level.players[i];
-					amount = level.players[i].downtime;
+					amount = level.players[i].stats["downtime"];
 				}
 				break;
 			case "heals":
-				if(level.players[i].healsGiven > amount){
+				if(level.players[i].stats["healsGiven"] > amount){
 					player = level.players[i];
-					amount = level.players[i].healsGiven;
+					amount = level.players[i].stats["healsGiven"];
 				}
 				break;
 			case "ammo":
-				if(level.players[i].ammoGiven > amount){
+				if(level.players[i].stats["ammoGiven"] > amount){
 					player = level.players[i];
-					amount = level.players[i].ammoGiven;
+					amount = level.players[i].stats["ammoGiven"];
 				}
 				break;
 			case "timeplayed":
-				if(level.players[i].timeplayed > amount){
+				if(level.players[i].stats["timeplayed"] > amount){
 					player = level.players[i];
 					// Workaround for server-initiate delay
-					if(level.players[i].timeplayed > (level.gameEndTime - level.startTime) )
+					if(level.players[i].stats["timeplayed"] > (level.gameEndTime - level.startTime) )
 						amount = level.gameEndTime - level.startTime;
 					else
-						amount = level.players[i].timeplayed;
+						amount = level.players[i].stats["timeplayed"];
 				}
 				break;
 			case "damagedealt":
-				if(level.players[i].damagedealt > amount){
+				if(level.players[i].stats["damageDealt"] > amount){
 					player = level.players[i];
-					amount = level.players[i].damagedealt;
+					amount = level.players[i].stats["damageDealt"];
 				}
 				break;
 			case "damagedealtToBoss":
-				if(level.players[i].damagedealtToBoss > amount){
+				if(level.players[i].stats["damageDealtToBoss"] > amount){
 					player = level.players[i];
-					amount = level.players[i].damagedealtToBoss;
+					amount = level.players[i].stats["damageDealtToBoss"];
 				}
 				break;
 			case "turretkills":
-				if(level.players[i].turretKills > amount){
+				if(level.players[i].stats["turretKills"] > amount){
 					player = level.players[i];
-					amount = level.players[i].turretKills;
+					amount = level.players[i].stats["turretKills"];
 				}
 				break;
 			case "upgradepointsspent":
-				if(level.players[i].upgradepointsspent > amount){
+				if(level.players[i].stats["upgradepointsSpent"] > amount){
 					player = level.players[i];
-					amount = level.players[i].upgradepointsspent;
+					amount = level.players[i].stats["upgradepointsSpent"];
 				}
 				break;
 			case "upgradepoints":
@@ -534,15 +534,15 @@ getBestPlayer(type, returns){
 				}
 				break;
 			case "explosivekills":
-				if(level.players[i].explosiveKills > amount){
+				if(level.players[i].stats["explosiveKills"] > amount){
 					player = level.players[i];
-					amount = level.players[i].explosivekills;
+					amount = level.players[i].stats["explosiveKills"];
 				}
 				break;
 			case "knifekills":
-				if(level.players[i].knifeKills > amount){
+				if(level.players[i].stats["knifeKills"] > amount){
 					player = level.players[i];
-					amount = level.players[i].knifeKills;
+					amount = level.players[i].stats["knifeKills"];
 				}
 				break;
 			case "survivor":
@@ -552,33 +552,33 @@ getBestPlayer(type, returns){
 				}
 				break;
 			case "zombiefied":
-				if(level.players[i].timesZombie > amount){
+				if(level.players[i].stats["timesZombie"] > amount){
 					player = level.players[i];
-					amount2 = level.players[i].timesZombie;
+					amount2 = level.players[i].stats["timesZombie"];
 				}
 				break;
 			case "ignitions":
-				if(level.players[i].ignitions > amount){
+				if(level.players[i].stats["ignitions"] > amount){
 					player = level.players[i];
-					amount2 = level.players[i].ignitions;
+					amount2 = level.players[i].stats["ignitions"];
 				}
 				break;
 			case "poisons":
-				if(level.players[i].poisons > amount){
+				if(level.players[i].stats["poisons"] > amount){
 					player = level.players[i];
-					amount2 = level.players[i].poisons;
+					amount2 = level.players[i].stats["poisons"];
 				}
 				break;
 			case "headshots":
-				if(level.players[i].headshotKills > amount){
+				if(level.players[i].stats["headshotKills"] > amount){
 					player = level.players[i];
-					amount2 = level.players[i].headshotKills;
+					amount2 = level.players[i].stats["headshotKills"];
 				}
 				break;
 			case "barriers":
-				if(level.players[i].barriersRestored > amount){
+				if(level.players[i].stats["barriersRestored"] > amount){
 					player = level.players[i];
-					amount2 = level.players[i].barriersRestored;
+					amount2 = level.players[i].stats["barriersRestored"];
 				}
 				break;
 			case "firstminigun":
@@ -875,41 +875,45 @@ spawnPlayer(forceSpawn)
 	self.isPlayer = true;
 	if(!self.hasPlayed){ // Initiate first time stats
 		self.hasPlayed = true;
-		self.playtimeStart = getTime() - 5500; // Server always takes 5.5 seconds time until fully initialized
-		self.timeplayed = 0;
-		self.revives = 0;
-		self.lastDowntime = 0;
-		self.downtime = 0;
-		self.damagedealt = 0;
-		self.turretKills = 0;
-		self.explosiveKills = 0;
-		self.knifeKills = 0;
-		self.damagedealtToBoss = 0;
-		self.healsGiven = 0;
-		self.ammoGiven = 0;
-		self.ignitions = 0;
-		self.poisons = 0;
-		self.upgradepointsspent = 0;
-		self.upgradepointsReceived = self.points;
-		self.timesZombie = 0;
-		self.headshotKills = 0;
-		self.barriersRestored = 0;
+		self.stats = [];
+		self.stats["playtimeStart"] = getTime() - 5500; // Server always takes 5.5 seconds time until fully initialized
+		self.stats["timeplayed"] = 0;
+		self.stats["revives"] = 0;
+		self.stats["lastDowntime"] = 0;
+		self.stats["downtime"] = 0;
+		self.stats["damageDealt"] = 0;
+		self.stats["turretKills"] = 0;
+		self.stats["explosiveKills"] = 0;
+		self.stats["knifeKills"] = 0;
+		self.stats["damageDealtToBoss"] = 0;
+		self.stats["healsGiven"] = 0;
+		self.stats["ammoGiven"] = 0;
+		self.stats["ignitions"] = 0;
+		self.stats["poisons"] = 0;
+		self.stats["upgradepointsSpent"] = 0;
+		self.stats["upgradepointsReceived"] = self.points;
+		self.stats["timesZombie"] = 0;
+		self.stats["headshotKills"] = 0;
+		self.stats["barriersRestored"] = 0;
+		
+		self.stats.killedZombieTypes = [];
+		self.stats.killedZombieTypes["zombie"] = 0;
+		self.stats.killedZombieTypes["dog"] = 0;
+		self.stats.killedZombieTypes["tank"] = 0;
+		self.stats.killedZombieTypes["burning"]	= 0;
+		self.stats.killedZombieTypes["toxic"] 	= 0;
+		self.stats.killedZombieTypes["napalm"] 	= 0;
+		self.stats.killedZombieTypes["helldog"] = 0;
+		self.stats.killedZombieTypes["halfboss"] = 0;
+		
 		self.upgradeHudPoints = 0;
 		
-		self.killedZombieTypes = [];
-		self.killedZombieTypes["zombie"] 	= 0;
-		self.killedZombieTypes["dog"] 		= 0;
-		self.killedZombieTypes["tank"] 		= 0;
-		self.killedZombieTypes["burning"] 	= 0;
-		self.killedZombieTypes["toxic"] 	= 0;
-		self.killedZombieTypes["napalm"] 	= 0;
-		self.killedZombieTypes["helldog"] 	= 0;
-		self.killedZombieTypes["halfboss"] 	= 0;
+		
 		// self.poisonKills = 0;
 		// self.incendiaryKills = 0;
 	}
 	else
-		self.playtimeStart = getTime() - 5500;
+		self.stats["playtimeStart"] = getTime() - 5500;
 	self giveDelayedUpgradepoints();
 	self.spawnProtectionTime = getTime();
 	self.lastBossHit = undefined;
@@ -1181,10 +1185,10 @@ incUpgradePoints(inc)
 	//iprintlnbold(self.persData.points);
 	if (inc > 0){
 		self.score += inc;
-		self.upgradepointsReceived += inc;
+		self.stats["upgradepointsReceived"] += inc;
 	}
 	if(inc < 0)
-		self.upgradepointsspent += (inc * -1);
+		self.stats["upgradepointsSpent"] += (inc * -1);
 	self setclientdvar("ui_upgradetext", "Upgrade Points: " + int(self.points) );
 	thread upgradeHud(inc);
 }
@@ -1208,7 +1212,7 @@ getTotalUpgradePoints(){
 	for(i = 0; i < level.players.size; i++){
 		player = level.players[i];
 		if(player.isActive)
-			totalpoints += player.upgradepointsReceived;
+			totalpoints += player.stats["upgradepointsReceived"];
 	}
 	return totalpoints;
 }
@@ -1307,7 +1311,7 @@ joinSpectator()
 		
 		// new time = new time + (currentTime - timeAtWhichWeStarted)
 		if(self.hasPlayed)
-			self.timeplayed += getTime() - self.playtimeStart;
+			self.stats["timeplayed"] += getTime() - self.stats["playtimeStart"];
 		spawnSpectator(origin, angles);
 	}
 	if(self.hasPlayed)
@@ -1419,7 +1423,7 @@ revive(by)
 	
 	// RELOADING PLAYER!
 	self setDown(false);
-	self.downtime += getTime() - self.lastDowntime;
+	self.stats["downtime"] += getTime() - self.stats["lastDowntime"];
 	level scripts\players\_usables::removeUsable(self);
 	self.isTargetable = true;
 	self notify("revived");
@@ -1456,7 +1460,7 @@ revive(by)
 		self.spawnProtectionTime = getTime();
 		if( isReallyPlaying(by) && by.curClass == "medic" )
 			by scripts\players\_abilities::rechargeSpecial(8);
-		by.revives++;
+		by.stats["revives"]++;
 	}
 	wait .05;
 	self switchtoweapon(self.lastStandWeapon);
