@@ -63,7 +63,7 @@ REFERENCE           HEALTH
 LANG_ENGLISH        "Zombie health:"
 
 REFERENCE			AVAILABLE_SKILLPOINTS
-LANG_ENGLISH		"Skillpoints Available: &&1"
+LANG_ENGLISH		"You have &&1 Skillpoints. [{mp_QuickMesage}] + 1 to open Skill Menu"
 
 REFERENCE           DIFFICULTY
 LANG_ENGLISH        "Difficulty:"
@@ -150,16 +150,16 @@ REFERENCE           FINALWAVEIN
 LANG_ENGLISH        "PREPARE FOR THE GREAT FINALE:"
 
 REFERENCE           NEWWAVE0
-LANG_ENGLISH        "Be careful: &&1 Zombies are coming!"
+LANG_ENGLISH        "Be careful: &&1 Zombies are approaching!"
 
 REFERENCE           NEWWAVE1
 LANG_ENGLISH        "Incoming wave! &&1 Zombies are in it!"
 
 REFERENCE           NEWWAVE2
-LANG_ENGLISH        "A new wave of &&1 Zombies incoming!"
+LANG_ENGLISH        "A new wave of &&1 Zombies is incoming!"
 
 REFERENCE           SCARYWAVE
-LANG_ENGLISH        "Interferences detected! &&1 Zombies invading!"
+LANG_ENGLISH        "Systems jammed! &&1 Zombies are closing in!"
 
 REFERENCE           SCARYWAVE_AFTER0
 LANG_ENGLISH        "^1DEVICES REPORT MALFUNCTION"
