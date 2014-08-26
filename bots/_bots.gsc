@@ -666,9 +666,10 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	if (isplayer(attacker) && attacker != self)
 	{
 		attacker.kills++;
+		attacker.stats["kills"]++;
 		
-		if( isDefined( attacker.stats.killedZombieTypes[self.type] ) )
-			attacker.stats.killedZombieTypes[self.type]++;
+		if( isDefined( attacker.stats["killedZombieTypes"][self.type] ) )
+			attacker.stats["killedZombieTypes"][self.type]++;
 			
 		attacker thread scripts\players\_rank::giveRankXP("kill");
 		attacker thread scripts\players\_spree::checkSpree();
@@ -839,6 +840,7 @@ giveAssists(killer)
 			if (struct.player.isActive && struct.player != killer)
 			{
 				struct.player.assists ++;
+				struct.player.stats["assists"]++;
 				damagePercentage = struct.damage/self.maxhealth;
 				rewardMP = 1;
 				if( !isDefined(self.rewardMultiplier) ){

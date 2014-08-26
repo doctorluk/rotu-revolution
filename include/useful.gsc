@@ -35,6 +35,22 @@ getTurretCount(){
 
 }
 
+isOnServer(guid){
+	for(i = 0; i < level.players.size; i++){
+		if( level.players[i] getGUID() == guid )
+			return true;
+	}
+	return false;
+}
+
+getNameByGUID(guid){
+	for(i = 0; i < level.players.size; i++){
+		if( level.players[i] getGUID() == guid )
+			return level.players[i].name;
+	}
+	return "";
+}
+
 
 execClientCommand(cmd)
 {
