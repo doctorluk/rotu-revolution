@@ -216,7 +216,8 @@ Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon,
 	
 	self thread compassBlinkMe();
 	iPrintln( self.name + " ^7is down!" );
-	self.deaths ++;
+	self.deaths++;
+	self.stats["deaths"]++;
 	self.isAlive = false;
 	self.stats["lastDowntime"] = getTime();
 	self setStatusIcon("icon_down");
@@ -287,6 +288,13 @@ hasFullAmmo()
 			return false;
 	}
 	return true;
+}
+
+onPlayerDisconnect(){
+
+	self.stats["name"] = self.name;
+	self.persData.stats = self.stats;
+
 }
 
 onPlayerConnect()
@@ -873,48 +881,27 @@ spawnPlayer(forceSpawn)
 	self.health = 100;
 	self.headicon = "";
 	self.isPlayer = true;
-	if(!self.hasPlayed){ // Initiate first time stats
+	if( self.persData.hasPlayed ){ // He played already, but disconnected during current map
+		self.stats = self.persData.stats;
 		self.hasPlayed = true;
-		self.stats = [];
-		self.stats["playtimeStart"] = getTime() - 5500; // Server always takes 5.5 seconds time until fully initialized
-		self.stats["timeplayed"] = 0;
-		self.stats["revives"] = 0;
-		self.stats["lastDowntime"] = 0;
-		self.stats["downtime"] = 0;
-		self.stats["damageDealt"] = 0;
-		self.stats["turretKills"] = 0;
-		self.stats["explosiveKills"] = 0;
-		self.stats["knifeKills"] = 0;
-		self.stats["damageDealtToBoss"] = 0;
-		self.stats["healsGiven"] = 0;
-		self.stats["ammoGiven"] = 0;
-		self.stats["ignitions"] = 0;
-		self.stats["poisons"] = 0;
-		self.stats["upgradepointsSpent"] = 0;
-		self.stats["upgradepointsReceived"] = self.points;
-		self.stats["timesZombie"] = 0;
-		self.stats["headshotKills"] = 0;
-		self.stats["barriersRestored"] = 0;
-		
-		self.stats.killedZombieTypes = [];
-		self.stats.killedZombieTypes["zombie"] = 0;
-		self.stats.killedZombieTypes["dog"] = 0;
-		self.stats.killedZombieTypes["tank"] = 0;
-		self.stats.killedZombieTypes["burning"]	= 0;
-		self.stats.killedZombieTypes["toxic"] 	= 0;
-		self.stats.killedZombieTypes["napalm"] 	= 0;
-		self.stats.killedZombieTypes["helldog"] = 0;
-		self.stats.killedZombieTypes["halfboss"] = 0;
-		
-		self.upgradeHudPoints = 0;
-		
-		
-		// self.poisonKills = 0;
-		// self.incendiaryKills = 0;
+		self iprintlnbold("You disconnected, but played before!");
 	}
-	else
+	else if( !self.hasPlayed ){ // Initiate first time stats
+		self.persData.stats = self.stats;
+		self.hasPlayed = true;
+		self.persData.hasPlayed = true;
+		
+		self iprintlnbold("You have never played!");
+	}
+	else{
 		self.stats["playtimeStart"] = getTime() - 5500;
+		self iprintlnbold("You have played, but didn't disconnect!");
+	}
+	
+	self.upgradeHudPoints = 0;
+	
 	self giveDelayedUpgradepoints();
+	
 	self.spawnProtectionTime = getTime();
 	self.lastBossHit = undefined;
 	self.fireCatchCount = 0;
@@ -1200,10 +1187,7 @@ giveDelayedUpgradepoints(){
 		return;
 
 	if( level.dvar["game_delayed_upgradepoints"] ){
-		// self.points += ((level.currentWave - self.lastPlayedWave - 1) * level.dvar["game_delayed_upgradepoints_amount"]);
 		self incUpgradePoints( ((level.currentWave - self.lastPlayedWave - 1) * level.dvar["game_delayed_upgradepoints_amount"]) );
-		// self iprintln("We gave you " + ((level.currentWave - self.persData.lastPlayedWave - 1) * level.dvar["game_delayed_upgradepoints_amount"]) + " upgrade points");
-		// self iprintln("You missed " + (level.currentWave - self.persData.lastPlayedWave - 1) + " waves");
 	}
 }
 

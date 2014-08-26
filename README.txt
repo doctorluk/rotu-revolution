@@ -16,7 +16,7 @@ Author: Luk
 Website: http://puffyforum.com
 Version: 0.6
 Development state: ALPHA
-Last Update: 03.08.14 (dd.mm.yyyy, down with 'murica's mm/dd/yyyy!)
+Last Update: 22.08.14 (dd.mm.yyyy, down with 'murica's mm/dd/yyyy!)
 Changelog: http://puffyforum.com/index.php?page=Thread&threadID=35
 Contact:
 	Xfire: lukluk1992 | Web: http://puffyforum.com

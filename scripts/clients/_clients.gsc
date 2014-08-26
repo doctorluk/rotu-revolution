@@ -140,6 +140,8 @@ Callback_PlayerDisconnect()
 	// if( isReallyPlaying( self ) )
 		// self.persData.lastPlayedWave = level.currentWave;
 		
+	self scripts\players\_players::onPlayerDisconnect();
+		
 	if( isDefined( self.persData.lastPlayedWave ) && isAlive( self ) ){
 		// logPrint("Updated your lastPlayedWave, " + self.name + ", it is " + level.currentWave + "\n");
 		self.lastPlayedWave = level.currentWave;

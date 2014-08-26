@@ -1,5 +1,13 @@
 <?php
 /*
+Author: Luk
+Date: 22.08.2014
+Used for: Reign of the Undead - Revolution, a Call of Duty 4: Modern Warfare mod
+
+Requirements: RotU-Revolution 0.6, MySQL access and database, manuadminmod 0.12 beta (other version are untested)
+
+Feel absolutely free to modify this file to your liking!
+
 	ADD THIS TO YOUR config.cfg:
 [rotustats]
 mysqlserver = mysqlserver

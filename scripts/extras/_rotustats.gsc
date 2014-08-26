@@ -18,6 +18,8 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
+#include scripts\include\useful;
+
 saveGameStats(win){
 	if( !level.dvar["surv_rotu_stats"] )
 		return;
@@ -31,8 +33,8 @@ saveGameStats(win){
 	
 	printGameStats(win);
 	
-	for( i = 0; i < level.players.size; i++ )
-		level.players[i] printPlayerStats();
+	for( i = 0; i < level.playersThatPlayed.size; i++ )
+		printPlayerStats(level.persPlayerData[ level.playersThatPlayed[i] ], level.playersThatPlayed[i]);
 		
 	logPrint("ROTU_STATS_DONE;\n");
 }
@@ -48,34 +50,34 @@ printGameStats(win){
 	);
 }
 
-printPlayerStats(){
+printPlayerStats(struct, guid){
 
-	if( isDefined( self ) && !self.hasPlayed )
-		return;
-
-	kills 				= int(self.kills);
-	assists 			= int(self.assists);
-	deaths 				= int(self.deaths);
-	downtime 			= int(self.stats["downtime"]);
-	revives				= int(self.stats["revives"]);
-	healsGiven 			= int(self.stats["healsGiven"]);
-	ammoGiven 			= int(self.stats["ammoGiven"]);
-	damagedealt 		= int(self.stats["damageDealt"]);
-	damagedealtToBoss 	= int(self.stats["damageDealtToBoss"]);
-	turretKills 		= int(self.stats["turretKills"]);
-	points 				= int(self.points);
-	upgradepointsspent 	= int(self.stats["upgradepointsSpent"]);
-	explosivekills 		= int(self.stats["explosiveKills"]);
-	knifeKills 			= int(self.stats["knifeKills"]);
-	timesZombie 		= int(self.stats["timesZombie"]);
-	ignitions 			= int(self.stats["ignitions"]);
-	poisons 			= int(self.stats["poisons"]);
-	headshotKills 		= int(self.stats["headshotKills"]);
-	barriersRestored 	= int(self.stats["barriersRestored"]);
+	kills 				= int(struct.stats["kills"]);
+	assists 			= int(struct.stats["assists"]);
+	deaths 				= int(struct.stats["deaths"]);
+	downtime 			= int(struct.stats["downtime"]);
+	revives				= int(struct.stats["revives"]);
+	healsGiven 			= int(struct.stats["healsGiven"]);
+	ammoGiven 			= int(struct.stats["ammoGiven"]);
+	damagedealt 		= int(struct.stats["damageDealt"]);
+	damagedealtToBoss 	= int(struct.stats["damageDealtToBoss"]);
+	turretKills 		= int(struct.stats["turretKills"]);
+	points 				= int(struct.points);
+	upgradepointsspent 	= int(struct.stats["upgradepointsSpent"]);
+	explosivekills 		= int(struct.stats["explosiveKills"]);
+	knifeKills 			= int(struct.stats["knifeKills"]);
+	timesZombie 		= int(struct.stats["timesZombie"]);
+	ignitions 			= int(struct.stats["ignitions"]);
+	poisons 			= int(struct.stats["poisons"]);
+	headshotKills 		= int(struct.stats["headshotKills"]);
+	barriersRestored 	= int(struct.stats["barriersRestored"]);
 	
-	role 				= self.class;
-	name 				= self.name;
-	guid 				= self getGuid();
+	role 				= struct.class;
+	
+	if( isOnServer(guid) )
+		name 			= getNameByGUID(guid);
+	else
+		name			= struct.stats["name"];
 	
 	logPrint("ROTU_STATS_PLAYER;"
 	+ guid + ";"

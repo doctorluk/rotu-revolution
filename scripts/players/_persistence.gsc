@@ -23,6 +23,7 @@ init()
 	level.persistentDataInfo = [];
 	
 	level.persPlayerData = [];
+	level.playersThatPlayed = [];
 
 	level thread onPlayerConnect();
 }
@@ -41,9 +42,14 @@ onPlayerConnect()
 
 restoreData() {
 	struct = level.persPlayerData[self.guid];
-	if (!isdefined(struct)) {
+	
+	if ( !isDefined( struct ) ){
+	
 		struct = spawnstruct();
+		
 		level.persPlayerData[self.guid] = struct;
+		level.playersThatPlayed[level.playersThatPlayed.size] = self.guid; // Save every player indexed by numbers into this array, so we get all information at the end of the game
+		
 		struct.unlock["primary"] = 0;
 		struct.unlock["secondary"] = 0;
 		struct.unlock["extra"] = 0;
@@ -62,6 +68,47 @@ restoreData() {
 		struct.lastPlayedWave = 0;
 		struct.specialRecharge = 100;
 		struct.class = "";
+		struct.hasPlayed = false;
+		
+		self.stats = [];
+		
+		self.stats["name"] = self.name;
+		self.stats["kills"] = 0;
+		self.stats["deaths"] = 0;
+		self.stats["assists"] = 0;
+		
+		self.stats["playtimeStart"] = getTime() - 5500; // Server always takes 5.5 seconds time until fully initialized
+		self.stats["timeplayed"] = 0;
+		self.stats["revives"] = 0;
+		self.stats["lastDowntime"] = 0;
+		self.stats["downtime"] = 0;
+		self.stats["damageDealt"] = 0;
+		self.stats["turretKills"] = 0;
+		self.stats["explosiveKills"] = 0;
+		self.stats["knifeKills"] = 0;
+		self.stats["damageDealtToBoss"] = 0;
+		self.stats["healsGiven"] = 0;
+		self.stats["ammoGiven"] = 0;
+		self.stats["ignitions"] = 0;
+		self.stats["poisons"] = 0;
+		self.stats["upgradepointsSpent"] = 0;
+		self.stats["upgradepointsReceived"] = level.dvar["game_startpoints"];
+		self.stats["timesZombie"] = 0;
+		self.stats["headshotKills"] = 0;
+		self.stats["barriersRestored"] = 0;
+		
+		self.stats["killedZombieTypes"] = [];
+		self.stats["killedZombieTypes"]["zombie"] = 0;
+		self.stats["killedZombieTypes"]["dog"] = 0;
+		self.stats["killedZombieTypes"]["tank"] = 0;
+		self.stats["killedZombieTypes"]["burning"]	= 0;
+		self.stats["killedZombieTypes"]["toxic"] 	= 0;
+		self.stats["killedZombieTypes"]["napalm"] 	= 0;
+		self.stats["killedZombieTypes"]["helldog"] = 0;
+		self.stats["killedZombieTypes"]["halfboss"] = 0;
+		
+		struct.stats = self.stats;
+		
 	}
 	self.persData = struct;
 	
@@ -69,6 +116,9 @@ restoreData() {
 	self.unlock["primary"] = struct.unlock["primary"];
 	self.unlock["secondary"] = struct.unlock["secondary"];
 	self.unlock["extra"] = struct.unlock["extra"];
+	self.kills = struct.stats["kills"];
+	self.deaths = struct.stats["deaths"];
+	self.assists = struct.stats["assists"];
 	
 	self.lastPlayedWave = struct.lastPlayedWave;
 	self.specialRecharge = struct.specialRecharge;
