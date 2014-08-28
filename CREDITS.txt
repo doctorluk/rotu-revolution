@@ -65,6 +65,9 @@ Bipo, Etheross, Brax, Mr-X, Hacker22, Red Beret, H0ly
 ======== > Samuel:
 - Explaining that weapon sounds (wpnai, wpnplyr) are inside the mod.ff and don't have to be added into an .iwd
 
+======== > LEGX|Jeffskye :
+- Suggesting the possibility to look around while reviving and restoring barricades and providing a sample script
+
 ======== > Infinity Ward/Treyarch:
 - Providing the necessary tools to modify the game
 - Providing software that enables everyone to host their own gameservers

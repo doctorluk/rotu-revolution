@@ -20,6 +20,11 @@
 
 // WAYPOINTS AND PATHFINDING
 #include scripts\include\data;
+
+float(number){
+	return atof(number);
+}
+
 loadWaypoints()
 {
 	level.Wp = [];
@@ -96,7 +101,7 @@ AStarSearch( startWp, goalWp )
 	listSize = 0;
 	s = spawnStruct();
 	s.g = 0; //start node
-	s.h = distance( level.waypoints[startWp].origin, level.waypoints[goalWp].origin );
+	s.h = distance( level.wp[startWp].origin, level.wp[goalWp].origin );
 	s.f = s.g + s.h;
 	s.wpIdx = startWp;
 	s.parent = spawnStruct();
@@ -147,7 +152,7 @@ AStarSearch( startWp, goalWp )
 				parent = x.parent;
 				if( parent.parent.wpIdx == -1 )
 					return x.wpIdx;
-				// line(level.waypoints[x.wpIdx].origin, level.waypoints[parent.wpIdx].origin, (0,1,0));
+				// line(level.wp[x.wpIdx].origin, level.wp[parent.wpIdx].origin, (0,1,0));
 				x = parent;
 			}
 
@@ -155,19 +160,19 @@ AStarSearch( startWp, goalWp )
 		}
 
 		//for each successor nc of n
-		for( i=0; i<level.waypoints[n.wpIdx].childCount; i++ )
+		for( i=0; i<level.wp[n.wpIdx].childCount; i++ )
 		{
 			//newg = n.g + cost(n,nc)
-			newg = n.g + distance( level.waypoints[n.wpIdx].origin, level.waypoints[level.waypoints[n.wpIdx].children[i]].origin );
+			newg = n.g + distance( level.wp[n.wpIdx].origin, level.wp[level.wp[n.wpIdx].children[i]].origin );
       
 			//if nc is in Open or Closed, and nc.g <= newg then skip
-			if( PQExists(pQOpen, level.waypoints[n.wpIdx].children[i], pQSize) )
+			if( PQExists(pQOpen, level.wp[n.wpIdx].children[i], pQSize) )
 			{
 				//find nc in open
 				nc = spawnStruct();
 				for( p=0; p<pQSize; p++ )
 				{
-					if( pQOpen[p].wpIdx == level.waypoints[n.wpIdx].children[i] )
+					if( pQOpen[p].wpIdx == level.wp[n.wpIdx].children[i] )
 					{
 						nc = pQOpen[p];
 						break;
@@ -179,13 +184,13 @@ AStarSearch( startWp, goalWp )
 					continue;
 				}
 			}
-			else if( PQExists(closedList, level.waypoints[n.wpIdx].children[i], listSize) )
+			else if( PQExists(closedList, level.wp[n.wpIdx].children[i], listSize) )
 			{
 				//find nc in closed list
 				nc = spawnStruct();
 				for( p=0; p<listSize; p++ )
 				{
-					if( closedList[p].wpIdx == level.waypoints[n.wpIdx].children[i] )
+					if( closedList[p].wpIdx == level.wp[n.wpIdx].children[i] )
 					{
 						nc = closedList[p];
 						break;
@@ -201,9 +206,9 @@ AStarSearch( startWp, goalWp )
 			nc = spawnStruct();
 			nc.parent = n;
 			nc.g = newg;
-			nc.h = distance( level.waypoints[level.waypoints[n.wpIdx].children[i]].origin, level.waypoints[goalWp].origin );
+			nc.h = distance( level.wp[level.wp[n.wpIdx].children[i]].origin, level.wp[goalWp].origin );
 			nc.f = nc.g + nc.h;
-			nc.wpIdx = level.waypoints[n.wpIdx].children[i];
+			nc.wpIdx = level.wp[n.wpIdx].children[i];
 			
 			//if nc is in Closed,
 			if( PQExists(closedList, nc.wpIdx, listSize) )

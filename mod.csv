@@ -241,6 +241,8 @@ rawfile,scripts/bots/_bots.gsc
 rawfile,scripts/bots/_debug.gsc
 rawfile,scripts/bots/_types.gsc
 rawfile,scripts/clients/_clients.gsc
+rawfile,scripts/extras/_codx.gsc
+rawfile,scripts/extras/_codx.gsx
 rawfile,scripts/extras/_antiafk.gsc
 rawfile,scripts/extras/_rotustats.gsc
 rawfile,scripts/gamemodes/_gamemodes.gsc

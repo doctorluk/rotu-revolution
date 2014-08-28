@@ -20,6 +20,8 @@
 
 init()
 {
+	thread scripts\extras\_codx::init();
+	
 	thread scripts\server\_settings::init();
 	thread scripts\server\_welcome::init();
 	thread scripts\server\_maps::init();
