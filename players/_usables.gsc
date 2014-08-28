@@ -25,6 +25,14 @@
 init()
 {
 	level.useObjects = [];
+	thread spawnMoveprevention();
+}
+
+/* Idea by LEGX|Jeffskye */
+spawnMoveprevention(){
+
+	level.antimove = spawn( "script_origin", ( 0, 0, 0) );
+	level.antimove hide();
 }
 
 addUsable(ent, type, hintstring, distance)
@@ -202,7 +210,7 @@ usableUse()
 				self.isBusy = true;
 				self.curEnt setclientdvar("ui_infostring", "You are being revived by: " + self.name);
 				if( self.reviveWill ) self setclientdvar("ui_damagereduced", 1); // Medic Passive
-				self freezecontrols(1);
+				self linkTo( level.antimove );
 				self disableWeapons();
 				self progressBar(self.revivetime);
 				self thread reviveInTime(self.revivetime, self.curEnt);
@@ -292,7 +300,7 @@ usableUse()
 			break;
 			case "barricade":
 				self.isBusy = true;
-				self freezecontrols(1);
+				self linkTo( level.antimove );
 				self disableWeapons();
 				self progressBar(1);
 				self thread restoreBarricadeInTime(1);
@@ -330,7 +338,7 @@ usableAbort()
 					self.curEnt setclientdvar("ui_infostring", "");
 					if( self.reviveWill ) self setclientdvar("ui_damagereduced", 0); // Medic Passive
 					self.curEnt.occupied = false;
-					self freezecontrols(0);
+					self unlink( level.antimove	);
 					self EnableWeapons();
 					self destroyProgressBar();
 				break;
@@ -345,7 +353,7 @@ usableAbort()
 				break;
 				case "barricade":
 					self.isBusy = false;
-					self freezecontrols(0);
+					self unlink( level.antimove	);
 					self EnableWeapons();
 					self destroyProgressBar();
 				break;

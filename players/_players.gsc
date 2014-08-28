@@ -96,85 +96,6 @@ setDown(isDown) {
 
 testloop(){
 	self endon("disconnect");
-	// self iprintlnbold(self.pers["rankxp"]);
-	// wait 5;
-	// thread [[level.callbackLastManStanding]]();
-	// while( self.name == "Luk" ){
-	// while( 1 ){
-		
-		// self thread specialRechargeFeedback();
-		// wait 0.15;
-		// self thread healthFeedback();
-	
-	// }
-	// self FinishPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime );
-	
-	// wait 2;
-	// scripts\bots\_bots::spawnZombie("boss", self, scripts\bots\_bots::getAvailableBot());
-	// self setclientdvar("ui_hud_hardcore", 1);
-	// self setclientdvar("cg_thirdperson", 1);
-	// if(!isDefined(level.test1))
-		// level.test1 = 0;
-	// if(level.test1 == 1)
-		// self thread scripts\players\_infection::goInfected();
-	// level.test1++;
-	// while(1){
-		// wait 1;
-		// self iprintln("Winkel hoch: " + Asin(anglesToUp(self getPlayerAngles())[2]));
-	// }
-	// self thread scripts\players\_infection::goInfected();
-	// if(level.luk == 0){
-		// level.luk++;
-	// }
-	// else
-		// self incUpgradePoints(-1 * self.points);
-	// visionSetNaked("last_chance_1", 0.5);
-	// wait 2;
-	// visionSetNaked(level.vision, 2);
-	// while(1){
-		// self waittill("weapon_fired");
-		// self scripts\server\_common::bounce(vectorNormalize(anglesToForward(self getPlayerAngles())), 500);
-	// }
-	// self setmodel("bo1_c_rus_nikolai_body");
-	// rotate = 0;
-	// while(1){
-		// self setclientdvars("cg_thirdpersonangle", rotate, "cg_thirdperson", 1, "cg_thirdpersonrange", 100);
-		// rotate += 10;
-		// if(rotate > 360)
-			// rotate = 0;
-		// wait 0.5;
-	// }
-	// self setclientdvar("cg_thirdperson", 1);
-	// self giveweapon("deserteagle_mp");
-	// self setclientdvar("cg_thirdperson", 1);
-	// while(1){
-		// self waittill("weapon_fired");
-		// wait 5;
-		// oldhp = self.health;
-		// self.health += 5000000;
-		// angle = self getPlayerAngles();
-		// self finishPlayerDamage(self, self, 500, 0, "MOD_PROJECTILE", "rpg_mp", vectorNormalize(anglesToForward(angle)), vectorNormalize(anglesToForward(angle)), "none", 0);
-		// self.health = oldhp;
-	// }
-	// loops = 0;
-	// while(loops <= 5){
-		// wait 2;
-		// points = 5000000 + randomint(500000);
-		// self incUpgradePoints(points);
-		// loops++;
-	// }
-	// testhud = NewClientHudElem ( self );
-	// testhud.horzalign = "fullscreen";
-	// testhud.vertalign = "fullscreen";
-	// testhud.sort = -3;
-	// testhud.alpha = 1;
-	// testhud setShader( "overlay_armored", 640, 480 );
-	// while(1){
-		// self setclientdvar("ui_hintstring", "@ZOMBIE_NEWWAVE" );
-		// wait 5;
-	// }
-	// self.hinttext setText(&"USE_UPGRADEWEAPON");
-	// self.hinttext.alpha = 0;
 }
 
 Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
@@ -884,18 +805,18 @@ spawnPlayer(forceSpawn)
 	if( self.persData.hasPlayed ){ // He played already, but disconnected during current map
 		self.stats = self.persData.stats;
 		self.hasPlayed = true;
-		self iprintlnbold("You disconnected, but played before!");
+		// self iprintlnbold("You disconnected, but played before!");
 	}
 	else if( !self.hasPlayed ){ // Initiate first time stats
 		self.persData.stats = self.stats;
 		self.hasPlayed = true;
 		self.persData.hasPlayed = true;
 		
-		self iprintlnbold("You have never played!");
+		// self iprintlnbold("You have never played!");
 	}
 	else{
 		self.stats["playtimeStart"] = getTime() - 5500;
-		self iprintlnbold("You have played, but didn't disconnect!");
+		// self iprintlnbold("You have played, but didn't disconnect!");
 	}
 	
 	self.upgradeHudPoints = 0;
