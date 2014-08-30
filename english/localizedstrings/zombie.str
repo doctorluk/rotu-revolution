@@ -63,7 +63,7 @@ REFERENCE           HEALTH
 LANG_ENGLISH        "Zombie health:"
 
 REFERENCE			AVAILABLE_SKILLPOINTS
-LANG_ENGLISH		"You have &&1 Skillpoints. [{mp_QuickMesage}] + 1 to open Skill Menu"
+LANG_ENGLISH		"You have &&1 Skillpoints. [{mp_QuickMessage}] + 1 to open Skill Menu"
 
 REFERENCE           DIFFICULTY
 LANG_ENGLISH        "Difficulty:"
