@@ -682,6 +682,10 @@ xmodel,bo1_c_zom_cosmo_spetznaz_body
 // material,bo2_mtl_c_zom_avagadro_guts
 // xmodel,bo2_c_zom_avagadro_fb
 
+// ## Invisible Hitbox model
+material,lambert1
+xmodel,player_sp_rig_empty
+
 // ## Gore-Splatter Effects
 material,mtl_fx_char_gib_chunks
 xmodel,fx_char_gib_chunk_fat

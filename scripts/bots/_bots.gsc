@@ -124,6 +124,8 @@ precache()
 	precachemodel("bo1_c_zom_cosmo_spetznaz_body"); // FIXED MAX. LOD DISTANCE
 	// precachemodel("bo1_c_zom_george_romero_zombiefied_fb");
 	precachemodel("zom_george_romero");
+	
+	precachemodel("player_sp_rig_empty");
 	// precachemodel("skeleton");
 	// precachemodel("bo2_c_zom_avagadro_fb");
 	
@@ -138,7 +140,6 @@ precache()
 	
 	precachemodel("zombie_wolf");
 	precachemodel("cyclops");
-	precachemodel("invisible_model");
 	
 	precachemodel("tag_origin");
 	
@@ -292,7 +293,7 @@ spawnPartner(spawnpoint, bot){
 	
 	bot detachall();
 	bot.head = "";
-	bot setmodel("invisible_model");
+	bot setmodel("player_sp_rig_empty");
 	
 	
 	bot freezeControls(true);
@@ -305,8 +306,6 @@ spawnPartner(spawnpoint, bot){
 	wait 0.05;
 	bot linkto(bot.parent.attachment);
 	bot setanim("stand");
-	bot.linkObj hide();
-	bot hide();
 	
 	bot thread rotateWithParent();
 }
