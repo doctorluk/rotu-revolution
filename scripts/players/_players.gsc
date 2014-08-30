@@ -68,6 +68,7 @@ precache()
 	level.medkitFX = loadfx("misc/medkit");
 	
 	precacheHeadIcon("hud_icon_lowhp");
+	precacheHeadIcon("hud_icon_developer");
 	precacheHeadIcon("hud_icon_low_ammo");
 
 	precacheStatusIcon( "icon_medic" );
@@ -365,7 +366,7 @@ hasLowAmmo(){
 
 	if( scripts\players\_weapons::canRestoreAmmo( self getCurrentWeapon() ) ){
 		max = self GetFractionMaxAmmo( self getCurrentWeapon() );
-		if(max <= 0.3) // If player has only 30% or less in his stock, return true, else false
+		if(max <= 0.3)
 			return true;
 	}
 	return false;
@@ -554,53 +555,47 @@ watchHPandAmmo()
 {
 	self endon("death");
 	self endon("disconnect");
-	while(1)
-	{
+	while( 1 ){
 		wait 0.5;
-		if(!self.infected)
+		if( !self.infected )
 		{
-			if(self.isDown)
-			{
-				if(self.headicon != "")
-					self.headicon = "";
+			if( self.isDown ){
+				if( self.headicon != self.overwriteHeadicon )
+					self.headicon = self.overwriteHeadicon;
 				continue;
 			}
-			if(self.health <= 40)
-			{
-				if(self.headicon == "" || self.headicon == "hud_icon_low_ammo")
+			if( self.health <= 40 ){
+				if( self.headicon == self.overwriteHeadicon || self.headicon == "hud_icon_low_ammo" )
 				{
 					self.headicon = "hud_icon_lowhp";
 					continue;
 				}
 
-				if(self.headicon != "hud_icon_low_ammo" && self hasLowAmmo())
+				if( self.headicon != "hud_icon_low_ammo" && self hasLowAmmo() )
 					self.headicon = "hud_icon_low_ammo";
 				else
-					self.headicon = "";
+					self.headicon = self.overwriteHeadicon;
 				continue;
 			}
-			else if(self.health <= 75)
-			{
-				if(self.headicon != "hud_icon_lowhp")
-				{
+			else if( self.health <= 75 ){
+				if( self.headicon != "hud_icon_lowhp" ){
 					self.headicon = "hud_icon_lowhp";
 					continue;
 				}
 
-				if(self.headicon != "hud_icon_low_ammo" && self hasLowAmmo())
+				if( self.headicon != "hud_icon_low_ammo" && self hasLowAmmo() )
 					self.headicon = "hud_icon_low_ammo";
 					
 				continue;
 			}
-			else if(self hasLowAmmo())
-			{
+			else if( self hasLowAmmo() ){
 				self.headicon = "hud_icon_low_ammo";
 				continue;
 			}
 			
 			// Will only get here if person doesn't need a headicon, if he has one, remove it
-			if (self.headicon != "")
-				self.headicon = "";
+			if ( self.headicon != self.overwriteHeadicon )
+				self.headicon = self.overwriteHeadicon;
 		}
 	}
 }
@@ -801,6 +796,9 @@ spawnPlayer(forceSpawn)
 	self.psoffsettime = 0;
 	self.health = 100;
 	self.headicon = "";
+	if( !isDefined( self.overwriteHeadicon ) )
+		self.overwriteHeadicon = "";
+		
 	self.isPlayer = true;
 	if( self.persData.hasPlayed ){ // He played already, but disconnected during current map
 		self.stats = self.persData.stats;

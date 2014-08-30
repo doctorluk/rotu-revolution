@@ -115,6 +115,7 @@ material,bx_teleporter_transparency
 
 material,hud_ammo
 material,hud_flamethrower_reticle
+material,hud_icon_developer
 material,hud_icon_ammobox
 material,hud_icon_crossbow
 material,hud_icon_crossbow_dpad
