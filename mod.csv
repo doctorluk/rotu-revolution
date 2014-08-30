@@ -682,16 +682,6 @@ xmodel,bo1_c_zom_cosmo_spetznaz_body
 // material,bo2_mtl_c_zom_avagadro_guts
 // xmodel,bo2_c_zom_avagadro_fb
 
-// ## Skeleton Model by Viking
-//material,mtl_skeleton
-//xmodel,skeleton
-
-// ## Invisible model (for use as 2nd damage hitbox for the boss)
-material,invisible
-material,invisible1
-material,invisible2
-xmodel,invisible_model
-
 // ## Gore-Splatter Effects
 material,mtl_fx_char_gib_chunks
 xmodel,fx_char_gib_chunk_fat
