@@ -1292,10 +1292,7 @@ dieDelay(){
 	self.child.damageoff = true;
 	wait 0.05;
 	if( isDefined( self.child ) ){
-		self.child setorigin( (0,0,-10000) );
 		self.child suicide();
-		self.child.linkObj show();
-		self.child show();
 		self.child.damageoff = undefined;
 		if( isDefined( self.attachment ) )
 			self.attachment delete();
