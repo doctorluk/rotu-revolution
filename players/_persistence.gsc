@@ -76,6 +76,7 @@ restoreData() {
 		self.stats["kills"] = 0;
 		self.stats["deaths"] = 0;
 		self.stats["assists"] = 0;
+		self.stats["score"] = 0;
 		
 		self.stats["playtimeStart"] = getTime() - 5500; // Server always takes 5.5 seconds time until fully initialized
 		self.stats["timeplayed"] = 0;
@@ -116,6 +117,7 @@ restoreData() {
 	self.unlock["primary"] = struct.unlock["primary"];
 	self.unlock["secondary"] = struct.unlock["secondary"];
 	self.unlock["extra"] = struct.unlock["extra"];
+	self.score = struct.stats["score"];
 	self.kills = struct.stats["kills"];
 	self.deaths = struct.stats["deaths"];
 	self.assists = struct.stats["assists"];

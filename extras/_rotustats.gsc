@@ -52,6 +52,8 @@ printGameStats(win){
 
 printPlayerStats(struct, guid){
 
+	if( !struct.hasPlayed )
+		return;
 	kills 				= int(struct.stats["kills"]);
 	assists 			= int(struct.stats["assists"]);
 	deaths 				= int(struct.stats["deaths"]);

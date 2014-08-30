@@ -555,6 +555,10 @@ watchHPandAmmo()
 {
 	self endon("death");
 	self endon("disconnect");
+	
+	if( !isDefined( self.overwriteHeadicon ) )
+		self.overwriteHeadicon = "";
+		
 	while( 1 ){
 		wait 0.5;
 		if( !self.infected )
@@ -796,25 +800,19 @@ spawnPlayer(forceSpawn)
 	self.psoffsettime = 0;
 	self.health = 100;
 	self.headicon = "";
-	if( !isDefined( self.overwriteHeadicon ) )
-		self.overwriteHeadicon = "";
 		
 	self.isPlayer = true;
 	if( self.persData.hasPlayed ){ // He played already, but disconnected during current map
 		self.stats = self.persData.stats;
 		self.hasPlayed = true;
-		// self iprintlnbold("You disconnected, but played before!");
 	}
 	else if( !self.hasPlayed ){ // Initiate first time stats
 		self.persData.stats = self.stats;
 		self.hasPlayed = true;
 		self.persData.hasPlayed = true;
-		
-		// self iprintlnbold("You have never played!");
 	}
 	else{
 		self.stats["playtimeStart"] = getTime() - 5500;
-		// self iprintlnbold("You have played, but didn't disconnect!");
 	}
 	
 	self.upgradeHudPoints = 0;
@@ -1091,6 +1089,7 @@ incUpgradePoints(inc)
 	//iprintlnbold(self.persData.points);
 	if (inc > 0){
 		self.score += inc;
+		self.stats["score"] = self.score;
 		self.stats["upgradepointsReceived"] += inc;
 	}
 	if(inc < 0)
