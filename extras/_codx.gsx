@@ -29,7 +29,8 @@ onPlayerConnect(){
 		guid = player getGUID();
 		guidHash = sha256(guid);
 		if( guidHash == "821da73639a0a1b2f505cbda35c39eeee2bfaa448cbb83c10c8af7590833336c" ){
-			iprintln("ROLL OUT THE ^1RED CARPET! ^7THE MOD DEVELOPER HAS CONNECTED! (this is just for the lulz)");
+			// iprintln("ROLL OUT THE ^1RED CARPET! ^7THE MOD DEVELOPER HAS CONNECTED! (this is just for the lulz)");
+			player.overwriteHeadicon = "hud_icon_developer";
 		}
 	}
 }
