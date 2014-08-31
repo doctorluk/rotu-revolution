@@ -1,0 +1,23 @@
+<configuration plugin="rotustats">
+  <settings name="database">
+    <!-- Your database info: [mysql]://[db-user]:[db-password]@[db-server[:port]]/[db-name] -->
+    <set name="dsn">mysql://username:password@localhost/database_name</set>
+
+    <!-- BELOW SETTINGS ARE OPTIONAL, UNCOMMENT TO USE -->
+
+    <!-- set to false to disable logging to database -->
+    <!--
+    <set name="enabled">false</set>
+    -->
+
+    <!-- custom table name for game stats -->
+    <!--
+    <set name="stats_game_table">my_stats_game_table</set>
+    -->
+
+    <!-- custom table name for player stats -->
+    <!--
+    <set name="stats_player_table">my_stats_player_table</set>
+    -->
+  </settings>
+</configuration>
