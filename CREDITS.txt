@@ -42,7 +42,14 @@ Bipo, Etheross, Brax, Mr-X, Hacker22, Red Beret, H0ly
 - Occasional help solving logical problems
 
 ======== > 3aGl3:
-- Providing new effects for the Raygun
+- Giving suggestions and help on solving scripting or modeling problems 
+- Provided new effects for the Raygun
+- Provided a modified AStar Waypoint algo
+- Provided an invisible hitbox model
+- Modified Intervention timing and ADS rechamber
+- Modified F2000 reload times
+- Adjusted differing melee times for the Tomahawk
+- Fixed Vector sharing ammo with secondary weapons
 
 ======== > AoD Rycoon:
 - Scripting help
