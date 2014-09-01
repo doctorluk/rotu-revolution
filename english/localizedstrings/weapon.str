@@ -16,6 +16,9 @@ FILENOTES           "Strings used in the weapon settings go in this file."
 REFERENCE           AMMOBOX
 LANG_ENGLISH        "Ammobox"
 
+REFERENCE           MEDKIT
+LANG_ENGLISH        "Medkit"
+
 REFERENCE           TOMAHAWK
 LANG_ENGLISH        "Tomahawk"
 

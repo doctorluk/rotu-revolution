@@ -106,7 +106,6 @@ rawfile,maps/mp/_load.gsc
 rawfile,maps/mp/_zombiescript.gsc
 
 
-material,bx_medkit_skin
 material,bx_teleporter_edge
 material,bx_teleporter_energy
 material,bx_teleporter_main
@@ -534,6 +533,21 @@ xanim,viewmodel_tomahawk_sprint_in
 xanim,viewmodel_tomahawk_sprint_loop
 xanim,viewmodel_tomahawk_sprint_out
 
+// ## BF3 Medic and Ammobag
+xmodel,viewmodel_bf3_medicbag
+xmodel,weapon_bf3_medicbag
+xmodel,viewmodel_bf3_ammobag
+xmodel,weapon_bf3_ammobag
+
+xanim,viewmodel_backpack_idle
+xanim,viewmodel_backpack_throw
+xanim,viewmodel_backpack_prep
+xanim,viewmodel_backpack_pullout
+xanim,viewmodel_backpack_putaway
+xanim,viewmodel_backpack_sprint_in
+xanim,viewmodel_backpack_sprint_loop
+xanim,viewmodel_backpack_sprint_out
+
 // ## ZOMBIE WOLF
 xmodel,zombie_wolf
 
@@ -721,7 +735,6 @@ xmodel,bo1_fx_char_gib_chunk_meat02
 // material,bo2_mtl_c_zom_avagadro_veins
 // xmodel,bo2_c_zom_avagadro_fb
 
-xmodel,ammobox
 xmodel,bo_quad
 xmodel,body_complete_mp_spetsnaz_vlad
 xmodel,body_mp_opforce_support
@@ -734,7 +747,6 @@ xmodel,body_mp_usmc_woodland_recon
 xmodel,body_mp_usmc_woodland_specops
 xmodel,body_mp_usmc_sniper
 xmodel,bx_teleporter
-xmodel,bx_medkit
 xmodel,ch_tombstone3
 xmodel,com_barrel_metal
 xmodel,com_barrel_benzin
