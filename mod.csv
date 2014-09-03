@@ -1,4 +1,4 @@
-# ignore,mod_ignore
+ignore,mod_ignore
 
 rawfile,animtrees/multiplayer.atr
 rawfile,mp/playeranim.script
@@ -6,7 +6,7 @@ rawfile,mp/playeranimtypes.txt
 rawfile,mp/CoD2maps.arena
 
 stringtable,mp\didyouknow.csv
-rawfile,mp\didyouknow.csv
+# rawfile,mp\didyouknow.csv
 
 
 // rawfile,custom_scripts/_admin.gsc
@@ -301,7 +301,7 @@ sound,vo,,all_mp
 sound,cust_weaps,,all_mp
 
 menufile,ui/playerprofile.menu
-// menufile,ui/choices_setup_common.menu			// actually pretty yusre we don't need this here
+// menufile,ui/choices_setup_common.menu			// actually pretty sure we don't need this here
 // menufile,ui/rotulogo.inc							// we don't need .inc files they are included by the compiler
 // menufile,ui/rotuversion.inc
 // menufile,ui/bg.inc
