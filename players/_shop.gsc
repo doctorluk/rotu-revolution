@@ -331,18 +331,8 @@ processResponse(response)
 			}
 		break;
 		case "item15":
-			if (self.points >= level.dvar["shop_defensive6_costs"])
-			{
-				if (level.teles < level.dvar["game_max_portals"])
-				{
-					self scripts\players\_teleporter::giveTeleporter();
-					self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_defensive6_costs"]);
-					self playsound("buy_upgradebox");
-				}
-				else
-				{
-					self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_portals"] + " portals");
-				}
+			if (self.points >= level.dvar["shop_defensive6_costs"]){
+				// Teleporter was here
 			}
 		break;
 		

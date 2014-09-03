@@ -54,7 +54,6 @@ init()
 	thread scripts\players\_damagefeedback::init();
 	thread scripts\players\_barricades::init();
 	thread scripts\players\_turrets::init();
-	thread scripts\players\_teleporter::init();
 	thread scripts\players\_rank::init();
 	//thread scripts\players\_challenges::buildChallegeInfo();
 	thread updateActiveAliveCounts();

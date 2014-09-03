@@ -238,22 +238,6 @@ usableUse()
 				self closeInGameMenu();
 				self openMenu(game["menu_extras"]);
 			break;
-			case "teleporter":
-				if (level.teleporter.size > 1)
-				{
-					index = randomint(level.teleporter.size-1);
-					ent = level.teleporter[index];
-					if (ent == self.curEnt)
-					ent = level.teleporter[index+1];
-					self thread scripts\players\_teleporter::teleOut(self.curEnt, ent.origin, ent.angles);
-				}
-				else
-				{
-					ent = getRandomTdmSpawn();
-					self thread scripts\players\_teleporter::teleOut(self.curEnt, ent.origin, ent.angles);
-				}
-			
-			break;
 			case "ammobox":
 				if (level.ammoStockType == "ammo")
 				{
