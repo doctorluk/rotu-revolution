@@ -110,7 +110,6 @@ material,hud_icon_developer
 material,hud_icon_ammobox
 material,hud_icon_crossbow
 material,hud_icon_crossbow_dpad
-material,hud_icon_f2000
 material,hud_icon_lowhp
 material,hud_icon_low_ammo
 
@@ -219,8 +218,6 @@ material,overlay_armored
 //material,overlay_shocked
 
 material,weapon_crossbow
-material,weapon_mw2_f2000_body
-material,weapon_mw2_f2000_sight
 material,weapon_tomahawk
 
 
@@ -463,20 +460,6 @@ xanim,viewmodel_crossbow_reload
 xanim,viewmodel_crossbow_sprint_in
 xanim,viewmodel_crossbow_sprint_loop
 xanim,viewmodel_crossbow_sprint_out
-
-xanim,viewmodel_f2000_idle
-xanim,viewmodel_f2000_fire
-xanim,viewmodel_f2000_fire
-xanim,viewmodel_f2000_reload
-xanim,viewmodel_f2000_pullout
-xanim,viewmodel_f2000_putaway
-xanim,viewmodel_f2000_pullout
-xanim,viewmodel_f2000_sprint_in
-xanim,viewmodel_f2000_sprint_loop
-xanim,viewmodel_f2000_sprint_out
-xanim,viewmodel_f2000_ads_fire
-xanim,viewmodel_f2000_ads_in
-xanim,viewmodel_f2000_ads_out
 
 xanim,viewmodel_flamethrower_idle
 xanim,viewmodel_flamethrower_fire
@@ -776,8 +759,6 @@ xmodel,weapon_crossbow_viewhands
 xmodel,weapon_flamethrower
 xmodel,weapon_m4gre_sp_silencer_reflex
 xmodel,weapon_m21SD_woodland
-xmodel,weapon_mw2_f2000_wm
-xmodel,weapon_mw2_f2000
 xmodel,weapon_p90_sd
 xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
