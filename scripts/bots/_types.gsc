@@ -251,13 +251,8 @@ loadAnimTree(type)
 	{
 		case "zombie":
 			self.animation["stand"] = "bot_zombie_stand_mp"; // bot_zom_stand
-			
-			if( randomint(2) )
-				self.animation["walk"] = "bot_zombie_walk_mp"; // bot_zom_walk
-			else
-				self.animation["walk"] = "artillery_mp"; // bot_zom_walk
-				
-			self.animation["sprint"] = "bot_zombie_run"+randomint(2)+"_mp"; // bot_zom_run0 and bot_zom_run1
+			self.animation["walk"] = "bot_zombie_walk_mp"; // bot_zom_walk
+			self.animation["sprint"] = "bot_zombie_run_mp"; // bot_zom_run0 and bot_zom_run1
 			
 			if( randomint(2) )
 				self.animation["melee"] = "bot_zombie_melee_mp"; // bot_zom_melee0
@@ -266,12 +261,7 @@ loadAnimTree(type)
 		break;
 		case "zombiefast":
 			self.animation["stand"] = "bot_zombie_stand_mp"; // bot_zom_stand
-			
-			if( randomint(2) )
-				self.animation["walk"] = "bot_zombie_walk_mp"; // bot_zom_walk
-			else
-				self.animation["walk"] = "artillery_mp"; // bot_zom_walk
-				
+			self.animation["walk"] = "bot_zombie_walk_mp"; // bot_zom_walk
 			self.animation["sprint"] = "m40a3_acog_mp"; // bot_zom_runfast
 			
 			if( randomint(2) )
@@ -292,7 +282,7 @@ loadAnimTree(type)
 		case "boss":
 			ran = randomint(2);
 			self.animation["stand"] = "bot_zombie_stand_mp"; // bot_zom_stand
-			self.animation["sprint"] = "bot_zombie_run"+ran+"_mp"; // bot_zom_run0 and bot_zom_run1
+			self.animation["sprint"] = "bot_zombie_run_mp"; // bot_zom_run0 and bot_zom_run1
 			self.animation["melee"] = "bot_zombie_melee_mp"; // bot_zom_melee
 			self.animation["jump"] = "g36c_gl_mp"; // bot_zom_melee
 		break;

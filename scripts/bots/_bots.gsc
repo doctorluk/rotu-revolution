@@ -75,12 +75,10 @@ precache()
 {
 	precacheitem("bot_zombie_walk_mp");
 	precacheitem("bot_zombie_stand_mp");
-	precacheitem("bot_zombie_run0_mp");
-	precacheitem("bot_zombie_run1_mp");
+	precacheitem("bot_zombie_run_mp");
 	precacheitem("bot_zombie_melee_mp");
 	precacheitem("bot_dog_idle_mp");
 	precacheitem("bot_dog_run_mp");
-	precacheitem("artillery_mp"); // Walk 1
 	precacheitem("brick_blaster_mp"); // Melee 1
 	precacheitem("defaultweapon_mp");
 	

@@ -90,11 +90,21 @@ STATE COMBAT
 {
 	idle
 	{
-
+		// EXAMPLE HERE
+		// this will randomly pick from one of the three animations whenever we have bot_zom_run
+//		playerAnimType bot_zom_run
+//		{
+//			both ai_zombie_sprint_v1
+//			both ai_zombie_sprint_v4
+//			both ai_zombie_sprint_v5
+//		}
+		// It's probably easier to edit just up here in the idle part if you want two anims on one animtype
+		// because idle is the only one played during freezeControls( true )
+		// EXAMPLE END
+		// QUAD
 		playerAnimType bot_quad_idle
 		{
 			both ai_zombie_quad_idle
-
 		}
  	 	playerAnimType bot_boss_jump 
 		{ 
@@ -112,27 +122,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -147,7 +149,7 @@ STATE COMBAT
 			both ai_zombie_attack_v4
 		}
 
-		
+		// DOGE
 		playerAnimType bot_dog_run
 		{
 			both zombie_dog_run
@@ -160,7 +162,7 @@ STATE COMBAT
 		{
 			both german_shepherd_sitting_looking_idle
 		}
-			
+		// PLAYER
 		mounted mg42, firing
 		{
 			both standSAWgunner_aim turretanim
@@ -172,11 +174,16 @@ STATE COMBAT
 		perk laststand
 		{
 			both pb_laststand_idle
-		}	
+		}
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_stand_idle
+		}
+		
 		playerAnimType none
 		{
 			both pb_stand_bombplant
-
 		}
 		playerAnimType briefcase
 		{
@@ -221,12 +228,11 @@ STATE COMBAT
 		playerAnimType bot_quad_idle
 		{
 			both ai_zombie_quad_idle
-
 		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
- 	 	 	 both ai_zombie_jump_down_40
- 	 	 }
+		playerAnimType bot_boss_jump 
+		{ 
+			both ai_zombie_jump_down_40
+		}
 		playerAnimType bot_quad_sprint
 		{
 			both ai_zombie_quad_crawl_sprint
@@ -239,27 +245,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -300,7 +298,13 @@ STATE COMBAT
 		perk laststand
 		{
 			both pb_laststand_idle 
-		}		
+		}
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_crouch_idle
+		}
+		
 		playerAnimType none
 		{	
 			both pb_crouch_bombplant
@@ -347,7 +351,6 @@ STATE COMBAT
 		playerAnimType bot_quad_idle
 		{
 			both ai_zombie_quad_idle
-
 		}
  	 	 playerAnimType bot_boss_jump 
 		 { 
@@ -365,27 +368,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -462,12 +457,11 @@ STATE COMBAT
 		playerAnimType bot_quad_idle
 		{
 			both ai_zombie_quad_idle
-
 		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
- 	 	 	 both ai_zombie_jump_down_40
- 	 	 }
+		playerAnimType bot_boss_jump 
+		{ 
+			both ai_zombie_jump_down_40
+		}
 		playerAnimType bot_quad_sprint
 		{
 			both ai_zombie_quad_crawl_sprint
@@ -480,27 +474,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -528,7 +514,12 @@ STATE COMBAT
 		{
 			both german_shepherd_sitting_looking_idle
 		}
-				
+		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			// No animation
+		}
 		
 		weaponclass pistol 
 		{
@@ -548,12 +539,11 @@ STATE COMBAT
 		playerAnimType bot_quad_idle
 		{
 			both ai_zombie_quad_idle
-
 		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
- 	 	 	 both ai_zombie_jump_down_40
- 	 	 }
+		playerAnimType bot_boss_jump 
+		{ 
+			both ai_zombie_jump_down_40
+		}
 		playerAnimType bot_quad_sprint
 		{
 			both ai_zombie_quad_crawl_sprint
@@ -566,27 +556,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -615,6 +597,11 @@ STATE COMBAT
 			both german_shepherd_sitting_looking_idle
 		}
 		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			// No animation
+		}
 		weaponclass pistol 
 		{
 			torso pt_flinch_pistol_back
@@ -633,12 +620,11 @@ STATE COMBAT
 		playerAnimType bot_quad_idle
 		{
 			both ai_zombie_quad_idle
-
 		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
- 	 	 	 both ai_zombie_jump_down_40
- 	 	 }
+		playerAnimType bot_boss_jump 
+		{ 
+			both ai_zombie_jump_down_40
+		}
 		playerAnimType bot_quad_sprint
 		{
 			both ai_zombie_quad_crawl_sprint
@@ -651,27 +637,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -699,7 +677,12 @@ STATE COMBAT
 		{
 			both german_shepherd_sitting_looking_idle
 		}
-		
+
+		// MINIGUN
+		playerAnimType minigun
+		{
+			// No animation
+		}
 		weaponclass pistol 
 		{
 			torso pt_flinch_pistol_left
@@ -720,10 +703,10 @@ STATE COMBAT
 			both ai_zombie_quad_idle
 
 		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
- 	 	 	 both ai_zombie_jump_down_40
- 	 	 }
+		playerAnimType bot_boss_jump 
+		{ 
+			both ai_zombie_jump_down_40
+		}
 		playerAnimType bot_quad_sprint
 		{
 			both ai_zombie_quad_crawl_sprint
@@ -736,33 +719,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
-		
-		
-		
-		
-		
-		
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -791,6 +760,11 @@ STATE COMBAT
 			both german_shepherd_sitting_looking_idle
 		}
 		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			// No animation
+		}
 		weaponclass pistol 
 		{
 			torso pt_flinch_pistol_right
@@ -829,27 +803,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -940,27 +906,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -1054,27 +1012,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -1154,27 +1104,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -1254,27 +1196,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -1352,27 +1286,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -1449,27 +1375,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -1496,7 +1414,11 @@ STATE COMBAT
 			both german_shepherd_sitting_looking_idle
 		}
 
-		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_stand_walk
+		}
 		playerAnimType none
 		{
 			both pb_stand_shoot_walk_forward_unarmed
@@ -1577,27 +1499,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -1622,6 +1536,12 @@ STATE COMBAT
 		playerAnimType bot_dog_idle
 		{
 			both german_shepherd_sitting_looking_idle
+		}
+		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_stand_walk_back
 		}
 		
 		playerAnimType none
@@ -1688,27 +1608,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -1733,6 +1645,12 @@ STATE COMBAT
 		playerAnimType bot_dog_idle
 		{
 			both german_shepherd_sitting_looking_idle
+		}
+		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_crouch_run_forward
 		}
 		
 		playerAnimType none
@@ -1812,26 +1730,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -1859,7 +1770,11 @@ STATE COMBAT
 			both german_shepherd_sitting_looking_idle
 		}
 
-		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_crouch_run_back
+		}
 		playerAnimType none
 		{
 			both pb_crouch_walk_forward_unarmed
@@ -1920,27 +1835,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -2041,27 +1948,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -2120,7 +2019,6 @@ STATE COMBAT
 		playerAnimType bot_quad_idle
 		{
 			both ai_zombie_quad_idle
-
 		}
  	 	 playerAnimType bot_boss_jump 
 		 { 
@@ -2138,33 +2036,25 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
 			both unarmed_panickedrun_loop_V1
 		}
-				playerAnimType bot_zom_melee0
+		playerAnimType bot_zom_melee0
 		{
 			both ai_zombie_attack_v2
 		}
@@ -2184,6 +2074,12 @@ STATE COMBAT
 		playerAnimType bot_dog_idle
 		{
 			both german_shepherd_sitting_looking_idle
+		}
+		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_stand_run
 		}
 		
 		playerAnimType none
@@ -2257,12 +2153,11 @@ STATE COMBAT
 		playerAnimType bot_quad_idle
 		{
 			both ai_zombie_quad_idle
-
 		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
+		playerAnimType bot_boss_jump 
+		{ 
  	 	 	 both ai_zombie_jump_down_40
- 	 	 }
+		}
 		playerAnimType bot_quad_sprint
 		{
 			both ai_zombie_quad_crawl_sprint
@@ -2275,33 +2170,25 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
 			both unarmed_panickedrun_loop_V1
 		}
-				playerAnimType bot_zom_melee0
+		playerAnimType bot_zom_melee0
 		{
 			both ai_zombie_attack_v2
 		}
@@ -2323,6 +2210,12 @@ STATE COMBAT
 			both german_shepherd_sitting_looking_idle
 		}
 
+		// MINIGUN
+		playerAnimType minigun
+		{
+			// no special anim
+		}
+		
 		default 
 		{
 			both pb_stumble_forward
@@ -2351,27 +2244,19 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
@@ -2448,33 +2333,25 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
 			both unarmed_panickedrun_loop_V1
 		}
-				playerAnimType bot_zom_melee0
+		playerAnimType bot_zom_melee0
 		{
 			both ai_zombie_attack_v2
 		}
@@ -2495,6 +2372,12 @@ STATE COMBAT
 		playerAnimType bot_dog_idle
 		{
 			both german_shepherd_sitting_looking_idle
+		}
+		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_stand_run_back
 		}
 		
 		playerAnimType none
@@ -2553,10 +2436,10 @@ STATE COMBAT
 			both ai_zombie_quad_idle
 
 		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
+		playerAnimType bot_boss_jump 
+		{ 
  	 	 	 both ai_zombie_jump_down_40
- 	 	 }
+		}
 		playerAnimType bot_quad_sprint
 		{
 			both ai_zombie_quad_crawl_sprint
@@ -2569,33 +2452,25 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
 			both unarmed_panickedrun_loop_V1
 		}
-				playerAnimType bot_zom_melee0
+		playerAnimType bot_zom_melee0
 		{
 			both ai_zombie_attack_v2
 		}
@@ -2616,6 +2491,13 @@ STATE COMBAT
 		{
 			both german_shepherd_sitting_looking_idle
 		}
+		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_crouch_run_forward
+		}
+		
 		playerAnimType none
 		{
 			both pb_crouch_run_forward_grenade
@@ -2705,33 +2587,25 @@ STATE COMBAT
 		{
 			both ai_zombie_quad_attack
 		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
+		playerAnimType bot_zom_walk
 		{
 			both ai_zombie_walk_v3
-			
+			both ai_zombie_walk_v4
 		}
 		playerAnimType bot_zom_stand
 		{
 			both standunarmed_idle_loop
 		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
+		playerAnimType bot_zom_run
 		{
 			both ai_zombie_sprint_v4
+			both ai_zombie_sprint_v5
 		}
 		playerAnimType bot_zom_runfast
 		{
 			both unarmed_panickedrun_loop_V1
 		}
-				playerAnimType bot_zom_melee0
+		playerAnimType bot_zom_melee0
 		{
 			both ai_zombie_attack_v2
 		}
@@ -2753,6 +2627,12 @@ STATE COMBAT
 		playerAnimType bot_dog_idle
 		{
 			both german_shepherd_sitting_looking_idle
+		}
+		
+		// MINIGUN
+		playerAnimType minigun
+		{
+			both pb_minigun_crouch_run_back
 		}
 		
 		playerAnimType none
@@ -2965,58 +2845,48 @@ fireweapon
 	
 
 	playerAnimType bot_quad_idle
-		{
-			both ai_zombie_quad_idle
-
-		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
- 	 	 	 both ai_zombie_jump_down_40
- 	 	 }
-		playerAnimType bot_quad_sprint
-		{
-			both ai_zombie_quad_crawl_sprint
-		}
-		playerAnimType bot_quad_crawl
-		{
-			both ai_zombie_quad_crawl
-		}
-		playerAnimType bot_quad_attack
-		{
-			both ai_zombie_quad_attack
-		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4
-			
-		}
-		playerAnimType bot_zom_walk1
-		{
-			both ai_zombie_walk_v3
-			
-		}
-			playerAnimType bot_zom_stand
-		{
-			both standunarmed_idle_loop
-		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
-		{
-			both ai_zombie_sprint_v4
-		}
-		playerAnimType bot_zom_melee0
-		{
-			both ai_zombie_attack_v2
-		}
-		playerAnimType bot_zom_melee1
-		{
-			both ai_zombie_attack_v4
-		}
-
-		
+	{
+		both ai_zombie_quad_idle
+	}
+	playerAnimType bot_boss_jump 
+	{ 
+		both ai_zombie_jump_down_40
+	}
+	playerAnimType bot_quad_sprint
+	{
+		both ai_zombie_quad_crawl_sprint
+	}
+	playerAnimType bot_quad_crawl
+	{
+		both ai_zombie_quad_crawl
+	}
+	playerAnimType bot_quad_attack
+	{
+		both ai_zombie_quad_attack
+	}
+	playerAnimType bot_zom_walk
+	{
+		both ai_zombie_walk_v3
+		both ai_zombie_walk_v4
+	}
+	playerAnimType bot_zom_stand
+	{
+		both standunarmed_idle_loop
+	}
+	playerAnimType bot_zom_run
+	{
+		both ai_zombie_sprint_v4
+		both ai_zombie_sprint_v5
+	}
+	playerAnimType bot_zom_melee0
+	{
+		both ai_zombie_attack_v2
+	}
+	playerAnimType bot_zom_melee1
+	{
+		both ai_zombie_attack_v4
+	}
+	
 	playerAnimType bot_dog_run
 	{
 		both zombie_dog_run
@@ -3029,13 +2899,21 @@ fireweapon
 	{
 		both german_shepherd_sitting_looking_idle
 	}	
-		
 	
 	mounted mg42
 	{
 		// Ignore the fireweapon event while on a turret
 	}
 
+// MINIGUN
+	playerAnimType minigun, movetype crouching
+	{
+		torso pt_minigun_crouch_fire blendTime 200
+	}
+	playerAnimType minigun
+	{
+		torso pt_minigun_stand_fire blendTime 200
+	}
 // PISTOLS
 	perk laststand
 	{
@@ -3143,33 +3021,32 @@ fireweapon
  	{
  		 torso pt_stand_grenade_throw blendtime 10 
  	}
-	
-//bolt (RIFLES)
-	playerAnimType sniper, movetype prone
+	// BOLTRIFLES
+	playerAnimType sniper AND rearclipsniper, movetype prone
 	{
 		torso pt_prone_shoot_auto
 	}
-	playerAnimType sniper, movetype moving
+	playerAnimType sniper AND rearclipsniper, movetype moving
 	{
 		// Play no special firing animation
 	}
-	playerAnimType sniper, movetype crouching, weapon_position ads
+	playerAnimType sniper AND rearclipsniper, movetype crouching, weapon_position ads
 	{
 		torso pt_crouch_shoot_ads
 	}
-	playerAnimType sniper, movetype crouching
+	playerAnimType sniper AND rearclipsniper, movetype crouching
 	{
 		torso pt_crouch_shoot
 	}
-	playerAnimType sniper, weapon_position ads
+	playerAnimType sniper AND rearclipsniper, weapon_position ads
 	{
 		torso pt_rifle_fire_ads
 	}
-	playerAnimType sniper
+	playerAnimType sniper AND rearclipsniper
 	{
 		torso pt_rifle_fire
 	}
-// DEFAULT (RIFLES)
+	// RIFLES
 	 playerAnimType other, movetype prone
 	 {
 	  torso pt_prone_shoot_auto
@@ -3303,62 +3180,53 @@ raiseweapon
 
 reload
 {
-		playerAnimType bot_quad_idle
-		{
-			both ai_zombie_quad_idle
-
-		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
- 	 	 	 both ai_zombie_jump_down_40
- 	 	 }
-		playerAnimType bot_quad_sprint
-		{
-			both ai_zombie_quad_crawl_sprint
-		}
-		playerAnimType bot_quad_crawl
-		{
-			both ai_zombie_quad_crawl
-		}
-		playerAnimType bot_quad_attack
-		{
-			both ai_zombie_quad_attack
-		}
-		playerAnimType bot_zom_walk0
-		{
-			both ai_zombie_walk_v4	
-		}
-		playerAnimType bot_zom_walk1
-		{
-			both ai_zombie_walk_v3
-			
-		}
-		playerAnimType bot_zom_stand
-		{
-			both standunarmed_idle_loop
-		}
-		playerAnimType bot_zom_run0
-		{
-			both ai_zombie_sprint_v5
-		}
-		playerAnimType bot_zom_run1
-		{
-			both ai_zombie_sprint_v4
-		}
-		playerAnimType bot_zom_runfast
-		{
-			both unarmed_panickedrun_loop_V1
-		}
-		playerAnimType bot_zom_melee0
-		{
-			both ai_zombie_attack_v2
-		}
-		playerAnimType bot_zom_melee1
-		{
-			both ai_zombie_attack_v4
-		}
-
-		
+	playerAnimType bot_quad_idle
+	{
+		both ai_zombie_quad_idle
+	}
+ 	playerAnimType bot_boss_jump 
+	{ 
+		both ai_zombie_jump_down_40
+ 	}
+	playerAnimType bot_quad_sprint
+	{
+		both ai_zombie_quad_crawl_sprint
+	}
+	playerAnimType bot_quad_crawl
+	{
+		both ai_zombie_quad_crawl
+	}
+	playerAnimType bot_quad_attack
+	{
+		both ai_zombie_quad_attack
+	}
+	playerAnimType bot_zom_walk
+	{
+		both ai_zombie_walk_v3
+		both ai_zombie_walk_v4
+	}
+	playerAnimType bot_zom_stand
+	{
+		both standunarmed_idle_loop
+	}
+	playerAnimType bot_zom_run
+	{
+		both ai_zombie_sprint_v4
+		both ai_zombie_sprint_v5
+	}
+	playerAnimType bot_zom_runfast
+	{
+		both unarmed_panickedrun_loop_V1
+	}
+	playerAnimType bot_zom_melee0
+	{
+		both ai_zombie_attack_v2
+	}
+	playerAnimType bot_zom_melee1
+	{
+		both ai_zombie_attack_v4
+	}
+	// DOGE
 	playerAnimType bot_dog_run
 	{
 		both zombie_dog_run
@@ -3370,6 +3238,16 @@ reload
 	playerAnimType bot_dog_idle
 	{
 		both german_shepherd_sitting_looking_idle
+	}
+// PLAYER
+	// MINIGUN
+	playerAnimType minigun, movetype crouching
+	{
+		torso pt_minigun_crouch_reload
+	}
+	playerAnimType minigun
+	{
+		torso pt_minigun_stand_reload
 	}
 	perk laststand
  	{
@@ -3415,6 +3293,7 @@ reload
 	{
 		torso pt_reload_stand_auto_mp40
 	}
+	// RIFLE
 	playerAnimType autorifle, movetype prone
 	{
 		torso pt_reload_prone_auto
@@ -3431,6 +3310,20 @@ reload
 	{
 		torso pt_reload_stand_auto
 	}
+	// REARCLIP
+	playerAnimType rearclip AND rearclipsniper, movetype prone
+	{
+		torso pt_rifle_prone_reload_rearclip
+	}
+	playerAnimType rearclip AND rearclipsniper, movetype crouching
+	{
+		torso pt_rifle_crouch_reload_rearclip
+	}
+	playerAnimType rearclip AND rearclipsniper
+	{
+		torso pt_rifle_stand_reload_rearclip
+	}
+	// DEFAULT
 	movetype idlecr
 	{
 		torso pt_reload_crouch_rifle
@@ -3451,7 +3344,64 @@ reload
 
 jump
 {
+	playerAnimType bot_quad_idle
+	{
+	}
+	playerAnimType bot_quad_sprint
+	{
+	}
+	playerAnimType bot_quad_crawl
+	{
+	}
+	playerAnimType bot_quad_attack
+	{
+	}
+	playerAnimType bot_zom_walk
+	{
+		
+	}
+	playerAnimType bot_zom_stand
+	{
+		
+	}
+	playerAnimType bot_zom_run
+	{
+
+	}
+	playerAnimType bot_zom_runfast
+	{
+		
+	}
+	playerAnimType bot_zom_melee0
+	{
+
+	}
+	playerAnimType bot_zom_melee1
+	{
+
+	}
+	playerAnimType bot_dog_run
+	{
+		
+	}
+	playerAnimType bot_dog_attack
+	{
+		
+	}
+	playerAnimType bot_dog_idle
+	{
+		
+	}
 	
+	// MINIGUN
+	playerAnimType minigun, movetype moving
+	{
+		legs pb_minigun_runjump_takeoff duration 5 blendtime 100
+	}
+	playerAnimType minigun
+	{
+		legs pb_minigun_standjump_takeoff duration 5 blendtime 100
+	}
 	playerAnimType none, movetype run
 	{
 		both pb_runjump_takeoff duration 5 blendtime 100
@@ -3480,7 +3430,60 @@ jump
 
 jumpbk
 {
+	playerAnimType bot_quad_idle
+	{
+	}
+	playerAnimType bot_quad_sprint
+	{
+	}
+	playerAnimType bot_quad_crawl
+	{
+	}
+	playerAnimType bot_quad_attack
+	{
+	}
+	playerAnimType bot_zom_walk
+	{
+		
+	}
+	playerAnimType bot_zom_stand
+	{
+		
+	}
+	playerAnimType bot_zom_run
+	{
+
+	}
+	playerAnimType bot_zom_runfast
+	{
+		
+	}
+	playerAnimType bot_zom_melee0
+	{
+
+	}
+	playerAnimType bot_zom_melee1
+	{
+
+	}
+	playerAnimType bot_dog_run
+	{
+		
+	}
+	playerAnimType bot_dog_attack
+	{
+		
+	}
+	playerAnimType bot_dog_idle
+	{
+		
+	}
 	
+	// MINIGUN
+	playerAnimType minigun
+	{
+		legs pb_minigun_standjump_takeoff duration 5 blendtime 100
+	}
 	movetype crouching AND prone
 	{
 		both pb_chicken_dance_crouch duration 5 blendtime 100
@@ -3524,6 +3527,64 @@ jumpbk
 
 land
 {
+	playerAnimType bot_quad_idle
+	{
+	}
+	playerAnimType bot_quad_sprint
+	{
+	}
+	playerAnimType bot_quad_crawl
+	{
+	}
+	playerAnimType bot_quad_attack
+	{
+	}
+	playerAnimType bot_zom_walk
+	{
+		
+	}
+	playerAnimType bot_zom_stand
+	{
+		
+	}
+	playerAnimType bot_zom_run
+	{
+
+	}
+	playerAnimType bot_zom_runfast
+	{
+		
+	}
+	playerAnimType bot_zom_melee0
+	{
+
+	}
+	playerAnimType bot_zom_melee1
+	{
+
+	}
+	playerAnimType bot_dog_run
+	{
+		
+	}
+	playerAnimType bot_dog_attack
+	{
+		
+	}
+	playerAnimType bot_dog_idle
+	{
+		
+	}
+	
+	// MINIGUN
+	playerAnimType minigun, movetype run
+	{
+		legs pb_minigun_runjump_land duration 100 blendtime 50
+	}
+	playerAnimType minigun
+	{
+		legs pb_minigun_standjump_land duration 100 blendtime 50
+	}
 	movetype run
 	{
 		both pb_runjump_land duration 100 blendtime 50
@@ -3552,11 +3613,7 @@ shellshock
 	playerAnimType bot_quad_attack
 	{
 	}
-	playerAnimType bot_zom_walk0
-	{
-		
-	}
-	playerAnimType bot_zom_walk1
+	playerAnimType bot_zom_walk
 	{
 		
 	}
@@ -3564,11 +3621,7 @@ shellshock
 	{
 		
 	}
-	playerAnimType bot_zom_run0
-	{
-
-	}
-	playerAnimType bot_zom_run1
+	playerAnimType bot_zom_run
 	{
 
 	}
@@ -3599,6 +3652,11 @@ shellshock
 		
 	}
 	
+	// MINIGUN
+	playerAnimType minigun
+	{
+		// No animation
+	}
 	movetype prone
 	{
 
@@ -3635,11 +3693,7 @@ DEATH
 	{
 		both death_stand_dropinplace
 	}
-	playerAnimType bot_zom_walk0
-	{
-		both death_stand_dropinplace
-	}
-	playerAnimType bot_zom_walk1
+	playerAnimType bot_zom_walk
 	{
 		both death_stand_dropinplace
 	}
@@ -3647,11 +3701,7 @@ DEATH
 	{
 		both death_stand_dropinplace
 	}
-	playerAnimType bot_zom_run0
-	{
-		both death_stand_dropinplace
-	}
-	playerAnimType bot_zom_run1
+	playerAnimType bot_zom_run
 	{
 		both death_stand_dropinplace
 	}
@@ -3758,11 +3808,7 @@ pain
 	playerAnimType bot_quad_attack
 	{
 	}
-	playerAnimType bot_zom_walk0
-	{
-
-	}
-	playerAnimType bot_zom_walk1
+	playerAnimType bot_zom_walk
 	{
 
 	}
@@ -3770,11 +3816,7 @@ pain
 	{
 
 	}
-	playerAnimType bot_zom_run0
-	{
-
-	}
-	playerAnimType bot_zom_run1
+	playerAnimType bot_zom_run
 	{
 
 	}

@@ -353,8 +353,7 @@ weapon,mp/bot_dog_run_mp
 weapon,mp/bot_dog_idle_mp
 weapon,mp/bot_zombie_walk_mp
 weapon,mp/bot_zombie_stand_mp
-weapon,mp/bot_zombie_run0_mp
-weapon,mp/bot_zombie_run1_mp
+weapon,mp/bot_zombie_run_mp
 // weapon,mp/bot_zombie_run1_mp
 // weapon,mp/bot_zombie_run2_mp
 // weapon,mp/bot_zombie_run3_mp
@@ -770,6 +769,29 @@ xmodel,worldmodel_thundergun
 ////// Custom Weapons ////////
 ///////////////////////////////
 
+// BF3 F2000 by 3aGl3
+
+sound,f2000,,all_mp
+sound,silencer,,all_mp
+
+xmodel,viewmodel_bf3_f2000
+xmodel,weapon_bf3_f2000
+
+xanim,viewmodel_fn2000_idle
+xanim,viewmodel_fn2000_fire
+xanim,viewmodel_fn2000_reload
+xanim,viewmodel_fn2000_reload_empty
+xanim,viewmodel_fn2000_pullout
+xanim,viewmodel_fn2000_first_time_pullout
+xanim,viewmodel_fn2000_putaway
+xanim,viewmodel_fn2000_sprint_in
+xanim,viewmodel_fn2000_sprint_loop
+xanim,viewmodel_fn2000_sprint_out
+xanim,viewmodel_fn2000_ads_fire
+
+# Kobra and Holo
+xanim,viewmodel_fn2000_kobra_ads_up
+xanim,viewmodel_fn2000_kobra_ads_down
 
 //BF3 Sniper
 

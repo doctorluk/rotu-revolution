@@ -58,6 +58,18 @@ main
 		ai_zombie_quad_crawl
 		ai_zombie_quad_attack
 		
+		//
+		// Minigun anims
+		//
+		pt_minigun_crouch_fire
+		pt_minigun_stand_fire
+		pt_minigun_crouch_putaway
+		pt_minigun_stand_putaway
+		pt_minigun_crouch_raise
+		pt_minigun_stand_raise
+		pt_minigun_crouch_reload
+		pt_minigun_stand_reload
+		
 		
 		pt_flamethrower_fire_center
 		pt_flamethrower_crouch_fire_center
@@ -126,6 +138,9 @@ main
 		pt_reload_crouchwalk
 		pt_reload_crouchwalk_pistol
 
+		pt_rifle_crouch_reload_rearclip
+		pt_rifle_prone_reload_rearclip
+		pt_rifle_stand_reload_rearclip
 		
 		//
 		// Prone anims
@@ -199,6 +214,22 @@ main
 	//
 	legs
 	{
+		//
+		// Minigun
+		//
+		pb_minigun_crouch_idle
+		pb_minigun_stand_idle
+		pb_minigun_stand_walk
+		pb_minigun_stand_walk_back
+		pb_minigun_crouch_run_forward
+		pb_minigun_crouch_run_back
+		pb_minigun_stand_run
+		pb_minigun_stand_run_back
+		pb_minigun_runjump_takeoff
+		pb_minigun_standjump_takeoff
+		pb_minigun_runjump_land
+		pb_minigun_standjump_land
+
 		//
 		// Idle anims
 		//
