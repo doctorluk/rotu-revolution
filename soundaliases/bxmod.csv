@@ -1,6 +1,0 @@
-name,sequence,file,vol_min,vol_max,vol_mod,pitch_min,pitch_max,dist_min,dist_max,channel,type,probability,loop,masterslave,loadspec,subtitle,compression,secondaryaliasname,volumefalloffcurve,startdelay,speakermap,reverb,lfe percentage,center percentage,platform,envelop_min,envelop_max,envelop percentage
-
-# Teleporter
-telein,,misc\bxmod/telein.wav,1,1,,,,360,600,voice,,,,item,all_mp,,,,,,,,,0.1
-teleout,,misc\bxmod/teleout.wav,1,1,,,,360,600,voice,,,,item,all_mp,,,,,,,,,0.1
-teleporter_loop,,misc\bxmod/teleporter_loop.wav,1,1,,,,500,700,voice,,,looping,item,all_mp,,,,,,,,,0.1

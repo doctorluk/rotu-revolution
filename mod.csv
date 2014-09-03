@@ -279,7 +279,6 @@ rawfile,scripts/server/_maprotation.gsc
 rawfile,scripts/server/_maps.gsc
 rawfile,scripts/server/_mapvoting.gsc
 rawfile,scripts/server/_mapvoting_old.gsc
-rawfile,scripts/server/_ranks.gsc
 rawfile,scripts/server/_scoreboard.gsc
 rawfile,scripts/server/_server.gsc
 rawfile,scripts/server/_servername.gsc
@@ -296,7 +295,6 @@ rawfile,shock/general_shock.shock
 sound,abilities,,all_mp
 sound,turrets,,all_mp
 sound,zombies_windows,,all_mp
-sound,bxmod,,all_mp
 sound,vo,,all_mp
 sound,cust_weaps,,all_mp
 
