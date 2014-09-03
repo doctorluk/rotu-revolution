@@ -392,41 +392,28 @@ xanim,hunted_dazed_walk_A_zombie
 
 xanim,noweapon
 
-// xanim,pb_minigun_stand_idle
-// xanim,pb_minigun_crouch_idle
-// xanim,pb_minigun_stand_walk
-// xanim,pb_minigun_stand_walk_back
-// xanim,pb_minigun_crouch_run_forward
-// xanim,pb_minigun_crouch_run_back
-// xanim,pb_minigun_stand_run
-// xanim,pb_minigun_stand_run_back
-// xanim,pb_minigun_crouch_run_back
-// xanim,pb_minigun_crouch_turn_90right
-// xanim,pb_minigun_crouch_turn_90left
-// xanim,pb_minigun_stand_turn_90right
-// xanim,pb_minigun_stand_turn_90left
-// xanim,pb_minigun_runjump_takeoff
-// xanim,pb_minigun_standjump_takeoff
-
 xanim,pt_flamethrower_fire_center
 xanim,pt_flamethrower_crouch_fire_center
 
-// xanim,pt_minigun_stand_flinch_forward
-// xanim,pt_minigun_stand_flinch_back
-// xanim,pt_minigun_stand_flinch_left
-// xanim,pt_minigun_stand_flinch_right
-// xanim,pt_minigun_crouch_flinch_forward
-// xanim,pt_minigun_crouch_flinch_back
-// xanim,pt_minigun_crouch_flinch_left
-// xanim,pt_minigun_crouch_flinch_right
-
-// xanim,pt_minigun_stand_fire
-// xanim,pt_minigun_crouch_fire
-// xanim,pt_minigun_crouch_raise
-// xanim,pt_minigun_stand_raise
-
-// xanim,pt_minigun_stand_putaway
-// xanim,pt_minigun_crouch_putaway
+xanim,pb_minigun_standjump_land
+xanim,pb_minigun_runjump_land
+xanim,pb_minigun_standjump_takeoff
+xanim,pb_minigun_runjump_takeoff
+xanim,pb_minigun_stand_run_back
+xanim,pb_minigun_stand_run
+xanim,pb_minigun_crouch_run_back
+xanim,pb_minigun_crouch_run_forward
+xanim,pb_minigun_stand_walk_back
+xanim,pb_minigun_stand_walk
+xanim,pb_minigun_stand_idle
+xanim,pb_minigun_crouch_idle
+xanim,pt_rifle_stand_reload_rearclip
+xanim,pt_rifle_prone_reload_rearclip
+xanim,pt_rifle_crouch_reload_rearclip
+xanim,pt_minigun_stand_reload
+xanim,pt_minigun_crouch_reload
+xanim,pt_minigun_stand_fire
+xanim,pt_minigun_crouch_fire
 
 xanim,standunarmed_idle_loop
 
