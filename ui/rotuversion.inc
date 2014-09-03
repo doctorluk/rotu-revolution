@@ -1,1 +1,1 @@
-#define ROTU_VERSION_NUMBER "0.6 Alpha"
+#define ROTU_VERSION_NUMBER "0.7-pre Alpha"

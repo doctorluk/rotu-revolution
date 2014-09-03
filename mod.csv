@@ -63,7 +63,6 @@ fx,misc/sentry_laser
 fx,misc/soul
 fx,misc/soulspawn
 fx,misc/soul_death
-fx,misc/spirit
 fx,misc/toxic_gas
 fx,misc/napalm_zombie_tummyglow
 fx,misc/zombie_incendiary_effect
@@ -104,13 +103,6 @@ rawfile,maps/mp/gametypes/dm.txt
 rawfile,maps/mp/gametypes/dm.gsc
 rawfile,maps/mp/_load.gsc
 rawfile,maps/mp/_zombiescript.gsc
-
-
-material,bx_teleporter_edge
-material,bx_teleporter_energy
-material,bx_teleporter_main
-material,bx_teleporter_pad
-material,bx_teleporter_transparency
 
 material,hud_ammo
 material,hud_flamethrower_reticle
@@ -278,7 +270,6 @@ rawfile,scripts/players/_players.gsc
 rawfile,scripts/players/_rank.gsc
 rawfile,scripts/players/_shop.gsc
 rawfile,scripts/players/_spree.gsc
-rawfile,scripts/players/_teleporter.gsc
 rawfile,scripts/players/_turrets.gsc
 rawfile,scripts/players/_usables.gsc
 rawfile,scripts/players/_weapons.gsc
@@ -300,7 +291,6 @@ rawfile,scripts/server/_welcome.gsc
 
 
 rawfile,shock/toxic_gas_mp.shock
-rawfile,shock/teleporter.shock
 rawfile,shock/infection.shock
 rawfile,shock/boss.shock
 rawfile,shock/general_shock.shock
@@ -746,7 +736,6 @@ xmodel,body_mp_usmc_woodland_support
 xmodel,body_mp_usmc_woodland_recon
 xmodel,body_mp_usmc_woodland_specops
 xmodel,body_mp_usmc_sniper
-xmodel,bx_teleporter
 xmodel,ch_tombstone3
 xmodel,com_barrel_metal
 xmodel,com_barrel_benzin
@@ -1038,17 +1027,6 @@ xanim,viewmodel_bo_crossbow_sprint_out
 xmodel,viewmodel_bo_crossbow
 xmodel,worldmodel_bo_crossbow
 xmodel,projectile_bo_arrow_explosive
-
-
-//Custom Desert Eagle
-
-xmodel,Viewmodel_Deagle_mp
-
-material,deagle_frame
-material,deagle_front
-material,deagle_grip
-material,deagle_nophongframe
-material,desert_eagle_new
 
 // HK 21
 sound,hk21,,all_mp

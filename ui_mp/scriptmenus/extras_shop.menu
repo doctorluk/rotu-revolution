@@ -235,10 +235,10 @@
 		DESCRIPTION_BUTTON( 26, "^2" + LocString("@SHOP_MGBARREL") + " ("+dvarstring("ui_itemcosts4")+")", scriptMenuResponse "item14";, when( dvarint("ui_points") >= dvarint("ui_itemcosts4") ), "@SHOP_DESC_MGBARREL", "@SHOP_DESC_MGBARREL_TITLE"  )
 		CHOICE_DBUTTON_VIS_NOHI( 26, "^1" + LocString("@SHOP_MGBARREL") + " ("+dvarstring("ui_itemcosts4")+")", when( dvarint("ui_points") < dvarint("ui_itemcosts4") ) )
 		
-		CHOICE_BUTTON_BG( 27, 1 )
-		CHOICE_HIGHLIGHT( 27, 1 )		
-		DESCRIPTION_BUTTON( 27, "^2" + LocString("@SHOP_PORTAL") + " ("+dvarstring("ui_itemcosts5")+")", scriptMenuResponse "item15";, when( dvarint("ui_points") >= dvarint("ui_itemcosts5") ), "@SHOP_DESC_PORTAL", "@SHOP_DESC_PORTAL_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 27, "^1" + LocString("@SHOP_PORTAL") + " ("+dvarstring("ui_itemcosts5")+")", when( dvarint("ui_points") < dvarint("ui_itemcosts5") ) )
+		// CHOICE_BUTTON_BG( 27, 1 )
+		// CHOICE_HIGHLIGHT( 27, 1 )		
+		// DESCRIPTION_BUTTON( 27, "^2" + LocString("@SHOP_PORTAL") + " ("+dvarstring("ui_itemcosts5")+")", scriptMenuResponse "item15";, when( dvarint("ui_points") >= dvarint("ui_itemcosts5") ), "@SHOP_DESC_PORTAL", "@SHOP_DESC_PORTAL_TITLE"  )
+		// CHOICE_DBUTTON_VIS_NOHI( 27, "^1" + LocString("@SHOP_PORTAL") + " ("+dvarstring("ui_itemcosts5")+")", when( dvarint("ui_points") < dvarint("ui_itemcosts5") ) )
 		
 		/*CHOICE_SECTION_TITLE( 21, "Support:" )
 		

@@ -38,14 +38,6 @@ weap_aa12_chamber_plr,,aa12/aa12_chamber.wav,0.72,0.79,wpnplyr,0.8,0.9,500000,,l
 mp5k_fire_npc,,mp5k/mp5k_fire.wav,0.98,0.99,wpnai,1,1.1,35,6000,weapon,,,,0.85,,,,,weapon4,,,,0.3
 mp5k_fire_plr,,mp5k/mp5k_fire.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
 
-
-#F2000 Sounds
-weap_f2000_fire_plr,,f2000/f2000_fire.wav,0.9,1,wpnplyr,0.8,0.9,500000,,local,,,,0.85,,,,,weapon2
-weap_f2000_fire_npc,,f2000/f2000_fire.wav,1,1,wpnai,1,1,35,2000,weapon,,,,0.8,all_mp,,,,weapon4
-weap_f2000_clipin_plr,,f2000/f2000_clipin.wav,0.72,0.79,wpnplyr,0.8,0.9,500000,,local,,,,0.85,,,,,weapon2
-weap_f2000_clipout_plr,,f2000/f2000_clipout.wav,0.72,0.79,wpnplyr,0.8,0.9,500000,,local,,,,0.85,,,,,weapon2
-weap_f2000_reload_npc,,f2000/f2000_clipout.wav,1,1,wpnai,1,1,35,2000,weapon,,,,0.8,all_mp,,,,weapon4
-
 #Sentrygun
 weap_minigun_fire,,minigun/wpn_minigun_fire.wav,0.72,0.79,wpnai,0.8,0.9,35,8000,weapon,,,,0.85,,,,,weapon4
 
