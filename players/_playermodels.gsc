@@ -25,7 +25,7 @@ init()
 
 precache()
 {
-	precachemodel("body_mp_usmc_grenadier");
+//	precachemodel("body_mp_usmc_grenadier");		it doesn't look like this is used...
 	
 	precachemodel("body_mp_usmc_rifleman");
 	precachemodel("body_mp_usmc_support");
