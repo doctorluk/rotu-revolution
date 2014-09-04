@@ -251,9 +251,6 @@ rawfile,scripts/include/physics.gsc
 rawfile,scripts/include/strings.gsc
 rawfile,scripts/include/useful.gsc
 rawfile,scripts/include/waypoints.gsc
-rawfile,scripts/include/include/entities.gsc
-rawfile,scripts/include/include/physics.gsc
-rawfile,scripts/include/include/waypoints.gsc
 rawfile,scripts/level/_spectatecoords.gsc
 rawfile,scripts/players/_abilities.gsc
 rawfile,scripts/players/_barricades.gsc
