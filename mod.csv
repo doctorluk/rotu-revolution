@@ -289,7 +289,7 @@ sound,abilities,,all_mp
 sound,turrets,,all_mp
 sound,zombies_windows,,all_mp
 sound,vo,,all_mp
-sound,cust_weaps,,all_mp
+sound,weapons,,all_mp
 
 menufile,ui/playerprofile.menu
 // menufile,ui/choices_setup_common.menu			// actually pretty sure we don't need this here
