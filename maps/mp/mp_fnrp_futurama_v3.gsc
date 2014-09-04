@@ -16,9 +16,8 @@ main()
 	maps\createfx\mp_fnrp_futurama_v3_fx::main();
 
 	maps\mp\_compass::setupMiniMap("compass_map_mp_futurama");
-	
-	setExpFog(800, 20000, 0.583, 0.631569, 0.553078, 0);
 
+	setExpFog(800, 20000, 0.583, 0.631569, 0.553078, 0);
 
 	game["allies"] = "marines";
 	game["axis"] = "opfor";
@@ -35,22 +34,22 @@ main()
 	setDvar( "jump_height", "230");
 	setDvar( "g_gravity", "180");
 
-waittillStart();
-buildAmmoStock("ammostock");
-buildWeaponUpgrade("weaponupgrade");
-buildSurvSpawn("spawngroup1", 1);
-buildSurvSpawn("spawngroup2", 1);
-buildSurvSpawn("spawngroup3", 1);
-buildSurvSpawn("spawngroup4", 1);
-buildSurvSpawn("spawngroup5", 1);
-buildSurvSpawn("spawngroup6", 1);
-startSurvWaves();
+	waittillStart();
+	buildAmmoStock("ammostock");
+	buildWeaponUpgrade("weaponupgrade");
+	buildSurvSpawn("spawngroup1", 1);
+	buildSurvSpawn("spawngroup2", 1);
+	buildSurvSpawn("spawngroup3", 1);
+	buildSurvSpawn("spawngroup4", 1);
+	buildSurvSpawn("spawngroup5", 1);
+	buildSurvSpawn("spawngroup6", 1);
+	startSurvWaves();
 
-level.barricadefx = LoadFX("dust/dust_trail_IR");
-buildBarricade("staticbarricade", 4, 400, level.barricadefx,level.barricadefx);
+	level.barricadefx = LoadFX("dust/dust_trail_IR");
+	buildBarricade("staticbarricade", 4, 400, level.barricadefx,level.barricadefx);
 
-wait 10;
-maps\mp\_playerskins::roturecall();	
+	wait 10;
+	maps\mp\_playerskins::roturecall();	
 } 
 
 

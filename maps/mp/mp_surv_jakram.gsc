@@ -3,79 +3,72 @@
 main()
 {
 	maps\mp\_load::main();
-     setExpFog(292, 2000, 0.537, 0.549, 0.564, 0.0);
+	setExpFog(292, 2000, 0.537, 0.549, 0.564, 0.0);
 	maps\mp\_compass::setupMiniMap("compass_map_mp_surv_jakram");
 
+	maps\mp\win4::main();
+	maps\mp\mp_surv_jakram_sound_fx::main();
+	maps\mp\mp_surv_jakram_fx::main();
+	maps\createfx\mp_surv_jakram_fx::main();
+	maps\mp\killt::main();
+	maps\mp\teleport1::main();
+	maps\mp\teleport2::main();
+	maps\mp\bobbing::main();
+	maps\mp\_platform::main();
 
-maps\mp\win4::main();
-maps\mp\mp_surv_jakram_sound_fx::main();
-maps\mp\mp_surv_jakram_fx::main();
-maps\createfx\mp_surv_jakram_fx::main();
-maps\mp\killt::main();
-maps\mp\teleport1::main();
-maps\mp\teleport2::main();
-maps\mp\bobbing::main();
-maps\mp\_platform::main();
+	thread WatchDoor1();
+	thread WatchDoor2();
+	thread WatchDoor3();
+	thread WatchDoor4();
+	thread zartax1();
+	thread zartax2();
+	thread zartax3();
+	thread zartax4();
+	thread zartax5();
+	thread zartax6();
+	thread zartax7();
+	thread zartax8();
+	thread zartax9();
+	thread zartax10();
+	thread fx_precache();
+	thread sound1();
+	thread voice();
+	thread piece();
+	thread rado1();
+	thread rado2();
+	thread rado3();
+	thread rado4();
+	thread rado5();
+	thread rados();
+	game["allies"] = "marines";
+	game["axis"] = "opfor";
+	game["allies_soldiertype"] = "desert";
+	game["axis_soldiertype"] = "desert";
 
-   thread WatchDoor1();
-   thread WatchDoor2();
-   thread WatchDoor3();
-   thread WatchDoor4();
-   thread zartax1();
-   thread zartax2();
-   thread zartax3();
-   thread zartax4();
-   thread zartax5();
-   thread zartax6();
-   thread zartax7();
-   thread zartax8();
-   thread zartax9();
-   thread zartax10();
-   thread fx_precache();
-   thread sound1();
-   thread voice();
-   thread piece();
-   thread rado1();
-   thread rado2();
-   thread rado3();
-   thread rado4();
-   thread rado5();
-   thread rados();
-game["allies"] = "marines";
-game["axis"] = "opfor";
-game["allies_soldiertype"] = "desert";
-game["axis_soldiertype"] = "desert";
+	game["attackers"] = "axis";
+	game["defenders"] = "allies";
 
-game["attackers"] = "axis";
-game["defenders"] = "allies";
+	setdvar("r_specularcolorscale", "0.5");
+	setdvar("r_glowbloomintensity0",".25");
+	setdvar("r_glowbloomintensity1",".25");
+	setdvar("r_glowskybleedintensity0",".3");
+	setdvar("compassmaxrange","1800");
 
+	waittillStart();
+	buildAmmoStock("ammostock");
+	buildWeaponUpgrade("weaponupgrade");
+	buildSurvSpawn("spawngroup1", 1);
+	buildSurvSpawn("spawngroup2", 1);
+	buildSurvSpawn("spawngroup3", 1);
+	buildSurvSpawn("spawngroup4", 1);
+	buildSurvSpawn("spawngroup5", 1);
+	buildSurvSpawn("spawngroup6", 1);
+	startSurvWaves();
 
-setdvar( "r_specularcolorscale", "0.5" );
-setdvar("r_glowbloomintensity0",".25");
-setdvar("r_glowbloomintensity1",".25");
-setdvar("r_glowskybleedintensity0",".3");
-setdvar("compassmaxrange","1800");
-
-waittillStart();
-buildAmmoStock("ammostock");
-buildWeaponUpgrade("weaponupgrade");
-buildSurvSpawn("spawngroup1", 1);
-buildSurvSpawn("spawngroup2", 1);
-buildSurvSpawn("spawngroup3", 1);
-buildSurvSpawn("spawngroup4", 1);
-buildSurvSpawn("spawngroup5", 1);
-buildSurvSpawn("spawngroup6", 1);
-startSurvWaves();
-
-
-level.barricadefx = LoadFX("dust/dust_trail_IR");
-
-
-buildBarricade("staticbarricade", 6, 300,
-level.barricadefx,level.barricadefx);
-
-
+	level.barricadefx = LoadFX("dust/dust_trail_IR");
+	buildBarricade( "staticbarricade", 6, 300, level.barricadefx, level.barricadefx );
 }
+
 WatchDoor1()
 {
     door = getEnt( "purchase_door1", "targetname" );

@@ -1,12 +1,11 @@
 		playerAnimType bot_quad_idle
 		{
 			both ai_zombie_quad_idle
-
 		}
- 	 	 playerAnimType bot_boss_jump 
-		 { 
- 	 	 	 both boss_jump
- 	 	 }
+		playerAnimType bot_boss_jump 
+		{ 
+			both boss_jump
+		}
 		playerAnimType bot_quad_sprint
 		{
 			both ai_zombie_quad_crawl_sprint
@@ -22,7 +21,6 @@
 		playerAnimType bot_zom_walk
 		{
 			both hunted_dazed_walk_A_zombie
-			
 		}
 		playerAnimType bot_zom_stand
 		{

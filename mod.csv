@@ -225,8 +225,7 @@ material,weapon_tomahawk
 
 stringtable,mp/ranktable.csv
 stringtable,mp/ChallengeTable.csv
-stringtable,mp/rankicontable.csv
-
+stringtable,mp/rankIconTable.csv
 
 rawfile,scripts/bots/_bots.gsc
 rawfile,scripts/bots/_debug.gsc

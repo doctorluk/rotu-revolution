@@ -47,7 +47,7 @@ checkValidGuid(){
 			lpGuidChar = GetSubStr(lpGuid, i, i+1);
 			
 			if( lpGuid == "" || !isHexadecimal(lpGuidChar) || lpGuidChar == "" || lpGuidChar == " " ){
-				self sayall("I'm a hacking idiot, for which I now get kicked!");
+				self sayAll("I'm a hacking idiot, for which I now get kicked!");
 				Kick(self getEntityNumber());
 			}
 			wait 0.1;
