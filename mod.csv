@@ -283,12 +283,10 @@ rawfile,scripts/server/_servername.gsc
 rawfile,scripts/server/_settings.gsc
 rawfile,scripts/server/_welcome.gsc
 
-
 rawfile,shock/toxic_gas_mp.shock
 rawfile,shock/infection.shock
 rawfile,shock/boss.shock
 rawfile,shock/general_shock.shock
-
 
 sound,abilities,,all_mp
 sound,turrets,,all_mp
@@ -532,7 +530,6 @@ material,mtl_char_ger_honorguard_metal1_1
 // ## German Nazi Zombie Body 2_1
 xmodel,char_ger_honorgd_bodyz2_1
 
-
 // ## German Nazi Zombie Body 2_2
 xmodel,char_ger_honorgd_bodyz2_2
 
@@ -683,12 +680,6 @@ xmodel,bo1_fx_char_gib_chunk_flesh03
 xmodel,bo1_fx_char_gib_chunk_meat01
 xmodel,bo1_fx_char_gib_chunk_meat02
 
-// ## Experimental AVAGADRO BO2 TEST
-// material,bo2_mtl_c_zom_avagadro_brain
-// material,bo2_mtl_c_zom_avagadro_guts
-// material,bo2_mtl_c_zom_avagadro_veins
-// xmodel,bo2_c_zom_avagadro_fb
-
 xmodel,bo_quad
 xmodel,body_complete_mp_spetsnaz_vlad
 xmodel,body_mp_opforce_support
@@ -720,17 +711,11 @@ xmodel,mw2_aa12_worldmodel
 xmodel,mw2_aa12_viewmodel
 xmodel,mw2_mp5k_viewmodel
 xmodel,mw2_mp5k_worldmodel
-xmodel,mw2_mp5k_worldmodel_silencer
 xmodel,mw3_sentry_gl_base
 xmodel,mw3_sentry_gl_turret
 xmodel,projectile_tag
 xmodel,raygun_viewmodel
 xmodel,tesla_viewmodel
-xmodel,weapon_g36
-xmodel,viewmodel_g36c
-xmodel,viewmodel_m21SD
-xmodel,viewmodel_m4m203_silencer_reflex
-xmodel,viewmodel_p90_silencer
 xmodel,viewmodel_thundergun
 xmodel,weapon_bo_tomahawk
 xmodel,weapon_bo_tomahawk_wm
@@ -738,9 +723,6 @@ xmodel,weapon_bo_tomahawk_wm_knife
 xmodel,weapon_crossbow_1
 xmodel,weapon_crossbow_viewhands
 xmodel,weapon_flamethrower
-xmodel,weapon_m4gre_sp_silencer_reflex
-xmodel,weapon_m21SD_woodland
-xmodel,weapon_p90_sd
 xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
 xmodel,weapon_tesla
@@ -751,7 +733,7 @@ xmodel,worldmodel_thundergun
 ////// Custom Weapons ////////
 ///////////////////////////////
 
-// BF3 F2000 by 3aGl3
+// BF3 F2000
 
 sound,f2000,,all_mp
 sound,silencer,,all_mp
@@ -775,8 +757,7 @@ xanim,viewmodel_fn2000_ads_fire
 xanim,viewmodel_fn2000_kobra_ads_up
 xanim,viewmodel_fn2000_kobra_ads_down
 
-//BF3 Sniper
-
+// BF3 L96
 sound,l96,,all_mp
 
 xmodel,viewmodel_l96
@@ -798,7 +779,6 @@ xanim,viewmodel_l96_rechamber
 xanim,viewmodel_l96_fire
 
 // BO Enfield
-
 sound,enfield,,all_mp
 
 xanim,viewmodel_enfield_acog_ads_down
@@ -838,7 +818,6 @@ xmodel,worldmodel_bo_enfield
 xmodel,viewmodel_bo_enfield
 
 // MW2 .44 Magnum
-
 xmodel,viewmodel_mw2_magnum
 xmodel,worldmodel_mw2_magnum
 
@@ -860,10 +839,9 @@ sound,magnum_mw2,,all_mp
 
 
 //MW2 M4
-
 xmodel,viewmodel_mw2_m4
 xmodel,worldmodel_mw2_m4
-xmodel,worldmodel_mw2_m4_gl
+// xmodel,worldmodel_mw2_m4_gl							is this even used
 
 material,mtl_mw2_m4
 material,mtl_mw2_acog
@@ -891,8 +869,7 @@ xanim,viewmodel_mw2_acog_m4_ADS_down
 xanim,viewmodel_mw2_m4_ADS_GL_fire
 
 
-//MW2 Scar-H
-
+// MW2 Scar-H
 xanim,viewmodel_scar_acog_ads_down
 xanim,viewmodel_scar_acog_ads_up
 xanim,viewmodel_scar_ads_down
@@ -909,6 +886,7 @@ xanim,viewmodel_scar_sprint_in
 xanim,viewmodel_scar_sprint_loop
 xanim,viewmodel_scar_sprint_out
 
+// holy hell four models...this thing will be replaced next
 xmodel,viewmodel_scar_h_mp
 xmodel,viewmodel_scar_h_sd_mp
 xmodel,weapon_scarh_mp
@@ -917,8 +895,7 @@ xmodel,weapon_scarhsd_mp
 sound,scar,all_mp,all_mp
 
 
-//MW2 Vector
-
+// MW2 Vector
 material,mtl_mw2_tdi_vector
 material,mtl_mw2_tdi_vector_grip
 material,mtl_mw2_acog
@@ -957,10 +934,8 @@ xanim,viewmodel_mw2_tdi_vector_acog_ADS_up
 sound,TDI_Vector_mw2,,all_mp
 
 
-//Monkey Bomb
-
+// Monkey Bomb
 fx,monkey_grenade/monkey_grenade_onfloor
-
 
 material,hud_icon_monkey
 material,mtl_monkey_bomb_clothes
@@ -977,8 +952,7 @@ xanim,viewmodel_zombie_monkeybomb_pullpin
 xmodel,monkey_bomb_waw
 xmodel,weapon_monkey_bomb
 
-//Bo Crossbow
-
+// Bo Crossbow
 fx,bo_crossbow/smoke_geotrail_crossbow
 fx,bo_crossbow/light_crossbow_blink
 
@@ -989,10 +963,7 @@ material,mtl_bo_gredfield_scope_interior_lens
 material,mtl_bo_rail_n_bracket
 material,mtl_bo_redfield_scope
 
-
-
 sound,crossbow_bo,,all_mp
-
 
 xanim,viewmodel_bo_crossbow_ADS_down
 xanim,viewmodel_bo_crossbow_ADS_up
