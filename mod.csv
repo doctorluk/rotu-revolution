@@ -288,14 +288,11 @@ rawfile,shock/general_shock.shock
 sound,abilities,,all_mp
 sound,turrets,,all_mp
 sound,zombies_windows,,all_mp
-sound,vo,,all_mp
+sound,voice,,all_mp
 sound,weapons,,all_mp
 
 menufile,ui/playerprofile.menu
 // menufile,ui/choices_setup_common.menu			// actually pretty sure we don't need this here
-// menufile,ui/rotulogo.inc							// we don't need .inc files they are included by the compiler
-// menufile,ui/rotuversion.inc
-// menufile,ui/bg.inc
 menufile,ui_mp/challenges.menu
 menufile,ui_mp/controls_multi.menu
 menufile,ui_mp/createserver.menu
@@ -303,8 +300,6 @@ menufile,ui_mp/hud.menu
 menufile,ui_mp/connect.menu
 menufile,ui_mp/main.menu
 menufile,ui_mp/settings_quick_war.menu
-// menufile,ui_mp/teamicon_rotu.inc
-// menufile,ui_mp/teamicon_rotu2.inc
 menufile,ui_mp/wm_quickmessage.menu
 // menufile,ui_mp/scriptmenus/admin.menu
 // menufile,ui_mp/scriptmenus/bxmod_admin.menu
