@@ -101,7 +101,7 @@ rename(args)
 		if (players[i] getEntityNumber() == int(args[0]) && args.size > 1)
 		{
 			iprintln("Player ^3" + players[i].name + "^7 has been renamed to ^3" + args[1] + " ^7by an admin." );
-			players[i] execClientCommand("name " + args[1]);
+			players[i] setClientDvar("name", args[1]);
 		}
 	}
 }
