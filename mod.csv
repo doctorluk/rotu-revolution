@@ -841,7 +841,6 @@ sound,magnum_mw2,,all_mp
 //MW2 M4
 xmodel,viewmodel_mw2_m4
 xmodel,worldmodel_mw2_m4
-// xmodel,worldmodel_mw2_m4_gl							is this even used
 
 material,mtl_mw2_m4
 material,mtl_mw2_acog
