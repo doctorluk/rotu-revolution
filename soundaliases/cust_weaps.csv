@@ -18,12 +18,6 @@ ray_reload_battery_out,,raygun/wpn_ray_reload_battery_out.wav,1,1,wpnplyr,1,1.05
 ray_reload_battery_in,,raygun/wpn_ray_reload_battery.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
 ray_reload_close,,raygun/wpn_ray_reload_close.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
 
-
-#Crossbow Sounds
-#weap_crossbow_fire_plr,,Crossbow/fire1.wav,0.72,0.79,wpnplyr,0.8,0.9,500000,,local,,,,0.85,,,,,weapon2
-#weap_crossbow_fire_npc,,Crossbow/fire1.wav,1,1,wpnai,1,1,35,2000,weapon,,,,0.8,all_mp,,,,weapon4
-#weap_crossbow_bolt_in,,Crossbow/bolt_load1.wav,1,1,,1,1,7,500,reload,,,,0.7,all_mp,,,,weapon2,50
-
 #Thundergun Sounds
 #weap_thundergun_fire_plr,,thundergun/thundergun_fire.wav,0.82,0.89,wpnplyr,0.8,0.9,500000,,local,,,,0.85,,,,,weapon2
 #weap_thundergun_fire_npc,,thundergun/thundergun_fire.wav,1,1,wpnai,1,1,35,2000,weapon,,,,0.8,all_mp,,,,weapon4

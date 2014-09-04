@@ -163,7 +163,6 @@ material,mtl_vacuum_tube_filament_inside
 material,mtl_vacuum_tube_filament_outside
 material,mtl_viewmodel_flamethrower
 material,mtl_viewmodel_flamethrower_hose
-material,mtl_weapon_crossbow
 material,mtl_weapon_flamethrower
 material,mw2_aa12_body
 material,mw3_sentry_gl_body
@@ -219,12 +218,10 @@ material,rank_prestige_45
 material,overlay_armored
 //material,overlay_shocked
 
-material,weapon_crossbow
 material,weapon_tomahawk
 
-
 stringtable,mp/ranktable.csv
-stringtable,mp/ChallengeTable.csv
+stringtable,mp/challengeTable.csv
 stringtable,mp/rankIconTable.csv
 
 rawfile,scripts/bots/_bots.gsc
@@ -425,20 +422,6 @@ xanim,viewmodel_aa12_reload
 xanim,viewmodel_aa12_sprint_in
 xanim,viewmodel_aa12_sprint_loop
 xanim,viewmodel_aa12_sprint_out
-
-xanim,viewmodel_crossbow_ADS_down
-xanim,viewmodel_crossbow_ADS_up
-xanim,viewmodel_crossbow_empty_pullout
-xanim,viewmodel_crossbow_empty_putaway
-xanim,viewmodel_crossbow_fire
-xanim,viewmodel_crossbow_idle
-xanim,viewmodel_crossbow_idle_empty
-xanim,viewmodel_crossbow_pullout
-xanim,viewmodel_crossbow_putaway
-xanim,viewmodel_crossbow_reload
-xanim,viewmodel_crossbow_sprint_in
-xanim,viewmodel_crossbow_sprint_loop
-xanim,viewmodel_crossbow_sprint_out
 
 xanim,viewmodel_flamethrower_idle
 xanim,viewmodel_flamethrower_fire
@@ -680,7 +663,10 @@ xmodel,bo1_fx_char_gib_chunk_flesh03
 xmodel,bo1_fx_char_gib_chunk_meat01
 xmodel,bo1_fx_char_gib_chunk_meat02
 
+// ## Crawler Zombie
 xmodel,bo_quad
+
+// ## Player models
 xmodel,body_complete_mp_spetsnaz_vlad
 xmodel,body_mp_opforce_support
 xmodel,body_mp_sas_urban_specops
@@ -707,6 +693,8 @@ xmodel,head_sp_sas_woodland_peter
 xmodel,head_sp_sas_woodland_todd
 xmodel,head_sp_sas_woodland_hugh
 xmodel,head_sp_spetsnaz_collins_vladbody
+
+// ## Custom Weapons
 xmodel,mw2_aa12_worldmodel
 xmodel,mw2_aa12_viewmodel
 xmodel,mw2_mp5k_viewmodel
@@ -716,22 +704,16 @@ xmodel,mw3_sentry_gl_turret
 xmodel,projectile_tag
 xmodel,raygun_viewmodel
 xmodel,tesla_viewmodel
+xmodel,weapon_tesla
+// The xmodel viewer shows this as some hug weapon idk what it is
 xmodel,viewmodel_thundergun
+xmodel,worldmodel_thundergun
 xmodel,weapon_bo_tomahawk
 xmodel,weapon_bo_tomahawk_wm
 xmodel,weapon_bo_tomahawk_wm_knife
-xmodel,weapon_crossbow_1
-xmodel,weapon_crossbow_viewhands
 xmodel,weapon_flamethrower
 xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
-xmodel,weapon_tesla
-
-xmodel,worldmodel_thundergun
-
-////////////////////////////////
-////// Custom Weapons ////////
-///////////////////////////////
 
 // BF3 F2000
 
