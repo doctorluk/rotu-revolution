@@ -388,9 +388,12 @@ xanim,zombie_dog_run_attack
 xanim,zombie_dog_death_front
 
 xanim,hunted_dazed_walk_A_zombie
+xanim,standunarmed_idle_loop
+xanim,unarmed_panickedrun_loop_V1
 
 xanim,noweapon
 
+// 3rdp Player
 xanim,pt_flamethrower_fire_center
 xanim,pt_flamethrower_crouch_fire_center
 
@@ -406,17 +409,14 @@ xanim,pb_minigun_stand_walk_back
 xanim,pb_minigun_stand_walk
 xanim,pb_minigun_stand_idle
 xanim,pb_minigun_crouch_idle
-xanim,pt_rifle_stand_reload_rearclip
-xanim,pt_rifle_prone_reload_rearclip
-xanim,pt_rifle_crouch_reload_rearclip
 xanim,pt_minigun_stand_reload
 xanim,pt_minigun_crouch_reload
 xanim,pt_minigun_stand_fire
 xanim,pt_minigun_crouch_fire
 
-xanim,standunarmed_idle_loop
-
-xanim,unarmed_panickedrun_loop_V1
+xanim,pt_rifle_stand_reload_rearclip
+xanim,pt_rifle_prone_reload_rearclip
+xanim,pt_rifle_crouch_reload_rearclip
 
 xanim,viewmodel_aa12_ADS_down
 xanim,viewmodel_aa12_ADS_fire
