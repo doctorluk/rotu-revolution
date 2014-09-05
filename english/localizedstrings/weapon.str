@@ -49,6 +49,12 @@ LANG_ENGLISH		"AA12"
 REFERENCE           SCAR_H
 LANG_ENGLISH        "SCAR-H"
 
+REFERENCE           AUG
+LANG_ENGLISH        "Steyr AUG"
+
+REFERENCE           L85
+LANG_ENGLISH        "Enfield"
+
 ENDMARKER
 
 
