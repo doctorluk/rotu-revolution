@@ -700,7 +700,7 @@ xmodel,projectile_tag
 xmodel,raygun_viewmodel
 xmodel,tesla_viewmodel
 xmodel,weapon_tesla
-// The xmodel viewer shows this as some hug weapon idk what it is
+// The xmodel viewer shows this as some huge weapon idk what it is
 xmodel,viewmodel_thundergun
 xmodel,worldmodel_thundergun
 xmodel,weapon_bo_tomahawk
@@ -711,10 +711,6 @@ xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
 
 // BF3 F2000
-
-sound,f2000,,all_mp
-sound,silencer,,all_mp
-
 xmodel,viewmodel_bf3_f2000
 xmodel,weapon_bf3_f2000
 
@@ -843,33 +839,6 @@ xanim,viewmodel_mw2_acog_m4_ADS_up
 xanim,viewmodel_mw2_acog_m4_ADS_fire
 xanim,viewmodel_mw2_acog_m4_ADS_down
 xanim,viewmodel_mw2_m4_ADS_GL_fire
-
-
-// MW2 Scar-H
-xanim,viewmodel_scar_acog_ads_down
-xanim,viewmodel_scar_acog_ads_up
-xanim,viewmodel_scar_ads_down
-xanim,viewmodel_scar_ads_up
-xanim,viewmodel_scar_fire
-xanim,viewmodel_scar_idle
-xanim,viewmodel_scar_pullout
-xanim,viewmodel_scar_putaway
-xanim,viewmodel_scar_reflex_ads_down
-xanim,viewmodel_scar_reflex_ads_up
-xanim,viewmodel_scar_reload
-xanim,viewmodel_scar_reload_empty
-xanim,viewmodel_scar_sprint_in
-xanim,viewmodel_scar_sprint_loop
-xanim,viewmodel_scar_sprint_out
-
-// holy hell four models...this thing will be replaced next
-xmodel,viewmodel_scar_h_mp
-xmodel,viewmodel_scar_h_sd_mp
-xmodel,weapon_scarh_mp
-xmodel,weapon_scarhsd_mp
-
-sound,scar,all_mp,all_mp
-
 
 // MW2 Vector
 material,mtl_mw2_tdi_vector
