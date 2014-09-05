@@ -120,10 +120,8 @@ material,icon_ammobox_placed
 material,icon_ammobox_radar
 material,hud_icon_medkit
 material,hud_icon_monkey
-material,hud_icon_tomahawk
 material,hud_lowhp
 material,healthcross
-material,hud_tomahawk_dpad
 material,hud_weapons
 
 material,lightning_icon
@@ -214,8 +212,6 @@ material,rank_prestige_45
 
 material,overlay_armored
 //material,overlay_shocked
-
-material,weapon_tomahawk
 
 stringtable,mp/ranktable.csv
 stringtable,mp/challengeTable.csv
@@ -450,15 +446,6 @@ xanim,viewmodel_tesla_ADS_up
 xanim,viewmodel_tesla_fire
 xanim,viewmodel_tesla_first_raise
 xanim,viewmodel_tesla_idle
-
-xanim,viewmodel_tomahawk_attack
-xanim,viewmodel_tomahawk_attack2
-xanim,viewmodel_tomahawk_pullout
-xanim,viewmodel_tomahawk_putaway
-xanim,viewmodel_tomahawk_idle
-xanim,viewmodel_tomahawk_sprint_in
-xanim,viewmodel_tomahawk_sprint_loop
-xanim,viewmodel_tomahawk_sprint_out
 
 // ## BF3 Medic and Ammobag
 xmodel,viewmodel_bf3_medicbag
@@ -697,9 +684,6 @@ xmodel,projectile_tag
 xmodel,raygun_viewmodel
 xmodel,tesla_viewmodel
 xmodel,weapon_tesla
-xmodel,weapon_bo_tomahawk
-xmodel,weapon_bo_tomahawk_wm
-xmodel,weapon_bo_tomahawk_wm_knife
 xmodel,weapon_flamethrower
 xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
