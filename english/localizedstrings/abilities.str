@@ -409,10 +409,10 @@ REFERENCE			ARMORED_PR_AB1D
 LANG_ENGLISH        "Melee Warrior (^3lvl 5^7)"
 
 REFERENCE			DES_ARMORED_PR_AB1
-LANG_ENGLISH		"The Armored has a surprise in his pocket... a deadly Axe to inflict serious damage to the Zombies."
+LANG_ENGLISH		"The Armored isn't afraid of melee combat. He will even keep fighting with nothing but his knife."
 
 REFERENCE			DES_ARMORED_PR_AB1D
-LANG_ENGLISH		"The Armored has a surprise in his pocket... a deadly Axe to inflict serious damage to the Zombies. ^3Unlocked at Armored rank^3 5."
+LANG_ENGLISH		"The Armored isn't afraid of melee combat. He will even keep fighting with nothing but his knife. ^3Unlocked at Armored rank^3 5."
 
 		// ABILITY 2 //
 REFERENCE			ARMORED_PR_AB2

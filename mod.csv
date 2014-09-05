@@ -688,6 +688,21 @@ xmodel,weapon_flamethrower
 xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
 
+// Combat Knife
+material,death_knife
+
+xanim,viewmodel_strider_idle
+xanim,viewmodel_strider_melee_swipe
+xanim,viewmodel_strider_melee_charge
+xanim,viewmodel_strider_pullout
+xanim,viewmodel_strider_first_raise
+xanim,viewmodel_strider_putaway
+xanim,viewmodel_strider_sprint_in
+xanim,viewmodel_strider_sprint_loop
+xanim,viewmodel_strider_sprint_out
+xanim,viewmodel_strider_ads_up
+xanim,viewmodel_strider_ads_down
+
 // BF3 SCAR H
 xmodel,viewmodel_bf3_scar_h
 xmodel,weapon_bf3_scar_h

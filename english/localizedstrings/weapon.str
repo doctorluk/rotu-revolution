@@ -55,6 +55,9 @@ LANG_ENGLISH        "Steyr AUG"
 REFERENCE           L85
 LANG_ENGLISH        "Enfield"
 
+REFERENCE           KNIFE
+LANG_ENGLISH        "Knife"
+
 ENDMARKER
 
 
