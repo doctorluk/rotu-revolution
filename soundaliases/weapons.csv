@@ -55,18 +55,18 @@ weap_m4silenced_fire_npc,,weapons/f2000/weap_f2000_sdmn_01.wav,0.56,0.62,wpnai,0
 #F2000
 weap_f2000_fire_plr,,weapons/f2000/weap_f2000_slst_01.wav,0.95,1,wpnplyr,1.1,1.2,500,,local,,,,0.85,,,,,weapon2
 weap_f2000_fire_npc,,weapons/f2000/weap_f2000_slmn_01.wav,0.87,0.93,wpnai,1.2,1.3,35,10920,weapon,,,,0.7,all_mp,,,,weapon4,,,,
-weap_f2000_lift_plr,,weapons/f2000/wpfoly_f2000_reload_lift.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
-weap_f2000_clipout_plr,,weapons/f2000/wpfoly_f2000_reload_clipout.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
-weap_f2000_clipin_plr,,weapons/f2000/wpfoly_f2000_reload_clipin.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
-weap_f2000_chamber_plr,,weapons/f2000/wpfoly_f2000_reload_slap.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
-weap_f2000_first_chamber_plr,,weapons/f2000/wpfoly_f2000_reload_bolt.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+weap_f2000_lift_plr,,weapons/f2000/wpfoly_f2000_reload_lift.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+weap_f2000_clipout_plr,,weapons/f2000/wpfoly_f2000_reload_clipout.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+weap_f2000_clipin_plr,,weapons/f2000/wpfoly_f2000_reload_clipin.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+weap_f2000_chamber_plr,,weapons/f2000/wpfoly_f2000_reload_slap.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+weap_f2000_first_chamber_plr,,weapons/f2000/wpfoly_f2000_reload_bolt.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
 
 #SCARH
 weap_scarh_fire_plr,,weapons/scar/weap_scarh_slst_01.wav,0.95,1,wpnplyr,0.9,1,500,,local,,,,0.85,,,,,weapon2
 weap_scarh_fire_npc,,weapons/scar/weap_scarh_slmn_01.wav,0.87,0.93,wpnai,0.9,1,35,10920,weapon,,,,0.7,all_mp,,,,weapon4,,,,
-weap_scar_bolt_release_plr,,weapons/scar/wpfoly_scarh_reload_bolt.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
-weap_scar_clipout_plr,,weapons/scar/wpfoly_scarh_reload_clipout.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
-weap_scar_futz_plr,,weapons/scar/wpfoly_scarh_reload_draw.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
-weap_scar_clipin_plr,,weapons/scar/wpfoly_scarh_reload_clipin.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
-# weap_scar_tap_plr,,weapons/scar/wpfoly_f2000_reload_slap.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+weap_scar_bolt_release_plr,,weapons/scar/wpfoly_scarh_reload_bolt.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+weap_scar_clipout_plr,,weapons/scar/wpfoly_scarh_reload_clipout.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+weap_scar_futz_plr,,weapons/scar/wpfoly_scarh_reload_draw.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+weap_scar_clipin_plr,,weapons/scar/wpfoly_scarh_reload_clipin.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
+# weap_scar_tap_plr,,weapons/scar/wpfoly_f2000_reload_slap.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
 
