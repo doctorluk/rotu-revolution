@@ -700,9 +700,6 @@ xmodel,projectile_tag
 xmodel,raygun_viewmodel
 xmodel,tesla_viewmodel
 xmodel,weapon_tesla
-// The xmodel viewer shows this as some huge weapon idk what it is
-xmodel,viewmodel_thundergun
-xmodel,worldmodel_thundergun
 xmodel,weapon_bo_tomahawk
 xmodel,weapon_bo_tomahawk_wm
 xmodel,weapon_bo_tomahawk_wm_knife
