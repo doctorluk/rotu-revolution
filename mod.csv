@@ -41,7 +41,6 @@ localize,class
 // fx,impacts/large_metalhit_1
 // fx,misc/flashlight
 // fx,misc/fumes
-// fx,muzzleflashes/thundergun
 // fx,muzzleflashes/heavy
 // fx,raygun/raygun_trail
 // fx,smoke/heli_engine_smolder
@@ -121,11 +120,9 @@ material,icon_ammobox_placed
 material,icon_ammobox_radar
 material,hud_icon_medkit
 material,hud_icon_monkey
-material,hud_icon_thundergun
 material,hud_icon_tomahawk
 material,hud_lowhp
 material,healthcross
-material,hud_thundergun_dpad
 material,hud_tomahawk_dpad
 material,hud_weapons
 
@@ -706,6 +703,39 @@ xmodel,weapon_bo_tomahawk_wm_knife
 xmodel,weapon_flamethrower
 xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
+
+// BF3 SCAR H
+xmodel,viewmodel_bf3_scar_h
+xmodel,weapon_bf3_scar_h
+
+xanim,viewmodel_scar_h_grip_idle
+xanim,viewmodel_scar_h_grip_idle_empty
+xanim,viewmodel_scar_h_grip_fire
+xanim,viewmodel_scar_h_grip_last_shot
+xanim,viewmodel_scar_h_grip_reload
+xanim,viewmodel_scar_h_grip_reload_empty
+xanim,viewmodel_scar_h_grip_first_raise
+xanim,viewmodel_scar_h_grip_pullout
+xanim,viewmodel_scar_h_grip_pullout_empty
+xanim,viewmodel_scar_h_grip_pullout_quick
+xanim,viewmodel_scar_h_grip_putaway
+xanim,viewmodel_scar_h_grip_putaway_quick
+xanim,viewmodel_scar_h_grip_putaway_empty
+xanim,viewmodel_scar_h_grip_sprint_in
+xanim,viewmodel_scar_h_grip_sprint_loop
+xanim,viewmodel_scar_h_grip_sprint_out
+xanim,viewmodel_scar_h_grip_ads_fire
+xanim,viewmodel_scar_h_grip_ads_last_shot
+
+# Iron and ACOG
+xanim,viewmodel_scar_h_grip_ads_up
+xanim,viewmodel_scar_h_grip_ads_down
+
+# Reflex and Holo
+xanim,viewmodel_scar_h_reflex_ads_up
+
+# Kobra
+# xanim,viewmodel_scar_h_kobra_ads_up
 
 // BF3 F2000
 xmodel,viewmodel_bf3_f2000
