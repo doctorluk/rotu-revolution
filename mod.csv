@@ -676,8 +676,6 @@ xmodel,head_sp_spetsnaz_collins_vladbody
 // ## Custom Weapons
 xmodel,mw2_aa12_worldmodel
 xmodel,mw2_aa12_viewmodel
-xmodel,mw2_mp5k_viewmodel
-xmodel,mw2_mp5k_worldmodel
 xmodel,mw3_sentry_gl_base
 xmodel,mw3_sentry_gl_turret
 xmodel,projectile_tag
@@ -687,6 +685,27 @@ xmodel,weapon_tesla
 xmodel,weapon_flamethrower
 xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
+
+// MP5k
+xmodel,viewmodel_bf3_mp5k
+xmodel,weapon_bf3_mp5k
+
+xanim,viewmodel_mp5_grip_idle
+xanim,viewmodel_mp5_grip_fire
+xanim,viewmodel_mp5_grip_last_shot
+xanim,viewmodel_mp5_grip_reload
+xanim,viewmodel_mp5_grip_reload_empty
+xanim,viewmodel_mp5_grip_pullout
+xanim,viewmodel_mp5_grip_first_raise
+xanim,viewmodel_mp5_grip_putaway
+xanim,viewmodel_mp5_grip_pullout_quick
+xanim,viewmodel_mp5_grip_putaway_quick
+xanim,viewmodel_mp5_grip_sprint_in
+xanim,viewmodel_mp5_grip_sprint_loop
+xanim,viewmodel_mp5_grip_sprint_out
+xanim,viewmodel_mp5_grip_ads_fire
+xanim,viewmodel_mp5_grip_ads_up
+xanim,viewmodel_mp5_grip_ads_down
 
 // Combat Knife
 material,death_knife
