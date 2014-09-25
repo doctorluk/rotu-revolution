@@ -111,6 +111,9 @@ restoreData() {
 		struct.stats = self.stats;
 		
 	}
+	else
+		self.stats = struct.stats;
+		
 	self.persData = struct;
 	
 	self.points = struct.points;

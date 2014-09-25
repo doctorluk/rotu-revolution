@@ -54,6 +54,19 @@ printPlayerStats(struct, guid){
 
 	if( !struct.hasPlayed )
 		return;
+		
+	if( isOnServer(guid) )
+		name 			= getNameByGUID(guid);
+	else
+		name			= struct.stats["name"];
+		
+	if( 1 /*TODO: REMOVE DEBUGGING */){
+		hasStats = "no";
+		if( isDefined( struct.stats ) )
+			hasStats = "yes";
+		logPrint("ROTU_STATS_DEBUG;defined struct.stats=" + hasStats + " for " + name);
+	}
+	
 	kills 				= int(struct.stats["kills"]);
 	assists 			= int(struct.stats["assists"]);
 	deaths 				= int(struct.stats["deaths"]);
@@ -75,11 +88,6 @@ printPlayerStats(struct, guid){
 	barriersRestored 	= int(struct.stats["barriersRestored"]);
 	
 	role 				= struct.class;
-	
-	if( isOnServer(guid) )
-		name 			= getNameByGUID(guid);
-	else
-		name			= struct.stats["name"];
 	
 	logPrint("ROTU_STATS_PLAYER;"
 	+ guid + ";"
