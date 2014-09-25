@@ -105,13 +105,16 @@ In case the website is offline, the mod is most likely dead, or you ask google i
 //		Possible STOP of development			//
 //												//
 
-It may be likely that, once this mod is released, the development of it comes to a hold. It does not look as if I have time left in the near future to add more stuff or fix existing things. I really hope that most of the mod runs well and stable.
+It may be likely that, once this mod is released, the development of it comes to a hold.
+It does not look as if I have time left in the near future to add more stuff or fix existing things.
+I really hope that most of the mod runs well and stable.
 
 //										//
 //		Decompilation of sources		//
 //										//
 
-I personally do not hate the decompilation of sources. I myself have decompiled many mods and maps in order to begin scripting for Call of Duty 4 myself. Without official documentation and only limited basic tutorials it is extremely hard to try out stuff. The easiest way is by decompiling a mod, understanding its structure and adding new features that often fail at first, but will motivate once they actually work!
+I personally do not hate the decompilation of sources. I myself have decompiled many mods and maps in order to begin scripting for Call of Duty 4 myself. 
+Without official documentation and only limited basic tutorials it is extremely hard to try out stuff. The easiest way is by decompiling a mod, understanding its structure and adding new features that often fail at first, but will motivate once they actually work!
 The only thing I want you to do when you use any of the sources of this mod, no matter who made them, credit them accordingly!
 
 --------------------------------
