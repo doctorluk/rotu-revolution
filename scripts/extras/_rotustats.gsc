@@ -64,7 +64,7 @@ printPlayerStats(struct, guid){
 		hasStats = "no";
 		if( isDefined( struct.stats ) )
 			hasStats = "yes";
-		logPrint("ROTU_STATS_DEBUG;defined struct.stats=" + hasStats + " for " + name);
+		logPrint("ROTU_STATS_DEBUG;defined struct.stats=" + hasStats + " for " + name + "\n");
 	}
 	
 	kills 				= int(struct.stats["kills"]);
