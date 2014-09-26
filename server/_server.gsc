@@ -20,6 +20,7 @@
 
 init()
 {
+	thread scripts\server\_versioning::init();
 	thread scripts\extras\_codx::init();
 	
 	thread scripts\server\_settings::init();
@@ -40,16 +41,15 @@ init()
 // General information broadcast
 broadcastVersion(){
 	level endon("game_ended");
-	level.rotuVersion = "RotU-Revolution Alpha 0.7-pre";
-	level.rotuVersion_short = "RotU-R Alpha 0.7-pre";
-	level.rotuVersion_hostname = "RotU-Revolution 0.7-pre-alpha";
-	level.rotuVersion_hostname_short = "0.7-pre-alpha";
+	
 	switch( getDvar("net_ip") ){
 		case "185.4.149.11":
 			while( 1 ){
 				iprintln("^2This Server is running ^1" + level.rotuVersion);
 				iprintln("^2Please report bugs at ^3PuffyForum.com");
 				iprintln("^2Also note that this version ^3DOES ^2contain Bugs!");
+				wait 60;
+				iprintln("This Version of RotU-R has last been modified at " + level.lastModification);
 				if(getDvarInt("developer_script")){
 					wait 60;
 					iprintln("^3XP GAIN HAS BEEN ^1DISABLED ^3DUE TO DEBUGGING MODE");
