@@ -457,7 +457,7 @@ deleteTurret(gun, bipod)
 
 glDamage(targetSpot, range, damage, attacker)
 {
-	for (i=0; i < level.bots.size; i++)
+	for ( i = 0 ; i < level.bots.size; i++ )
 	{
 		selectedBot = level.bots[i];
 		if (isdefined(selectedBot) && isalive(selectedBot) && !selectedBot.untargetable)
@@ -492,7 +492,7 @@ shootGL()
 		if( isDefined( self.targetPlayer ) )
 		{
 			self waittill("rotation_done");
-			for (i=0; i<self.numBullets; i++) {
+			for ( i = 0; i < self.numBullets; i++ ) {
 				if (!isDefined(self.targetPlayer) || self isInView(self.targetPlayer) <= 0 || !isAlive(self.targetPlayer))
 					break;
 				
@@ -546,7 +546,7 @@ shootMinigun()
 		if( isDefined( self.targetPlayer ) )
 		{
 			self waittill("rotation_done");
-			for (i=0; i<self.numBullets; i++) {
+			for ( i = 0; i < self.numBullets; i++ ) {
 				if (!isDefined(self.targetPlayer) || self isInView(self.targetPlayer) <= 0 || !isAlive(self.targetPlayer))
 					break;
 				

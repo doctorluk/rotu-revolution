@@ -1229,26 +1229,32 @@ onSpecialAbility()
 	{
 		case "aura":
 			self thread specialAura(self.special["duration"]);
+			iprintln(self.name + "^7 has placed a ^2Healing Aura^7!");
 			self resetSpecial();
 		break;
 		case "rampage":
 			self doRampage(self.special["duration"]);
+			iprintln(self.name + "^7 activated his ^1Rampage^7!");
 			self resetSpecial();
 		break;
 		case "invincible":
 			self doInvincible(self.special["duration"]);
+			iprintln(self.name + "^7 has become ^3Invincible^7!");
 			self resetSpecial();
 		break;
 		case "augmentation":
 			if (self doAugmentation())
+			iprintln(self.name + "^7 ^3augmented ^7his ^3turrets^7!");
 			self resetSpecial();
 		break;
 		case "escape":
 			self doEscape(self.special["duration"]);
+			iprintln(self.name + "^7 sped himself up^7!");
 			self resetSpecial();
 		break;
 		case "fake_death":
 			self doNinja(self.special["duration"]);
+			iprintln(self.name + "^7 is temporarily ^5untargetable^7!");
 			self resetSpecial();
 		break;
 	}
