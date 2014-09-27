@@ -212,10 +212,8 @@ hasFullAmmo()
 }
 
 onPlayerDisconnect(){
-
 	self.stats["name"] = self.name;
 	self.persData.stats = self.stats;
-
 }
 
 onPlayerConnect()

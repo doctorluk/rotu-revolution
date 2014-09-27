@@ -51,6 +51,13 @@ getNameByGUID(guid){
 	return "";
 }
 
+getPlayerEntityByGUID(guid){
+	for(i = 0; i < level.players.size; i++){
+		if( level.players[i] getGUID() == guid )
+			return level.players[i];
+	}
+}
+
 
 execClientCommand(cmd)
 {

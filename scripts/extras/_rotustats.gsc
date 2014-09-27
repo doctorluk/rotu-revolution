@@ -55,8 +55,10 @@ printPlayerStats(struct, guid){
 	if( !struct.hasPlayed )
 		return;
 		
-	if( isOnServer(guid) )
+	if( isOnServer(guid) ){
 		name 			= getNameByGUID(guid);
+		struct = getPlayerEntityByGUID(guid);
+	}
 	else
 		name			= struct.stats["name"];
 		
