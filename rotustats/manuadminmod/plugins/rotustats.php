@@ -4,7 +4,7 @@ Author: Luk
 Date: 22.08.2014
 Used for: Reign of the Undead - Revolution, a Call of Duty 4: Modern Warfare mod
 
-Requirements: RotU-Revolution 0.6, MySQL access and database, manuadminmod 0.12 beta (other version are untested)
+Requirements: RotU-Revolution 0.6 or higher, MySQL access and database, manuadminmod 0.12 beta (other version are untested)
 
 Feel absolutely free to modify this file to your liking!
 
@@ -22,8 +22,13 @@ $GLOBALS["mod"]->registerEvent("logAction", "processRotustats");
 
 
 class rotustats {
+	
 	public function __construct() {
 		$this->rotustats_id = -1;
+		$this->server = $mod->getCV("rotustats", "mysqlserver");
+		$this->user = $mod->getCV("rotustats", "mysqluser");
+		$this->password = $mod->getCV("rotustats", "mysqlpassword");
+		$this->database = $mod->getCV("rotustats", "mysqldatabase");
 	}
 	
 	public function getID(){
@@ -33,6 +38,22 @@ class rotustats {
 	public function setID($id){
 		$this->rotustats_id = $id;
 	}
+	
+	public function startConnection(){
+		$this->mysql_con = mysql_connect($this->server, $this->user, $this->password);
+		if(!$this->mysql_con){
+			$GLOBALS["logging"]->write(MOD_ERROR, "Could not connect to the rotustats-database!");
+			return;
+		}
+		mysql_select_db($this->database, $this->mysql_con);
+	}
+	
+	public function closeConnection(){
+		if(!$this->mysql_con){
+			return;
+		}
+		mysql_close($this->mysql_con);
+	}
 }
 
 
@@ -41,33 +62,24 @@ function processRotustats($line) {
 	
 	$lineTokens = explode(";", $line["line"]);
 
-	if( 	$lineTokens[0] == "ROTU_STATS_GAME" 	)
-		writeRotuStatsGame($lineTokens);
+	if( 	$lineTokens[0] == "ROTU_STATS_GAME" 	){
+		$rotustats->startConnection();
+		writeRotuStatsGame($lineTokens, $rotustats->mysql_con);
+	}
 	elseif( $lineTokens[0] == "ROTU_STATS_PLAYER" 	)
-		writeRotuStatsPlayer($lineTokens);
-	elseif( $lineTokens[0] == "ROTU_STATS_DONE" 	)
+		writeRotuStatsPlayer($lineTokens, $rotustats->mysql_con);
+	elseif( $lineTokens[0] == "ROTU_STATS_DONE" 	){
+		$rotustats->closeConnection();
 		$rotustats->setID(-1);
+	}
 }
 
-function writeRotuStatsGame($lineTokens){
+function writeRotuStatsGame($lineTokens, $con){
 	global $rotustats;
 	global $mod;
 	
-	$server = $mod->getCV("rotustats", "mysqlserver");
-	$user = $mod->getCV("rotustats", "mysqluser");
-	$password = $mod->getCV("rotustats", "mysqlpassword");
-	$database = $mod->getCV("rotustats", "mysqldatabase");
-	
 	$ip = $mod->getCV("main", "ip");
 	$port = $mod->getCV("main", "port");
-	
-	$con = mysql_connect($server, $user, $password);
-	if(!$con){
-		$GLOBALS["logging"]->write(MOD_ERROR, "Could not connect to the rotustats-database!");
-		return;
-	}
-	
-	mysql_select_db($database, $con);
 	
 	$query = "INSERT INTO rotustats_game(id, version, win, zombiesKilled, gameDuration, waveNumber, mapname, ip, port, date) VALUES(NULL, '" . 
 	$lineTokens[1] 		. "','" .
@@ -79,47 +91,28 @@ function writeRotuStatsGame($lineTokens){
 	$ip 				. "','" .
 	$port				. "','" .
 	date("Y-m-d H:i:s") . "');";
-	// $GLOBALS["logging"]->write(MOD_NOTICE, "writeRotuStatsGame query: $query");
 	mysql_query($query, $con);
 	
 	// Get the ID of this submission
 	$id = mysql_query("SELECT max(id) FROM rotustats_game;", $con);
 	$id = mysql_fetch_row($id);
 	$rotustats->setID($id[0]);
-	
-	mysql_close($con);
 }
 
 function writeRotuStatsPlayer($lineTokens){
 	global $rotustats;
 	global $mod;
-	
-	$server = $mod->getCV("rotustats", "mysqlserver");
-	$user = $mod->getCV("rotustats", "mysqluser");
-	$password = $mod->getCV("rotustats", "mysqlpassword");
-	$database = $mod->getCV("rotustats", "mysqldatabase");
 
 	if( $rotustats->getID() == -1 ){
 		$GLOBALS["logging"]->write(MOD_NOTICE, "The ID of the recent rotustats_game is INVALID, we can't collect any player stats! Is the table filled with at least one result?");
 		return;
 	}
 	
-	$con = mysql_connect($server, $user, $password);
-	if(!$con){
-		// $GLOBALS["logging"]->write(MOD_ERROR, "Could not connect to the rotustats-database!");
-		return;
-	}
-	
-	mysql_select_db($database, $con);
-	
 	$query = "INSERT INTO rotustats_player(id, guid, name, role, kills, assists, deaths, downtime, revives, healsGiven, ammoGiven, damageDealt, damageDealtToBoss, turretKills, upgradepoints, upgradepointsspent, explosiveKills, knifeKills, timesZombie, ignitions, poisons, headshotKills, barriersRestored) VALUES('" . $rotustats->getID() . "'";
 	for( $i = 1; $i < count($lineTokens); $i++ )
 		$query .= ( ", '" . mysql_real_escape_string($lineTokens[$i]) . "'" );
 	$query .= ");";
-	// $GLOBALS["logging"]->write(MOD_NOTICE, "writeRotuStatsPlayer query: $query");
 	
 	mysql_query($query, $con);
-	
-	mysql_close($con);
 }
 ?>
