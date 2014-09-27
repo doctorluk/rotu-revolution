@@ -24,6 +24,6 @@ init(){
 	level.rotuVersion_hostname = "RotU-Revolution 0.7-indev-alpha";
 	level.rotuVersion_hostname_short = "0.7-indev-alpha";
 	
-	level.lastModification = "27.09.14 02:18"; // Maybe find a Notepad++ Script that puts the current date in here whenever this file is modified?
-	level.buildNumber = 3; // Maybe find a Notepad++/Git Script that increments the number every time a commit is sent?
+	level.lastModification = "27.09.14 02:23"; // Maybe find a Notepad++ Script that puts the current date in here whenever this file is modified?
+	level.buildNumber = 4; // Maybe find a Notepad++/Git Script that increments the number every time a commit is sent?
 }

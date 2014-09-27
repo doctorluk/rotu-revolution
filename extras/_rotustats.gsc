@@ -62,9 +62,12 @@ printPlayerStats(struct, guid){
 		
 	if( 1 /*TODO: REMOVE DEBUGGING */){
 		hasStats = "no";
+		wasOnServer = "no";
 		if( isDefined( struct.stats ) )
 			hasStats = "yes";
-		logPrint("ROTU_STATS_DEBUG;defined struct.stats=" + hasStats + " for " + name + "\n");
+		if( isOnServer(guid) )
+			wasOnServer = "yes";
+		logPrint("ROTU_STATS_DEBUG;defined struct.stats=" + hasStats + ", isOnServer: " + wasOnServer + " for " + name + "\n");
 	}
 	
 	kills 				= int(struct.stats["kills"]);
