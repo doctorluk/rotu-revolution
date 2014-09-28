@@ -43,12 +43,6 @@ init()
 	addCmd("readconfig", ::readconfig);
 	// addCmd("slap", ::slap);
 	addCmd("kill_zombies", ::killZombies);
-	precache();
-}
-
-precache()
-{
-
 }
 
 addCmd(dvar, script)

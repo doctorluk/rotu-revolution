@@ -108,10 +108,10 @@ restoreData() {
 		self.stats["killedZombieTypes"]["helldog"] = 0;
 		self.stats["killedZombieTypes"]["halfboss"] = 0;
 		
+		struct.stats = self.stats;
 	}
 		
 	self.persData = struct;
-	self.persData.stats = self.stats;
 	
 	self.points = struct.points;
 	self.unlock["primary"] = struct.unlock["primary"];
