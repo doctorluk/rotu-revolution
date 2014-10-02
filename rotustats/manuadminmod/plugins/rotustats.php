@@ -1,7 +1,7 @@
 <?php
 /*
 Author: Luk
-Date: 22.08.2014
+Date: 03.10.2014
 Used for: Reign of the Undead - Revolution, a Call of Duty 4: Modern Warfare mod
 
 Requirements: RotU-Revolution 0.6 or higher, MySQL access and database, manuadminmod 0.12 beta (other version are untested)
@@ -24,6 +24,8 @@ $GLOBALS["mod"]->registerEvent("logAction", "processRotustats");
 class rotustats {
 	
 	public function __construct() {
+		global $mod;
+		
 		$this->rotustats_id = -1;
 		$this->server = $mod->getCV("rotustats", "mysqlserver");
 		$this->user = $mod->getCV("rotustats", "mysqluser");
@@ -40,9 +42,10 @@ class rotustats {
 	}
 	
 	public function startConnection(){
+		$GLOBALS["logging"]->write(MOD_NOTICE, "RotU-STATS: Establishing MySQL connection.");
 		$this->mysql_con = mysql_connect($this->server, $this->user, $this->password);
 		if(!$this->mysql_con){
-			$GLOBALS["logging"]->write(MOD_ERROR, "Could not connect to the rotustats-database!");
+			$GLOBALS["logging"]->write(MOD_WARNING, "RotU-STATS: Could not connect to the rotustats-database!");
 			return;
 		}
 		mysql_select_db($this->database, $this->mysql_con);
@@ -52,6 +55,7 @@ class rotustats {
 		if(!$this->mysql_con){
 			return;
 		}
+		$GLOBALS["logging"]->write(MOD_NOTICE, "RotU-STATS: Closing MySQL connection.");
 		mysql_close($this->mysql_con);
 	}
 }
@@ -99,7 +103,7 @@ function writeRotuStatsGame($lineTokens, $con){
 	$rotustats->setID($id[0]);
 }
 
-function writeRotuStatsPlayer($lineTokens){
+function writeRotuStatsPlayer($lineTokens, $con){
 	global $rotustats;
 	global $mod;
 
@@ -111,6 +115,7 @@ function writeRotuStatsPlayer($lineTokens){
 	$query = "INSERT INTO rotustats_player(id, guid, name, role, kills, assists, deaths, downtime, revives, healsGiven, ammoGiven, damageDealt, damageDealtToBoss, turretKills, upgradepoints, upgradepointsspent, explosiveKills, knifeKills, timesZombie, ignitions, poisons, headshotKills, barriersRestored) VALUES('" . $rotustats->getID() . "'";
 	for( $i = 1; $i < count($lineTokens); $i++ )
 		$query .= ( ", '" . mysql_real_escape_string($lineTokens[$i]) . "'" );
+		
 	$query .= ");";
 	
 	mysql_query($query, $con);

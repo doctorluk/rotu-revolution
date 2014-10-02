@@ -27,6 +27,7 @@ You can then use the database data to make yourself some nice statistics, graphs
 
 //										//
 //			Installation				//
+//		(MANU 	ADMIN 	MOD)			//
 //										//
 - Import the rotustats.sql file via phpmyadmin or manually per SSH. MAKE SURE YOU HAVE SELECTED A DATABASE!
 - Copy the manuadminmod/plugins/rotustats.php into your adminmod/plugins folder (and NOT into adminmod/config/plugins)
@@ -35,7 +36,15 @@ You can then use the database data to make yourself some nice statistics, graphs
 [rotustats]
 mysqlserver 	= "localhost"
 mysqluser 		= "rotustats"
-mysqlpassword 	= ""
+mysqlpassword 	= "mysqlpassword"
 mysqldatabase 	= "db_rotustats"
 
 If your Manu Admin Mod was running, make sure to restart it!
+
+
+//										//
+//			Installation				//
+//		(BIG 	BROTHER 	BOT)		//
+//				(B3)					//
+//										//
+- Read the README.txt in the b3 folder!
