@@ -508,16 +508,12 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 				}
 			}
 			
-			assertEx( isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ), "getDamageModifier was undefined!");
-			if( !isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) ){
-				iprintln("^1ERROR^7: getDamageModifier for player " + eAttacker.name + " is UNDEFINED using weapon " + sWeapon);
+			if( !isDefined( iDamage ) || !isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) || !isDefined( self.incdammod ) ){
+				logPrint( "LUK_DEBUG; Definition: iDamage: " + isDefined(iDamage) + ", getDamageModifier: " + isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) + ", self.incdammod: " + isDefined(self.incdammod) + ", weapon: " + sWeapon + "\n" );
 				return;
 			}
-			iDamage = int( iDamage * eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) * self.incdammod);
 			
-			assertEx( isDefined( self.incdammod ) );
-			if( !isDefined( iDamage ) )
-				return;
+			iDamage = int( iDamage * eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) * self.incdammod);
 			
 			eAttacker notify("damaged_bot", self);
 			
@@ -665,8 +661,11 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		attacker.kills++;
 		attacker.stats["kills"]++;
 		
-		if( isDefined( attacker.stats["killedZombieTypes"][self.type] ) )
+		if( isDefined( attacker.stats["killedZombieTypes"][self.type] ) ){
 			attacker.stats["killedZombieTypes"][self.type]++;
+		}
+		else
+			logPrint("killedZombieTypes for " + self.type + " aint defined, bro\n");
 			
 		attacker thread scripts\players\_rank::giveRankXP("kill");
 		attacker thread scripts\players\_spree::checkSpree();
