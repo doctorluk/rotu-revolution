@@ -773,7 +773,7 @@ spawnPlayer(forceSpawn)
 			return;
 	//	self endon("disconnect");
 		
-		if( self.sessionteam == "spectator" )
+		if( self.sessionteam == "spectator" || arrayContains(level.joinQueue, self) )
 			return;
 		
 		if ( !level.intermission && level.activePlayers > 2 && level.dvar["game_enable_join_queue"] )
@@ -1178,6 +1178,7 @@ joinSpectator()
 	{
 		if ( isalive(self) ){
 			// logPrint("Updated your lastPlayedWave, " + self.name + ", it is " + level.currentWave + "\n");
+			self.persData.stats = self.stats;
 			self.lastPlayedWave = level.currentWave;
 			self.persData.lastPlayedWave = self.lastPlayedWave;
 			self suicide();

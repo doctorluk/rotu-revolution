@@ -100,6 +100,8 @@ restoreData() {
 		
 		self.stats["killedZombieTypes"] = [];
 		self.stats["killedZombieTypes"]["zombie"] = 0;
+		self.stats["killedZombieTypes"]["fat"] = 0;
+		self.stats["killedZombieTypes"]["fast"] = 0;
 		self.stats["killedZombieTypes"]["dog"] = 0;
 		self.stats["killedZombieTypes"]["tank"] = 0;
 		self.stats["killedZombieTypes"]["burning"]	= 0;
@@ -110,17 +112,21 @@ restoreData() {
 		
 		struct.stats = self.stats;
 	}
+	else
+		self.stats = struct.stats; // Restore .stats array from saved struct
 		
 	self.persData = struct;
 	
 	self.points = struct.points;
+	
 	self.unlock["primary"] = struct.unlock["primary"];
 	self.unlock["secondary"] = struct.unlock["secondary"];
 	self.unlock["extra"] = struct.unlock["extra"];
-	self.score = struct.stats["score"];
-	self.kills = struct.stats["kills"];
-	self.deaths = struct.stats["deaths"];
-	self.assists = struct.stats["assists"];
+	
+	self.score = self.stats["score"];
+	self.kills = self.stats["kills"];
+	self.deaths = self.stats["deaths"];
+	self.assists = self.stats["assists"];
 	
 	self.lastPlayedWave = struct.lastPlayedWave;
 	self.specialRecharge = struct.specialRecharge;
