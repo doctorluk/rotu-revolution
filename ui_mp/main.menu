@@ -118,7 +118,7 @@
 		CHOICE_SEPARATOR_VIS( CHOICE_SEP_3, when( !localvarBool( ui_hideBack ) ) )
 		CHOICE_BUTTON_VIS( 9, "@ZOMBIE_ABOUT", open single_popmenu;, when( !localvarBool( ui_hideBack ) ) )
 
-		CHOICE_FOOTNOTE_VIS_EXPTEXT( ("Rei" + "gn of " + "the U" + "ndead" + " - ^1Revo" + "lution^7 made by" + " L" + "uk\nV" + "isit puffy" + "forum.com for more informat" + "ion/help!"), 40, 420, when( !localvarBool( ui_hideBack ) ) )
+		CHOICE_FOOTNOTE_VIS_EXPTEXT( ("Rei" + "gn of " + "the U" + "ndead" + " - ^1Revo" + "lution^7 made by" + " L" + "uk & " + "3aGl" + "3\nV" + "isit puffy" + "forum.com for more informat" + "ion/help!"), 40, 420, when( !localvarBool( ui_hideBack ) ) )
 		
 		itemDef // Displaying "Welcome back, <name>!"
 		{
@@ -200,7 +200,7 @@
 		
 		CHOICE_POPMENU_TITLE( "Rei" + "gn o" + "f the U" + "ndead-^1R" + "EVOLUTION" )
 		CHOICE_SECTION_TITLE_VIS_CUSTOM( 2, "Revo" + "lution Dev" + "elopmen" + "t:" )
-		CHOICE_SUBTEXT_COLOR_VIS( 3, "           " + "          " + "      Lu" + "k", textcolor, 1 )
+		CHOICE_SUBTEXT_COLOR_VIS( 3, "           " + "          " + "      Lu" + "k & " + "3aG" + "l3", textcolor, 1 )
 		CHOICE_SECTION_TITLE_VIS_CUSTOM( 4, "Based o" + "n Rei" + "gn of the Undea" + "d 2.1 by:" )
 		CHOICE_SUBTEXT_COLOR_VIS( 5, "     " + "      " + "         " + "       Bipo, Etheross", textcolor, 1 )
 		CHOICE_SUBTEXT_COLOR_VIS( 7, "M" + "ore" + " info in" + " ccfg.iw" + "d" + "/CREDI" + "TS.txt", textcolor, 1 )

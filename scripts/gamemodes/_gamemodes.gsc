@@ -625,7 +625,7 @@ displayCredits(){
 	wait 8;
 	thread showCredit("REVOLUTION Development:", "credit", 1.4, 80);
 	wait 0.5;
-	thread showCredit("Luk", "credit", 1.5, 100);
+	thread showCredit("Luk, 3aGl3", "credit", 1.5, 100);
 	wait 0.5;
 	thread showCredit("", "credit", 1.4, 80);
 	thread showCredit("Based on RotU 2.1 by:", "credit", 1.4, 80);

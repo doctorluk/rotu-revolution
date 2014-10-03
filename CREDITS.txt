@@ -8,7 +8,7 @@
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
 
-Reign of the Undead - Revolution is a project by Luk [owner of the former LukServers Community].
+Reign of the Undead - Revolution is a project by Luk [owner of the former LukServers Community] and 3aGl3 (joined 03.09.14).
 
 The aim of it was to eliminate long-lasting bugs, make it actually look like a zombie survival mod, add new features and make quality-of-life changes.
 
