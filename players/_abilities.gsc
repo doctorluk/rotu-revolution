@@ -1243,9 +1243,10 @@ onSpecialAbility()
 			self resetSpecial();
 		break;
 		case "augmentation":
-			if (self doAugmentation())
-			iprintln(self.name + "^7 ^3augmented ^7their ^3Turrets^7!");
-			self resetSpecial();
+			if (self doAugmentation()){
+				iprintln(self.name + "^7 ^3augmented ^7their ^3Turrets^7!");
+				self resetSpecial();
+			}
 		break;
 		case "escape":
 			self doEscape(self.special["duration"]);
