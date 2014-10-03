@@ -1234,7 +1234,7 @@ onSpecialAbility()
 		break;
 		case "rampage":
 			self doRampage(self.special["duration"]);
-			iprintln(self.name + "^7 activated his ^1Rampage^7!");
+			iprintln(self.name + "^7 activated their ^1Rampage^7!");
 			self resetSpecial();
 		break;
 		case "invincible":
@@ -1244,12 +1244,12 @@ onSpecialAbility()
 		break;
 		case "augmentation":
 			if (self doAugmentation())
-			iprintln(self.name + "^7 ^3augmented ^7his ^3turrets^7!");
+			iprintln(self.name + "^7 ^3augmented ^7their ^3Turrets^7!");
 			self resetSpecial();
 		break;
 		case "escape":
 			self doEscape(self.special["duration"]);
-			iprintln(self.name + "^7 sped himself up^7!");
+			iprintln(self.name + "^7 ^5sped ^7themself up^7!");
 			self resetSpecial();
 		break;
 		case "fake_death":
