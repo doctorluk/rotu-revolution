@@ -7,7 +7,7 @@
 // ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
-// Reign of the Undead - Revolution ALPHA 0.6 by Luk 
+// Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
 // Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
