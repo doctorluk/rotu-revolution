@@ -108,6 +108,14 @@ getSpectateCoords(){
 			return "1243,-1281,342;25,121,0";
 		case "mp_fnrp_gas":
 			return "-1550,1014,374;20,-50,0";
+		case "mp_fnrp_ancient_italy":
+			return "-770,1234,398;25,-47,0";
+		case "mp_surv_infection":
+			return "819,-387,458;22,49,0";
+		case "mp_fnrp_sewer":
+			return "15,2669,102;15,-59,0";
+		case "mp_fnrp_movies":
+			return "-904,1189,435;11,-55,0";
 			
 			
 		default:
