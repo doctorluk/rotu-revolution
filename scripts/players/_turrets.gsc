@@ -325,7 +325,7 @@ defenceTurret( turret_type, pos, angles, augmented )
 	else
 		duration = level.dvar["game_turret_time"];
 		
-	level thread deleteTurretInTime(self.turret_gun, self.turret_bipod, duration - self.turret_gun.timePassed);
+	level thread deleteTurretInTime(self.turret_gun, self.turret_bipod, duration - self.turret_gun.timePassed, self.turret_gun.turret_type, self);
 	level thread deleteTurretOnDC(self.turret_gun, self.turret_bipod, duration - self.turret_gun.timePassed);
 }
 
@@ -357,11 +357,13 @@ goAugmented(){
 	}
 }
 
-deleteTurretInTime(gun, bipod, time)
+deleteTurretInTime(gun, bipod, time, type, owner)
 {
 	gun endon("death");
 	bipod endon("death");
 	wait time;
+	if( isDefined( owner ) )
+		owner iPrintLn("Your " + type + " turret timed out!");
 	thread deleteTurret(gun, bipod);
 }
 
