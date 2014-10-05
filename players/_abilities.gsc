@@ -1627,6 +1627,7 @@ doEscape(time)
 doAugmentation(){
 	if( level.turretsDisabled ){
 		self iprintlnbold("Turrets are disabled! You can't use your Special!");
+		wait 1;
 		return false;
 	}
 	
@@ -1639,6 +1640,7 @@ doAugmentation(){
 	
 	if(turrets.size == 0){
 		self iprintlnbold("You need at least one turret to activate your Special!");
+		wait 1;
 		return false;
 	}
 	
