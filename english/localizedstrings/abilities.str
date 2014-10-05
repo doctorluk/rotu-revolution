@@ -39,10 +39,10 @@ REFERENCE			SOLDIER_PR_AB2D
 LANG_ENGLISH        "Rampage (^3lvl 15^7)"
 
 REFERENCE			DES_SOLDIER_PR_AB2
-LANG_ENGLISH		"The Soldier shoots and reloads faster for a certain amount of time, HOLD ^3USE^7 to activate."
+LANG_ENGLISH		"The Soldier shoots and reloads faster for a certain amount of time."
 
 REFERENCE			DES_SOLDIERD_PR_AB2
-LANG_ENGLISH		"The Soldier shoots and reloads faster for a certain amount of time, HOLD ^3USE^7 to activate. ^3Unlocked at Soldier rank 15."
+LANG_ENGLISH		"The Soldier shoots and reloads faster for a certain amount of time. ^3Unlocked at Soldier rank 15."
 
 
 		// ABILITY 3 //
@@ -135,10 +135,10 @@ LANG_ENGLISH        "Fake Death (^3lvl 15^7)"
 
 
 REFERENCE			DES_STEALTH_PR_AB2
-LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him, HOLD ^3USE^7 to activate."
+LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him."
 
 REFERENCE			DES_STEALTH_PR_AB2D
-LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him, HOLD ^3USE^7 to activate. ^3Unlocked at Assassin rank^3 15."
+LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him. ^3Unlocked at Assassin rank^3 15."
 
 		// ABILITY 3 //
 REFERENCE			STEALTH_PR_AB3
@@ -218,10 +218,10 @@ REFERENCE			MEDIC_PR_AB1D
 LANG_ENGLISH        "Medkit (^3lvl 5^7)"
 
 REFERENCE			DES_MEDIC_PR_AB1
-LANG_ENGLISH		"The Medic equips himself with a medkit."
+LANG_ENGLISH		"The Medic equips himself with a medkit. When placed it regularly heals allied players nearby!"
 
 REFERENCE			DES_MEDIC_PR_AB1D
-LANG_ENGLISH		"The Medic equips himself with a medkit. ^3Unlocked at Medic rank 5."
+LANG_ENGLISH		"The Medic equips himself with a medkit. When placed it regularly heals allied players nearby! ^3Unlocked at Medic rank 5."
 
 		// ABILITY 2 //
 REFERENCE			MEDIC_PR_AB2
@@ -232,10 +232,10 @@ LANG_ENGLISH        "Healing Aura (^3lvl 15^7)"
 
 
 REFERENCE			DES_MEDIC_PR_AB2
-LANG_ENGLISH		"The Medic can summon a powerful healing aura which will heal everyone around, HOLD ^3USE^7 to activate."
+LANG_ENGLISH		"The Medic can summon a powerful healing aura which will heal everyone around."
 
 REFERENCE			DES_MEDIC_PR_AB2D
-LANG_ENGLISH		"The Medic can summon a powerful healing aura which will heal everyone around, HOLD ^3USE^7 to activate. ^3Unlocked at Medic rank^3 15."
+LANG_ENGLISH		"The Medic can summon a powerful healing aura which will heal everyone around. ^3Unlocked at Medic rank^3 15."
 
 		// ABILITY 3 //
 REFERENCE			MEDIC_PR_AB3
@@ -313,10 +313,10 @@ REFERENCE			ENGINEER_PR_AB1D
 LANG_ENGLISH        "Ammo Box (^3lvl 5^7)"
 
 REFERENCE			DES_ENGINEER_PR_AB1
-LANG_ENGLISH		"The Engineer brings along an Ammobox to support him and his allies."
+LANG_ENGLISH		"The Engineer brings along an Ammobox to support him and his allies. Surrounding allies resupply their ammo close to the Ammo Box!"
 
 REFERENCE			DES_ENGINEER_PR_AB1D
-LANG_ENGLISH		"The Engineer brings along an Ammobox to support him and his allies. ^3Unlocked at Engineer rank ^325."
+LANG_ENGLISH		"The Engineer brings along an Ammobox to support him and his allies. Surrounding allies resupply their ammo close to the Ammo Box! ^3Unlocked at Engineer rank ^325."
 
 		// ABILITY 2 //
 REFERENCE			ENGINEER_PR_AB2
@@ -327,10 +327,10 @@ LANG_ENGLISH        "Augmented Turrets (^3lvl 15^7)"
 
 
 REFERENCE			DES_ENGINEER_PR_AB2
-LANG_ENGLISH		"All turrets that have been placed by the Engineer are getting a BOOST! GL Turrets are shooting twice as fast, while Sentry Turrets shoot twice the amount! HOLD ^3USE^7 to activate."
+LANG_ENGLISH		"All turrets that have been placed by the Engineer are getting a BOOST! GL Turrets are shooting twice as fast, while Sentry Turrets shoot twice the amount!"
 
 REFERENCE			DES_ENGINEER_PR_AB2D
-LANG_ENGLISH		"All turrets that have been placed by the Engineer are getting a BOOST! GL Turrets are shooting twice as fast, while Sentry Turrets shoot twice the amount! HOLD ^3USE^7 to activate. ^3Unlocked at Engineer rank^3 15."
+LANG_ENGLISH		"All turrets that have been placed by the Engineer are getting a BOOST! GL Turrets are shooting twice as fast, while Sentry Turrets shoot twice the amount! ^3Unlocked at Engineer rank^3 15."
 
 		// ABILITY 3 //
 REFERENCE			ENGINEER_PR_AB3
@@ -423,10 +423,10 @@ LANG_ENGLISH        "Invincibility (^3lvl 15^7)"
 
 
 REFERENCE			DES_ARMORED_PR_AB2
-LANG_ENGLISH		"The Armored can become invincible for a few seconds, HOLD ^3USE^7 to activate."
+LANG_ENGLISH		"The Armored can become invincible for a few seconds."
 
 REFERENCE			DES_ARMORED_PR_AB2D
-LANG_ENGLISH		"The Armored can become invincible for a few seconds, HOLD ^3USE^7 to activate. ^3Unlocked at Armored rank^3 15."
+LANG_ENGLISH		"The Armored can become invincible for a few seconds. ^3Unlocked at Armored rank^3 15."
 
 		// ABILITY 3 //
 REFERENCE			ARMORED_PR_AB3
@@ -505,10 +505,10 @@ REFERENCE			SCOUT_PR_AB1D
 LANG_ENGLISH        "Quick Escape (^3lvl 5^7)"
 
 REFERENCE			DES_SCOUT_PR_AB1
-LANG_ENGLISH		"The Scout gets a temporary speed boost, HOLD ^3USE^7 to activate."
+LANG_ENGLISH		"The Scout gets a temporary speed boost."
 
 REFERENCE			DES_SCOUT_PR_AB1D
-LANG_ENGLISH		"The Scout gets a temporary speed boost, HOLD ^3USE^7 to activate. ^3Unlocked at Scout rank 5."
+LANG_ENGLISH		"The Scout gets a temporary speed boost. ^3Unlocked at Scout rank 5."
 
 		// ABILITY 2 //
 REFERENCE			SCOUT_PR_AB2

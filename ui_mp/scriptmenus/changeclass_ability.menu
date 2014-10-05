@@ -95,7 +95,22 @@
 			rect			ORIGIN_DIY_PC 270 140
 			type			ITEM_TYPE_BUTTON
 			textfont		UI_FONT_DEFAULT
-			//dvar			"ui_description"
+			exp				text(LocString("@ABILITIES_DES_" +dvarstring(ui_loadout_class)+ "_" + dvarstring(ui_description)) + " \nActivate by holding the button ^3" + keyBinding("+activate") + "^7!")			
+			textalign 		ITEM_ALIGN_LEFT
+			textscale		TEXTSIZE_SMALL
+			forecolor		1 1 1 1
+			backcolor		0 0 0 0
+			textalignx 		5
+			textaligny 		0  
+			origin			WIDESCREEN_OFFSET
+			visible			when ( dvarstring(ui_description) != "0" && (dvarstring(ui_description) == "PR_AB2" || dvarstring(ui_description) == "PR_AB2D") ); decoration	autowrapped
+			// visible			when ( dvarstring(ui_description) != "0" ); decoration	autowrapped
+		}
+		itemDef
+		{
+			rect			ORIGIN_DIY_PC 270 140
+			type			ITEM_TYPE_BUTTON
+			textfont		UI_FONT_DEFAULT
 			exp				text("@ABILITIES_DES_" +dvarstring(ui_loadout_class)+ "_" + dvarstring(ui_description))			
 			textalign 		ITEM_ALIGN_LEFT
 			textscale		TEXTSIZE_SMALL
@@ -104,7 +119,8 @@
 			textalignx 		5
 			textaligny 		0  
 			origin			WIDESCREEN_OFFSET
-			visible			when ( dvarstring(ui_description) != "0" ); decoration	autowrapped	}
+			visible			when ( dvarstring(ui_description) != "0" && dvarstring(ui_description) != "PR_AB2" && dvarstring(ui_description) != "PR_AB2D"); decoration	autowrapped
+		}
 			
 		itemDef
 		{
