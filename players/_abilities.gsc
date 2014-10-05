@@ -116,6 +116,7 @@ resetAbilities()
 	self.damageDoneMP = 1;
 	self.infectionMP = 1;
 	self.canZoom = true;
+	self.chargedGrenades = false;
 	self.headshotMP = 1;
 	self.medkitTime = 12;
 	self.medkitHealing = 18;
@@ -715,10 +716,12 @@ SCOUT_PRIMARY(ability)
 		break;
 		case "AB2":
 			self setperk("specialty_holdbreath");
-			self.canZoom = true;
 		break;
 		case "AB3":
-			//self giveweapon("knife_mp");
+			self giveWeapon( "usp_silencer_mp" );
+			self setOffhandSecondaryClass("flash");
+			self setWeaponAmmoClip( "usp_silencer_mp", 0);
+			self thread restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);
 		break;
 	}
 }
@@ -734,10 +737,7 @@ SCOUT_PASSIVE(ability)
 			self.headshotMP = 2;
 		break;
 		case "AB3":
-			self giveWeapon( "usp_silencer_mp" );
-			self setOffhandSecondaryClass("flash");
-			self setWeaponAmmoClip( "usp_silencer_mp", 0);
-			self thread restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);
+			self.chargedGrenades = true;
 		break;
 		case "AB4":
 			self.hasRadar = true;
