@@ -498,6 +498,13 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 	if (isdefined(eAttacker))
 		if (isplayer(eAttacker))
 		{
+			// Check for insta-explosive grenades
+			if( eAttacker.chargedGrenades ){
+				if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp" ){
+					eInflictor detonate();
+					return;
+				}
+			}
 			// Special Recharge Armored -> KNIFE
 			if ( eAttacker.curClass == "armored" && !eAttacker.isDown ) {
 				if ( sMeansOfDeath == "MOD_MELEE" ) {

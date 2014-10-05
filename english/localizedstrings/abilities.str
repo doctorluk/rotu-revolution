@@ -512,17 +512,16 @@ LANG_ENGLISH		"The Scout gets a temporary speed boost, HOLD ^3USE^7 to activate.
 
 		// ABILITY 2 //
 REFERENCE			SCOUT_PR_AB2
-LANG_ENGLISH        "Scope Zoom"
+LANG_ENGLISH        "Iron Lungs"
 
 REFERENCE			SCOUT_PR_AB2D
-LANG_ENGLISH        "Scope Zoom (^3lvl 15^7)"
-
+LANG_ENGLISH        "Iron Lungs (^3lvl 15^7)"
 
 REFERENCE			DES_SCOUT_PR_AB2
-LANG_ENGLISH		"[^1UNIMPLEMENTED^7] The Scout is able to adjust the zoom of his scope by pressing the ^3USE^7 and MELEE key."
+LANG_ENGLISH		"After being in duty for 14 months, the Scout has finalized the technique of holding his breath when aiming. Hold ^3SHIFT ^7(default) while aiming with scopes to hold your breath!"
 
 REFERENCE			DES_SCOUT_PR_AB2D
-LANG_ENGLISH		"[^1UNIMPLEMENTED^7] The Scout is able to adjust the zoom of his scope by pressing the ^3USE^7 and MELEE key ^3Unlocked at Scout rank^3 15."
+LANG_ENGLISH		"After being in duty for 14 months, the Scout has finalized the technique of holding his breath when aiming. Hold ^3SHIFT ^7(default) while aiming with scopes to hold your breath!. ^3Unlocked at Scout rank^3 15."
 
 		// ABILITY 3 //
 REFERENCE			SCOUT_PR_AB3
@@ -562,17 +561,17 @@ LANG_ENGLISH		"Headshots deal another ^250%^7 damage. ^3Unlocked at Scout rank 1
 
 		// ABILITY 3 //
 REFERENCE			SCOUT_PS_AB3
-LANG_ENGLISH        "?????"
+LANG_ENGLISH        "Intelligent Grenades"
 
 REFERENCE			SCOUT_PS_AB3D
-LANG_ENGLISH        "????? (^3lvl 20^7)"
+LANG_ENGLISH        "Intelligent Grenades (^3lvl 20^7)"
 
 
 REFERENCE			DES_SCOUT_PS_AB3
-LANG_ENGLISH		"TO BE IMPLEMENTED"
+LANG_ENGLISH		"An impact sensor has been implemented into the Scout's frag grenades. If you hit a Zombie when throwing a grenade, the grenade will explode instantly."
 
 REFERENCE			DES_SCOUT_PS_AB3D
-LANG_ENGLISH		"TO BE IMPLEMENTED. ^3Unlocked at Scout rank 20."
+LANG_ENGLISH		"An impact sensor has been implemented into the Scout's frag grenades. If you hit a Zombie when throwing a grenade, the grenade will explode instantly. ^3Unlocked at Scout rank 20."
 
 		// ABILITY 4 //
 REFERENCE			SCOUT_PS_AB4
