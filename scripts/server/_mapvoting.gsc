@@ -64,7 +64,7 @@ getRandomSelection(mapList, no, illegal) { //returns random selection of # eleme
 			randomValues[randomValues.size] = i;
 		}
 	}
-	logPrint("LUK_DEBUG; Recent maplist: " + getRecentMapsList() + "\n");
+	// logPrint("LUK_DEBUG; Recent maplist: " + getRecentMapsList() + "\n");
 	
 
 	
