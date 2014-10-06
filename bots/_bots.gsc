@@ -481,7 +481,17 @@ endSpawnProt(time, decrease)
 	}
 }
 
+followTarget(target, arealDifference){
 
+	self endon("death");
+	target endon("death");
+	
+	while( isDefined( self ) && isAlive( target ) ){
+		self.origin = (target.origin + arealDifference);
+		wait 0.05;
+	}
+
+}
 
 
 // BOTS MAIN
@@ -505,6 +515,13 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 					return;
 				}
 			}
+			
+			// Explosive Crossbow sticking to the zombie
+			if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp" ){
+				eInflictor followTarget(self, ( eInflictor.origin - self.origin ) );
+				return;
+			}
+			
 			// Special Recharge Armored -> KNIFE
 			if ( eAttacker.curClass == "armored" && !eAttacker.isDown ) {
 				if ( sMeansOfDeath == "MOD_MELEE" ) {

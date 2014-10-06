@@ -313,7 +313,7 @@ initZomTypes()
 	addZomType("dog", "dog", "dog", 			 	18, 58, 30, 50 , 30 , 125  , .8, 1  , 0.08 , "dog"   , 0.5); // Dog zombie
 	addZomType("helldog", "dog", "dog", 			18, 58, 30, 50 , 20 , 150  , .8, 1  , 0.08 , "dog"   , 0.5); // Burning Dog zombie
 	
-	addZomType("halfboss", "halfboss", "zombie",	16, 40, 20, 120, 70 , 5000 + (2000 * level.activePlayers, .8, 0.6, .0 , "zombie", 3); // Default zombie
+	addZomType("halfboss", "halfboss", "zombie",	16, 40, 20, 120, 70 , 5000 + (2000 * level.activePlayers), .8, 0.6, .0 , "zombie", 3); // Default zombie
 	addZomType("boss", "boss", "boss", 		 		20, 58, 30, 160, 80 , 10000, 1 , 1  , 0    , "zombie", 1);
 }
 
