@@ -1352,7 +1352,7 @@ zomSpot(target)
 zomGoToClosestWaypoint(){
 	self endon("death");
 	self zomMovement();
-	self zomMoveTowards(level.wp[getNearestWp(self.origin)].origin);
+	self zomMoveTowards(level.waypoints[getNearestWp(self.origin)].origin);
 	wait 0.5;
 	self zomGoSearch();
 	self thread zomMain();
@@ -1407,16 +1407,16 @@ zomMoveTowards(target_position)
 	
 	direct = false;
 	//
-	//if (distancesquared(target_position, self.origin) <= distancesquared(level.Wp[targetWp].origin, self.origin) || targetWp == self.myWaypoint)
+	//if (distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[targetWp].origin, self.origin) || targetWp == self.myWaypoint)
 	if (self.underway)
 	{
 	
 	//if (targetWp == self.myWaypoint)
 	//
-		//if (distancesquared(target_position, self.origin) >= distancesquared(level.Wp[nextWp].origin, self.origin))
+		//if (distancesquared(target_position, self.origin) >= distancesquared(level.waypoints[nextWp].origin, self.origin))
 		//direct = true;
 		
-		if (targetWp == self.myWaypoint) //|| distancesquared(target_position, self.origin) <= distancesquared(level.Wp[nextWp].origin, self.origin)
+		if (targetWp == self.myWaypoint) //|| distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[nextWp].origin, self.origin)
 		{
 			direct = true;
 			self.underway = false;
@@ -1429,7 +1429,7 @@ zomMoveTowards(target_position)
 			if (targetWp == nextWp)
 			{
 
-				if (distancesquared(target_position, self.origin) <= distancesquared(level.Wp[nextWp].origin, self.origin))
+				if (distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[nextWp].origin, self.origin))
 				{
 					direct = true;
 					self.underway = false;
@@ -1443,7 +1443,7 @@ zomMoveTowards(target_position)
 		//if (self.lastTargetWp != targetWp || self.myWaypoint == nextWp )
 		if (targetWp == self.myWaypoint)
 		{
-			//iprintln(level.wp[getNearestWp(self.origin)].origin+":"+level.wp[getNearestWp(target_position)].origin);
+			//iprintln(level.waypoints[getNearestWp(self.origin)].origin+":"+level.waypoints[getNearestWp(target_position)].origin);
 			direct = true;
 			self.underway = false;
 			self.myWaypoint = undefined;
@@ -1487,16 +1487,16 @@ zomMoveTowards(target_position)
 	{
 		moveToPoint(target_position, self.cur_speed);
 		/*lineCol = (1,0,0);
-		line(level.Wp[self.myWaypoint].origin, target_position, lineCol);*/
+		line(level.waypoints[self.myWaypoint].origin, target_position, lineCol);*/
 	}
 	else
 	{
 		/*lineCol = (1,0,0);
-		line(level.Wp[self.myWaypoint].origin, level.Wp[nextWp].origin, lineCol);*/
+		line(level.waypoints[self.myWaypoint].origin, level.waypoints[nextWp].origin, lineCol);*/
 		if (isdefined(nextWp))
 		{
-			moveToPoint(level.Wp[nextWp].origin, self.cur_speed);
-			if (distance(level.Wp[nextWp].origin, self.origin) <  64)
+			moveToPoint(level.waypoints[nextWp].origin, self.cur_speed);
+			if (distance(level.waypoints[nextWp].origin, self.origin) <  64)
 			{
 				self.underway = false;
 				self.myWaypoint = nextWp;

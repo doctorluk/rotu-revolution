@@ -460,10 +460,10 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
-		if( level.wp.size < 2 ) // Fix for maps without waypoints
+		if( level.waypoints.size < 2 ) // Fix for maps without waypoints
 			spawn = getRandomSpawn();
 		else
-			spawn = level.wp[randomint(level.wp.size)];
+			spawn = level.waypoints[randomint(level.waypoints.size)];
 			
 		thread soulSpawn( type, spawn, bot );
 		return bot;
@@ -476,10 +476,10 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
-		if( level.wp.size < 2 ) // Fix for maps without waypoints
+		if( level.waypoints.size < 2 ) // Fix for maps without waypoints
 			spawn = getRandomSpawn();
 		else
-			spawn = level.wp[randomint(level.wp.size)];
+			spawn = level.waypoints[randomint(level.waypoints.size)];
 		thread groundSpawn( type, spawn, bot );
 		return bot;
 	}
@@ -503,7 +503,7 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
-		spawn = level.wp[randomint(level.wp.size)];
+		spawn = level.waypoints[randomint(level.waypoints.size)];
 		thread scripts\bots\_bots::spawnZombie( type, spawn, bot );
 		return bot;
 	}
