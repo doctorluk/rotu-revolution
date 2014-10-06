@@ -61,10 +61,10 @@ normalWaveEffects(){
 	level endon("game_ended");
 	
 	for( i = 0; i < 3; i++ ){
-		if(level.wp.size <= 3)
+		if(level.waypoints.size <= 3)
 			break;
 			
-		poses = level.wp;
+		poses = level.waypoints;
 		posent = poses[randomint(poses.size)];
 		pos = posent.origin;
 		poses = removeFromArray(poses, posent);
@@ -86,9 +86,9 @@ normalWaveEffects(){
 	ran = undefined;
 	fxToPlay = undefined;
 	
-	while(level.wp.size > 3){
+	while(level.waypoints.size > 3){
 	
-		pos = level.wp[randomint(level.wp.size)].origin;
+		pos = level.waypoints[randomint(level.waypoints.size)].origin;
 		
 		ran = randomfloat(1);
 		
@@ -164,7 +164,7 @@ emberFX()
 	level endon("global_fx_end");
 	while(1)
 	{
-		org = level.wp[randomint(level.wp.size)].origin;
+		org = level.waypoints[randomint(level.waypoints.size)].origin;
 		playfx(level.ember_fx, org);
 		Earthquake( 0.25, 2, org, 512);
 		wait .2 + randomfloat(.2);
@@ -177,12 +177,12 @@ finaleFX(){
 	limit = RandomIntRange( 20, 45 );
 	
 	for( i = 0; i < limit; i++ ){
-		org = level.wp[randomint(level.wp.size)].origin;
+		org = level.waypoints[randomint(level.waypoints.size)].origin;
 		playfx(level.burningFX, org);
 	}
 	
 	while( 1 ){
-		org = level.wp[randomint(level.wp.size)].origin;
+		org = level.waypoints[randomint(level.waypoints.size)].origin;
 		playfx( level.ember_fx, org );
 		Earthquake( 0.25, 2, org, 512);
 		wait .2 + randomfloat(.2);

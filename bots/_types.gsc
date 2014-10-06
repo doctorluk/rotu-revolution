@@ -1304,8 +1304,8 @@ getScarySpawnpoint(){
 	validSpawnpoints = [];
 	valid = false;
 	distance = 0;
-	for(i = 0; i < level.wp.size; i++){
-		wp = level.wp[i];
+	for(i = 0; i < level.waypoints.size; i++){
+		wp = level.waypoints[i];
 		valid = true;
 		for(ii = 0; ii < level.players.size; ii++){
 			p = level.players[ii];
@@ -1324,8 +1324,8 @@ getScarySpawnpoint(){
 	// In case there are no spawnpoints that are not too close + not too far, just consider the minDistance for the next search, so we avoid spawning the zombies too close to the players
 	if(validSpawnpoints.size <= 1){
 		validSpawnpoints = [];
-		for(i = 0; i < level.wp.size; i++){
-			wp = level.wp[i];
+		for(i = 0; i < level.waypoints.size; i++){
+			wp = level.waypoints[i];
 			valid = true;
 			for(ii = 0; ii < level.players.size; ii++){
 				p = level.players[ii];
@@ -1344,8 +1344,8 @@ getScarySpawnpoint(){
 	}
 	// In case everything fails, we just spawn the zombie somewhere on the map randomly
 	if(validSpawnpoints.size <= 1)
-		if( level.wp.size > 2 )
-			return level.wp[randomint(level.wp.size)];
+		if( level.waypoints.size > 2 )
+			return level.waypoints[randomint(level.waypoints.size)];
 		else
 			return  scripts\gamemodes\_waves::getRandomSpawn();
 		
