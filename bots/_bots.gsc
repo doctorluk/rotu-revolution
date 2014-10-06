@@ -253,6 +253,7 @@ spawnPartner(spawnpoint, bot){
 	bot.suicided = undefined;
 	bot.damagePerLoc = [];
 	bot scripts\bots\_types::loadZomStats(type);
+	bot.incdammod = 1;
 	bot.maxHealth = int( bot.maxHealth * level.dif_zomHPMod );
 	
 	bot.health = bot.maxHealth;
@@ -300,7 +301,6 @@ spawnPartner(spawnpoint, bot){
 	bot.linkObj.angles = bot.angles;
 	
 	
-	bot.incdammod = 1;
 	wait 0.05;
 	bot linkto(bot.parent.attachment);
 	bot setanim("stand");
@@ -359,6 +359,7 @@ spawnZombie(type, spawnpoint, bot)
 	bot.damagePerLoc = [];
 	
 	bot scripts\bots\_types::loadZomStats(type);
+	bot.incdammod = 1;
 	if (!isdefined(bot.meleeSpeed))
 	{
 		iprintlnbold("ERROR");
@@ -418,7 +419,6 @@ spawnZombie(type, spawnpoint, bot)
 	bot.linkObj.origin = bot.origin;
 	bot.linkObj.angles = bot.angles;
 	
-	bot.incdammod = 1;
 	if ((bot.type != "tank" && bot.type != "boss") || (level.dvar["zom_spawnprot_tank"]))
 	{
 		if (level.dvar["zom_spawnprot"])
@@ -482,15 +482,16 @@ endSpawnProt(time, decrease)
 }
 
 followTarget(target, arealDifference){
-
 	self endon("death");
 	target endon("death");
+	
+	if( !isDefined( arealDifference ) )
+		arealDifference = (0,0,0);
 	
 	while( isDefined( self ) && isAlive( target ) ){
 		self.origin = (target.origin + arealDifference);
 		wait 0.05;
 	}
-
 }
 
 
