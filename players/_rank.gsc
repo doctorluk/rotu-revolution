@@ -242,6 +242,7 @@ onPlayerConnect()
 		
 		self thread onJoinedTeam();
 		self thread scripts\players\_classes::getSkillpoints(rankId);
+		logPrint("LOG_ROTU_RANK_RESTORE;" + self getGuid() + ";" + self getEntityNumber() + "\n");
 	//}
 }
 
@@ -409,15 +410,24 @@ giveRankXP( type, value )
 		);*/
 }
 
+/* [0] = player-ID, [1] = prestige level, [2] = force overwrite */
 overwritePrestige(args){
-	if( args.size != 2 )
+	if( args.size != 2 && args.size != 3 )
 		return;
+		
+	// args[3] = check whether old prestige > new prestige, don't act if not
+	if( args.size == 2 )
+		args[2] = 0;
 	
 	for( i = 0; i < level.players.size; i++ )
 		if( level.players[i] getEntityNumber() == int(args[0]) ){
 			player = level.players[i];
 			player endon("disconnect");
 			prestige = int(args[1]);
+			
+			if( !int(args[2]) ) // in case we don't overwrite, we don't continue
+				if( prestige <= player.pers["prestige"] )
+					return;
 				
 			if( prestige > level.maxPrestige )
 				prestige = level.maxPrestige;
@@ -428,18 +438,28 @@ overwritePrestige(args){
 			player.pers["prestige"] = prestige;
 			
 			player prestigeUp(true);
+			player iprintlnbold("Your ^3Prestige ^7has been changed to " + prestige + " by the Server!");
 	}
 }
 
+/* [0] = player-ID, [1] = prestige level, [2] = force overwrite */
 overwriteRank(args){
-	if( args.size != 2 )
+	if( args.size != 2 && args.size != 3 )
 		return;
+		
+	// args[3] = check whether old prestige > new prestige, don't act if not
+	if( args.size == 2 )
+		args[2] = 0;
 	
 	for( i = 0; i < level.players.size; i++ )
 		if( level.players[i] getEntityNumber() == int(args[0]) ){
 			player = level.players[i];
 			player endon("disconnect");
 			rank = int(args[1]);
+			
+			if( !int(args[2]) ) // in case we don't overwrite, we don't continue
+				if( rank - 1 <= player.pers["rank"] )
+					return;
 			
 			if( rank > 55 )
 				rank = 55;
@@ -454,6 +474,7 @@ overwriteRank(args){
 			}
 			player incRankXP( getXPNeededForRank(rank) - player.pers["rankxp"] );
 			player updateRank(true);
+			player iprintlnbold("Your ^5Rank ^7has been changed to " + rank + " by the Server!");
 	}
 }
 
