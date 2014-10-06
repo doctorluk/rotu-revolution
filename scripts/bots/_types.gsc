@@ -302,21 +302,19 @@ initZomTypes()
 {
 	level.zom_types = [];
 	// addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintChance, infectionChance, soundType, rewardMultiplier)
-	addZomType("zombie", "zombie", "zombie",	 16, 40, 20, 70 , 30, 200  , .8, 0, .075 , "zombie", 1); // Default zombie
-	addZomType("burning", "zombie_all", "zombie",	 16, 36, 20, 70 , 30, 200  , .8, 1, 0    , "zombie", 0.8); // Code handled
-	addZomType("napalm", "napalm", "zombie",	 16, 36, 20, 50 , 100, 100  , .8, 1, 0    , "zombie", 0.75); // Code handled
-	addZomType("scary", "zombie_all", "zombie",	 18, 36, 20, 70 , 30, 200  , .8, 0.3, .01, "zombie", 0.8); // Code handled
-	addZomType("toxic", "quad", "quad",		 8, 32, 16, 70 , 30, 180  , .6, 0.5, .15, "zombie",1); // Code handled
-	addZomType("fat", "fat", "zombie",			 16, 42, 16, 100, 40, 275  , .8, 0.2, 0.05 , "zombie", 1.2);
-	addZomType("fast", "fast", "zombiefast",	 20, 55, 24, 80 , 30, 150  , .7, 1, 0.075, "zombie", 0.8);
-	addZomType("tank", "tank", "zombie", 		 16, 40, 20, 100, 35, 800  , .8, 0.4, 0.05 , "zombie", 1.35);
-	// addZomType("electric", "electric", "zombie",  16, 40, 20, 100, 30, 800  , .8, 0, 0.05 , "zombie");
-	addZomType("halfboss", "halfboss", "zombie",	 16, 40, 20, 120 , 70, 5000 + (2000 * level.activePlayers) , .8, 0.6, .0 , "zombie", 3); // Default zombie
-	//addZomType("boss", "boss", "zombie", 30, 50, 20, 120, 65, 10000, .8, 1, "zombie");
-	addZomType("helldog", "dog", "dog", 			 18, 58, 30, 50 , 45, 150  , .8, 1, 0.08, "dog", 0.5); // Burning Dog zombie
-	addZomType("dog", "dog", "dog", 			 18, 58, 30, 50 , 30, 125  , .8, 1, 0.08, "dog", 0.5); // Dog zombie
-	addZomType("boss", "boss", "boss", 		 20, 58, 30, 160, 80, 10000, 1, 1, 0    , "zombie", 1);
-	// addZomType("boss_bullet", "boss", "boss", 		 20, 58, 30, 160, 80, 10000, .8, 1, 0    , "zombie", 5);
+	addZomType("zombie", "zombie", "zombie",	 	16, 40, 20, 70 , 30 , 200  , .8, 0  , .075 , "zombie", 1); // Default zombie
+	addZomType("burning", "zombie_all", "zombie",	16, 36, 20, 70 , 30 , 200  , .8, 1  , 0    , "zombie", 0.8); // Code handled
+	addZomType("napalm", "napalm", "zombie",	 	16, 36, 20, 50 , 100, 100  , .8, 1  , 0    , "zombie", 0.75); // Code handled
+	addZomType("scary", "zombie_all", "zombie",	 	18, 36, 20, 70 , 30 , 200  , .8, 0.3, .01  , "zombie", 0.8); // Code handled
+	addZomType("toxic", "quad", "quad",		 		 8, 32, 16, 70 , 30 , 180  , .6, 0.5, .15  , "zombie", 1); // Code handled
+	addZomType("fat", "fat", "zombie",			 	16, 42, 16, 100, 40 , 275  , .8, 0.2, 0.05 , "zombie", 1.2);
+	addZomType("fast", "fast", "zombiefast",	 	20, 55, 24, 80 , 30 , 150  , .7, 1  , 0.075, "zombie", 0.8);
+	addZomType("tank", "tank", "zombie", 		 	16, 40, 20, 100, 35 , 800  , .8, 0.4, 0.05 , "zombie", 1.35);
+	addZomType("dog", "dog", "dog", 			 	18, 58, 30, 50 , 30 , 125  , .8, 1  , 0.08 , "dog"   , 0.5); // Dog zombie
+	addZomType("helldog", "dog", "dog", 			18, 58, 30, 50 , 20 , 150  , .8, 1  , 0.08 , "dog"   , 0.5); // Burning Dog zombie
+	
+	addZomType("halfboss", "halfboss", "zombie",	16, 40, 20, 120, 70 , 5000 + (2000 * level.activePlayers, .8, 0.6, .0 , "zombie", 3); // Default zombie
+	addZomType("boss", "boss", "boss", 		 		20, 58, 30, 160, 80 , 10000, 1 , 1  , 0    , "zombie", 1);
 }
 
 getBlurForType(type)
