@@ -94,6 +94,9 @@ resetAbilities()
 	self clearPerks();
 	self setStableMissile(0);
 	
+	if( isDefined(self.armored_hud) )
+		self.armored_hud destroy();
+	
 	self.canAssasinate = false;
 	self.isHitman = false;
 	self.focus = -1;

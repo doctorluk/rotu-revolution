@@ -157,6 +157,7 @@ Callback_PlayerDisconnect()
 						"ui_damagereduced", 0);
 	
 	//iPrintln( self.name + " ^7disconnected." );
+	logPrint("LOG_ROTU_RANK;" + self getGuid() + ";" + self.pers["prestige"] + ";" + self.pers["rank"] + "\n");
 	lpselfnum = self getEntityNumber();
 	lpGuid = self getGuid();
 	logPrint("Q;" + lpGuid + ";" + lpselfnum + ";" + self.name + "\n");

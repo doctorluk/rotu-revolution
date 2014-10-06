@@ -634,17 +634,14 @@ cleanup() // CLEANUP ON DEATH (SPEC) OR DISCONNECT
 		
 	self scripts\players\_usables::usableAbort();
 	self.actionslotweapons = [];
-	
-	if( isDefined( self.parachute ) )
-		self.parachute delete();
 		
-	if (isdefined(self.infection_overlay))
+	if ( isDefined(self.infection_overlay) )
 		self.infection_overlay destroy();
 		
-	if (isdefined(self.tombEnt))
+	if ( isDefined(self.tombEnt) )
 		self.tombEnt delete();
 	
-	if(isDefined(self.armored_hud))
+	if( isDefined(self.armored_hud) )
 		self.armored_hud destroy();
 	
 	self.headicon = "";
