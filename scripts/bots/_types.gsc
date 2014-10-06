@@ -305,8 +305,8 @@ initZomTypes()
 	addZomType("zombie", "zombie", "zombie",	 	16, 40, 20, 70 , 30 , 200  , .8, 0  , .075 , "zombie", 1); // Default zombie
 	addZomType("burning", "zombie_all", "zombie",	16, 36, 20, 70 , 30 , 200  , .8, 1  , 0    , "zombie", 0.8); // Code handled
 	addZomType("napalm", "napalm", "zombie",	 	16, 36, 20, 50 , 100, 100  , .8, 1  , 0    , "zombie", 0.75); // Code handled
-	addZomType("scary", "zombie_all", "zombie",	 	18, 36, 20, 70 , 30 , 200  , .8, 0.3, .01  , "zombie", 0.8); // Code handled
-	addZomType("toxic", "quad", "quad",		 		 8, 32, 16, 70 , 30 , 180  , .6, 0.5, .15  , "zombie", 1); // Code handled
+	addZomType("scary", "zombie_all", "zombie",	 	18, 36, 20, 70 , 30 , 200  , .8, 0.3, 0.01 , "zombie", 0.8); // Code handled
+	addZomType("toxic", "quad", "quad",		 		 8, 32, 16, 70 , 30 , 180  , .6, 0.5, 0.15 , "zombie", 1); // Code handled
 	addZomType("fat", "fat", "zombie",			 	16, 42, 16, 100, 40 , 275  , .8, 0.2, 0.05 , "zombie", 1.2);
 	addZomType("fast", "fast", "zombiefast",	 	20, 55, 24, 80 , 30 , 150  , .7, 1  , 0.075, "zombie", 0.8);
 	addZomType("tank", "tank", "zombie", 		 	16, 40, 20, 100, 35 , 800  , .8, 0.4, 0.05 , "zombie", 1.35);
