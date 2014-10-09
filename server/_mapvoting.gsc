@@ -18,6 +18,7 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
+#include scripts\include\data;
 #include scripts\include\strings;
 
 init() {
@@ -149,12 +150,35 @@ isLegal(name, illegal) { //check if map is specified in illegal list or string
 	return true;
 }
 
+// Get the maprotation by going through sv_maprotation, sv_maprotation0, sv_maprotation1 etc.
+getDvarMaprotation(){
+	maprotation = [];
+	
+	if( getDvar("sv_maprotation") != "" 
+	&& getDvar("sv_maprotation") != "map mp_backlot map mp_bloc map mp_bog map mp_cargoship map mp_citystreets map mp_convoy map mp_countdown map mp_crash map mp_crossfire map mp_farm map mp_overgrown map mp_pipeline map mp_showdown map mp_strike map mp_vacant"){
+		maprotation = dissect( getDvar("sv_maprotation") );
+	}
+	
+	i = 0;
+	
+	while( getDvar("sv_maprotation_"+i) != "" && i < 20 ){
+		temp = dissect( getDvar("sv_maprotation_"+i) );
+		for( ii = 0; ii < temp.size; ii++ ){
+			maprotation[maprotation.size] = temp[ii];
+		}
+		i++;
+	}
+	
+	return maprotation;
+}
+
 /* Retrieve maps from sv_maprotation */
 getMaprotation()
 {	
+	iprintlnbold("GETTING MAPS!");
 	maprotation = [];
 	index = 0;
-	dissect_sv_rotation = strtok(getdvar("sv_maprotation"), " ");
+	dissect_sv_rotation = getDvarMaprotation();
 	
 	gametype = 0;
 	map = 0;
