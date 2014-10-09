@@ -173,9 +173,7 @@ getDvarMaprotation(){
 }
 
 /* Retrieve maps from sv_maprotation */
-getMaprotation()
-{	
-	iprintlnbold("GETTING MAPS!");
+getMaprotation(){
 	maprotation = [];
 	index = 0;
 	dissect_sv_rotation = getDvarMaprotation();
