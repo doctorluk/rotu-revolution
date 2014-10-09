@@ -159,9 +159,9 @@ getDvarMaprotation(){
 		maprotation = dissect( getDvar("sv_maprotation") );
 	}
 	
-	i = 0;
+	i = 1;
 	
-	while( getDvar("sv_maprotation_"+i) != "" && i < 20 ){
+	while( getDvar("sv_maprotation_"+i) != "" && i <= 20 ){
 		temp = dissect( getDvar("sv_maprotation_"+i) );
 		for( ii = 0; ii < temp.size; ii++ ){
 			maprotation[maprotation.size] = temp[ii];
