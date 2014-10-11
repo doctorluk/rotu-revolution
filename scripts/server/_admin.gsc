@@ -39,6 +39,7 @@ init()
 	addCmd("resetlevel", scripts\players\_rank::fullResetRcon);
 	addCmd("setrank", scripts\players\_rank::overwriteRank);
 	addCmd("setprestige", scripts\players\_rank::overwritePrestige);
+	addCmd("restorerank", ::restoreRank);
 	addCmd("getprestige", ::getPrestige);
 	addCmd("readconfig", ::readconfig);
 	// addCmd("slap", ::slap);
@@ -68,6 +69,33 @@ watchCmd()
 		}
 		wait 0.25;
 	}
+}
+
+restoreRank(args){
+	if( args.size > 4 || args.size < 3 )
+		return;
+		
+	if( args.size == 3 )
+		args[3] = 0;
+	
+	// 0 = ID
+	// 1 = Prestige
+	// 2 = Rank
+	// 3 = Force Overwrite if Prestige/Rank is lower
+		
+	prestige = [];
+	prestige[0] = args[0];
+	prestige[1] = args[1];
+	prestige[2] = args[3];
+		
+	rank = [];
+	rank[0] = args[0];
+	rank[1] = args[2];
+	rank[2] = args[3];
+	
+	scripts\players\_rank::overwritePrestige(prestige);
+	scripts\players\_rank::overwriteRank(rank);
+	
 }
 /* 	Prints out the entered text as iprintlnbold on the screen
 	Syntax: rcon saybold <text>

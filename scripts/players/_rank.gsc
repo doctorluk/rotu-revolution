@@ -439,6 +439,7 @@ overwritePrestige(args){
 			
 			player prestigeUp(true);
 			player iprintlnbold("Your ^3Prestige ^7has been changed to " + prestige + " by the Server!");
+			iprintln("The ^3Prestige ^7of " + player.name + " has been changed to " + prestige + " by the Server!");
 	}
 }
 
@@ -475,6 +476,7 @@ overwriteRank(args){
 			player incRankXP( getXPNeededForRank(rank) - player.pers["rankxp"] );
 			player updateRank(true);
 			player iprintlnbold("Your ^5Rank ^7has been changed to " + rank + " by the Server!");
+			iprintln("The ^5Rank ^7of " + player.name + " has been changed to " + rank + " by the Server!");
 	}
 }
 
