@@ -5,7 +5,7 @@ main()
     maps\mp\mp_pipeline_fx::main();
     maps\createart\mp_pipeline_art::main();
     maps\mp\_load::main();
-	prepareMap();
+	prepareStockMap();
 
     maps\mp\_compass::setupMiniMap("compass_map_mp_pipeline");
 

@@ -5,7 +5,7 @@ main()
     maps\mp\mp_farm_fx::main();
     maps\createart\mp_farm_art::main();
     maps\mp\_load::main();
-	prepareMap();
+	prepareStockMap();
 
     maps\mp\_compass::setupMiniMap("compass_map_mp_farm");
 

@@ -31,7 +31,7 @@ buildSurvSpawnByClassname(classname, priority) // Loading spawns for survival mo
 	scripts\gamemodes\_survival::addSpawn(classname, priority);
 }
 
-prepareMap(){
+prepareStockMap(){
 
 	ent = getEntArray("oldschool_pickup", "targetname");
 	for( i = 0; i < ent.size; i++ ){

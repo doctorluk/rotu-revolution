@@ -185,6 +185,8 @@ mainGametype()
 	level notify("game_started");
 	level endon( "game_ended" );
 	
+	scripts\level\_tradespawns::buildTradespawns();
+	
 	level.startTime = getTime();
 	
 	rotatePrioritizedSpawn(false);

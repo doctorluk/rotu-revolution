@@ -1061,3 +1061,7 @@ xmodel,weapon_striker_mw2
 xmodel,viewmodel_base_viewhands
 material,mtl_viewhands_wounded_cloth
 material,mtl_viewhands_wounded_skin
+
+// Needed for tradespawns
+xmodel,com_newspaperbox_blue
+xmodel,com_vending_can_new1_lit

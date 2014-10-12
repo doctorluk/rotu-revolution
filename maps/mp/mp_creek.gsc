@@ -4,7 +4,7 @@ main()
 {
     maps\mp\mp_creek_fx::main();
     maps\mp\_load::main();
-	prepareMap();
+	prepareStockMap();
 
     maps\mp\_compass::setupMiniMap("compass_map_mp_creek");
 

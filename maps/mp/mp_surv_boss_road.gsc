@@ -3,7 +3,7 @@
 main()
 {
     maps\mp\_load::main();
-	prepareMap();
+	prepareStockMap();
 
     ambientPlay("ambient_backlot_ext");
     game["allies"] = "marines";

@@ -5,7 +5,7 @@ main()
     maps\mp\mp_bloc_fx::main();
     maps\createart\mp_bloc_art::main();
     maps\mp\_load::main();
-	prepareMap();
+	prepareStockMap();
 
     maps\mp\_compass::setupMiniMap("compass_map_mp_bloc");
 
