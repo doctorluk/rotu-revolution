@@ -61,10 +61,7 @@ init()
 
 precache()
 {
-	level._effect["flashlight"] = Loadfx("misc/flashlight");
 	level.flashlightGlow		= loadfx( "light/flashlight_glow" );
-	
-	level.medkitFX = loadfx("misc/medkit");
 	
 	precacheHeadIcon("hud_icon_lowhp");
 	precacheHeadIcon("hud_icon_developer");

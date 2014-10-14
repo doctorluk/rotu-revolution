@@ -147,6 +147,9 @@ beginGame()
 	else
 		scripts\gamemodes\_gamemodes::buildZomTypes("all");
 	level.zomIdleBehavior = "magic";
+	
+	scripts\level\_tradespawns::buildTradespawns();
+	
 	wait 5;
 	
 	level.waves = [];
@@ -184,8 +187,6 @@ mainGametype()
 {	
 	level notify("game_started");
 	level endon( "game_ended" );
-	
-	scripts\level\_tradespawns::buildTradespawns();
 	
 	level.startTime = getTime();
 	
