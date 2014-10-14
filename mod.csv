@@ -1063,5 +1063,5 @@ material,mtl_viewhands_wounded_cloth
 material,mtl_viewhands_wounded_skin
 
 // Needed for tradespawns
-xmodel,com_newspaperbox_blue
+xmodel,com_shopping_cart
 xmodel,com_vending_can_new1_lit
