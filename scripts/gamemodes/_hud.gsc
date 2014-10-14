@@ -373,6 +373,9 @@ specialRechargeFeedback(){
 
 addTimer(label, string, time)
 {
+	if( !isDefined( time ) || time < 1 )
+		return;
+
 	self endon("death");
 	self endon("disconnect");
 	

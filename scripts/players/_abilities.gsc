@@ -55,7 +55,7 @@ loadAbilityStats()
 	level.special["escape"]["recharge_time"] = 40;
 	level.special["escape"]["duration"] = 10;
 	
-	level.special["ammo"]["recharge_time"] = 60;
+	level.special["ammo"]["recharge_time"] = 75;
 	level.special["augmentation"]["recharge_time"] = 1;
 	
 	level.special["medkit"]["recharge_time"] = 60;
@@ -122,8 +122,8 @@ resetAbilities()
 	self.chargedGrenades = false;
 	self.headshotMP = 1;
 	self.medkitTime = 12;
-	self.medkitHealing = 18;
-	self.auraHealing = 40;
+	self.medkitHealing = 25;
+	self.auraHealing = 35;
 	if( !isDefined( self.specialRecharge ) )
 		self.specialRecharge = 0;
 	self.longerTurrets = false;
@@ -541,8 +541,6 @@ MEDIC_PRIMARY(ability)
 			self giveWeapon( "helicopter_mp" );
 			self setWeaponAmmoClip( "helicopter_mp", 0 );
 			self setActionSlot( 3, "weapon", "helicopter_mp" ); // Actionslot [5]
-			self.medkitTime = 12;
-			self.medkitHealing = 25;
 			self thread watchMedkits();
 			self thread restoreKit(level.special["medkit"]["recharge_time"]);
 			self thread restoreKit(level.special["medkit"]["recharge_time"]);
@@ -939,10 +937,10 @@ beMedkit(time, heal)
 	self thread scripts\gamemodes\_hud::createRadarIcon("icon_medkit_radar"); // Radar Icon
 	
 	wait 1;
-	for (i=0; i<time; i++)
+	for ( i = 0; i < time; i++ )
 	{
 		if( !isDefined(self.master) || !isReallyPlaying(self.master) ) break;
-		for (ii=0; ii<level.players.size; ii++)
+		for ( ii = 0; ii < level.players.size; ii++ )
 		{
 			player = level.players[ii];
 			if( !isReallyPlaying(player) ) continue;
@@ -1205,7 +1203,7 @@ watchSpecialAbility()
 		return;
 	
 	i = 0;
-	/* Will trigger the special when holding the F button for 1.5 seconds */
+	/* Will trigger the special when holding the F button for 1 second */
 	while(1){
 		if(!self.isDown && !self.isBusy && self UseButtonPressed())
 			i++;
@@ -1358,7 +1356,7 @@ healThread(player)
 healPlayer(player, heal)
 {
 	if (player.health == player.maxhealth || !isDefined(heal))
-	return 0;
+	return;
 	
 	player.health += heal;
 	healed = heal;
@@ -1371,7 +1369,7 @@ healPlayer(player, heal)
 	player thread healthFeedback();
 	player updateHealthHud(player.health/player.maxhealth);
 	if (player != self){
-		self scripts\players\_players::incUpgradePoints(getRewardForHeal(healed)*level.dvar["game_rewardscale"]);
+		self scripts\players\_players::incUpgradePoints(getRewardForHeal(healed) * level.dvar["game_rewardscale"]);
 		self.stats["healsGiven"] += healed;
 	}
 	if (self.curClass == "medic" && player != self)
@@ -1391,31 +1389,33 @@ restoreAmmoClip(player)
 	stockAmmo = player GetWeaponAmmoStock( wep );//gets the total ammount of ammo it has at the moment, not the clip but the stock like 95
 	stockMax = WeaponMaxAmmo( wep );//gets the total ammount of ammo the certain weapon has (not clip) E.g = MaxAmmo of ak47 is 180
 	
-	rest = int(stockMax/10);//E.g AK47= 180/10 = 18, 18 is an int so no need to round the number(17.5>18)
+	tenthOfMax = int( stockMax/10 );//E.g AK47= 180/10 = 18, 18 is an int so no need to round the number(17.5>18)
 	
-	if (rest<1)
-		rest = 1;
+	if (tenthOfMax < 1)
+		tenthOfMax = 1;
 
-	perc = (stockMax-stockAmmo)/rest;//(180-95)/4 = 21,25
+	perc = ( stockMax - stockAmmo ) / tenthOfMax; // 
 
-	if (perc>1)
+	if (perc > 1)
 		perc = 1;
 
-	if ( stockAmmo < stockMax)
+	if ( stockAmmo < stockMax )
 	{
-		if( (stockAmmo + rest) > stockMax)
-			rest = stockMax - stockAmmo;
-		stockAmmo += rest;
-		if (stockAmmo>stockMax)
+		if( (stockAmmo + tenthOfMax) > stockMax)
+			tenthOfMax = stockMax - stockAmmo;
+			
+		stockAmmo += tenthOfMax;
+		if ( stockAmmo > stockMax )
 			stockAmmo = stockMax;
 		
 		player setWeaponAmmoStock( wep, stockAmmo );
 		player thread screenFlash((0,0,0.65), .5, .4);
 		player playlocalsound("weap_pickup");
 		if (player != self && self.curClass == "engineer"){
-			self scripts\players\_players::incUpgradePoints(int(4*perc)*level.dvar["game_rewardscale"]);
-			self.stats["ammoGiven"] += rest;
-			self scripts\players\_abilities::rechargeSpecial(8*perc);
+			self scripts\players\_players::incUpgradePoints( int( 2 * perc ) * level.dvar["game_rewardscale"] );
+			self.stats["ammoGiven"] += tenthOfMax;
+			self scripts\players\_abilities::rechargeSpecial( 8 * perc );
+			self iprintlnbold("Got you " + (int( 4 * perc ) * level.dvar["game_rewardscale"]) + " before the change");
 		}
 		
 	}
@@ -1424,9 +1424,9 @@ restoreAmmoClip(player)
 getRewardForHeal(heal)
 {
 	if (heal > 0)
-	return int((heal+10)/10);
+		return int((heal+10)/5);
 	else
-	return 0;
+		return 0;
 }
 
 //*****************************************************************************************

@@ -23,6 +23,7 @@ rawfile,scripts/include/strings.gsc
 rawfile,scripts/include/useful.gsc
 rawfile,scripts/include/waypoints.gsc
 rawfile,scripts/level/_spectatecoords.gsc
+rawfile,scripts/level/_tradespawns.gsc
 rawfile,scripts/players/_abilities.gsc
 rawfile,scripts/players/_barricades.gsc
 rawfile,scripts/players/_classes.gsc
@@ -46,6 +47,7 @@ rawfile,scripts/server/_custom.gsc
 rawfile,scripts/server/_environment.gsc
 rawfile,scripts/server/_maprotation.gsc
 rawfile,scripts/server/_maps.gsc
+rawfile,scripts/server/_maps.gsx
 rawfile,scripts/server/_mapvoting.gsc
 rawfile,scripts/server/_scoreboard.gsc
 rawfile,scripts/server/_server.gsc
