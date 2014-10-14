@@ -25,10 +25,10 @@ init(){
 
 precache(){
 	precachemodel("com_vending_can_new1_lit"); // Equipment
-	precachemodel("com_newspaperbox_blue");	   // Weapon Upgrade
+	precachemodel("com_shopping_cart");	   // Weapon Upgrade
 	
 	level.tradespawnModels = [];
-	level.tradespawnModels["upgrade"] = "com_newspaperbox_blue";
+	level.tradespawnModels["upgrade"] = "com_shopping_cart";
 	level.tradespawnModels["equipment"] = "com_vending_can_new1_lit";
 }
 
@@ -42,9 +42,9 @@ buildTradespawns(){
 		level.tradespawns[i].model.angles = level.tradespawns[i].angles;
 		
 		if( i % 2 == 0 )
-			level.tradespawns[i].model setModel("com_newspaperbox_blue");
+			level.tradespawns[i].model setModel(level.tradespawnModels["upgrade"]);
 		else
-			level.tradespawns[i].model setModel("com_vending_can_new1_lit");
+			level.tradespawns[i].model setModel(level.tradespawnModels["equipment"]);
 	}
 	
 	for( i = 0; i < level.tradespawns.size; i++ ){
@@ -66,12 +66,14 @@ buildUsableShop(ent, type, origin, angles){
 			iprintlnbold("Spawning upgrade tradespawn!");
 			level scripts\players\_usables::addUsable(ent, "ammobox", &"USE_UPGRADEWEAPON", 96);
 			createTeamObjpoint(ent.origin+(0,0,72), "hud_weapons", 1);
+			ent setContents(2);
 			break;
 			
 		case "equipment":
 			iprintlnbold("Spawning equipment tradespawn!");
 			level scripts\players\_usables::addUsable(ent, "extras", &"USE_BUYUPGRADES", 96);
 			createTeamObjpoint(ent.origin+(0,0,72), "hud_ammo", 1);
+			ent setContents(2);
 			break;
 	}
 
