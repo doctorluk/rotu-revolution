@@ -798,7 +798,6 @@ watchMedkits()
 		{
 			kit.master = self;
 			kit thread beMedkit( self.medkitTime, self.medkitHealing);
-			kit thread kitFX();
 			self thread restoreKit(level.special["medkit"]["recharge_time"]);
 			self playsound("take_medkit");
 			//self thread watchMedkits();
@@ -823,13 +822,6 @@ watchAmmobox()
 			self playsound("take_ammo");
 		}
 	}
-}
-
-
-kitFX()
-{
-	wait 1;
-	playfxontag(level.medkitFX, self, "tag_origin");
 }
 
 restoreKit(time)

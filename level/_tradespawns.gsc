@@ -49,9 +49,9 @@ buildTradespawns(){
 	
 	for( i = 0; i < level.tradespawns.size; i++ ){
 		if( i % 2 == 0 )
-			buildUsableShop(level.tradespawns[i].model, "upgrade", level.tradespawns[i].origin, level.tradespawns[i].angles);
+			thread buildUsableShop(level.tradespawns[i].model, "upgrade", level.tradespawns[i].origin, level.tradespawns[i].angles);
 		else
-			buildUsableShop(level.tradespawns[i].model, "equipment", level.tradespawns[i].origin, level.tradespawns[i].angles);
+			thread buildUsableShop(level.tradespawns[i].model, "equipment", level.tradespawns[i].origin, level.tradespawns[i].angles);
 	}
 }
 
@@ -63,17 +63,17 @@ buildUsableShop(ent, type, origin, angles){
 
 	switch( type ){
 		case "upgrade":
-			iprintlnbold("Spawning upgrade tradespawn!");
+			wait 0.05;
 			level scripts\players\_usables::addUsable(ent, "ammobox", &"USE_UPGRADEWEAPON", 96);
 			createTeamObjpoint(ent.origin+(0,0,72), "hud_weapons", 1);
-			ent setContents(2);
+			ent setContents(1);
 			break;
 			
 		case "equipment":
-			iprintlnbold("Spawning equipment tradespawn!");
+			wait 0.05;
 			level scripts\players\_usables::addUsable(ent, "extras", &"USE_BUYUPGRADES", 96);
 			createTeamObjpoint(ent.origin+(0,0,72), "hud_ammo", 1);
-			ent setContents(2);
+			ent setContents(1);
 			break;
 	}
 
