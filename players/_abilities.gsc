@@ -1407,7 +1407,6 @@ restoreAmmoClip(player)
 			self scripts\players\_players::incUpgradePoints( int( 2 * perc ) * level.dvar["game_rewardscale"] );
 			self.stats["ammoGiven"] += tenthOfMax;
 			self scripts\players\_abilities::rechargeSpecial( 8 * perc );
-			self iprintlnbold("Got you " + (int( 4 * perc ) * level.dvar["game_rewardscale"]) + " before the change");
 		}
 		
 	}
