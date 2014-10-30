@@ -1,4 +1,3 @@
-#include maps\mp\_stockmaputil;
 #include maps\mp\_zombiescript;
 
 main()
@@ -6,7 +5,6 @@ main()
     maps\mp\mp_cargoship_fx::main();
     maps\createart\mp_cargoship_art::main();
     maps\mp\_load::main();
-	prepareStockMap();
 
     maps\mp\_compass::setupMiniMap("compass_map_mp_cargoship");
 
@@ -23,11 +21,10 @@ main()
     setdvar( "compassmaxrange", "2100" );
 
     thread maps\mp\mp_cargoship_waypoints::load_waypoints();
+    thread maps\mp\mp_cargoship_tradespawns::load_tradespawns();
 	
 	waittillStart();
 	
 	buildSurvSpawnByClassname("mp_dm_spawn");
-	buildAmmoStock("bombzone");
-	buildWeaponUpgrade("hq_hardpoint");
 	startSurvWaves();
 }

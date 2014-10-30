@@ -1,11 +1,9 @@
-#include maps\mp\_stockmaputil;
 #include maps\mp\_zombiescript;
 main()
 {
 	maps\mp\mp_overgrown_fx::main();
 	maps\createart\mp_overgrown_art::main();
 	maps\mp\_load::main();
-	prepareStockMap();
 	
 
 	maps\mp\_compass::setupMiniMap("compass_map_mp_overgrown");
@@ -28,15 +26,12 @@ main()
 	setdvar("r_glowskybleedintensity0",".3");
 	setdvar("compassmaxrange","2200");
 	
-	maps\mp\mp_overgrown_waypoints::load_waypoints();
-	// convertWaypoints();
+	thread maps\mp\mp_overgrown_waypoints::load_waypoints();
+	thread maps\mp\mp_overgrown_tradespawns::load_tradespawns();
 	
 	waittillStart();
 	
-	buildSurvSpawnByClassname("mp_dm_spawn");
-	buildAmmoStock("bombzone");
-	buildWeaponUpgrade("hq_hardpoint");
-	
+	buildSurvSpawnByClassname("mp_dm_spawn");	
 	startSurvWaves();
 
 }

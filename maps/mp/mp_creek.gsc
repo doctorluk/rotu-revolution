@@ -1,10 +1,8 @@
-#include maps\mp\_stockmaputil;
 #include maps\mp\_zombiescript;
 main()
 {
     maps\mp\mp_creek_fx::main();
     maps\mp\_load::main();
-	prepareStockMap();
 
     maps\mp\_compass::setupMiniMap("compass_map_mp_creek");
 
@@ -20,11 +18,10 @@ main()
     setdvar( "r_specularcolorscale", "1" );
 
     thread maps\mp\mp_creek_waypoints::load_waypoints();
+    thread maps\mp\mp_creek_tradespawns::load_tradespawns();
 	
 	waittillStart();
 	
 	buildSurvSpawnByClassname("mp_dm_spawn");
-	buildAmmoStock("bombzone");
-	buildWeaponUpgrade("hq_hardpoint");
 	startSurvWaves();
 }

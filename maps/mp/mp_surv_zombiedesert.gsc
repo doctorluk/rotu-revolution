@@ -1,9 +1,7 @@
-#include maps\mp\_stockmaputil;
 #include maps\mp\_zombiescript;
 main()
 {
     maps\mp\_load::main();
-	prepareMap();
 
     game["allies"] = "marines";
 	game["axis"] = "opfor";
@@ -40,7 +38,7 @@ main()
     buildSurvSpawn("spawngroup2", 1);
     buildSurvSpawn("spawngroup3", 1);
     buildSurvSpawn("spawngroup4", 1);
-	buildAmmoStock("bombzone");
-	buildWeaponUpgrade("hq_hardpoint");
+	buildAmmoStock("ammostock");
+	buildWeaponUpgrade("weaponupgrade");
 	startSurvWaves();
 }

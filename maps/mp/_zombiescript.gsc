@@ -104,17 +104,56 @@ beginZomSpawning()
 }
 
 //SURVIVAL MODE
-buildSurvSpawn(targetname, priority) // Loading spawns for survival mode (incomming waves)
+buildSurvSpawn(targetname, priority) // Loading spawns for survival mode (incoming waves)
 {
 	scripts\gamemodes\_survival::addSpawn(targetname, priority);
 }
 
 //SURVIVAL MODE
-removeSurvSpawn(targetname) // Removing spawns for survival mode (incomming waves)
+removeSurvSpawn(targetname) // Removing spawns for survival mode (incoming waves)
 {
 	scripts\gamemodes\_survival::removeSpawn(targetname);
 }
 
+buildSurvSpawnByClassname(classname, priority)
+{
+	ent = getEntArray(classname, "classname");
+	for( i = 0; i < ent.size; i++ ){
+		ent[i].targetname = classname;
+	}
+	scripts\gamemodes\_survival::addSpawn(classname, priority);
+}
+
+prepareMap(){
+	ent = getEntArray("oldschool_pickup", "targetname");
+	for( i = 0; i < ent.size; i++ ){
+		ent[i] delete();
+	}
+	
+	allowed = [];
+	// allowed[0] = "bombzone";
+	// allowed[1] = "blocker";
+	// allowed[2] = "hq";
+	maps\mp\gametypes\_gameobjects::main(allowed);
+	
+	// buildAmmoStock("bombzone");
+	// buildWeaponUpgrade("hq_hardpoint");
+}
+/*
+prepareMap(){
+	ent = getEntArray("oldschool_pickup", "targetname");
+	for( i = 0; i < ent.size; i++ ){
+		ent[i] delete();
+	}
+	
+	allowed[0] = "bombzone";
+	allowed[1] = "blocker";
+	allowed[2] = "hq";
+	allowed[3] = "sd";
+	allowed[4] = "koth";
+	maps\mp\gametypes\_gameobjects::main(allowed);
+}
+*/
 buildWeaponUpgrade( targetname ) // Weaponshop actually
 {
 	ents = getentarray(targetname, "targetname");
@@ -137,9 +176,10 @@ waittillStart()
 {
 	wait .5;
 	
+	scripts\level\_tradespawns::buildTradespawns();
 	scripts\gamemodes\_gamemodes::initGameMode();
 	
-	while(level.activePlayers==0)
+	while( level.activePlayers == 0 )
 		wait .5;
 		
 	

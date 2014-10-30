@@ -82,6 +82,9 @@ function writeRotuStatsGame($lineTokens, $con){
 	global $rotustats;
 	global $mod;
 	
+	if( !$con )
+		return;
+	
 	$ip = $mod->getCV("main", "ip");
 	$port = $mod->getCV("main", "port");
 	
@@ -106,6 +109,9 @@ function writeRotuStatsGame($lineTokens, $con){
 function writeRotuStatsPlayer($lineTokens, $con){
 	global $rotustats;
 	global $mod;
+	
+	if( !$con )
+		return;
 
 	if( $rotustats->getID() == -1 ){
 		$GLOBALS["logging"]->write(MOD_NOTICE, "The ID of the recent rotustats_game is INVALID, we can't collect any player stats! Is the table filled with at least one result?");

@@ -1,11 +1,9 @@
-#include maps\mp\_stockmaputil;
 #include maps\mp\_zombiescript;
 main()
 {
     maps\mp\mp_pipeline_fx::main();
     maps\createart\mp_pipeline_art::main();
     maps\mp\_load::main();
-	prepareStockMap();
 
     maps\mp\_compass::setupMiniMap("compass_map_mp_pipeline");
 
@@ -26,11 +24,10 @@ main()
     setdvar("compassmaxrange","2200");
 
     thread maps\mp\mp_pipeline_waypoints::load_waypoints();
+    thread maps\mp\mp_pipeline_tradespawns::load_tradespawns();
 	
 	waittillStart();
 	
 	buildSurvSpawnByClassname("mp_dm_spawn");
-	buildAmmoStock("bombzone");
-	buildWeaponUpgrade("hq_hardpoint");
 	startSurvWaves();
 }

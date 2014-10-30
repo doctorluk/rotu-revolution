@@ -1,11 +1,9 @@
-#include maps\mp\_stockmaputil;
 #include maps\mp\_zombiescript;
 main()
 {
     maps\mp\mp_countdown_fx::main();
     maps\createart\mp_countdown_art::main();
     maps\mp\_load::main();
-	prepareStockMap();
 
     maps\mp\_compass::setupMiniMap("compass_map_mp_countdown");
 
@@ -22,11 +20,10 @@ main()
     setdvar("compassmaxrange","2000");
 
     thread maps\mp\mp_countdown_waypoints::load_waypoints();
+    thread maps\mp\mp_countdown_tradespawns::load_tradespawns();
 	
 	waittillStart();
 	
 	buildSurvSpawnByClassname("mp_dm_spawn");
-	buildAmmoStock("bombzone");
-	buildWeaponUpgrade("hq_hardpoint");
 	startSurvWaves();
 }
