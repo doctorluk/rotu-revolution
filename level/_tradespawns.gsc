@@ -32,9 +32,13 @@ precache(){
 	level.tradespawnModels["equipment"] = "com_vending_can_new1_lit";
 }
 
+// We want to exclude the stock maps from using the tradespawns, but we still load them to make a unified map opening script
+
 buildTradespawns(){
 	if( !isDefined( level.tradespawns ) )
 		return;
+		
+	cleanupMap();
 	
 	for( i = 0; i < level.tradespawns.size; i++ ){
 	
@@ -65,16 +69,48 @@ buildUsableShop(ent, type, origin, angles){
 		case "upgrade":
 			wait 0.05;
 			level scripts\players\_usables::addUsable(ent, "ammobox", &"USE_UPGRADEWEAPON", 96);
-			createTeamObjpoint(ent.origin+(0,0,72), "hud_weapons", 1);
-			ent setContents(1);
+			createTeamObjpoint( ent.origin + (0, 0, 80), "hud_weapons", 1);
+			ent spawnCollider();
 			break;
 			
 		case "equipment":
 			wait 0.05;
 			level scripts\players\_usables::addUsable(ent, "extras", &"USE_BUYUPGRADES", 96);
-			createTeamObjpoint(ent.origin+(0,0,72), "hud_ammo", 1);
-			ent setContents(1);
+			createTeamObjpoint( ent.origin + (0, 0, 80), "hud_ammo", 1);
+			ent spawnCollider();
+			ent correctPosition();
 			break;
 	}
 
+}
+
+cleanupMap(){
+	ent = getEntArray("oldschool_pickup", "targetname");
+	for( i = 0; i < ent.size; i++ ){
+		ent[i] delete();
+	}
+	
+	allowed = [];
+	maps\mp\gametypes\_gameobjects::main(allowed);
+}
+
+/*
+	The soda machine is not centered on its position which means that we have to translate the thing back 15 and sideways 20
+*/
+correctPosition(){
+
+	position = 	self.origin;
+	angle =		self.angles;
+	
+	forwardVector = anglesToForward(self.angles);
+	self.origin = ( forwardVector[0] * -20 + position[0], position[1], position[2] );
+}
+
+/*
+	Since the spawned-in tradespawns are not solid, we have to "fake" the "solidness" by spawning trigger_radius at them and making them solid
+*/
+
+spawnCollider(){
+	self.collider = spawn( "trigger_radius", self.origin, 0, 40, 80 );
+	self.collider setContents(1);
 }

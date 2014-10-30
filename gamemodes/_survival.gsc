@@ -148,8 +148,6 @@ beginGame()
 		scripts\gamemodes\_gamemodes::buildZomTypes("all");
 	level.zomIdleBehavior = "magic";
 	
-	scripts\level\_tradespawns::buildTradespawns();
-	
 	wait 5;
 	
 	level.waves = [];
