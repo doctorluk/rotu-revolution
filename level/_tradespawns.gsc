@@ -25,10 +25,10 @@ init(){
 
 precache(){
 	precachemodel("com_vending_can_new1_lit"); // Equipment
-	precachemodel("com_shopping_cart");	   // Weapon Upgrade
+	precachemodel("com_stove");	   // Weapon Upgrade
 	
 	level.tradespawnModels = [];
-	level.tradespawnModels["upgrade"] = "com_shopping_cart";
+	level.tradespawnModels["upgrade"] = "com_stove";
 	level.tradespawnModels["equipment"] = "com_vending_can_new1_lit";
 }
 

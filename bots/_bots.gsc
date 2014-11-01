@@ -690,7 +690,7 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 			attacker.stats["killedZombieTypes"][self.type]++;
 		}
 		else
-			logPrint("killedZombieTypes for " + self.type + " aint defined, bro\n");
+			logPrint("LUK_DEBUG;killedZombieTypes for " + self.type + " aint defined, bro\n");
 			
 		attacker thread scripts\players\_rank::giveRankXP("kill");
 		attacker thread scripts\players\_spree::checkSpree();
