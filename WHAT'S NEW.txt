@@ -1,0 +1,63 @@
+//
+// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
+// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
+// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
+// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
+// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
+//
+
+//                                  //
+//          Version 0.7             //
+//                                  //
+//      released on 01.11.2014      //
+
+--> 3aGl3 is now officially part of the RotU-R Modding team
+
+New Features:
+- Ingame stats and RotU-STATS persist even after disconnecting
+- Ingame stats are restored when reconnecting
+- You are now able to look around while reviving
+- New Ammobox and Medkit (from BF3)
+- B3 RotU-STATS plugin (with permission from FNRP-Sphere, thanks a bunch!)
+- New F2000 (from BF3)
+- New SCAR-H (from BF3)
+- Combat Knife (replaces Tomahawk)
+- Notification Texts at the bottom left when players activate their special
+- New MP5K (from BF3)
+- When using the server version 1.7a, the server will now do a regular map switch instead of using the rcon password
+- Notification text in the bottom left when one of your turrets has run out of time
+- New Passive Ability 3 for the Scout: Intelligent Grenades - When a grenade of you hits a zombie in mid-air, the grenade will explode immediately
+- The Explosive Crossbow's Arrows now stick to zombies
+- Support for the following stock maps:
+mp_bloc, mp_cargoship, mp_countdown, mp_creek, mp_farm, mp_killhouse, mp_overgrown, mp_pipeline, mp_shipment
+
+- Support for the following custom maps:
+mp_4t4scrap, mp_asylum, mp_mw2_term, mp_surv_boss_road, mp_surv_zombiedesert
+
+- Bigger maprotations! By default you can only store about 1000 characters inside the sv_maprotation. Split your maprotation across several ones!
+They are now called sv_maprotation_1, sv_maprotation_2, ..., sv_maprotation_20
+Make sure none of them holds more than 1000 characters to prevent bugs!
+
+Bugfixes:
+- Assassin's Vector sharing ammo with secondary weapons
+- Minigun 3rd person animation
+- 3rd person reload animation of the F2000, AUG and Enfield
+- Viewhands visual bugs
+- Hitbox model of the Boss zombie is now fully invisible
+- Added missing Ability descriptions (Scout Primary Ability 2)
+- self.incdammod undefined error, when a player hits a zombie entity that has not been fully loaded
+
+Other Changes:
+- Removed unused assets and further cleaned up the mod
+- Altered Wave Announcement Text
+- Changes to some weapons (timing changes and more)
+- The RotU-STATS plugin for manu admin mod will now only open a single connection instead of establishing a connection whenever data is transmitted
+- Removed debugging messages of recent maps in the games_mp.log
+- Balance changes to Helldogs
+- The rcon commands "setprestige" and "setrank" now take an optional third argument: force (has to be 1 if the rank/prestige is to be downgraded), default: 0
+- Balance changes to Engineers and Medics:
+Engineers now gain less Upgrade Points by providing ammo, additionally the ammobox has a higher cooldown
+Medics receive double the amount of Upgrade Points for healing players but nerfed the Healing Aura's amount of returned health per orb
+- Some zombie animations have been condensed down to one weapon file, the engine now handles randomizing the animations

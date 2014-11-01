@@ -38,17 +38,6 @@ Bipo, Etheross, Brax, Mr-X, Hacker22, Red Beret, H0ly
 ======== > Puffyforum Community puffyforum.com:
 - Providing lots of suggestions and great ideas
 
-======== > 3aGl3:
-- Giving suggestions and help on solving scripting or modeling problems 
-- Provided new effects for the Raygun
-- Provided a modified AStar Waypoint algo
-- Provided an invisible hitbox model
-- Modified Intervention timing and ADS rechamber
-- Modified F2000 reload times
-- Adjusted differing melee times for the Tomahawk
-- Fixed Vector sharing ammo with secondary weapons
-- Ripping and rigging the BF3 Ammo- and Medbag
-
 ======== > Jpeg94:
 - Occasional help solving logical problems
 
@@ -100,12 +89,6 @@ You know what we would like to see more? Objective maps like mp_surv_trap! What 
 =============================
 
 MW2 Intervention:
-From openwarfaremod-forums:
-"DarkRaptor: Porting the texture, model, animations, making the weapon files, compiling, packcaging everything.
-
-Tom-BMX: Creating the tool called LIME that allowed me to do a better rip of the models. Creating "Xanim Exporter" which lets me import the MW2 anims he ripped.
-
-Susel: Supporting me. Helping me to get the ADS anims ready. Helping me by providing the correct material settings for the acog reticle and base, and giving me the idea of modifying the lens material to get the current result. Ripping the sounds."
 Link: http://cfgfactory.com/skins/show/51f428963ff91
 
 Wounded Hands Viewmodel:
@@ -123,10 +106,6 @@ Link: http://cod4.cfgfactory.com/skins/show/507d73825b9db
 Minigun:
 Author: Sanya
 Link: http://cod4.cfgfactory.com/skins/show/507135f259a2d
-
-Scar-H:
-Author: Red Beret
-Link: http://cod4.cfgfactory.com/skins/show/4fedd5fcc43ee
 
 MW2 Vector:
 Author: Sanya

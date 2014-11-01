@@ -116,6 +116,20 @@ getSpectateCoords(){
 			return "15,2669,102;15,-59,0";
 		case "mp_fnrp_movies":
 			return "-904,1189,435;11,-55,0";
+		case "mp_fnrp_chocho":
+			return "905,529,206;13,-145,0";
+		case "mp_draw":
+			return "10,1241,383;19,-49,0";
+		case "mp_surv_city":
+			return "-2109,-268,174;15,-37,0";
+		case "mp_fnrp_mohbaazar":
+			return "-600,-176,-8;11,-66,0";
+		case "mp_fnrp_lighthouse":
+			return "1574,-2241,407;11,29,0";
+		case "mp_killhouse":
+			return "1113,182,365;15,113,0";
+		case "mp_fnrp_corridors":
+			return "-51,371,173;19,-52,0";
 			
 			
 		default:

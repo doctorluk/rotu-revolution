@@ -12,11 +12,12 @@
 //			General Information			//
 //										//
 
-Author: Luk
+Project Lead: Luk
+Developers: Luk, 3aGl3
 Website: http://puffyforum.com
-Version: 0.6
+Version: 0.7
 Development state: ALPHA
-Last Update: 22.08.14 (dd.mm.yyyy, down with 'murica's mm/dd/yyyy!)
+Last Update: 01.11.14 (dd.mm.yyyy, down with 'murica's mm/dd/yyyy!)
 Changelog: http://puffyforum.com/index.php?page=Thread&threadID=35
 Contact:
 	Xfire: lukluk1992 | Web: http://puffyforum.com
@@ -51,7 +52,7 @@ It contains 19 zombie models, 5 classes, new sound effects, new visual effects, 
 //									//
 
 // displays the provided text as iPrintLnBold (big message) to all players
-rcon saybold "text"
+rcon saybold <text>
 
 // Kills a player
 rcon kill <playerID>
@@ -62,7 +63,7 @@ rcon freezeplayer <playerID>
 // Unfreezes the controls of a player
 rcon unfreezeplayer <playerID>
 
-// Does a failsafe mapchange, only works when a player is on the server
+// Does a failsafe mapchange, only works when a player is on the server [ONLY NEEDED WHEN USING THE DEFAULT CoD4 SERVER FILES, USE map <mapname> WHEN USING 1.7a]
 rcon change_map mapname
 
 // Restarts the current map
@@ -87,10 +88,21 @@ rcon kill_zombies <amount>
 rcon rename <playerID>&<name>
 
 // Sets the rank (1-55) of a player
-rcon setrank <playerID>&<rank>
+rcon setrank <playerID>&<rank>[&<force>]
+
+Examples:
+rcon setrank 12&10 (this would set the rank for player #12 to 10, but only when he is lower than 10!)
+rcon setrank 12&12&1 (this would ALWAYS set the rank for player #12 to 12 and reset his skillpoints to achieve the change)
 
 // Sets the prestige (0-45) of a player
-rcon setprestige <playerID>&<prestige>
+rcon setprestige <playerID>&<prestige>[&<force>]
+
+Examples:
+rcon setprestige 12&10 (this would set the prestige for player #12 to 10, but only when he is lower than 10!)
+rcon setprestige 12&12&1 (this would ALWAYS set the prestige for player #12 to 12 and reset his skillpoints to achieve the change)
+
+// Prints READCONFIG; to games_mp.log, can be used with a manu admin mod plugin to issue a readconfig via rcon
+rcon readconfig 1
 
 //										//
 //			Bugs and Problems			//

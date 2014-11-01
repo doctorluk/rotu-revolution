@@ -1,5 +1,5 @@
 ignore,mod_ignore
-// include,mod_scripts
+include,mod_scripts
 
 rawfile,animtrees/multiplayer.atr
 rawfile,mp/playeranim.script
@@ -1062,5 +1062,5 @@ material,mtl_viewhands_wounded_cloth
 material,mtl_viewhands_wounded_skin
 
 // Needed for tradespawns
-xmodel,com_shopping_cart
+xmodel,com_stove
 xmodel,com_vending_can_new1_lit
