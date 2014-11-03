@@ -294,8 +294,10 @@ xanim,ai_zombie_quad_crawl
 xanim,ai_zombie_quad_attack
 xanim,ai_zombie_sprint_v4
 xanim,ai_zombie_sprint_v5
+xanim,ai_zombie_walk_v1
 xanim,ai_zombie_walk_v3
 xanim,ai_zombie_walk_v4
+xanim,ai_zombie_walk_v9
 
 xanim,ai_zombie_jump_down_40
 

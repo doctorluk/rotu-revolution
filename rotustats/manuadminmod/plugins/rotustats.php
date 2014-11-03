@@ -1,7 +1,7 @@
 <?php
 /*
 Author: Luk
-Date: 03.10.2014
+Date: 19.10.2014
 Used for: Reign of the Undead - Revolution, a Call of Duty 4: Modern Warfare mod
 
 Requirements: RotU-Revolution 0.6 or higher, MySQL access and database, manuadminmod 0.12 beta (other version are untested)

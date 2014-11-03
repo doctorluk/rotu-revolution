@@ -8,9 +8,9 @@
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
 
-//										//
-//			General Information			//
-//										//
+//                                      //
+//          General Information         //
+//                                      //
 
 Project Lead: Luk
 Developers: Luk, 3aGl3
@@ -20,36 +20,22 @@ Development state: ALPHA
 Last Update: 01.11.14 (dd.mm.yyyy, down with 'murica's mm/dd/yyyy!)
 Changelog: http://puffyforum.com/index.php?page=Thread&threadID=35
 Contact:
-	Xfire: lukluk1992 | Web: http://puffyforum.com
+    Xfire: lukluk1992 | Web: http://puffyforum.com
 
 Based on the source of Reign of the Undead 2.1 by Bipo and Etheross.
 
-//										//
-//			Setting it up				//
-//										//
-
-COMMANDLINE PARAMETERS:
-+set fs_game mods/rotu-r-alpha +set ui_maxclients 64 +set sv_maxclients 64 +set sv_punkbuster 0 +exec general.cfg +set rcon_password "yourrconpassword"
-
-- Paste the contents of the mods folder into your CoD4\mods\ folder, so it should look like this:
-CoD4\mods\rotu-r-alpha with files like 2d.iwd, mod.ff inside of it
-- Go through all configs, read them carefully, starting with general.cfg. Make sure you execute general.cfg in your command line! ( +exec general.cfg )
-- Make sure you ONLY set your rcon password via the server's commandline! ( +set rcon_password "yourrconpassword" )
-- Maps that worked with RotU 2.0 and 2.1 are compatible and should be put within the /usermaps folder
-- You can open the ccfg.iwd with WinRAR (and other compressing software) and edit the main menu settings in that .cfg. You can add your own server's IP in there for "Join NOW"!
-
-//										//
-//		Description	and Features		//
-//										//
+//                                      //
+//      Description and Features        //
+//                                      //
 
 Reign of the Undead is based on the Zombie mode from Call of Duty World at War and newer derivates of it, including several own interpretations and ideas. It made use of several custom models, weapons and classes.
 Reign of the Undead-REVOLUTION took the original idea and fixed bugs, exchanged all custom zombie models with rips from WaW and newer Call of Duty versions that actually look like zombies, implemented or re-interpreted class abilites, further balanced out the weapons and difficulty, providing more configuration options than ever for hosts and a better experience overall.
 
 It contains 19 zombie models, 5 classes, new sound effects, new visual effects, request and automated shouts from Battlefield 3, new guns, new turrets with new mechanics, new wave types, a new attack move for the boss with multiple twists, all new soundtrack, improved menus with more details and descriptions and more!
 
-//									//
-//			RCON commands			//
-//									//
+//                                  //
+//          RCON commands           //
+//                                  //
 
 // displays the provided text as iPrintLnBold (big message) to all players
 rcon saybold <text>
@@ -104,26 +90,26 @@ rcon setprestige 12&12&1 (this would ALWAYS set the prestige for player #12 to 1
 // Prints READCONFIG; to games_mp.log, can be used with a manu admin mod plugin to issue a readconfig via rcon
 rcon readconfig 1
 
-//										//
-//			Bugs and Problems			//
-//										//
+//                                      //
+//          Bugs and Problems           //
+//                                      //
 
 This mod is nowhere near finished, but it has been tested for quite a long time with 26 bots and 22 players and should be fairly stable.
 
 However, if you encounter a bug or a problem, please provide ALL INFORMATION you can (when it happened, on which map it happened, on which version, what you did at this moment, what happened, what you expected to happen, what others did at this moment [if it's relevant]) and post it here: http://puffyforum.com/index.php?page=Thread&threadID=243
 In case the website is offline, the mod is most likely dead, or you ask google if it is, maybe it moved somewhere else. But who knows the future... :P
 
-//												//
-//		Possible STOP of development			//
-//												//
+//                                              //
+//      Possible STOP of development            //
+//                                              //
 
 It may be likely that, once this mod is released, the development of it comes to a hold.
 It does not look as if I have time left in the near future to add more stuff or fix existing things.
 I really hope that most of the mod runs well and stable.
 
-//										//
-//		Decompilation of sources		//
-//										//
+//                                      //
+//      Decompilation of sources        //
+//                                      //
 
 I personally do not hate the decompilation of sources. I myself have decompiled many mods and maps in order to begin scripting for Call of Duty 4 myself. 
 Without official documentation and only limited basic tutorials it is extremely hard to try out stuff. The easiest way is by decompiling a mod, understanding its structure and adding new features that often fail at first, but will motivate once they actually work!

@@ -36,7 +36,7 @@ main
 		ai_zombie_sprint_v4
 		ai_zombie_sprint_v5
 
-		//ai_zombie_walk_v1
+		ai_zombie_walk_v1
 		//ai_zombie_walk_v2
 		ai_zombie_walk_v3
 		ai_zombie_walk_v4
@@ -44,7 +44,7 @@ main
 		//ai_zombie_walk_v6
 		//ai_zombie_walk_v7
 		//ai_zombie_walk_v8
-		//ai_zombie_walk_v9
+		ai_zombie_walk_v9
 		
 		//ai_zombie_taunts_11 // Halfboss Test
 		
