@@ -82,7 +82,7 @@ m40a3_mp,M40A3,20/180
 m60e4_acog_mp,AA12,40/320
 m60e4_grip_mp,M60E4 Grip,100/300
 m60e4_mp,M60E4,100/300
-m60e4_reflex_mp,Tomahawk,0
+m60e4_reflex_mp,Combat Knife,0
 m1014_grip_mp,M1014 Grip,16/240
 m1014_mp,M1014,40/40
 m1014_reflex_mp,Striker Reflex,36/192
