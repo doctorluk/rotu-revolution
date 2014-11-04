@@ -1,5 +1,5 @@
 ignore,mod_ignore
-include,mod_scripts
+// include,mod_scripts
 
 rawfile,animtrees/multiplayer.atr
 rawfile,mp/playeranim.script

@@ -1,0 +1,35 @@
+//
+// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
+// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
+// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
+// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
+// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
+// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
+//
+
+//                                          //
+//          FIRST TIME INSTALLATION         //
+//                                          //
+
+COMMANDLINE PARAMETERS:
++set fs_game mods/rotu-r-alpha +set ui_maxclients 64 +set sv_maxclients 64 +set sv_punkbuster 0 +exec general.cfg +set rcon_password "yourrconpassword"
+
+- Paste the contents of the mods folder into your CoD4\mods\ folder, so it should look like this:
+CoD4\mods\rotu-r-alpha with files like 2d.iwd, mod.ff inside of it
+- Go through all configs, read them carefully, starting with general.cfg. Make sure you execute general.cfg in your command line! ( +exec general.cfg )
+- Make sure you ONLY set your rcon password via the server's commandline! ( +set rcon_password "yourrconpassword" )
+- Maps that worked with RotU 2.0 and 2.1 are compatible and should be put within the /usermaps folder
+- You can open the ccfg.iwd with WinRAR (and other compressing software) and edit the main menu settings in that .cfg. You can add your own server's IP in there for "Join NOW"!
+
+
+//                                              //
+//      UPDATING FROM AN EARLIER VERSION        //
+//                                              //
+
+- Update your rotustats plugin
+- Remove any folders in your rotu-r-alpha mod folder (scripts and maps)
+- Replace all .iwd and .ff files with the provided ones
+- Adapt your maps.cfg to the new sv_maprotation_X dvars
+
+In case you're updating from a version <0.6-alpha make sure that your .cfgs are up-to-date with the ones provided

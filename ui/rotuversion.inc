@@ -1,1 +1,1 @@
-#define ROTU_VERSION_NUMBER "0.7 Alpha"
+#define ROTU_VERSION_NUMBER "0.8-indev Alpha"
