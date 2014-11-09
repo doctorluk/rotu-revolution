@@ -77,66 +77,61 @@ checkForUsableObjects()
 	hasPressedF = false;
 	isUsing = false;
 
-	while (1)
-	{
-		if (!self.canUse)
-		{
+	while (1){
+		if ( !self.canUse ){
 			self usableAbort();	
 			wait .1;
 			continue;
 		}
-		if (!isdefined(self.curEnt))
-		{
+		
+		if ( !isDefined(self.curEnt) ){
 			if (self.isBusy)
-			self.isBusy = false;
+				self.isBusy = false;
 			
-			if (getBetterUseObj(1024))
-			continue;
-			wait .2;
+			if (getBetterUseObj(1024)){
+				wait .2;
+				continue;
+			}
+			
 		}
-		else
-		{
+		else{
 			dis = distance(self.origin, self.curEnt.origin);
-			if (!self.isBusy)
-			{
-				if (self.curEnt.occupied)
-				{
+			
+			if (!self.isBusy){
+				if ( self.curEnt.occupied ){
 					self.curEnt = undefined;
-					// self setclientdvar("ui_hintstring", "" );
 					self showHinttext(0);
+					wait 0.05;
 					continue;
 				}
-				if (getBetterUseObj(dis))
-				continue;
+				if ( getBetterUseObj(dis) ){
+					wait 0.05;
+					continue;
+				}
 			}
 			
 			//if (isdefined(self.curEnt))
 			//{
 
 			
-			if (dis <= self.curEnt.distance)
-			{
-				if (self useButtonPressed())
-				{
-					if (hasPressedF == false && self isOnGround() && !self.curEnt.occupied )
-					{
+			if ( dis <= self.curEnt.distance ){
+			
+				if ( self useButtonPressed() ){
+					if ( hasPressedF == false && self isOnGround() && !self.curEnt.occupied ){
 						self thread usableUse();
 						hasPressedF = true;
 					}
 				}
-				else
-				{
-					if (hasPressedF == true)
-					{
+				else{
+					if ( hasPressedF == true ){
 						self usableAbort();
 						hasPressedF = false;
 					}
 				}
 			}
 			else
-			{
-				self usableAbort();		
-			}
+				self usableAbort();
+				
 			wait .05;
 		}
 	}
