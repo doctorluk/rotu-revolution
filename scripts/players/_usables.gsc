@@ -78,44 +78,34 @@ checkForUsableObjects()
 	isUsing = false;
 
 	while (1){
+		wait 0.05;
 		if ( !self.canUse ){
 			self usableAbort();	
-			wait .1;
+			wait 0.1;
 			continue;
 		}
-		
 		if ( !isDefined(self.curEnt) ){
-			if (self.isBusy)
+			if ( self.isBusy )
 				self.isBusy = false;
 			
-			if (getBetterUseObj(1024)){
-				wait .2;
+			if ( self getBetterUseObj(1024) )
 				continue;
-			}
-			
+			wait 0.1;
 		}
 		else{
-			dis = distance(self.origin, self.curEnt.origin);
-			
-			if (!self.isBusy){
-				if ( self.curEnt.occupied ){
+			dis = distance( self.origin, self.curEnt.origin );
+			if ( !self.isBusy ){
+				if ( self.curEnt.occupied )
+				{
 					self.curEnt = undefined;
 					self showHinttext(0);
-					wait 0.05;
 					continue;
 				}
-				if ( getBetterUseObj(dis) ){
-					wait 0.05;
+				if ( self getBetterUseObj(dis) )
 					continue;
-				}
 			}
 			
-			//if (isdefined(self.curEnt))
-			//{
-
-			
 			if ( dis <= self.curEnt.distance ){
-			
 				if ( self useButtonPressed() ){
 					if ( hasPressedF == false && self isOnGround() && !self.curEnt.occupied ){
 						self thread usableUse();
@@ -129,10 +119,10 @@ checkForUsableObjects()
 					}
 				}
 			}
-			else
-				self usableAbort();
-				
-			wait .05;
+			else{
+				self usableAbort();		
+			}
+			// wait .05;
 		}
 	}
 }
@@ -140,34 +130,35 @@ checkForUsableObjects()
 getBetterUseObj(distance)
 {
 	foundEnt = 0;
-	for (i=0; i<level.useObjects.size; i++)
+	for ( i = 0; i < level.useObjects.size; i++ )
 	{
 		ent = level.useObjects[i];
-		if (!canUseObj(ent))
-		continue;
-		if (foundEnt==1&&!isplayer(ent))
-		continue;
-		dis = distance(self.origin, ent.origin);
-		if (dis <= ent.distance && !ent.occupied  && dis < distance)
-		{
+		
+		if ( !canUseObj(ent) )
+			continue;
+		if ( foundEnt == 1 && !isPlayer(ent) )
+			continue;
+			
+		dis = distance( self.origin, ent.origin );
+		if ( dis <= ent.distance && !ent.occupied && dis < distance ){
 			// self setclientdvar("ui_hintstring", ent.hintstring );
-			self.hinttext setText(ent.hintstring);
-			self showHinttext(1);
+			self.hinttext setText( ent.hintstring );
+			self showHinttext( 1 );
 			self.curEnt = ent;
 			foundEnt = 1;
 		}
 	}
-	if (foundEnt)
-	return 1;
 	
-	for (i=0; i<self.useObjects.size; i++)
+	if ( foundEnt )
+		return 1;
+	
+	for ( i = 0; i < self.useObjects.size; i++ )
 	{
 		ent = self.useObjects[i];
-		dis = distance(self.origin, ent.origin);
-		if (dis <= ent.distance && !ent.occupied && dis < distance )
-		{
+		dis = distance( self.origin, ent.origin );
+		if ( dis <= ent.distance && !ent.occupied && dis < distance ){
 			// self setclientdvar("ui_hintstring",ent.hintstring );
-			self.hinttext setText(ent.hintstring);
+			self.hinttext setText( ent.hintstring );
 			self showHinttext(1);
 			self.curEnt = ent;
 			return 1;
