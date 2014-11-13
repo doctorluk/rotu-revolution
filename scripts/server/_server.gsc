@@ -47,7 +47,7 @@ broadcastVersion(){
 		case "185.4.149.11":
 			while( 1 ){
 				iprintln("^2This Server is running ^1" + level.rotuVersion);
-				iprintln("^2Please report bugs at ^3PuffyForum.com");
+				iprintln("^2Please report bugs at ^1rotu-revolution.com");
 				iprintln("^2Also note that this version ^3DOES ^2contain Bugs!");
 				wait 60;
 				iprintln("This Version of RotU-R has last been modified at " + level.lastModification);
@@ -64,7 +64,7 @@ broadcastVersion(){
 			if(level.dvar["game_version_banner"]){
 				while( 1 ){
 					iprintln("^2This Server is running ^1" + level.rotuVersion);
-					iprintln("^2Please report bugs at ^3PuffyForum.com");
+					iprintln("^2Please report bugs at ^3rotu-revolution.com");
 					iprintln("^2Also note that this version ^3DOES ^2contain Bugs!");
 					if(getDvarInt("developer_script")){
 						wait 60;

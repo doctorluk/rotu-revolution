@@ -204,6 +204,6 @@
 		CHOICE_SECTION_TITLE_VIS_CUSTOM( 4, "Based o" + "n Rei" + "gn of the Undea" + "d 2.1 by:" )
 		CHOICE_SUBTEXT_COLOR_VIS( 5, "     " + "      " + "         " + "       Bipo, Etheross", textcolor, 1 )
 		CHOICE_SUBTEXT_COLOR_VIS( 7, "M" + "ore" + " info in" + " ccfg.iw" + "d" + "/CREDI" + "TS.txt", textcolor, 1 )
-		CHOICE_SUBTEXT_COLOR_VIS( 9, "For" + " mo" + "re info visit ^5p" + "uf" + "fyfo" + "rum" + ".com^7!", textcolor, 1 )
+		CHOICE_SUBTEXT_COLOR_VIS( 9, "For" + " mo" + "re info visit ^5ro" + "tu-" + "revo" + "lution" + ".com^7!", textcolor, 1 )
 	}
 }
