@@ -118,7 +118,7 @@
 		CHOICE_SEPARATOR_VIS( CHOICE_SEP_3, when( !localvarBool( ui_hideBack ) ) )
 		CHOICE_BUTTON_VIS( 9, "@ZOMBIE_ABOUT", open single_popmenu;, when( !localvarBool( ui_hideBack ) ) )
 
-		CHOICE_FOOTNOTE_VIS_EXPTEXT( ("Rei" + "gn of " + "the U" + "ndead" + " - ^1Revo" + "lution^7 made by" + " L" + "uk & " + "3aGl" + "3\nV" + "isit puffy" + "forum.com for more informat" + "ion/help!"), 40, 420, when( !localvarBool( ui_hideBack ) ) )
+		CHOICE_FOOTNOTE_VIS_EXPTEXT( ("Rei" + "gn of " + "the U" + "ndead" + " - ^1Revo" + "lution^7 made by" + " L" + "uk & " + "3aGl" + "3\nV" + "isit rotu-" + "revo" + "lution.com for more informat" + "ion/help!"), 40, 420, when( !localvarBool( ui_hideBack ) ) )
 		
 		itemDef // Displaying "Welcome back, <name>!"
 		{
