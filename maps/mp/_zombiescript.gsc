@@ -175,7 +175,7 @@ startSurvWaves()
 waittillStart()
 {
 	wait .5;
-	
+	prepareMap();
 	scripts\level\_tradespawns::buildTradespawns();
 	scripts\gamemodes\_gamemodes::initGameMode();
 	

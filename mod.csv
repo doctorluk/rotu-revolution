@@ -1066,3 +1066,6 @@ material,mtl_viewhands_wounded_skin
 // Needed for tradespawns
 xmodel,com_stove
 xmodel,com_vending_can_new1_lit
+
+// Santa hat for the winter season
+xmodel,santa_hat
