@@ -87,6 +87,7 @@ precache()
 	precachemodel("body_sp_russian_loyalist_c_dead");
 	precachemodel("body_sp_russian_loyalist_d_dead");
 	
+	precachemodel("santa_hat");
 	precachemodel("bo_quad");
 	
 	precachemodel("cyclops");

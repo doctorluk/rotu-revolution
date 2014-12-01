@@ -241,6 +241,14 @@ loadZomModel(type)
 		self.head = head;
 		self attach(head);
 	}
+	
+	addSantaHat(type);
+}
+
+addSantaHat(type){
+
+	if( type != "boss" && type != "helldog" && type != "dog" )
+		self attach("santa_hat");
 }
 
 
