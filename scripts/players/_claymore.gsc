@@ -59,7 +59,18 @@ WatchClaymore()
 {
 	self endon( "death" );
 	
-	wait 0.3;
+	old = self.origin;
+	wait 0.15;
+	while( 1 ){
+		if( old != self.origin ){
+			old = self.origin;
+			wait 0.15;
+		}
+		else
+			break;
+	}
+	
+	wait 0.15;
 	self.owner.claymores++;
 	self.fx = spawnFx( level.claymoreFxId, self getTagOrigin( "tag_fx" ), anglesToForward( self GetTagAngles( "tag_fx" ) ), anglesToUp( self getTagAngles( "tag_fx" ) ) );
 	triggerFx( self.fx );
