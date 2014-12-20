@@ -75,3 +75,12 @@ weap_mp5k_clipin_plr,,weapons/mp5k/wpfoly_mp5k_reload_clip_in.wav,0.95,1,wpnplyr
 weap_mp5k_pull_charge_plr,,weapons/mp5k/wpfoly_mp5k_reload_bolt_back.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
 weap_mp5k_charge_plr,,weapons/mp5k/wpfoly_mp5k_reload_bolt_forward.wav,0.95,1,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,
 
+#Kraber
+weap_kraber_fire_plr,,weapons/kraber/weap_kraber_fire.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,local,,,,0.85,,,,,weapon2,,,,
+weap_kraber_fire_npc,,weapons/kraber/weap_kraber_fire.wav,0.84,0.9,wpnai,1,1,35,10920,weapon,,,,0.7,all_mp,,,,weapon4
+weap_kraber_mag_in,,weapons/kraber/wpn_krabersniperd_magin.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_kraber_mag_out,,weapons/kraber/wpn_krabersniper_magout.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_kraber_bolt_forward,,weapons/kraber/weap_krabersniper_boltforward.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+weap_kraber_bolt_boltback,,weapons/kraber/weap_krabersniper_boltback.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+
+

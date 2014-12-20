@@ -632,6 +632,25 @@ xmodel,weapon_flamethrower
 xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
 
+// TF Kraber
+xmodel,viewmodel_kraber_tf
+xmodel,weapon_kraber_tf
+
+xanim,viewmodel_kraber_ap_ADS_down
+xanim,viewmodel_kraber_ap_ADS_up
+xanim,viewmodel_kraber_ap_fire
+xanim,viewmodel_kraber_ap_idle
+xanim,viewmodel_kraber_ap_pullout
+xanim,viewmodel_kraber_ap_pullout_first
+xanim,viewmodel_kraber_ap_pullout_quick
+xanim,viewmodel_kraber_ap_putaway
+xanim,viewmodel_kraber_ap_rechember
+xanim,viewmodel_kraber_ap_reload
+xanim,viewmodel_kraber_ap_reload_empty
+xanim,viewmodel_kraber_ap_sprint_in
+xanim,viewmodel_kraber_ap_sprint_loop
+xanim,viewmodel_kraber_ap_sprint_out
+
 // MP5k
 xmodel,viewmodel_bf3_mp5k
 xmodel,weapon_bf3_mp5k
@@ -777,7 +796,6 @@ material,mtl_weapon_scope_reflex_lens
 material,mtl_weapon_scope_susat
 material,mtl_weapon_suppressor
 
-
 xmodel,worldmodel_bo_enfield
 xmodel,viewmodel_bo_enfield
 
@@ -868,7 +886,6 @@ xanim,viewmodel_mw2_tdi_vector_acog_ADS_fire
 xanim,viewmodel_mw2_tdi_vector_acog_ADS_up
 
 sound,TDI_Vector_mw2,,all_mp
-
 
 // Monkey Bomb
 fx,monkey_grenade/monkey_grenade_onfloor
