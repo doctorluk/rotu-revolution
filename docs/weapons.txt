@@ -75,7 +75,7 @@ m16_gl_mp,M16 GL,30/180
 m16_mp,M16A4,30/180
 m16_reflex_mp,M16A3 Reflex,60/240
 m16_silencer_mp,M16A4 Silencer,30/180
-m21_acog_mp,L96,5/40
+m21_acog_mp,M21 ACOG,5/40
 m21_mp,M21,10/60
 m40a3_acog_mp,ZOMBIE
 m40a3_mp,M40A3,20/180

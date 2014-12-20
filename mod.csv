@@ -1005,33 +1005,6 @@ material,bo2_mtl_t6_wpn_turret_sentry_gun_base
 
 xmodel,bo2_turret_sentry_gun
 
-// MW2 Intervention
-sound,cheytac,,all_mp
-
-xmodel,viewmodel_cheytac
-xmodel,weapon_cheytac
-
-xanim,viewmodel_cheytac_idle
-xanim,viewmodel_cheytac_fire
-xanim,viewmodel_cheytac_rechamber
-xanim,viewmodel_cheytac_reload
-xanim,viewmodel_cheytac_reload_empty
-xanim,viewmodel_cheytac_pullout
-xanim,viewmodel_cheytac_putaway
-xanim,viewmodel_cheytac_pullout_quick
-xanim,viewmodel_cheytac_putaway_quick
-xanim,viewmodel_cheytac_sprint_in
-xanim,viewmodel_cheytac_sprint_loop
-xanim,viewmodel_cheytac_sprint_out
-xanim,viewmodel_cheytac_fire_ads
-xanim,viewmodel_cheytac_rechamber_ads
-xanim,viewmodel_cheytac_ADS_up
-xanim,viewmodel_cheytac_ADS_down
-xanim,viewmodel_cheytac_acog_ADS_up
-xanim,viewmodel_cheytac_acog_ADS_down
-xanim,viewmodel_cheytac_thermal_ADS_up
-xanim,viewmodel_cheytac_thermal_ADS_down
-
 // MW2 Striker
 sound,striker,,all_mp
 
