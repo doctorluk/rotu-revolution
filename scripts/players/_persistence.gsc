@@ -99,15 +99,16 @@ restoreData() {
 		self.stats["barriersRestored"] = 0;
 		
 		self.stats["killedZombieTypes"] = [];
-		self.stats["killedZombieTypes"]["zombie"] = 0;
-		self.stats["killedZombieTypes"]["fat"] = 0;
-		self.stats["killedZombieTypes"]["fast"] = 0;
-		self.stats["killedZombieTypes"]["dog"] = 0;
-		self.stats["killedZombieTypes"]["tank"] = 0;
+		self.stats["killedZombieTypes"]["zombie"] 	= 0;
+		self.stats["killedZombieTypes"]["fat"] 		= 0;
+		self.stats["killedZombieTypes"]["fast"] 	= 0;
+		self.stats["killedZombieTypes"]["dog"] 		= 0;
+		self.stats["killedZombieTypes"]["tank"] 	= 0;
 		self.stats["killedZombieTypes"]["burning"]	= 0;
 		self.stats["killedZombieTypes"]["toxic"] 	= 0;
 		self.stats["killedZombieTypes"]["napalm"] 	= 0;
-		self.stats["killedZombieTypes"]["helldog"] = 0;
+		self.stats["killedZombieTypes"]["helldog"] 	= 0;
+		self.stats["killedZombieTypes"]["scary"] 	= 0;
 		self.stats["killedZombieTypes"]["halfboss"] = 0;
 		
 		struct.stats = self.stats;

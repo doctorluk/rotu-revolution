@@ -68,7 +68,18 @@ WatchClaymore()
 	
 	while(1)
 	{
+		if( !isDefined( self.trigger ) ){
+			logPrint("LUK_DEBUG;self.trigger undefined for claymore!\n");
+			return;
+		}
+		
 		self.trigger waittill( "trigger", player );
+		
+		if( !isDefined( player ) ){
+			logPrint("LUK_DEBUG;player undefined for triggered claymore!\n");
+			return;
+		}
+		
 		if( !isDefined( self.owner ) )
 			return;
 		
