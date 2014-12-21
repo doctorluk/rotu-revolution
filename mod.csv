@@ -632,6 +632,22 @@ xmodel,weapon_flamethrower
 xmodel,weapon_raygun
 xmodel,weapon_saw_MG_setup
 
+// TF CAR101
+xmodel,viewmodel_car101_tf
+xmodel,weapon_car101_tf
+
+xanim,viewmodel_car101_grip_ADS_fire
+xanim,viewmodel_car101_grip_fire
+xanim,viewmodel_car101_grip_hcog_ADS_up
+xanim,viewmodel_car101_grip_hcog_ADS_down
+xanim,viewmodel_car101_grip_idle
+xanim,viewmodel_car101_grip_pullout
+xanim,viewmodel_car101_grip_putaway
+xanim,viewmodel_car101_grip_reload
+xanim,viewmodel_car101_grip_sprint_in
+xanim,viewmodel_car101_grip_sprint_loop
+xanim,viewmodel_car101_grip_sprint_out
+
 // TF Kraber
 xmodel,viewmodel_kraber_tf
 xmodel,weapon_kraber_tf
