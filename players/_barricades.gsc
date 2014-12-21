@@ -24,43 +24,36 @@
 
 init()
 {
-	precachemodel("com_barrel_metal");
-	precachemodel("com_barrel_biohazard");
-	precachemodel("com_barrel_benzin");
+	precacheModel( "com_barrel_metal" );
+	precacheModel( "com_barrel_benzin" );
+
 	level.dynamic_barricades = [];
-	
-	PreCacheTurret("saw_bipod_stand_mp");
-	precachemodel("weapon_saw_MG_setup");
+	level.barricades = [];
+
 	level.barrels[0] = 0;
 	level.barrels[1] = 0;
-	level.barrels[2] = 0;
-	level.barricades = [];
 }
 
-giveBarrel(type){
-	if (!isdefined(type))
-	type = 0;
-	
-	level.barrels[type] ++;
-	self.carryObj = spawn("script_model", (0,0,0));
+giveBarrel( type )
+{
+	if( !isDefined(type) )
+		type = 0;
+
+	level.barrels[type]++;
+	self.carryObj = spawn( "script_model", (0,0,0) );
 	self.carryObj.origin = self.origin + AnglesToForward(self.angles)*48;
 	self.carryObj.master = self;
 	// wait 0.05;
-	self.carryObj linkto(self);
+	self.carryObj linkto( self );
 	self.carryObj.type = type;
 
 	self.carryObj.maxhp = 100;
-	if (self.carryObj.type == 1)
-	{
-		self.carryObj setmodel("com_barrel_biohazard");
-		self.carryObj.maxhp = 60;
-	}
-	else if (self.carryObj.type == 2)
-		self.carryObj setmodel("com_barrel_benzin");
+	if( self.carryObj.type == 1 )
+		self.carryObj setModel( "com_barrel_benzin" );
 	else
-		self.carryObj setmodel("com_barrel_metal");
+		self.carryObj setModel( "com_barrel_metal" );
 	self.carryObj.hp = self.carryObj.maxhp;
-		
+
 	self.canUse = false;
 	self disableweapons();
 	self thread placeBarrel();
@@ -76,25 +69,30 @@ makeBarricade()
 placeBarrel()
 {
 	// self endon("downed");
-	self endon("death");
-	self endon("disconnect");
+	self endon( "death" );
+	self endon( "disconnect" );
+
 	wait 1;
-	while (1)
+	while( 1 )
 	{
-		if( self.isDown ){
+		if( self.isDown )
+		{
 			barrel = self.carryObj;
 			barrel unlink();
-			wait 0.2;
+			wait 0.1;
+			
+			level.barrels[barrel.type] -= 1;
 			barrel delete();
+			
 			self.canUse = true;
-			self enableweapons();
+			self enableWeapons();
 			return;
 		}
-		if (self attackbuttonpressed())
+
+		if( self attackButtonPressed() )
 		{
-			newpos = PlayerPhysicsTrace(self.carryObj.origin, self.carryObj.origin - (0,0,1000));
-			
-			if ( self canPlaceBarrel(newpos) )
+			newpos = playerPhysicsTrace(self.carryObj.origin, self.carryObj.origin - (0,0,1000));
+			if( self canPlaceBarrel(newpos) )
 			{
 				self.carryObj unlink();
 				wait .2;
@@ -102,20 +100,18 @@ placeBarrel()
 				self.carryObj.origin = newpos;
 				self.carryObj.angles = self.angles;
 				level.dynamic_barricades[level.dynamic_barricades.size] = self.carryObj;
-				if (self.carryObj.type == 1)
-					self.carryObj addMG();
 				self.carryObj = undefined;
-				self notify("used_usable");
+				self notify( "used_usable" );
 				
-				iprintln( self.name + " placed an ^2obstacle^7." );
+				iPrintLn( self.name + " placed an ^2obstacle^7." );
 				
 				self.canUse = true;
-				self enableweapons();
+				self enableWeapons();
 				return;
 			}
 			else
 			{
-				self iprintlnbold("^1Can not place barrel here!");
+				self iPrintLnBold("^1Can not place barrel here!");
 				wait 1;
 			}
 		}
@@ -125,124 +121,14 @@ placeBarrel()
 }
 
 canPlaceBarrel(newpos){
-	return (BulletTrace(self GetEye(), newpos, false, self.carryObj)["fraction"] == 1 && 
-				BulletTrace(self GetEye(), newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 &&
-				BulletTrace(newpos, newpos + (0,0,48), false, self.carryObj)["fraction"] == 1 );
-}
-
-addMG()
-{
-	self.turret = SpawnTurret("turret_mp", self.origin + (0,0,48) + anglestoforward(self.angles)*-6, "saw_bipod_stand_mp");
-	self.turret setmodel("weapon_saw_MG_setup");
-	self.turret.angles = self.angles;
-	if (level.dvar["game_mg_overheat"])
-	self.turret thread MGOverheat();
-	self thread deleteMG(level.dvar["game_mg_barrel_time"]);
-}
-
-MGOverheat()
-{
-	self endon("death");
-	self thread MGDeath();
-	self.overheat = 0;
-	self.cooldown = 0;
-	while (1)
-	{
-		self waittill ("trigger", player);
-		self.myPlayer = player;
-		player.onTurret = true;
-		player.canUse  = false;
-		heldUseButton = false;
-		player bar((0,1,0), 0, 128);
-		wait 0.1;
-		if(player useButtonPressed())
-			heldUseButton = true;
-		while (isdefined(player))
-		{
-			player notify("used_usable");
-			if(!player useButtonPressed())
-				heldUseButton = false;
-			if (player attackButtonPressed())
-			{
-		
-				if (self.overheat >= 100 || self.cooldown)
-				{
-					player execClientCommand("-attack");
-					self.cooldown = true;
-				}
-				else
-				{
-					self.overheat += level.dvar["game_mg_cooldown_speed"] + level.dvar["game_mg_overheat_speed"];
-				}
-			}
-			if (self.cooldown)
-			{
-				if (self.overheat < 60)
-				self.cooldown = false;
-			}
-			if (self.overheat > 0)
-			{
-				self.overheat -= level.dvar["game_mg_cooldown_speed"];
-				delta = self.overheat / 100;
-				player bar_setscale(delta, (delta,1-delta,0));
-			}
-			
-			if (player useButtonPressed() && !heldUseButton)
-			{
-				self.myPlayer = undefined;
-				player.onTurret = false;
-				player.canUse  = true;
-				player destroyProgressBar();
-				self thread cooldown();
-				break;
-			}
-			
-			wait 0.05;
-		}
-		
-	}
-}
-
-MGDeath()
-{
-	self waittill("death");
-	level.barrels[1] -= 1;
-	if (isdefined(self.myPlayer))
-	{
-		if (self.myPlayer.onTurret)
-		{
-			self.myPlayer.canUse = true;
-			self.myPlayer.onTurret = false;
-			self.myPlayer destroyProgressBar();
-		}
-	}
-}
-
-
-cooldown()
-{
-	self endon("trigger");
-	self endon("death");
-	while (1)
-	{
-		if (self.overheat > 0)
-		self.overheat -= level.dvar["game_mg_cooldown_speed"];
-		wait 0.05;
-	}
-}
-
-deleteMG(time)
-{
-	wait time;
-	if (isDefined(self.turret))
-	self.turret delete();
-	if(isDefined(self))
-	self delete();
+	return (bulletTracePassed(self GetEye(), newpos, false, self.carryObj) && 
+			bulletTracePassed(self GetEye(), newpos + (0,0,48), false, self.carryObj) &&
+			bulletTracePassed(newpos, newpos + (0,0,48), false, self.carryObj) );
 }
 
 doBarricadeDamage(damage)
 {
-	if (self.bar_type == 0)
+	if( self.bar_type == 0 )
 	{
 		self.hp -= damage;
 		if (self.hp < 0)
@@ -266,10 +152,10 @@ doBarricadeDamage(damage)
 			self.workingPart ++ ;
 		}
 	}
-	if (self.bar_type == 1)
+	if( self.bar_type == 1 )
 	{
 		self.hp -= damage;
-		if (self.hp <= 0)
+		if( self.hp <= 0 )
 		{
 			self thread barrelDeath();
 		}
@@ -310,18 +196,16 @@ removePart()
 
 barrelDeath()
 {
-	if (self.type != 1)
 	level.barrels[self.type] -= 1;
-	if (isdefined(self.turret))
-	self.turret delete();
-	
-	level.dynamic_barricades = removeFromArray(level.dynamic_barricades, self);
-	if (self.type == 2)
+	level.dynamic_barricades = removeFromArray( level.dynamic_barricades, self );
+
+	if( self.type == 1 )
 	{
-		PlayFX(level.explodeFX, self.origin);
-		self PlaySound("explo_metal_rand");
-		self thread scripts\players\_players::doAreaDamage(200, 1000, self.master);
+		playFX( level.explodeFX, self.origin );
+		self playSound( "explo_metal_rand" );
+		self thread scripts\players\_players::doAreaDamage( 200, 1000, self.master );
 	}
+
 	wait .01;
 	self delete();
 }

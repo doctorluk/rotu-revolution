@@ -68,22 +68,20 @@ loadSettings()
 	dvarInt(	"game",			"mapvote_count",		8, 	1, 		15);
 	dvarInt(	"game", 		"rewardscale",	 		25,		1,		10000);
 	dvarBool(	"game",			"delayed_upgradepoints",	1); // Enable/Disabled delayed upgradepoints
-	dvarInt(	"game", 		"delayed_upgradepoints_amount",3000,		1,	100000); // Upgradepoints received for each wave missed
+	dvarInt(	"game", 		"delayed_upgradepoints_amount",	3000,	1,		100000); // Upgradepoints received for each wave missed
 	dvarInt(	"game", 		"startpoints",	 		2000,	0,		100000);
-	dvarInt(	"game", 		"xpmultiplier",	 		1,	1,		20); // XP Multiplier
-	dvarInt(	"game",			"max_mg_barrels",		4,		0,		20);
+	dvarInt(	"game", 		"xpmultiplier",	 		1,		1,		20); // XP Multiplier
 	dvarInt(	"game",			"max_turrets",			5,		0,		12);
 	dvarInt(	"game",			"max_turrets_perplayer",3,		0,		12);
 	dvarInt(	"game",			"max_claymores",		10,		0,		50); // Max claymores per player
 	dvarInt(	"game",			"max_c4",				10,		0,		50); // Max c4 per player
 	dvarInt(	"game",			"max_barrels",			12,		0,		30);
-	dvarInt(	"game",			"max_portals",			3,		0,		10);
 	dvarBool(	"game",			"use_custom",			1);
 	dvarBool(	"game",			"mg_overheat",			1);
-	dvarBool(	"game",		"disable_spectating_bots",	1);
+	dvarBool(	"game",			"disable_spectating_bots",	1);
 	dvarBool(	"game",			"enable_join_queue",	1);
-	dvarBool(	"game",		"player_spawnprotection",	1);
-	dvarFloat(	"game",	"player_spawnprotection_time",	3,		0,		10);
+	dvarBool(	"game",			"player_spawnprotection",	1);
+	dvarFloat(	"game",			"player_spawnprotection_time",	3,		0,		10);
 	dvarFloat(	"game",			"mg_overheat_speed",	2.5,		0.25,	10);
 	dvarFloat(	"game",			"mg_cooldown_speed",	1,		0.2,	10);
 	dvarFloat(	"game",			"mg_barrel_time",		150,	10,		99999);
@@ -178,8 +176,8 @@ loadSettings()
 	dvarBool(	"shop",			"multiply_costs",			1);
 	dvarInt(	"shop", 		"multiply_costs_amount",	 	40,		0,		100);
 	
-	dvarString(	"surv",		"playedmaps",	"");
-	dvarString(	"surv",		"recentmaps",	"");
+	dvarString(	"surv",			"playedmaps",	"");
+	dvarString(	"surv",			"recentmaps",	"");
 
 
 	setdvar("g_teamname_axis", "^9Zombies");

@@ -20,6 +20,7 @@
 
 #include scripts\include\hud;
 #include scripts\include\useful;
+
 playerSetupShop()
 {
 	self endon("disconnect");
@@ -66,55 +67,27 @@ playerSetupShop()
 						"ui_supportcosts"+4, level.dvar["shop_support"+(4+1)+"_costs"]);
 }
 
-updateShopCosts(){
+updateShopCosts()
+{
 	raiseCosts();
-
-	for (i = 0; i<level.players.size; i++)
-	{
+	for( i=0; i<level.players.size; i++ )
 		level.players[i] thread updateCosts();
-	}
-	
 }
 
-raiseCosts(){
-	for (i=1; i<7; i++)
+raiseCosts()
+{
+	for( i=1; i<7; i++ )
 	{
 		level.dvar["shop_defensive"+i+"_costs"] += int(level.dvar["shop_defensive"+i+"_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
 		level.dvar["shop_item"+i+"_costs"] += int(level.dvar["shop_item"+i+"_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
 	}
 	level.dvar["shop_support1_costs"] += int(level.dvar["shop_support1_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
-
 }
 
-updateCosts(){
-	self endon("disconnect");
-	// for (i=0; i<7; i++)
-		// {
-			// self setclientdvar("ui_costs"+i, level.dvar["shop_item"+(i+1)+"_costs"]);
-			// wait .05;
-		// }
-	// for (i=0; i<7; i++)
-		// {
-			// self setclientdvar("ui_itemcosts"+i, level.dvar["shop_defensive"+(i+1)+"_costs"]);
-			// wait .05;
-		// }
-	// self setclientdvar("ui_supportcosts1", level.dvar["shop_support1_costs"]);
-	// for (i=0; i<7; i++)
-	// {
-		// self setclientdvar("ui_costs"+i, level.dvar["shop_item"+(i+1)+"_costs"]);
-		// wait .05;
-	// }
-	// for (i=0; i<6; i++)
-	// {
-		// self setclientdvar("ui_itemcosts"+i, level.dvar["shop_defensive"+(i+1)+"_costs"]);
-		// wait .05;
-	// }
-	// for (i=0; i<5; i++)
-	// {
-		// self setclientdvar("ui_supportcosts"+i, level.dvar["shop_support"+(i+1)+"_costs"]);
-		// wait .05;
-	// }
-	self setclientdvars("ui_costs"+0, level.dvar["shop_item"+(0+1)+"_costs"],
+updateCosts()
+{
+	self endon( "disconnect" );
+	self setClientDvars("ui_costs"+0, level.dvar["shop_item"+(0+1)+"_costs"],
 						"ui_costs"+1, level.dvar["shop_item"+(1+1)+"_costs"],
 						"ui_costs"+2, level.dvar["shop_item"+(2+1)+"_costs"],
 						"ui_costs"+3, level.dvar["shop_item"+(3+1)+"_costs"],
@@ -132,7 +105,7 @@ updateCosts(){
 						"ui_supportcosts"+0, level.dvar["shop_support"+(1+1)+"_costs"],
 						"ui_supportcosts"+1, level.dvar["shop_support"+(2+1)+"_costs"],
 						"ui_supportcosts"+2, level.dvar["shop_support"+(3+1)+"_costs"],
-						"ui_supportcosts"+3, level.dvar["shop_support"+(4+1)+"_costs"]);
+						"ui_supportcosts"+3, level.dvar["shop_support"+(4+1)+"_costs"] );
 }
 
 processResponse(response)
@@ -151,7 +124,7 @@ processResponse(response)
 				else
 					self iprintlnbold("^2You are already at max. health");	
 			}
-		break;
+			break;
 		case "item1":
 			if (self.points >= level.dvar["shop_item2_costs"])
 			{
@@ -164,45 +137,44 @@ processResponse(response)
 				else
 					self iprintlnbold("Your ^3ammo ^7is already full!");
 			}
-		break;
+			break;
 		case "item2":
-		if (self.points >= level.dvar["shop_item3_costs"])
-		{
-			if(self.infected){
-				self scripts\players\_infection::cureInfection();
-				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item3_costs"]);
-				iprintln("^2"+self.name+" is no longer infected!");
-				self iprintlnbold("^2Your infection has been cured!");
+			if (self.points >= level.dvar["shop_item3_costs"])
+			{
+				if(self.infected){
+					self scripts\players\_infection::cureInfection();
+					self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item3_costs"]);
+					iprintln("^2"+self.name+" is no longer infected!");
+					self iprintlnbold("^2Your infection has been cured!");
+					self playsound("buy_upgradebox");
+				}
+				else
+					self iprintlnbold("^2You are not infected");
+			}
+			break;
+		case "item3":
+			if (self.points >= level.dvar["shop_item4_costs"])
+			{
+				self scripts\players\_weapons::swapWeapons("grenade", "frag_grenade_mp");
+				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item4_costs"]);
 				self playsound("buy_upgradebox");
 			}
-			else
-				self iprintlnbold("^2You are not infected");
-		}
-		break;
-		case "item3":
-		if (self.points >= level.dvar["shop_item4_costs"])
-		{
-			self scripts\players\_weapons::swapWeapons("grenade", "frag_grenade_mp");
-			self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item4_costs"]);
-			self playsound("buy_upgradebox");
-		}
-		break;
+			break;
 		case "item4":
-		if (self.points >= level.dvar["shop_item5_costs"])
-		{
-			self giveweapon("c4_mp");
-			self givemaxammo("c4_mp");
-			if(self.actionslotweapons.size == 0)
-				self setActionSlot( 4, "weapon", "c4_mp" );
-			if(!self scripts\players\_weapons::isActionslotWeapon("c4_mp") )
-				self.actionslotweapons[self.actionslotweapons.size] = "c4_mp";
-			self switchtoweapon("c4_mp");
-			//iprintlnbold(self.c4Array.size);
-			self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item5_costs"]);
-			self playsound("buy_upgradebox");
-		}
-		break;
-		
+			if (self.points >= level.dvar["shop_item5_costs"])
+			{
+				self giveweapon("c4_mp");
+				self givemaxammo("c4_mp");
+				if(self.actionslotweapons.size == 0)
+					self setActionSlot( 4, "weapon", "c4_mp" );
+				if(!self scripts\players\_weapons::isActionslotWeapon("c4_mp") )
+					self.actionslotweapons[self.actionslotweapons.size] = "c4_mp";
+				self switchtoweapon("c4_mp");
+				//iprintlnbold(self.c4Array.size);
+				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item5_costs"]);
+				self playsound("buy_upgradebox");
+			}
+			break;
 		case "item5":
 			if (self.points >= level.dvar["shop_item6_costs"])
 			{
@@ -216,8 +188,7 @@ processResponse(response)
 				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item6_costs"]);
 				self playsound("buy_upgradebox");
 			}
-		break;
-		
+			break;
 		case "item6":
 			if (self.points >= level.dvar["shop_item7_costs"])
 			{
@@ -235,8 +206,7 @@ processResponse(response)
 					self playsound("buy_upgradebox");
 				}
 			}	
-		break;
-		
+			break;
 		case "item10":
 			if (self.points >= level.dvar["shop_defensive1_costs"])
 			{
@@ -256,14 +226,13 @@ processResponse(response)
 					self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_barrels"] + " barrels");
 				}
 			}
-		break;
-		
+			break;
 		case "item11":
 			if (self.points >= level.dvar["shop_defensive2_costs"])
 			{
 				if (level.barrels[0] + level.barrels[2] < level.dvar["game_max_barrels"])
 				{
-					self scripts\players\_barricades::giveBarrel(2);
+					self scripts\players\_barricades::giveBarrel( 1 );
 					self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_defensive2_costs"]);
 					self playsound("buy_upgradebox");
 				}
@@ -272,70 +241,56 @@ processResponse(response)
 					self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_barrels"] + " barrels");
 				}
 			}
-		break;
-		
+			break;
 		case "item12":
-		if (self.points >= level.dvar["shop_defensive3_costs"] && !level.turretsDisabled)
-		{
-			if ( (level.turrets + level.turrets_held < level.dvar["game_max_turrets"]) && (self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) )
+			if (self.points >= level.dvar["shop_defensive3_costs"] && !level.turretsDisabled)
 			{
-				self scripts\players\_turrets::giveTurret("minigun");
-				self scripts\players\_players::incUpgradePoints(-1 * level.dvar["shop_defensive3_costs"]);
-				self playsound("buy_upgradebox");
-			}
-			else if( !(self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) )
-			{
-				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets_perplayer"] + " turrets per player!");
-			}
-			else
-			{
-				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets"] + " total turrets!");
-			}
-		}
-		break;
-		
-		case "item13":
-		if (self.points >= level.dvar["shop_defensive4_costs"] && !level.turretsDisabled)
-		{
-			if (level.turrets + level.turrets_held < level.dvar["game_max_turrets"] && (self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) ){
-			
-				self scripts\players\_turrets::giveTurret("gl");
-				self scripts\players\_players::incUpgradePoints(-1 * level.dvar["shop_defensive4_costs"]);
-				self playsound("buy_upgradebox");
-			}
-			else if( !(self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) )
-			{
-				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets_perplayer"] + " turrets per player!");
-			}
-			else
-			{
-				self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets"] + " total turrets!");
-			}
-		}
-		break;
-		
-		case "item14":
-			
-			if (self.points >= level.dvar["shop_defensive5_costs"])
-			{
-				if (level.barrels[1] < level.dvar["game_max_mg_barrels"])
+				if ( (level.turrets + level.turrets_held < level.dvar["game_max_turrets"]) && (self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) )
 				{
-					self scripts\players\_barricades::giveBarrel(1);
-					self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_defensive5_costs"]);
+					self scripts\players\_turrets::giveTurret("minigun");
+					self scripts\players\_players::incUpgradePoints(-1 * level.dvar["shop_defensive3_costs"]);
 					self playsound("buy_upgradebox");
+				}
+				else if( !(self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) )
+				{
+					self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets_perplayer"] + " turrets per player!");
 				}
 				else
 				{
-					self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_mg_barrels"] + " MG barrels");
+					self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets"] + " total turrets!");
 				}
 			}
-		break;
+			break;
+		case "item13":
+			if (self.points >= level.dvar["shop_defensive4_costs"] && !level.turretsDisabled)
+			{
+				if (level.turrets + level.turrets_held < level.dvar["game_max_turrets"] && (self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) ){
+				
+					self scripts\players\_turrets::giveTurret("gl");
+					self scripts\players\_players::incUpgradePoints(-1 * level.dvar["shop_defensive4_costs"]);
+					self playsound("buy_upgradebox");
+				}
+				else if( !(self getTurretCount() < level.dvar["game_max_turrets_perplayer"]) )
+				{
+					self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets_perplayer"] + " turrets per player!");
+				}
+				else
+				{
+					self iprintlnbold("Sorry! Maximum of " + level.dvar["game_max_turrets"] + " total turrets!");
+				}
+			}
+			break;
+		case "item14":
+			if (self.points >= level.dvar["shop_defensive5_costs"])
+			{
+				// Barrle + MG was here
+			}
+			break;
 		case "item15":
 			if (self.points >= level.dvar["shop_defensive6_costs"]){
 				// Teleporter was here
 			}
-		break;
-		
+			break;
 		case "item20":
 			if (self.points >= level.dvar["shop_support1_costs"] && self.support_level == 0)
 			{
@@ -346,9 +301,7 @@ processResponse(response)
 				self.nighvision = true;
 				self playsound("buy_upgradebox");
 			}
-		
-		break;
-
+			break;
 	}
 }
 
