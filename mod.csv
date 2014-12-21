@@ -266,25 +266,14 @@ rawfile,vision/greyvision.vision
 //rawfile,vision/test3.vision
 //rawfile,vision/test4.vision
 
-
-// weapon,mp/ak47
 weapon,mp/at4_mp
-//weapon,mp/tnt_mp
 
 weapon,mp/bot_dog_run_mp
 weapon,mp/bot_dog_idle_mp
 weapon,mp/bot_zombie_walk_mp
 weapon,mp/bot_zombie_stand_mp
 weapon,mp/bot_zombie_run_mp
-// weapon,mp/bot_zombie_run1_mp
-// weapon,mp/bot_zombie_run2_mp
-// weapon,mp/bot_zombie_run3_mp
-// weapon,mp/bot_zombie_run4_mp
 weapon,mp/bot_zombie_melee_mp
-
-// weapon,mp/crossbow_mp
-
-weapon,mp/saw_bipod_stand_mp
 
 xanim,ai_zombie_attack_v2
 xanim,ai_zombie_attack_v4
@@ -605,7 +594,6 @@ xmodel,body_mp_usmc_sniper
 xmodel,ch_tombstone3
 xmodel,com_barrel_metal
 xmodel,com_barrel_benzin
-xmodel,com_barrel_biohazard
 xmodel,cyclops
 xmodel,flamethrower_viewmodel
 xmodel,head_sp_usmc_zach_zach_body_goggles
