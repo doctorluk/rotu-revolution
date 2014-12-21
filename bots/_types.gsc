@@ -255,51 +255,46 @@ addSantaHat(type){
 loadAnimTree(type)
 {
 	animTree = level.zom_types[type].animTree;
-	switch (animTree)
+	switch( animTree )
 	{
 		case "zombie":
-			self.animation["stand"] = "bot_zombie_stand_mp"; // bot_zom_stand
-			self.animation["walk"] = "bot_zombie_walk_mp"; // bot_zom_walk
-			self.animation["sprint"] = "bot_zombie_run_mp"; // bot_zom_run0 and bot_zom_run1
+			self.animation["stand"] = "bot_zombie_stand_mp";		// bot_zom_stand
+			self.animation["walk"] = "bot_zombie_walk_mp";			// bot_zom_walk
+			self.animation["sprint"] = "bot_zombie_run0_mp";		// bot_zom_run0 and bot_zom_run1
 			
-			if( randomint(2) )
-				self.animation["melee"] = "bot_zombie_melee_mp"; // bot_zom_melee0
+			if( randomInt(2) )
+				self.animation["melee"] = "bot_zombie_melee0_mp";	// bot_zom_melee0
 			else
-				self.animation["melee"] = "brick_blaster_mp"; // bot_zom_melee1
-		break;
+				self.animation["melee"] = "bot_zombie_melee1_mp";	// bot_zom_melee1
+			break;
 		case "zombiefast":
-			self.animation["stand"] = "bot_zombie_stand_mp"; // bot_zom_stand
-			self.animation["walk"] = "bot_zombie_walk_mp"; // bot_zom_walk
-			self.animation["sprint"] = "m40a3_acog_mp"; // bot_zom_runfast
+			self.animation["stand"] = "bot_zombie_stand_mp";		// bot_zom_stand
+			self.animation["walk"] = "bot_zombie_walk_mp";			// bot_zom_walk
+			self.animation["sprint"] = "bot_zombie_run1_mp";		// bot_zom_runfast
 			
-			if( randomint(2) )
-				self.animation["melee"] = "bot_zombie_melee_mp"; // bot_zom_melee0
+			if( randomInt(2) )
+				self.animation["melee"] = "bot_zombie_melee0_mp";	// bot_zom_melee0
 			else
-				self.animation["melee"] = "brick_blaster_mp"; // bot_zom_melee1
-		break;
+				self.animation["melee"] = "bot_zombie_melee1_mp";	// bot_zom_melee1
+			break;
 		case "dog":
-			self.animation["stand"] = "bot_dog_idle_mp"; // bot_dog_idle
-			self.animation["sprint"] = "bot_dog_run_mp"; // bot_dog_run
-			self.animation["melee"] = "defaultweapon_mp"; // bot_dog_attack
-		break;
 		case "helldog":
-			self.animation["stand"] = "bot_dog_idle_mp"; // bot_dog_idle
-			self.animation["sprint"] = "bot_dog_run_mp"; // bot_dog_run
-			self.animation["melee"] = "defaultweapon_mp"; // bot_dog_attack
-		break;
+			self.animation["stand"] = "bot_dog_idle_mp";			// bot_dog_idle
+			self.animation["sprint"] = "bot_dog_run_mp";			// bot_dog_run
+			self.animation["melee"] = "bot_dog_attack_mp";			// bot_dog_attack
+			break;
 		case "boss":
-			ran = randomint(2);
-			self.animation["stand"] = "bot_zombie_stand_mp"; // bot_zom_stand
-			self.animation["sprint"] = "bot_zombie_run_mp"; // bot_zom_run0 and bot_zom_run1
-			self.animation["melee"] = "bot_zombie_melee_mp"; // bot_zom_melee
-			self.animation["jump"] = "g36c_gl_mp"; // bot_zom_melee
-		break;
+			self.animation["stand"] = "bot_zombie_stand_mp";		// bot_zom_stand
+			self.animation["sprint"] = "bot_zombie_run0_mp";		// bot_zom_run0 and bot_zom_run1
+			self.animation["melee"] = "bot_zombie_melee0_mp";		// bot_zom_melee
+			self.animation["jump"] = "bot_boss_jump_mp";			// bot_boss_jump
+			break;
 		case "quad":
-			self.animation["stand"] = "flash_grenade_mp"; // bot_quad_idle
-			self.animation["walk"] = "concussion_grenade_mp"; // bot_quad_crawl
-			self.animation["sprint"] = "smoke_grenade_mp"; // bot_quad_sprint
-			self.animation["melee"] = "g3_gl_mp"; // bot_quad_attack
-		break;
+			self.animation["stand"] = "flash_grenade_mp"; 			// bot_quad_idle
+			self.animation["walk"] = "concussion_grenade_mp";		// bot_quad_crawl
+			self.animation["sprint"] = "bot_quad_sprint_mp";		// bot_quad_sprint
+			self.animation["melee"] = "bot_quad_attack_mp";			// bot_quad_attack
+			break;
 	}
 }
 

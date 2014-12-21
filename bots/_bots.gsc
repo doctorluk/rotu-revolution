@@ -54,11 +54,10 @@ init()
 	
 	
 	wait 1;
-	if (level.loadBots)
-		loadBots(level.dvar["bot_count"]);
+	if( level.loadBots )
+		thread loadBots(level.dvar["bot_count"]);
 	
 	scripts\bots\_types::initZomTypes();
-	
 	scripts\bots\_types::initZomModels();
 	
 	level.botsLoaded = true;
@@ -73,15 +72,21 @@ init()
 
 precache()
 {
-	precacheitem("bot_zombie_walk_mp");
-	precacheitem("bot_zombie_stand_mp");
-	precacheitem("bot_zombie_run_mp");
-	precacheitem("bot_zombie_melee_mp");
-	precacheitem("bot_dog_idle_mp");
-	precacheitem("bot_dog_run_mp");
-	precacheitem("brick_blaster_mp"); // Melee 1
-	precacheitem("defaultweapon_mp");
-	
+	precacheItem( "bot_zombie_walk_mp" );
+	precacheItem( "bot_zombie_stand_mp" );
+	precacheItem( "bot_zombie_run0_mp" );
+	precacheItem( "bot_zombie_run1_mp" );
+	precacheItem( "bot_zombie_melee0_mp" );
+	precacheItem( "bot_zombie_melee1_mp" );
+	precacheItem( "bot_dog_idle_mp" );
+	precacheItem( "bot_dog_run_mp" );
+	precacheItem( "bot_dog_attack_mp" );
+	precacheItem( "bot_boss_jump_mp" );
+	precacheItem( "flash_grenade_mp" );			// bot_quad_idle_mp
+	precacheItem( "concussion_grenade_mp" );	// bot_quad_crawl_mp
+	precacheItem( "bot_quad_sprint_mp" );
+	precacheItem( "bot_quad_attack_mp" );
+
 	precachemodel("body_sp_russian_loyalist_a_dead");
 	precachemodel("body_sp_russian_loyalist_b_dead");
 	precachemodel("body_sp_russian_loyalist_c_dead");
@@ -169,12 +174,10 @@ precache()
 
 loadBots(amount)
 {
-	for ( i = 0; i < amount; i++ )
+	for( i=0; i<amount; i++ )
 	{
-
-		bot = addtestclient();
-	
-		if (!isdefined(bot)) {
+		bot = addTestClient();
+		if( !isDefined(bot) ) {
 			println("Could not add bot");
 			i = i -1;
 			wait 1;
@@ -183,6 +186,7 @@ loadBots(amount)
 		
 		bot loadBot(); // No thread, wanna do this one by one.
 	}
+
 	level notify("bots_loaded");
 }
 
@@ -215,11 +219,10 @@ botJoinAxis()
 //SPAWNING BOTS
 getAvailableBot()
 {
-	for (i=0; i< level.bots.size; i++)
+	for( i=0; i<level.bots.size; i++ )
 	{
-		bot = level.bots[i];
-		if (bot.hasSpawned == false)
-		return bot;
+		if( level.bots[i].hasSpawned == false )
+			return level.bots[i];
 	}
 }
 
@@ -322,12 +325,11 @@ rotateWithParent(){
 
 spawnZombie(type, spawnpoint, bot)
 {
-	if (!isdefined(bot))
+	if( !isDefined(bot) )
 	{
 		bot = getAvailableBot();
-		
-		if (!isdefined(bot))
-		return undefined;
+		if( !isDefined(bot) )
+			return;
 	}
 
 	bot.hasSpawned = true;
@@ -335,14 +337,15 @@ spawnZombie(type, spawnpoint, bot)
 	bot.targetPosition = undefined;
 	bot.type = type;
 	bot.head = undefined;
-	
+
 	bot.team = bot.pers["team"];
 	
 	assert( isDefined(bot.team) );
-	
-	if( !isDefined(bot.team) ){
+	if( !isDefined(bot.team) )
+	{
+		// The question is if we'll reach this due to the assert above
 		bot.hasSpawned = false;
-		return undefined;
+		return;
 	}
 	
 	bot.sessionteam = bot.team;
@@ -358,22 +361,22 @@ spawnZombie(type, spawnpoint, bot)
 	bot.influencedByMonkeyBomb = undefined;
 	bot.suicided = undefined;
 	bot.damagePerLoc = [];
-	
+
 	bot scripts\bots\_types::loadZomStats(type);
 	bot.incdammod = 1;
-	if (!isdefined(bot.meleeSpeed))
+	if( !isDefined(bot.meleeSpeed) )
 	{
-		iprintlnbold("ERROR");
+		iPrintLnBold("ERROR");
 		setdvar("error_0", type);
 		setdvar("error_1", bot.name);
 		wait 5;
 	}
+
 	bot.maxHealth = int( bot.maxHealth * level.dif_zomHPMod );
-	
 	bot.health = bot.maxHealth;
-	
+
 	bot.isDoingMelee = false;
-	
+
 	bot.damagedBy = [];
 	
 	bot.alertLevel = 0; // Has this zombie been alerted? 
@@ -394,16 +397,16 @@ spawnZombie(type, spawnpoint, bot)
 	bot.animWeapon = bot.animation["stand"];
 	bot TakeAllWeapons();
 	bot.pers["weapon"] = bot.animWeapon;
-	bot giveweapon(bot.pers["weapon"]);
-	bot givemaxammo(bot.pers["weapon"]);
-	bot setspawnweapon(bot.pers["weapon"]);
-	bot switchtoweapon(bot.pers["weapon"]);
+	bot giveWeapon(bot.pers["weapon"]);
+	bot giveMaxAmmo(bot.pers["weapon"]);
+	bot setSpawnWeapon(bot.pers["weapon"]);
+	bot switchToWeapon(bot.pers["weapon"]);
 	
-	if (isdefined(spawnpoint.angles))
+	if( isDefined(spawnpoint.angles) )
 		bot spawn( spawnpoint.origin, spawnpoint.angles );
 	else
 		bot spawn( spawnpoint.origin, (0,0,0) );
-	
+
 	if( bot.type == "halfboss" )
 		level.bossBulletCount++;
 	
@@ -460,7 +463,6 @@ spawnZombie(type, spawnpoint, bot)
 	//bot zomSetTarget(bot getRandomEntity(spawnpoint.target).origin);
 	
 	return bot;
-	
 }
 
 endSpawnProt(time, decrease)

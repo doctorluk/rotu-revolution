@@ -97,16 +97,10 @@ init()
 		println( "Precached weapon: " + level.weaponList[index] );	
 	}
 
-	//precacheItem("c4_mp");
-	precacheItem( "at4_mp" );
-	//precacheItem( "tnt_mp" );
-	//precacheItem( "crossbow_mp" );
-	precacheItem("helicopter_mp");
-	
 	precacheShellShock( "default" );
 	precacheShellShock( "concussion_grenade_mp" );
+
 	level.monkeyEffect = loadfx("monkey_grenade/monkey_grenade_onfloor");
-	
 	level.monkeyEntities = [];
 
 	claymoreDetectionConeAngle = 70;
@@ -114,8 +108,8 @@ init()
 	level.claymoreDetectionMinDist = 20;
 	level.claymoreDetectionGracePeriod = .75;
 	level.claymoreDetonateRadius = 150;
-	
-	level.c4explodethisframe = false;
+
+	level.C4explodeThisFrame = false;
 	level.C4FXid = loadfx( "bo_crossbow/light_crossbow_blink" );//For the new crossbow, we need to replace this
 	//level.C4FXid = loadfx( "misc/light_c4_blink" ); //Old One
 	level.claymoreFXid = loadfx( "misc/claymore_laser" );

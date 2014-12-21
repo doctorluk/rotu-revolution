@@ -31,12 +31,12 @@ startRegularWave(){
 	preWave(wavetype, type);
 	spawntype = 0;
 
-	for ( i = 0; i < level.waveSize; ){ 
-		if (level.botsAlive<level.dif_zomMax && !level.spawningDisabled){
+	for( i=0; i<level.waveSize; ){ 
+		if( level.botsAlive < level.dif_zomMax && !level.spawningDisabled ){
 			if( getDvar("priospawner") == "1" )
 				spawntype = 5;
-			if ( isDefined( spawnZombie(undefined, spawntype) ) )
-			i++;
+			if( isDefined( spawnZombie(undefined, spawntype) ) )
+				i++;
 		}
 		wait level.dif_zomSpawnRate;
 	}
@@ -94,22 +94,22 @@ startFinalWave()
 /* Logic before countdown starts */
 prePreWave(wavetype, type){
 	
-	if(!level.weStartedAtLeastOneGame)
+	if( !level.weStartedAtLeastOneGame )
 		level.weStartedAtLeastOneGame = true;
-		
+
 	level.intermission = 1;
-	
+
 	level.waveSize = getWaveSize(level.currentWave, type);
 	// level.waveSize = 60;
 	level.currentType = type;
 	level.waveType = wavetype;
 	level.waveProgress = 0;
-	
+
 	thread scripts\gamemodes\_survival::watchEnd();
 	reviveActivePlayers();
-	
+
 	scripts\players\_players::spawnJoinQueue();
-	
+
 	waveCountdown(type);
 }
 

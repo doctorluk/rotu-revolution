@@ -31,7 +31,7 @@ init()
 
 resetSkillpoints(){
 	self endon("disconnect");
-	if ( !level.dvar["game_class_ranks"] )
+	if( !level.dvar["game_class_ranks"] )
 	{
 		self.skillpoints = 0;
 		self skillPointsNotify(self.skillpoints);
@@ -84,7 +84,7 @@ getSkillpoints(rank)
 	
 	if (self.rankHacker)
 		self.skillpoints = 0;
-		
+
 	if ( modRank > 174)
 		self.skillpoints = 174 - spent;
 	
