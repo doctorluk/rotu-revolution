@@ -6,14 +6,6 @@ rawfile,mp/playeranim.script
 rawfile,mp/playeranimtypes.txt
 rawfile,mp/CoD2maps.arena
 
-stringtable,mp\didyouknow.csv
-# rawfile,mp\didyouknow.csv
-
-
-// rawfile,custom_scripts/_admin.gsc
-rawfile,custom_scripts/_difficulty.gsc
-
-
 localize,mpui
 localize,weapon
 localize,zombie
@@ -27,7 +19,6 @@ localize,last_chance
 localize,queue
 localize,use
 localize,class
-
 
 // fx,explosions/grenadeExp_blacktop
 // fx,explosions/grenadeExp_metal
@@ -47,7 +38,6 @@ localize,class
 // fx,smoke/heli_engine_smolder
 // fx,zombies/thunderspawn
 // fx,zombies/thunder_attack
-
 
 fx,explosions/pyromaniac
 fx,turrets/augmented_turret
@@ -213,9 +203,10 @@ material,rank_prestige_45
 material,overlay_armored
 //material,overlay_shocked
 
-stringtable,mp/ranktable.csv
-stringtable,mp/challengeTable.csv
+stringtable,mp/rankTable.csv
 stringtable,mp/rankIconTable.csv
+stringtable,mp/didYouKnow.csv
+// stringtable,mp/challengeTable.csv
 
 rawfile,shock/toxic_gas_mp.shock
 rawfile,shock/infection.shock
@@ -266,14 +257,21 @@ rawfile,vision/greyvision.vision
 //rawfile,vision/test3.vision
 //rawfile,vision/test4.vision
 
-weapon,mp/at4_mp
+weapon,mp/bot_zombie_walk_mp
+weapon,mp/bot_zombie_stand_mp
+weapon,mp/bot_zombie_run0_mp
+weapon,mp/bot_zombie_run1_mp
+weapon,mp/bot_zombie_melee0_mp
+weapon,mp/bot_zombie_melee1_mp
 
 weapon,mp/bot_dog_run_mp
 weapon,mp/bot_dog_idle_mp
-weapon,mp/bot_zombie_walk_mp
-weapon,mp/bot_zombie_stand_mp
-weapon,mp/bot_zombie_run_mp
-weapon,mp/bot_zombie_melee_mp
+weapon,mp/bot_dog_attack_mp
+
+weapon,mp/bot_quad_attack_mp
+weapon,mp/bot_quad_sprint_mp
+
+weapon,mp/bot_boss_jump_mp
 
 xanim,ai_zombie_attack_v2
 xanim,ai_zombie_attack_v4
@@ -295,11 +293,8 @@ xanim,ai_zombie_taunts_11
 xanim,death_stand_dropinplace
 
 xanim,german_shepherd_sitting_looking_idle
-// xanim,german_shepherd_run
 xanim,zombie_dog_run
-// xanim,german_shepherd_run_attack
 xanim,zombie_dog_run_attack
-// xanim,german_shepherd_death_front
 xanim,zombie_dog_death_front
 
 xanim,hunted_dazed_walk_A_zombie

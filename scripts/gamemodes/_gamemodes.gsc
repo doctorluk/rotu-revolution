@@ -28,11 +28,11 @@ init()
 	thread scripts\gamemodes\_hud::init();
 	thread scripts\gamemodes\_upgradables::init();
 	thread scripts\gamemodes\_mysterybox::init();
+	
 	precache();
 	dropSpawns();
 	initStats();
-	
-	
+
 	level.gameEnded = false;
 	level.dif_zomHPMod = 1;
 	level.dif_zomMax = 100;
@@ -46,24 +46,22 @@ init()
 	level.creditTime = 6;
 }
 
-precache(){
-
+precache()
+{
 	level.soul_deathfx = loadfx("misc/soul_death");
 }
 
 dropSpawns()
 {
 	TDMSpawns = getentarray("mp_tdm_spawn", "classname");
-	
-	for (i=0; i<TDMSpawns.size; i++)
+	for( i=0; i<TDMSpawns.size; i++ )
 	{
 		spawn = TDMSpawns[i];
 		spawn.origin = dropPlayer(spawn.origin+(0,0,32), 300);
 	}
 	
 	DMSpawns = getentarray("mp_dm_spawn", "classname");
-	
-	for (i=0; i<DMSpawns.size; i++)
+	for( i=0; i<DMSpawns.size; i++ )
 	{
 		spawn = DMSpawns[i];
 		spawn.origin = dropPlayer(spawn.origin+(0,0,32), 300);
@@ -256,11 +254,11 @@ addSpawnType(type)
 getRandomType()
 {
 	weight = randomint(level.zom_spawntypes_weightotal);
-	for (i=0; i<level.zom_spawntypes.size; i++)
+	for( i=0; i<level.zom_spawntypes.size; i++ )
 	{
 		weight -= level.zom_spawntypes_weight[i];
-		if (weight < 0)
-		return level.zom_spawntypes[i];
+		if( weight < 0 )
+			return level.zom_spawntypes[i];
 	}
 }
 
@@ -272,29 +270,24 @@ loadDifficulty(difficulty)
 			level.dif_zomPP = 2;
 			level.dif_zomHPMod = .5;
 			level.maxBossPhases = 3;
-		break;
+			break;
 		case 2:
 			level.dif_zomPP = 5;
 			level.dif_zomHPMod = .75;
 			level.maxBossPhases = 4;
-		break;
+			break;
 		case 3:
 			level.dif_zomPP = 8;
 			level.dif_zomHPMod = 1;
 			level.maxBossPhases = 4;
-		
-		break;
+			break;
 		case 4:
 			level.dif_zomPP = 10;
 			level.dif_zomHPMod = 1.5;
 			level.maxBossPhases = 6;
-		
-		break;
-		default:
-			thread custom_scripts\_difficulty::difficulty(difficulty);
-		break;
+			break;
 	}
-	
+
 	if( level.dvar["zom_dynamicdifficulty"] )
 		level thread monitorDifficulty();
 }

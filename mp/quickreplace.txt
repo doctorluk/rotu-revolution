@@ -1,3 +1,0 @@
-playerAnimType bot_zom_walk
-
-playerAnimType bot_quad_attack\n\t\t{\n\t\t\tboth ai_zombie_quad_attack\n\t\t}\n\t\tplayerAnimType bot_zom_walk
