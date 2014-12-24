@@ -1,53 +1,5 @@
 name,sequence,file,vol_min,vol_max,vol_mod,pitch_min,pitch_max,dist_min,dist_max,channel,type,probability,loop,masterslave,loadspec,subtitle,compression,secondaryaliasname,volumefalloffcurve,startdelay,speakermap,reverb,lfe percentage
 
-#Flamethrower
-flamethrower_fire_npc,,flamethrower/wpn_flmthwr_st_flame.wav,0.98,0.99,wpnai,1,1.1,35,6000,weapon,,,looping,0.85,,,,,weapon4,,,,0.3
-flamethrower_fire_plr,,flamethrower/wpn_flmthwr_mn_flame.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-flamethrower_ignite_plr,,flamethrower/wpn_flm_ignite.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-flamethrower_cooldown_plr,,flamethrower/wpn_flm_cooldown.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-
-#Raygun Sounds
-weap_rgun_loop,,raygun/wpn_ray_loop.wav,0.75,0.85,explosion,0.7,0.9,50,15000,auto,streamed,,looping,0.5,all_mp,,,,,,,,,
-weap_rgun_exp,,raygun/wpn_ray_exp.wav,0.75,0.85,explosion,0.7,0.9,50,15000,auto,streamed,,,0.5,all_mp,,,,,,,,,
-weap_rgun_fire_plr,,raygun/wpn_ray_st_f.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-weap_rgun_fire,,raygun/wpn_ray_st_r.wav,0.98,0.99,wpnai,1,1.1,35,6000,weapon,,,,0.85,,,,,weapon4,,,,0.3
-ray_reload_open,,raygun/wpn_ray_reload_open.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-ray_reload_battery_out,,raygun/wpn_ray_reload_battery_out.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-ray_reload_battery_in,,raygun/wpn_ray_reload_battery.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-ray_reload_close,,raygun/wpn_ray_reload_close.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-
-#Thundergun Sounds
-#weap_thundergun_fire_plr,,thundergun/thundergun_fire.wav,0.82,0.89,wpnplyr,0.8,0.9,500000,,local,,,,0.85,,,,,weapon2
-#weap_thundergun_fire_npc,,thundergun/thundergun_fire.wav,1,1,wpnai,1,1,35,2000,weapon,,,,0.8,all_mp,,,,weapon4
-
-#AA12 Sounds
-weap_aa12_fire_plr,,aa12/aa12_fire.wav,0.77,0.85,wpnplyr,0.8,0.9,500000,,local,,,,0.85,,,,,weapon2
-weap_aa12_fire_npc,,aa12/aa12_fire_npc.wav,1,1,wpnai,1,1,35,2000,weapon,,,,0.8,all_mp,,,,weapon4
-weap_aa12_clipin_plr,,aa12/aa12_clipin.wav,0.72,0.79,wpnplyr,0.8,0.9,500000,,local,,,,0.85,,,,,weapon2
-weap_aa12_chamber_plr,,aa12/aa12_chamber.wav,0.72,0.79,wpnplyr,0.8,0.9,500000,,local,,,,0.85,,,,,weapon2
-
-#Sentrygun
-weap_minigun_fire,,minigun/wpn_minigun_fire.wav,0.72,0.79,wpnai,0.8,0.9,35,8000,weapon,,,,0.85,,,,,weapon4
-
-#Tesla Sounds
-tesla_clip_in,,tesla/tesla_clip_in.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-wpn_tesla_fire_npc,,tesla/wpn_tesla_fire_mn_f.wav,0.98,0.99,wpnai,1,1.1,35,6000,weapon,,,,0.85,,,,,weapon4,,,,0.3
-wpn_tesla_fire_plr,,tesla/wpn_tesla_fire_st_f.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-wpn_tesla_fire_plr_last,,tesla/wpn_tesla_fire_st_lst.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-wpn_tesla_idle,,tesla/wpn_tesla_idle_d.wav,0.98,0.99,wpnai,1,1.1,35,6000,weapon,,,,0.85,,,,,weapon4,,,,0.3
-wpn_tesla_idle_npc,,tesla/wpn_tesla_idle_d.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-tesla_foley,,tesla/gr_tesla_start.wav,0.98,0.99,wpnai,1,1.1,35,6000,weapon,,,,0.85,,,,,weapon4,,,,0.3
-wpn_tesla_proj_loop,,tesla/wpn_tesla_flux_l.wav,0.98,0.99,wpnai,1,1.1,35,6000,weapon,,,,0.85,,,,,weapon4,,,,0.3
-
-tesla_switch_flip_off,,tesla/tesla_switch_flip_off.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-tesla_switch_flip_on,,tesla/tesla_switch_flip_on.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-tesla_handle_release,,tesla/tesla_handle_release.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-tesla_handle_pullback,,tesla/tesla_handle_pullback.wav,1,1,wpnplyr,1,1.05,500000,,local,,,,0.85,,,,,weapon2,,,
-
-#Silenced AR
-weap_m4silenced_fire_plr,,weapons/f2000/weap_f2000_sdst_01.wav,0.7,0.75,wpnplyr,0.93,1.03,500000,,local,,,,0.85,,,,,weapon2
-weap_m4silenced_fire_npc,,weapons/f2000/weap_f2000_sdmn_01.wav,0.56,0.62,wpnai,0.8,0.9,35,2000,weapon,,,,0.7,all_mp,,,,weapon4
-
 #F2000
 weap_f2000_fire_plr,,weapons/f2000/weap_f2000_slst_01.wav,0.95,1,wpnplyr,1.1,1.2,500,,local,,,,0.85,,,,,weapon2
 weap_f2000_fire_npc,,weapons/f2000/weap_f2000_slmn_01.wav,0.87,0.93,wpnai,1.2,1.3,35,10920,weapon,,,,0.7,all_mp,,,,weapon4,,,,
@@ -88,3 +40,72 @@ weap_car101_fire_plr,,weapons/car101/weap_car101_fire.wav,0.81,0.87,wpnplyr,0.95
 weap_car101_fire_npc,,weapons/car101/weap_car101_fire.wav,0.84,0.9,wpnai,1,1,35,10920,weapon,,,,0.7,all_mp,,,,weapon4
 weap_car101_mag_in,,weapons/car101/weap_car101mag_in.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
 weap_car101_mag_out,,weapons/car101/weap_car101mag_out.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,100
+
+# Monkey Bomb
+monk_cymb_1,1,weps/monkey/monk_cymb_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_cymb_2,2,weps/monkey/monk_cymb_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_cymb_3,3,weps/monkey/monk_cymb_02.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_cymb_4,4,weps/monkey/monk_cymb_03.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_cymb_5,5,weps/monkey/monk_cymb_04.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,1,weps/monkey/explo_vox_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,2,weps/monkey/explo_vox_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,3,weps/monkey/explo_vox_02.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,4,weps/monkey/explo_vox_03.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,5,weps/monkey/explo_vox_04.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_land_vox,1,weps/monkey/land_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_land_vox,2,weps/monkey/land_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_land_vox,3,weps/monkey/land_02.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_land_vox,4,weps/monkey/land_03.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,6,weps/monkey/explo_vox_05.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,7,weps/monkey/explo_vox_06.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,8,weps/monkey/explo_vox_07.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,9,weps/monkey/explo_vox_08.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,10,weps/monkey/explo_vox_09.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,11,weps/monkey/explo_vox_10.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+#monkey_explo_vox,12,weps/monkey/explo_vox_11.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise,,weps/monkey/monkey_raise.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_plr,,weps/monkey/monkey_raise_plr.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_throw,,weps/monkey/throw_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,,
+monk_turn_key,,weps/monkey/monkey_ratchet.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monk_push_fez,,null.wav,,,,,,,,,,,,,,,,,,,,,,,,,,,
+
+monkey_raise_vox_plr,1,weps/monkey/raise_vox_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,2,weps/monkey/raise_vox_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,3,weps/monkey/raise_vox_02.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,4,weps/monkey/raise_vox_03.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,5,weps/monkey/raise_vox_04.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,6,weps/monkey/raise_vox_05.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,7,weps/monkey/raise_vox_06.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,8,weps/monkey/raise_vox_07.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,9,weps/monkey/raise_vox_08.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,10,weps/monkey/raise_vox_09.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_raise_vox_plr,11,weps/monkey/raise_vox_10.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+
+monkey_land_wood,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_rock,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_dirt,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_default,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_bark,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_brick,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_carpet,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_cloth,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_concrete,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_foliage,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_glass,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_grass,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_gravel,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_ice,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_metal,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_mud,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_paper,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_plaster,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_sand,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_snow,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_water,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_asphalt,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_ceramic,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_plastic,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_rubber,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_cushion,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_fruit,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
+monkey_land_paintedmetal,,weps/monkey/satchel_plant.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,

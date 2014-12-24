@@ -20,31 +20,11 @@ localize,queue
 localize,use
 localize,class
 
-// fx,explosions/grenadeExp_blacktop
-// fx,explosions/grenadeExp_metal
-// fx,turrets/turret_broken
-// fx,turrets/turret_overheat
-// fx,fire/zomb_onfire
-// fx,fire/dog_onfire
-// fx,light/dog_lightning
-// fx,impacts/flesh_hit_body_nonfatal
-// fx,impacts/zombie_crit_splatter
-// fx,fire/humanburning_1
-// fx,impacts/large_metalhit_1
-// fx,misc/flashlight
-// fx,misc/fumes
-// fx,muzzleflashes/heavy
-// fx,raygun/raygun_trail
-// fx,smoke/heli_engine_smolder
-// fx,zombies/thunderspawn
-// fx,zombies/thunder_attack
-
 fx,explosions/pyromaniac
 fx,turrets/augmented_turret
 fx,fire/emb_burst_a
 fx,fire/firelp_med_pm_atspawn
 fx,fire/boss_onfire
-fx,flamethrower/muzzle
 fx,impacts/zombie_crit_splatter_nograv
 fx,misc/ground_rising
 fx,misc/healing
@@ -58,16 +38,7 @@ fx,misc/toxic_gas
 fx,misc/napalm_zombie_tummyglow
 fx,misc/zombie_incendiary_effect
 fx,misc/zombie_poison_effect
-fx,raygun/raygun_muzzle_v
-fx,raygun/raygun_muzzle_w
-fx,raygun/raygun_impact
-fx,raygun/trail_raygun_geotrail
-fx,raygun/trail_raygun_ring_emit
 fx,weather/lightning
-material,gfx_fxt_fx_raygun_ring
-fx,wunderwaffe/wunderwaffe_muzzle
-fx,wunderwaffe/wunderwaffe_trail
-fx,wunderwaffe/wunderwaffe_impact
 fx,zombies/boss_shockwave
 
 
@@ -83,7 +54,6 @@ fx,zombies/fx_zombie_fog_static_xlg
 // ## Zombie Eye glow generic
 fx,zombies/eye_glow_le
 fx,zombies/eye_glow_ri
-
 
 rawfile,maps/mp/gametypes/_gametypes.txt
 rawfile,maps/mp/gametypes/war.txt
@@ -136,21 +106,6 @@ material,icon_soldier
 material,icon_stealth
 material,icon_scout
 material,icon_armored
-
-material,mtl_lightning_chamber_glass
-material,mtl_lightning_chamber_main
-material,mtl_ray_gun
-material,mtl_ray_gun_battery
-material,mtl_red_dot
-material,mtl_tesla_metal
-material,mtl_vacuum_tube
-material,mtl_vacuum_tube_filament_inside
-material,mtl_vacuum_tube_filament_outside
-material,mtl_viewmodel_flamethrower
-material,mtl_viewmodel_flamethrower_hose
-material,mtl_weapon_flamethrower
-material,mw2_aa12_body
-material,mw3_sentry_gl_body
 
 material,objpoint_bomb
 
@@ -220,7 +175,6 @@ sound,voice,,all_mp
 sound,weapons,,all_mp
 
 menufile,ui/playerprofile.menu
-// menufile,ui/choices_setup_common.menu			// actually pretty sure we don't need this here
 menufile,ui_mp/challenges.menu
 menufile,ui_mp/controls_multi.menu
 menufile,ui_mp/createserver.menu
@@ -304,9 +258,6 @@ xanim,unarmed_panickedrun_loop_V1
 xanim,noweapon
 
 // 3rdp Player
-xanim,pt_flamethrower_fire_center
-xanim,pt_flamethrower_crouch_fire_center
-
 xanim,pb_minigun_standjump_land
 xanim,pb_minigun_runjump_land
 xanim,pb_minigun_standjump_takeoff
@@ -327,70 +278,6 @@ xanim,pt_minigun_crouch_fire
 xanim,pt_rifle_stand_reload_rearclip
 xanim,pt_rifle_prone_reload_rearclip
 xanim,pt_rifle_crouch_reload_rearclip
-
-xanim,viewmodel_aa12_ADS_down
-xanim,viewmodel_aa12_ADS_fire
-xanim,viewmodel_aa12_ADS_up
-xanim,viewmodel_aa12_fire
-xanim,viewmodel_aa12_idle
-xanim,viewmodel_aa12_pullout
-xanim,viewmodel_aa12_pullout_quick
-xanim,viewmodel_aa12_putaway
-xanim,viewmodel_aa12_reload
-xanim,viewmodel_aa12_sprint_in
-xanim,viewmodel_aa12_sprint_loop
-xanim,viewmodel_aa12_sprint_out
-
-xanim,viewmodel_flamethrower_idle
-xanim,viewmodel_flamethrower_fire
-xanim,viewmodel_flamethrower_pullout
-xanim,viewmodel_flamethrower_putaway
-xanim,viewmodel_flamethrower_pullout_fast
-xanim,viewmodel_flamethrower_putaway_fast
-xanim,viewmodel_flamethrower_ADS_up
-xanim,viewmodel_flamethrower_ADS_down
-
-xanim,viewmodel_g36_scope_ADS_up
-xanim,viewmodel_g36_scope_ADS_down
-
-xanim,viewmodel_M4m203_ADS_fire
-xanim,viewmodel_M4m203silencer_reflex_ADS_up
-xanim,viewmodel_M4m203silencer_reflex_ADS_down
-
-xanim,viewmodel_ray_gun_idle
-xanim,viewmodel_ray_gun_fire
-xanim,viewmodel_ray_gun_reload
-xanim,viewmodel_ray_gun_raise
-xanim,viewmodel_ray_gun_drop
-xanim,viewmodel_ray_gun_ADS_up
-xanim,viewmodel_ray_gun_ADS_down
-
-xanim,viewmodel_tesla_pullout
-xanim,viewmodel_tesla_pullout_fast
-xanim,viewmodel_tesla_putaway
-xanim,viewmodel_tesla_putaway_fast
-xanim,viewmodel_tesla_reload
-xanim,viewmodel_tesla_ADS_down
-xanim,viewmodel_tesla_ADS_fire
-xanim,viewmodel_tesla_ADS_up
-xanim,viewmodel_tesla_fire
-xanim,viewmodel_tesla_first_raise
-xanim,viewmodel_tesla_idle
-
-// ## BF3 Medic and Ammobag
-xmodel,viewmodel_bf3_medicbag
-xmodel,weapon_bf3_medicbag
-xmodel,viewmodel_bf3_ammobag
-xmodel,weapon_bf3_ammobag
-
-xanim,viewmodel_backpack_idle
-xanim,viewmodel_backpack_throw
-xanim,viewmodel_backpack_prep
-xanim,viewmodel_backpack_pullout
-xanim,viewmodel_backpack_putaway
-xanim,viewmodel_backpack_sprint_in
-xanim,viewmodel_backpack_sprint_loop
-xanim,viewmodel_backpack_sprint_out
 
 // ## ZOMBIE WOLF
 xmodel,zombie_wolf
@@ -603,6 +490,21 @@ xmodel,head_sp_sas_woodland_hugh
 xmodel,head_sp_spetsnaz_collins_vladbody
 
 // ## Custom Weapons
+
+// Medic and Ammobag
+xmodel,viewmodel_bf3_medicbag
+xmodel,weapon_bf3_medicbag
+xmodel,viewmodel_bf3_ammobag
+xmodel,weapon_bf3_ammobag
+
+xanim,viewmodel_backpack_idle
+xanim,viewmodel_backpack_throw
+xanim,viewmodel_backpack_prep
+xanim,viewmodel_backpack_pullout
+xanim,viewmodel_backpack_putaway
+xanim,viewmodel_backpack_sprint_in
+xanim,viewmodel_backpack_sprint_loop
+xanim,viewmodel_backpack_sprint_out
 xmodel,mw2_aa12_worldmodel
 xmodel,mw2_aa12_viewmodel
 xmodel,mw3_sentry_gl_base
@@ -739,313 +641,12 @@ xanim,viewmodel_fn2000_ads_fire
 xanim,viewmodel_fn2000_kobra_ads_up
 xanim,viewmodel_fn2000_kobra_ads_down
 
-// BF3 L96
-sound,l96,,all_mp
-
-xmodel,viewmodel_l96
-xmodel,weapon_l96
-
-xanim,viewmodel_l96_ads_down
-xanim,viewmodel_l96_ads_up
-xanim,viewmodel_l96_idle
-xanim,viewmodel_l96_pullout
-xanim,viewmodel_l96_pullout_first
-xanim,viewmodel_l96_pullout_quick
-xanim,viewmodel_l96_reload
-xanim,viewmodel_l96_reload_empty
-xanim,viewmodel_l96_sprint_in
-xanim,viewmodel_l96_sprint_loop
-xanim,viewmodel_l96_sprint_out
-xanim,viewmodel_l96_putaway
-xanim,viewmodel_l96_rechamber
-xanim,viewmodel_l96_fire
-
-// BO Enfield
-sound,enfield,,all_mp
-
-xanim,viewmodel_enfield_acog_ads_down
-xanim,viewmodel_enfield_acog_ads_up
-xanim,viewmodel_enfield_ads_down
-xanim,viewmodel_enfield_ads_fire
-xanim,viewmodel_enfield_ads_up
-xanim,viewmodel_enfield_dualclip_reload_empty_quick
-xanim,viewmodel_enfield_dualclip_reload_quick
-xanim,viewmodel_enfield_elbit_ads_down
-xanim,viewmodel_enfield_elbit_ads_up
-xanim,viewmodel_enfield_fire
-xanim,viewmodel_enfield_first_raise
-xanim,viewmodel_enfield_idle
-xanim,viewmodel_enfield_idle_loop
-xanim,viewmodel_enfield_last_shot
-xanim,viewmodel_enfield_pullout
-xanim,viewmodel_enfield_pullout_quick
-xanim,viewmodel_enfield_putaway
-xanim,viewmodel_enfield_putaway_quick
-xanim,viewmodel_enfield_sprint_in
-xanim,viewmodel_enfield_sprint_loop
-xanim,viewmodel_enfield_sprint_out
-material,mtl_iron_sights
-material,mtl_mag_wrap
-material,mtl_weapon_enfield
-material,mtl_weapon_enfield_plastic
-material,mtl_weapon_reflex_red_dot
-material,mtl_weapon_scope_acog_lens
-material,mtl_weapon_scope_elbit
-material,mtl_weapon_scope_reflex_lens
-material,mtl_weapon_scope_susat
-material,mtl_weapon_suppressor
-
-xmodel,worldmodel_bo_enfield
-xmodel,viewmodel_bo_enfield
-
-// MW2 .44 Magnum
-xmodel,viewmodel_mw2_magnum
-xmodel,worldmodel_mw2_magnum
-
-material,mtl_mw2_magnum
-material,hud_mw2_magnum
-
-xanim,viewmodel_mw2_magnum_ADS_down
-xanim,viewmodel_mw2_magnum_ADS_up
-xanim,viewmodel_mw2_magnum_fire
-xanim,viewmodel_mw2_magnum_idle
-xanim,viewmodel_mw2_magnum_pullout
-xanim,viewmodel_mw2_magnum_putaway
-xanim,viewmodel_mw2_magnum_reload
-xanim,viewmodel_mw2_magnum_sprint_in
-xanim,viewmodel_mw2_magnum_sprint_loop
-xanim,viewmodel_mw2_magnum_sprint_out
-
-sound,magnum_mw2,,all_mp
-
-
-//MW2 M4
-xmodel,viewmodel_mw2_m4
-xmodel,worldmodel_mw2_m4
-
-material,mtl_mw2_m4
-material,mtl_mw2_acog
-material,mtl_mw2_reflex
-material,mtl_mw2_silencer
-material,mtl_mw2_eotech
-material,mtl_mw2_eotech_lens
-material,mtl_weapon_mw2_eotech_dot
-material,mtl_mw2_m203
-
-sound,m4_mw2,,all_mp
-
-xanim,viewmodel_mw2_m4_ADS_up
-xanim,viewmodel_mw2_m4_ADS_fire
-xanim,viewmodel_mw2_m4_ADS_down
-xanim,viewmodel_mw2_reflex_m4_ADS_up
-xanim,viewmodel_mw2_reflex_m4_ADS_fire
-xanim,viewmodel_mw2_reflex_m4_ADS_down
-xanim,viewmodel_mw2_eotech_m4_ADS_up
-xanim,viewmodel_mw2_eotech_m4_ADS_fire
-xanim,viewmodel_mw2_eotech_m4_ADS_down
-xanim,viewmodel_mw2_acog_m4_ADS_up
-xanim,viewmodel_mw2_acog_m4_ADS_fire
-xanim,viewmodel_mw2_acog_m4_ADS_down
-xanim,viewmodel_mw2_m4_ADS_GL_fire
-
-// MW2 Vector
-material,mtl_mw2_tdi_vector
-material,mtl_mw2_tdi_vector_grip
-material,mtl_mw2_acog
-material,mtl_mw2_reflex
-material,mtl_mw2_silencer
-material,mtl_mw2_eotech
-material,mtl_mw2_eotech_lens
-material,mtl_weapon_mw2_eotech_dot
-
-xmodel,viewmodel_mw2_TDI_vector
-xmodel,worldmodel_mw2_TDI_vector
-
-xanim,viewmodel_mw2_tdi_vector_fire
-xanim,viewmodel_mw2_tdi_vector_idle
-xanim,viewmodel_mw2_tdi_vector_pullout
-xanim,viewmodel_mw2_tdi_vector_pullout_first
-xanim,viewmodel_mw2_tdi_vector_putaway
-xanim,viewmodel_mw2_tdi_vector_reload
-xanim,viewmodel_mw2_tdi_vector_reload_empty
-xanim,viewmodel_mw2_tdi_vector_sprint_in
-xanim,viewmodel_mw2_tdi_vector_sprint_loop
-xanim,viewmodel_mw2_tdi_vector_sprint_out
-xanim,viewmodel_mw2_tdi_vector_ADS_down
-xanim,viewmodel_mw2_tdi_vector_ADS_fire
-xanim,viewmodel_mw2_tdi_vector_ADS_up
-xanim,viewmodel_mw2_tdi_vector_reflex_ADS_down
-xanim,viewmodel_mw2_tdi_vector_reflex_ADS_fire
-xanim,viewmodel_mw2_tdi_vector_reflex_ADS_up
-xanim,viewmodel_mw2_tdi_vector_eotech_ADS_down
-xanim,viewmodel_mw2_tdi_vector_eotech_ADS_fire
-xanim,viewmodel_mw2_tdi_vector_eotech_ADS_up
-xanim,viewmodel_mw2_tdi_vector_acog_ADS_down
-xanim,viewmodel_mw2_tdi_vector_acog_ADS_fire
-xanim,viewmodel_mw2_tdi_vector_acog_ADS_up
-
-sound,TDI_Vector_mw2,,all_mp
-
-// Monkey Bomb
-fx,monkey_grenade/monkey_grenade_onfloor
-
-material,hud_icon_monkey
-material,mtl_monkey_bomb_clothes
-material,mtl_monkey_bomb_metal
-material,mtl_monkey_bomb_fur
-material,mtl_monkey_bomb_explosive
-
-sound,monkey,,all_mp
-
-xanim,viewmodel_zombie_monkeybomb_throw
-xanim,viewmodel_zombie_monkeybomb_idle
-xanim,viewmodel_zombie_monkeybomb_pullpin
-
-xmodel,monkey_bomb_waw
-xmodel,weapon_monkey_bomb
-
-// Bo Crossbow
-fx,bo_crossbow/smoke_geotrail_crossbow
-fx,bo_crossbow/light_crossbow_blink
-
-material,mtl_bo_crossbow
-material,mtl_bo_crossbow_for_arrow
-material,hud_bo_explosive_arrow
-material,mtl_bo_gredfield_scope_interior_lens
-material,mtl_bo_rail_n_bracket
-material,mtl_bo_redfield_scope
-
-sound,crossbow_bo,,all_mp
-
-xanim,viewmodel_bo_crossbow_ADS_down
-xanim,viewmodel_bo_crossbow_ADS_up
-xanim,viewmodel_bo_crossbow_scope_ADS_down
-xanim,viewmodel_bo_crossbow_scope_ADS_up
-xanim,viewmodel_bo_crossbow_fire
-xanim,viewmodel_bo_crossbow_idle
-xanim,viewmodel_bo_crossbow_pullout
-xanim,viewmodel_bo_crossbow_putaway
-xanim,viewmodel_bo_crossbow_reload
-xanim,viewmodel_bo_crossbow_scope_reload
-xanim,viewmodel_bo_crossbow_sprint_in
-xanim,viewmodel_bo_crossbow_sprint_loop
-xanim,viewmodel_bo_crossbow_sprint_out
-
-
-xmodel,viewmodel_bo_crossbow
-xmodel,worldmodel_bo_crossbow
-xmodel,projectile_bo_arrow_explosive
-
-// HK 21
-sound,hk21,,all_mp
-
-xanim,viewmodel_hk21_acog_ads_down
-xanim,viewmodel_hk21_acog_ads_up
-xanim,viewmodel_hk21_ads_down
-xanim,viewmodel_hk21_ads_fire
-xanim,viewmodel_hk21_ads_up
-xanim,viewmodel_hk21_elbit_ads_down
-xanim,viewmodel_hk21_elbit_ads_up
-xanim,viewmodel_hk21_extclip_reload
-xanim,viewmodel_hk21_extclip_reload_empty
-xanim,viewmodel_hk21_fire
-xanim,viewmodel_hk21_first_raise
-xanim,viewmodel_hk21_idle
-xanim,viewmodel_hk21_idle_loop
-xanim,viewmodel_hk21_last_shot
-xanim,viewmodel_hk21_pullout
-xanim,viewmodel_hk21_pullout_quick
-xanim,viewmodel_hk21_putaway
-xanim,viewmodel_hk21_putaway_quick
-xanim,viewmodel_hk21_sprint_in
-xanim,viewmodel_hk21_sprint_loop
-xanim,viewmodel_hk21_sprint_out
-
-xmodel,viewmodel_bo_hk21
-xmodel,worldmodel_bo_hk21
-
-// Minigun
-
-xanim,viewmodel_minigun_fire
-xanim,viewmodel_minigun_idle
-xanim,viewmodel_minigun_pullout
-xanim,viewmodel_minigun_putaway
-xanim,viewmodel_minigun_sprint_in
-xanim,viewmodel_minigun_sprint_loop
-xanim,viewmodel_minigun_sprint_out
-xmodel,viewmodel_bo_minigun
-xmodel,worldmodel_bo_minigun
-material,mtl_bo_minigun
-material,mtl_bo_minigun_bullet
-material,mtl_bo_minigun_decals
-material,mtl_bo_minigun_for_bullets
-sound,minigun_bo,,all_mp
-
-// BO Steyr AUG
-material,attachment_bo_aug_scope
-material,attachment_bo_iron_sights
-material,attachment_bo_reflex_sight
-material,attachment_bo_suppressor
-material,weapon_bo_aug
-
-sound,bo_aug,,all_mp
-
-xanim,viewmodel_aug_grip_ads_down
-xanim,viewmodel_aug_grip_ads_fire
-xanim,viewmodel_aug_grip_ads_up
-xanim,viewmodel_aug_grip_fire
-xanim,viewmodel_aug_grip_first_raise
-xanim,viewmodel_aug_grip_idle
-xanim,viewmodel_aug_grip_idle_loop
-xanim,viewmodel_aug_grip_last_shot
-xanim,viewmodel_aug_grip_mantle
-xanim,viewmodel_aug_grip_pullout
-xanim,viewmodel_aug_grip_pullout_quick
-xanim,viewmodel_aug_grip_putaway
-xanim,viewmodel_aug_grip_putaway_quick
-xanim,viewmodel_aug_grip_reload
-xanim,viewmodel_aug_grip_reload_empty
-xanim,viewmodel_aug_grip_sprint_in
-xanim,viewmodel_aug_grip_sprint_loop
-xanim,viewmodel_aug_grip_sprint_out
-xanim,viewmodel_aug_reflex_ads_down
-xanim,viewmodel_aug_reflex_ads_up
-
-xmodel,viewmodel_bo_aug_hbar
-xmodel,worldmodel_bo_aug_hbar
-
 // BO2 Sentry Turret
 material,bo2_mtl_t6_wpn_minigun
 material,bo2_mtl_t6_wpn_turret_sentry_gun_ammo
 material,bo2_mtl_t6_wpn_turret_sentry_gun_base
 
 xmodel,bo2_turret_sentry_gun
-
-// MW2 Striker
-sound,striker,,all_mp
-
-xanim,viewmodel_striker_ads_down
-xanim,viewmodel_striker_ads_up
-xanim,viewmodel_striker_eotech_ads_down
-xanim,viewmodel_striker_eotech_ads_up
-xanim,viewmodel_striker_fire
-xanim,viewmodel_striker_fire_ads
-xanim,viewmodel_striker_idle
-xanim,viewmodel_striker_pullout
-xanim,viewmodel_striker_pullout_quick
-xanim,viewmodel_striker_putaway
-xanim,viewmodel_striker_putaway_quick
-xanim,viewmodel_striker_reflex_ads_down
-xanim,viewmodel_striker_reflex_ads_up
-xanim,viewmodel_striker_reload_intro
-xanim,viewmodel_striker_reload_loop
-xanim,viewmodel_striker_reload_out
-xanim,viewmodel_striker_sprint_in
-xanim,viewmodel_striker_sprint_loop
-xanim,viewmodel_striker_sprint_out
-
-xmodel,viewmodel_striker_mw2
-xmodel,weapon_striker_mw2
 
 // Wounded Viewhands
 xmodel,viewmodel_base_viewhands
