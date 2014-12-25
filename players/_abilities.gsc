@@ -1335,14 +1335,14 @@ healObjectHeal(time)
 
 healThread(player)
 {
-	master = self.master;
-	// JeyS aangepaste heal functie
-	// Wacht tot dat afstand kleiner is dan 20 en dan pas helen
-	self thread glow_heal_ball_out(player);
-	player waittill("glow_ball_reached");
-	master thread healPlayer(player, self.healing);
-	// 							
+	player endon( "disconnect" );
 
+	// send out a glowing ball that follows the player around
+	self thread glow_heal_ball_out(player);
+
+	// once the ball reached him we heal him
+	player waittill("glow_ball_reached");
+	self.master thread healPlayer(player, self.healing);
 }
 
 healPlayer(player, heal)
@@ -1432,27 +1432,39 @@ glow_heal_ball_out(p)
 	while(1)
 	{
 		wait 0.05;
-		head_tag_org = p getTagOrigin("j_head");
-		
-		if(distance(ball_tag.origin,head_tag_org) > 30)
+		// check if the player is still defined or disconnected
+		if( !isDefined(p) )
 		{
+			// the player disconnected, end this
+			ball_tag delete();
+			break;
+		}
+		
+		// get the players head origin
+		head_tag_org = p getTagOrigin("j_head");
+		if( distance(ball_tag.origin,head_tag_org) > 30 )
+		{
+			// we are still away from the player, let's move to him
 			movespeed = 1.3;
 			num = 10;
-			
-			if(distance(ball_tag.origin,head_tag_org) > 30 && distance(ball_tag.origin,head_tag_org) < 64)
-				movespeed = 0.55;num = 5;
-			
-			head_tag_org = p getTagOrigin("j_head");
-			ball_tag moveTo(head_tag_org,movespeed);
-
-			for(i=0;i<num;i++)
+			if( distance(ball_tag.origin,head_tag_org) < 64 )
 			{
-				playFXOnTag(level.heal_glow_effect,ball_tag,"tag_origin");
+				// we are pretty close, move faster (movespeed ist actually the movetime)
+				movespeed = 0.55;
+				num = 5;
+			}
+			
+			ball_tag moveTo( head_tag_org, movespeed );
+			for( i=0; i<num; i++ )
+			{
+				// play the effect the desired amount and at the same time wait
+				playFXOnTag( level.heal_glow_effect, ball_tag, "tag_origin" );
 				wait 0.1;
 			}
 		}
 		else
 		{
+			// we are close to the player, now heal him
 			p thread player_glow_up();
 			p notify("glow_ball_reached");
 			ball_tag delete();
