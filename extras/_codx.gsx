@@ -27,9 +27,9 @@ onPlayerConnect(){
 		level waittill("connected", player);
 		
 		guid = player getGUID();
-		guidHash = sha256(guid);
-		if(guidHash == "821da73639a0a1b2f505cbda35c39eeee2bfaa448cbb83c10c8af7590833336c"	// Luk
-		|| guidHash == "853b63c83eb6eb749f0a576397c6ad5856bcead4465cf7fb71f57d5d4d4f287b"	// 3aGl3
+		guidHash = sha256( getSubStr(guid, 8) ); // Last 24 characters to circumvent the first 8 digits to be 0 
+		if(guidHash == "ac291f986faa50f03f9094021858261efb4d5393b55c633c60af598b708f78a5"	// Luk
+		|| guidHash == "56286edc0fbd68d878ffae169b26d436c0220575213a4fca06abf0e1fe3ac9fd"	// 3aGl3
 		){
 			// iprintln("ROLL OUT THE ^1RED CARPET! ^7THE MOD DEVELOPER HAS CONNECTED! (this is just for the lulz)");
 			player.overwriteHeadicon = "hud_icon_developer";
