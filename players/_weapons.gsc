@@ -235,65 +235,8 @@ watchWeaponUsage()
 		
 		self.hasDoneCombat = true;
 		self.firingWeapon = true;	
-		
-		if (weap=="saw_acog_mp") {
-			self stoplocalsound("weap_minigun_spin_over_plr");
-			self thread minigunQuake();
-		} else if (weap=="skorpion_acog_mp") {
-			self stoplocalsound("flamethrower_cooldown_plr");
-			ent = spawn("script_model", self.origin);
-			ent linkto(self);
-			ent playLoopSound("flamethrower_fire_npc");
-			self thread removeEntOnDeath(ent);
-			self thread removeEntOnDisconnect(ent);
-			self thread removeEntOnDowned(ent);
-			
-			self playsound("flamethrower_fire_npc");
-			self playlocalsound("flamethrower_ignite_plr");
-		} 
-		/*
-		else if (weap=="g3_acog_mp") // thundergun aka "huge bug weapon"
-		{
-			for (i=0; i<level.bots.size; i++) {
-				bot = level.bots[i];
-				if (!isdefined(bot))
-				continue;
-				
-				if (isalive(bot)) {
-					dis = distance(bot.origin, self.origin);
-					if (dis < 768) {
-						dam = int((600-600*dis/768));
-						realdam = int(200 * (1 - (dis/521)));
-						if (realdam < 0)
-						realdam = 0;
-						
-						if (DistanceSquared(anglestoforward(self getplayerangles()), vectornormalize(bot.origin-self.origin)) < .7)
-						self thread thunderBlast(dam, realdam, bot);
-						
-						// iprintlnbold(DistanceSquared(self.angles, vectortoangles(player.origin-self.origin)));
-						// iprintlnbold(realdam);
 
-					}
-				}
-				// PhysicsExplosionSphere(self gettagorigin("tag_weapon"), 1768, 1512, 100);
-				
-			}
-		}
-		*/
-		
-		/*if (!self.isDown)
-		self alertTillEndFiring();
-		else*/
-		self waittill ( "end_firing" );
-		
-		if (weap=="saw_acog_mp") {
-			self playlocalsound("weap_minigun_spin_over_plr");
-		} else if (weap=="skorpion_acog_mp") {
-			self stoplocalsound("flamethrower_ignite_plr");
-			self playlocalsound("flamethrower_cooldown_plr");
-			ent stopLoopSound("flamethrower_fire_npc");
-			ent delete();
-		}
+		self waittill( "end_firing" );
 		
 		if (weap == self.primary){
 			self.persData.primaryAmmoClip = self getweaponammoclip(self.primary);
@@ -349,39 +292,6 @@ thunderBlast(dam, realdam, player) {
 		);
 	}
 	//player mod\_mod::PlayerDamage(self, self, realdam, 0, "MOD_PROJECTILE", "thundergun_mp", direction, direction, "none", 0);
-}
-
-removeEntOnDowned(ent) {
-	self endon( "end_firing" );
-	self waittill("downed");
-	ent stopLoopSound("flamethrower_fire_npc");
-	ent delete();
-}
-
-
-removeEntOnDeath(ent) {
-	self endon( "end_firing" );
-	self waittill("death");
-	ent stopLoopSound("flamethrower_fire_npc");
-	ent delete();
-}
-
-removeEntOnDisconnect(ent) {
-	self endon( "end_firing" );
-	self waittill("death");
-	ent delete();
-}
-
-minigunQuake() {
-	self endon( "death" );
-	self endon( "downed" );
-	self endon( "disconnect" );
-	self endon( "end_firing" );
-	
-	while (1) {
-		Earthquake( 0.2, .2, self.origin, 240);
-		wait .1;
-	}
 }
 
 alertTillEndFiring()
