@@ -66,11 +66,8 @@ rawfile,maps/mp/_load.gsc
 rawfile,maps/mp/_zombiescript.gsc
 
 material,hud_ammo
-material,hud_flamethrower_reticle
 material,hud_icon_developer
 material,hud_icon_ammobox
-material,hud_icon_crossbow
-material,hud_icon_crossbow_dpad
 material,hud_icon_lowhp
 material,hud_icon_low_ammo
 
@@ -477,7 +474,6 @@ xmodel,ch_tombstone3
 xmodel,com_barrel_metal
 xmodel,com_barrel_benzin
 xmodel,cyclops
-xmodel,flamethrower_viewmodel
 xmodel,head_sp_usmc_zach_zach_body_goggles
 xmodel,head_sp_usmc_sami_goggles_zach_body
 xmodel,head_mp_usmc_ghillie
@@ -505,17 +501,8 @@ xanim,viewmodel_backpack_putaway
 xanim,viewmodel_backpack_sprint_in
 xanim,viewmodel_backpack_sprint_loop
 xanim,viewmodel_backpack_sprint_out
-xmodel,mw2_aa12_worldmodel
-xmodel,mw2_aa12_viewmodel
 xmodel,mw3_sentry_gl_base
 xmodel,mw3_sentry_gl_turret
-xmodel,projectile_tag
-xmodel,raygun_viewmodel
-xmodel,tesla_viewmodel
-xmodel,weapon_tesla
-xmodel,weapon_flamethrower
-xmodel,weapon_raygun
-xmodel,weapon_saw_MG_setup
 
 // TF CAR101
 xmodel,viewmodel_car101_tf
