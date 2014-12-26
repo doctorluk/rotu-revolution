@@ -439,7 +439,7 @@ isSniper(weapon)
 
 isRifle(weapon)
 {
-	if ( isSubStr( weapon, "ak47_" ) && weapon != "ak47_silencer_mp" )
+	if ( isSubStr( weapon, "ak47_" ) )
 		return true;
 	if ( isSubStr( weapon, "m16_" ) )
 		return true;
@@ -497,8 +497,6 @@ isSMG(weapon)
 	if ( isSubStr( weapon, "uzi" ) )
 		return true;
 	if ( isSubStr( weapon, "skorpion" ) )
-		return true;
-	if ( weapon == "ak47_silencer_mp" )		// the ak47_silencer_mp is the CAR101
 		return true;
 		
 	return false;
