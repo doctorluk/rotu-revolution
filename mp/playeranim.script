@@ -3002,16 +3002,6 @@ fireweapon
 	}	
 
 // PLAYER
-// FLAMETHROWER
-	playerAnimType gas
-	{
-		torso pt_flamethrower_fire_center
-	}
-	playerAnimType gas, movetype crouching
-	{
-		torso pt_flamethrower_crouch_fire_center
-	}
-
 // MG42
 	mounted mg42
 	{

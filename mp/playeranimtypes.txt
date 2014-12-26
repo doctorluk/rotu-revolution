@@ -30,4 +30,3 @@ bot_dog_attack
 bot_dog_idle
 bot_zom_runfast
 bot_boss_jump
-gas
