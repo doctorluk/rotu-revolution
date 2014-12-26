@@ -318,17 +318,16 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 	if ( self.isDown )
 		return;
 
-
-	if(!isDefined(vDir))
+	if( !isDefined(vDir) )
 		iDFlags |= level.iDFLAGS_NO_KNOCKBACK;
 
-	if(!(iDFlags & level.iDFLAGS_NO_PROTECTION))
+	if( !(iDFlags & level.iDFLAGS_NO_PROTECTION) )
 	{
-		if (sWeapon == "ak74u_acog_mp" || sWeapon == "barrett_acog_mp" || sWeapon == "at4_mp" || sWeapon == "rpg_mp" || issubstr(sMeansOfDeath, "GRENADE"))
+		if( sWeapon == "ak74u_acog_mp" || sWeapon == "barrett_acog_mp" || sWeapon == "at4_mp" || sWeapon == "rpg_mp" || issubstr(sMeansOfDeath, "GRENADE") )
 			return;
 		
 		iDamage = int(iDamage * self.damageDoneMP);
-		if (self.heavyArmor)
+		if(self.heavyArmor)
 		{
 			if (self.health / self.maxhealth >= .65)
 			{

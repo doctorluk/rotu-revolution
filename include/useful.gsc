@@ -35,6 +35,23 @@ getTurretCount(){
 
 }
 
+waitTillNotMoving(delay){
+	self endon("death");
+	level endon("game_ended");
+	
+	if( !isDefined(delay) )
+		delay = 0.1;
+		
+	oldPosition = self.origin;
+	
+	while(1){
+		wait delay;
+		if( oldPosition == self.origin )
+			break;
+		oldPosition = self.origin;
+	}
+}
+
 isOnServer(guid){
 	for(i = 0; i < level.players.size; i++){
 		if( level.players[i] getGUID() == guid )
