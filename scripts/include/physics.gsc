@@ -17,6 +17,7 @@
 //
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
+#include scripts\include\math;
 
 delayStartRagdoll( ent, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath )
 {
@@ -123,28 +124,41 @@ getHitLocHeight( sHitLoc )
 	return 48;
 }
 
+getGroundTilt(origin){
+
+	center = dropPhysical( origin, 25 );
+	front = dropPhysical( center + (5, 0, 25), 50 );
+	sideways = dropPhysical( center + (0, 5, 25), 50 );
+	
+	frontVector 	= ( front - center );
+	sidewaysVector 	= ( sideways - center );
+	
+	finalVector = vectorNormalize( crossProduct(frontVector, sidewaysVector) );
+	iprintln(finalVector);
+	
+	return finalVector;
+	
+}
+
+/* Finds ground position with a trace that ignores players and anything without collisions */
+dropPhysical(origin, drop)
+{
+	trace = physicsTrace( origin, origin + (0,0,-1 * drop) );
+	
+	return trace;
+}
+
+/* Finds ground position with a trace that the entity that called it */
 drop(origin, drop)
 {
-	trace = bulletTrace(origin, origin + (0,0,-1 * drop), false, self);
-  
-    //if(trace["fraction"] < 1 && !isdefined(trace["entity"]))
-   // {
-        //smooth clamp
-//        self SetOrigin(trace["position"]);
-		//if (!isdefined(trace["entity"]))
-        //self.Mover.origin = trace["position"];// + (0.0, 5.0, 0.0);
-		return trace["position"];
-  // }
+	trace = bulletTrace( origin, origin + (0,0,-1 * drop), false, self );
+	
+	return trace["position"];
 }
 
 dropPlayer(origin, drop)
 {
-	return playerPhysicsTrace(origin, origin + (0,0,-1 * drop));
-}
-
-vectorscale(vector, scale)
-{
-	return vector * scale;
+	return playerPhysicsTrace( origin, origin + (0,0,-1 * drop) );
 }
 
 finalizeStats(){

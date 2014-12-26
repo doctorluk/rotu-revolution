@@ -54,14 +54,20 @@ abs(x)
 		( a1b2 - a2b1 )
 */
 crossProduct(a, b){
-	result = (0,0,0);
 	
-	result[0] = (a[1] * b[2]) - (a[2] * b[1]);
-	result[1] = (a[2] * b[0]) - (a[0] * b[2]);
-	result[2] = (a[0] * b[1]) - (a[1] * b[0]);
+	x = (a[1] * b[2]) - (a[2] * b[1]);
+	y = (a[2] * b[0]) - (a[0] * b[2]);
+	z = (a[0] * b[1]) - (a[1] * b[0]);
 	
-	return result;
+	return (x,y,z);
 
+}
+
+dotProduct(vec1, vec2){
+	if( !isDefined( vec1 ) || !isDefined( vec2 ) )
+		return;
+	
+	return( vec1[0] * vec2[0], vec1[1] * vec2[1], vec1[2] * vec2[2] );
 }
 
 

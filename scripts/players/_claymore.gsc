@@ -17,6 +17,7 @@
 //
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
+#include scripts\include\useful;
 
 init()
 {	
@@ -59,16 +60,7 @@ WatchClaymore()
 {
 	self endon( "death" );
 	
-	old = self.origin;
-	wait 0.15;
-	while( 1 ){
-		if( old != self.origin ){
-			old = self.origin;
-			wait 0.15;
-		}
-		else
-			break;
-	}
+	self waitTillNotMoving();
 	
 	wait 0.15;
 	self.owner.claymores++;

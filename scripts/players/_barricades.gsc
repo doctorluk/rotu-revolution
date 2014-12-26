@@ -42,7 +42,7 @@ giveBarrel( type )
 	level.barrels[type]++;
 	self.carryObj = spawn( "script_model", (0,0,0) );
 	self.carryObj.origin = self.origin + AnglesToForward(self.angles)*48;
-	self.carryObj.master = self;
+	self.carryObj.owner = self;
 	// wait 0.05;
 	self.carryObj linkto( self );
 	self.carryObj.type = type;
@@ -203,7 +203,7 @@ barrelDeath()
 	{
 		playFX( level.explodeFX, self.origin );
 		self playSound( "explo_metal_rand" );
-		self thread scripts\players\_players::doAreaDamage( 200, 1000, self.master );
+		self thread scripts\players\_players::doAreaDamage( 200, 1000, self.owner );
 	}
 
 	wait .01;

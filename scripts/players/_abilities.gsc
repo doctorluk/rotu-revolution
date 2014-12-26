@@ -21,11 +21,13 @@
 #include scripts\include\hud;
 #include scripts\include\data;
 #include scripts\include\useful;
+#include scripts\include\physics;
 #include common_scripts\utility;
+
 init()
 {
 	precache();
-	thread loadAbilityStats();
+	loadAbilityStats();
 	level.weapons["flash"] = "usp_silencer_mp"; // We change the actual Flash Grenade to the Monkey Bomb, so we can use it as "Special Grenade" with instant-throw
 }
 
@@ -49,6 +51,7 @@ loadAbilityStats()
 	level.special["aura"]["recharge_time"] = 60;
 	level.special["aura"]["duration"] = 20;
 	
+	level.special["armoredshield"]["recharge_time"] = 60;
 	level.special["invincible"]["recharge_time"] = 60;
 	level.special["invincible"]["duration"] = 20;
 	
@@ -537,13 +540,13 @@ MEDIC_PRIMARY(ability)
 {
 	switch (ability)
 	{
-		case "AB1":
-			self giveWeapon( "helicopter_mp" );
-			self setWeaponAmmoClip( "helicopter_mp", 0 );
-			self setActionSlot( 3, "weapon", "helicopter_mp" ); // Actionslot [5]
-			self thread watchMedkits();
-			self thread restoreKit(level.special["medkit"]["recharge_time"]);
-			self thread restoreKit(level.special["medkit"]["recharge_time"]);
+		case "AB1": /* TODO: REENABLE */
+			// self giveWeapon( "helicopter_mp" );
+			// self setWeaponAmmoClip( "helicopter_mp", 0 );
+			// self setActionSlot( 3, "weapon", "helicopter_mp" ); // Actionslot [5]
+			// self thread watchMedkits();
+			// self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
+			// self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
 		break;
 		case "AB2":
 			self loadSpecialAbility("aura");
@@ -784,6 +787,24 @@ giveArmoredHud(){
 	self.armored_hud setShader( "overlay_armored", 640, 480 );
 }
 
+watchArmoredDome()
+{
+	self endon("reset_abilities");
+	self endon("downed");
+	self endon("death");
+	self endon("disconnect");
+	while(1)
+	{
+		self waittill( "grenade_fire", shield, weaponName );
+		if( weaponName == "helicopter_mp" ) /* TODO: INSERT PROPER WEAPON */ 
+		{
+			shield.owner = self;
+			shield thread beArmoredDome( self.shieldTime, self.shieldDamageReduction);
+			self thread restoreArmoredDome(level.special["armoredshield"]["recharge_time"]);
+			// self playsound("take_medkit"); /* TODO: INSERT PROPER "DEPLOYING SHIELD" SOUND */
+		}
+	}
+}
 
 watchMedkits()
 {
@@ -796,11 +817,10 @@ watchMedkits()
 		self waittill ( "grenade_fire", kit, weaponName );
 		if (weaponName == "helicopter_mp")
 		{
-			kit.master = self;
+			kit.owner = self;
 			kit thread beMedkit( self.medkitTime, self.medkitHealing);
-			self thread restoreKit(level.special["medkit"]["recharge_time"]);
+			self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
 			self playsound("take_medkit");
-			//self thread watchMedkits();
 		}
 	}
 }
@@ -816,7 +836,7 @@ watchAmmobox()
 		self waittill ( "grenade_fire", kit, weaponName );
 		if (weaponName == "m14_reflex_mp")
 		{
-			kit.master = self;
+			kit.owner = self;
 			kit thread beAmmobox( self.ammoboxTime );
 			self thread restoreAmmobox(level.special["ammo"]["recharge_time"]);
 			self playsound("take_ammo");
@@ -824,7 +844,18 @@ watchAmmobox()
 	}
 }
 
-restoreKit(time)
+restoreArmoredDome(time)
+{
+	self endon("reset_abilities");
+	self endon("downed");
+	self endon("death");
+	self endon("disconnect");
+	self addTimer(&"ZOMBIE_ARMOREDDOME_IN", "", time); // TODO: ADD TRANSLATION
+	wait time;
+	// self setWeaponAmmoClip("helicopter_mp", self getweaponammoclip("helicopter_mp") + 1); // TODO: 
+}
+
+restoreMedkit(time)
 {
 	self endon("reset_abilities");
 	self endon("downed");
@@ -873,36 +904,28 @@ restoreInvisibility(time)
 beAmmobox(time)
 {
 	self endon("death");
-	old = self.origin;
-	wait 0.1;
-	while( isDefined(self) ){
-		if(old != self.origin){
-			old = self.origin;
-			wait 0.1;
-		}
-		else
-			break;
-	}
+	
+	self waitTillNotMoving();
+	
 	if( !isDefined(self) ) return;
 	
-	self thread scripts\gamemodes\_hud::createHeadiconKits(self.origin+(0,0,15), "icon_ammobox_placed", 0.5); // 2D Icon above the ammobox
+	self thread scripts\gamemodes\_hud::createHeadiconKits( self.origin+(0,0,15), "icon_ammobox_placed", 0.5 ); // 2D Icon above the ammobox
 	self thread scripts\gamemodes\_hud::createRadarIcon("icon_ammobox_radar"); // Radar Icon
 	
 	wait 1;
-	for (i=0; i<time; i++)
+	for ( i = 0; i < time; i++ )
 	{
-		if( !isDefined(self.master) || !isReallyPlaying(self.master) ) break;
+		if( !isDefined(self.owner) ) break;
 		
-		for (ii=0; ii<level.players.size; ii++)
-		{
+		for ( ii = 0; ii < level.players.size; ii++ ){
 			player = level.players[ii];
+			
 			if( !isReallyPlaying(player) ) continue;
-			if (distance(self.origin, player.origin) < 120)
-			{
-				if (!player.isDown)
-				{
-					self.master thread restoreAmmoClip(player);
-				}
+			
+			if ( distance(self.origin, player.origin) < 120 ){
+			
+				if ( !player.isDown )
+					self.owner thread restoreAmmoClip(player);
 			}
 		}
 		wait 1;
@@ -913,40 +936,49 @@ beAmmobox(time)
 beMedkit(time, heal)
 {
 	self endon("death");
-	old = self.origin;
-	wait 0.1;
-	while( 1 ){
-		if(old != self.origin){
-			old = self.origin;
-			wait 0.1;
-		}
-		else
-			break;
-	}
-	if( !isDefined(self) || !isDefined(self.master) ) return;
 	
-	self thread scripts\gamemodes\_hud::createHeadiconKits(self.origin+(0,0,15), "icon_medkit_placed", 0.5); // 2D Icon above the medkit
+	self waitTillNotMoving();
+	
+	if( !isDefined(self) ) return;
+	
+	self thread scripts\gamemodes\_hud::createHeadiconKits( self.origin + (0,0,15), "icon_medkit_placed", 0.5 ); // 2D Icon above the medkit
 	self thread scripts\gamemodes\_hud::createRadarIcon("icon_medkit_radar"); // Radar Icon
 	
 	wait 1;
 	for ( i = 0; i < time; i++ )
 	{
-		if( !isDefined(self.master) || !isReallyPlaying(self.master) ) break;
-		for ( ii = 0; ii < level.players.size; ii++ )
-		{
+		if( !isDefined(self.owner) || !isReallyPlaying(self.owner) ) break;
+		
+		for ( ii = 0; ii < level.players.size; ii++ ){
 			player = level.players[ii];
+			
 			if( !isReallyPlaying(player) ) continue;
-			if (distance(self.origin, player.origin) < 120)
-			{
-				if (player.health < player.maxhealth && !player.isDown)
-				{
-					self.master thread healPlayer(player, heal);
-				}
+			
+			if ( distance(self.origin, player.origin) < 120 ){
+			
+				if ( player.health < player.maxhealth && !player.isDown )
+					self.owner thread healPlayer( player, heal );
 			}
 		}
 		wait 1;
 	}
 	self delete();
+}
+
+beArmoredDome(duration, damagereduction){
+	self endon("death");
+	
+	self waitTillNotMoving();
+	
+	if( !isDefined(self) ) return;
+	
+	wait 1;
+	
+	for( i = 0; i < duration; i++ ){
+		wait 1;
+	}
+	self delete();
+
 }
 
 // stealthMovement()//For assassin = makes ur screen 24/7 green, zombies can't see u blah blah, until u die or shot ur weapon or open the shop
@@ -1278,9 +1310,9 @@ specialAura(time)
 	self endon("killed_player");
 	
 	origin = self.origin;
-	trace = bulletTrace(self.origin + (0,0,50), self.origin + (0,0,-200), false, self);
+	trace = bulletTrace( self.origin + (0,0,50), self.origin + (0,0,-200), false, self );
   
-    if(trace["fraction"] < 1 )
+    if( trace["fraction"] < 1 )
     {
         //smooth clamp
 //        self SetOrigin(trace["position"]);
@@ -1288,16 +1320,17 @@ specialAura(time)
    }
 
 	
+	
 	healObject = spawnHealFX(origin, level.healingEffect);
 	healObject.healing = self.auraHealing;
-	healObject.master = self;	
+	healObject.owner = self;	
 	healObject thread healObjectHeal(time);
 	self playsound("aura_spawn");
 }
 
 spawnHealFX( groundpoint, fx )
 {
-	effect = spawnFx( fx, groundpoint, (0,0,1), (1,0,0) );
+	effect = spawnFx( fx, groundpoint, getGroundTilt(groundpoint) );
 	triggerFx( effect );
 	
 	return effect;
@@ -1342,7 +1375,7 @@ healThread(player)
 
 	// once the ball reached him we heal him
 	player waittill("glow_ball_reached");
-	self.master thread healPlayer(player, self.healing);
+	self.owner thread healPlayer(player, self.healing);
 }
 
 healPlayer(player, heal)
