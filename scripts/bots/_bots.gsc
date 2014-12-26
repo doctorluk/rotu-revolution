@@ -22,6 +22,7 @@
 #include scripts\include\entities;
 #include scripts\include\physics;
 #include scripts\include\hud;
+
 init()
 {
 	precache();
@@ -48,11 +49,10 @@ init()
 	level.botsLookingForWaypoints = 0;
 	
 	if( getDvar("max_waypoint_bots") == "" )
-		setDvar("max_waypoint_bots", 1);
+		setDvar( "max_waypoint_bots", 1 );
 	if( getDvar("debug_max_waypoint_bots") == "" )
-		setDvar("debug_max_waypoint_bots", 0);
-	
-	
+		setDvar( "debug_max_waypoint_bots", 0 );
+
 	wait 1;
 	if( level.loadBots )
 		thread loadBots(level.dvar["bot_count"]);
@@ -87,70 +87,69 @@ precache()
 	precacheItem( "bot_quad_sprint_mp" );
 	precacheItem( "bot_quad_attack_mp" );
 
-	precachemodel("body_sp_russian_loyalist_a_dead");
-	precachemodel("body_sp_russian_loyalist_b_dead");
-	precachemodel("body_sp_russian_loyalist_c_dead");
-	precachemodel("body_sp_russian_loyalist_d_dead");
-	
-	precachemodel("santa_hat");
-	precachemodel("bo_quad");
-	
-	precachemodel("cyclops");
-	
-	precachemodel("head_sp_loyalist_alex_helmet_body_a_dead");
-	precachemodel("head_sp_loyalist_mackey_hat_body_b_dead");
-	precachemodel("head_sp_loyalist_josh_helmet_body_c_dead");
-	precachemodel("head_sp_loyalist_tom_hat_body_d_dead");
-	
-	precachemodel("bo1_c_viet_zombie_napalm"); // LOD FIXED
-	precachemodel("bo1_c_viet_zombie_napalm_head"); // LOD FIXED
-	
-	precachemodel("bo1_c_viet_zombie_female"); // LOD FIXED
-	precachemodel("bo1_c_viet_zombie_female_head"); // LOD FIXED
-	precachemodel("bo1_c_viet_zombie_nva1_body"); // LOD FIXED
-	precachemodel("bo1_c_viet_zombie_nva1_head1"); // LOD FIXED
-	precachemodel("bo1_c_zom_cosmo_cosmonaut_body"); // FIXED MAX. LOD DISTANCE
-	precachemodel("bo1_c_zom_cosmo_head1"); // FIXED MAX. LOD DISTANCE
-	precachemodel("bo1_c_zom_cosmo_head2"); // FIXED MAX. LOD DISTANCE
-	precachemodel("bo1_c_zom_cosmo_head3"); // FIXED MAX. LOD DISTANCE
-	precachemodel("bo1_c_zom_cosmo_head4"); // FIXED MAX. LOD DISTANCE
-	precachemodel("bo1_c_usa_pent_zombie_officeworker_body"); // LOD FIXED
-	precachemodel("bo1_c_zom_head_1"); // LOD FIXED
-	precachemodel("bo1_c_zom_head_2"); // LOD FIXED
-	precachemodel("bo1_c_zom_head_3"); // LOD FIXED
-	precachemodel("bo1_c_zom_head_4"); // LOD FIXED
-	precachemodel("bo1_c_ger_zombie_head1"); // LOD FIXED
-	precachemodel("bo1_c_ger_zombie_head2"); // LOD FIXED
-	precachemodel("bo1_c_ger_zombie_head3"); // LOD FIXED
-	precachemodel("bo1_c_ger_zombie_head4"); // LOD FIXED
-	precachemodel("bo1_c_usa_pent_zombie_scientist_body"); // LOD FIXED
-	precachemodel("bo1_c_usa_pent_zombie_militarypolice_body"); // LOD FIXED
-	precachemodel("bo1_c_zom_cosmo_spetznaz_body"); // FIXED MAX. LOD DISTANCE
-	// precachemodel("bo1_c_zom_george_romero_zombiefied_fb");
-	precachemodel("zom_george_romero");
-	
-	precachemodel("player_sp_rig_empty");
-	// precachemodel("skeleton");
-	// precachemodel("bo2_c_zom_avagadro_fb");
-	
-	
-	precachemodel("char_ger_honorgd_bodyz1_1");
-	precachemodel("char_ger_honorgd_bodyz2_1");
-	precachemodel("char_ger_honorgd_bodyz2_2");
-	precachemodel("char_ger_honorgd_zombiehead1_1");
-	precachemodel("char_ger_honorgd_zombiehead1_2");
-	precachemodel("char_ger_honorgd_zombiehead1_3");
-	precachemodel("char_ger_honorgd_zombiehead1_4");
-	
-	precachemodel("zombie_wolf");
-	precachemodel("cyclops");
-	
-	precachemodel("tag_origin");
-	
-	PreCacheShellShock("boss");
-	precacheshellshock("toxic_gas_mp");
-	// precacheshellshock("frag_grenade_mp");
-	
+	precacheModel( "body_sp_russian_loyalist_a_dead" );
+	precacheModel( "body_sp_russian_loyalist_b_dead" );
+	precacheModel( "body_sp_russian_loyalist_c_dead" );
+	precacheModel( "body_sp_russian_loyalist_d_dead" );
+
+	precacheModel( "santa_hat" );
+	precacheModel( "bo_quad" );
+
+	precacheModel( "cyclops" );
+
+	precacheModel("head_sp_loyalist_alex_helmet_body_a_dead");
+	precacheModel("head_sp_loyalist_mackey_hat_body_b_dead");
+	precacheModel("head_sp_loyalist_josh_helmet_body_c_dead");
+	precacheModel("head_sp_loyalist_tom_hat_body_d_dead");
+
+	precacheModel("bo1_c_viet_zombie_napalm"); // LOD FIXED
+	precacheModel("bo1_c_viet_zombie_napalm_head"); // LOD FIXED
+
+	precacheModel("bo1_c_viet_zombie_female"); // LOD FIXED
+	precacheModel("bo1_c_viet_zombie_female_head"); // LOD FIXED
+	precacheModel("bo1_c_viet_zombie_nva1_body"); // LOD FIXED
+	precacheModel("bo1_c_viet_zombie_nva1_head1"); // LOD FIXED
+	precacheModel("bo1_c_zom_cosmo_cosmonaut_body"); // FIXED MAX. LOD DISTANCE
+	precacheModel("bo1_c_zom_cosmo_head1"); // FIXED MAX. LOD DISTANCE
+	precacheModel("bo1_c_zom_cosmo_head2"); // FIXED MAX. LOD DISTANCE
+	precacheModel("bo1_c_zom_cosmo_head3"); // FIXED MAX. LOD DISTANCE
+	precacheModel("bo1_c_zom_cosmo_head4"); // FIXED MAX. LOD DISTANCE
+	precacheModel("bo1_c_usa_pent_zombie_officeworker_body"); // LOD FIXED
+	precacheModel("bo1_c_zom_head_1"); // LOD FIXED
+	precacheModel("bo1_c_zom_head_2"); // LOD FIXED
+	precacheModel("bo1_c_zom_head_3"); // LOD FIXED
+	precacheModel("bo1_c_zom_head_4"); // LOD FIXED
+	precacheModel("bo1_c_ger_zombie_head1"); // LOD FIXED
+	precacheModel("bo1_c_ger_zombie_head2"); // LOD FIXED
+	precacheModel("bo1_c_ger_zombie_head3"); // LOD FIXED
+	precacheModel("bo1_c_ger_zombie_head4"); // LOD FIXED
+	precacheModel("bo1_c_usa_pent_zombie_scientist_body"); // LOD FIXED
+	precacheModel("bo1_c_usa_pent_zombie_militarypolice_body"); // LOD FIXED
+	precacheModel("bo1_c_zom_cosmo_spetznaz_body"); // FIXED MAX. LOD DISTANCE
+	// precacheModel("bo1_c_zom_george_romero_zombiefied_fb");
+	precacheModel("zom_george_romero");
+
+	precacheModel("player_sp_rig_empty");
+	// precacheModel("skeleton");
+	// precacheModel("bo2_c_zom_avagadro_fb");
+
+	precacheModel("char_ger_honorgd_bodyz1_1");
+	precacheModel("char_ger_honorgd_bodyz2_1");
+	precacheModel("char_ger_honorgd_bodyz2_2");
+	precacheModel("char_ger_honorgd_zombiehead1_1");
+	precacheModel("char_ger_honorgd_zombiehead1_2");
+	precacheModel("char_ger_honorgd_zombiehead1_3");
+	precacheModel("char_ger_honorgd_zombiehead1_4");
+
+	precacheModel("zombie_wolf");
+	precacheModel("cyclops");
+
+	precacheModel("tag_origin");
+
+	preCacheShellShock("boss");
+	preCacheShellShock("toxic_gas_mp");
+	// preCacheShellShock("frag_grenade_mp");
+
 	level.burningFX = loadfx("fire/firelp_med_pm_atspawn");
 	// level.burningdogFX = loadfx("fire/dog_onfire");
 	level.bossFireFX = loadfx("fire/boss_onfire");

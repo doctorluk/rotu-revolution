@@ -35,7 +35,6 @@ init()
 	addMysWep( "usp_mp", "secondary");
 	addMysWep( "beretta_mp", "secondary");
 	addMysWep( "colt45_silencer_mp", "secondary");
-	addMysWep( "crossbow_mp", "secondary");
 	addMysWep( "deserteaglegold_mp", "secondary");
 	addMysWep( "uzi_mp", "secondary");
 	addMysWep( "deserteaglegold_mp", "secondary");
@@ -49,7 +48,7 @@ init()
 	
 	addMysWep( "mp5_acog_mp", "secondary");
 	
-	addMysWep( "barret_acog_mp", "primary");
+	addMysWep( "barrett_acog_mp", "primary");
 	addMysWep( "skorpion_acog_mp", "primary");
 	addMysWep( "deserteagle_mp", "primary");
 }
@@ -72,7 +71,7 @@ mystery_box(box)
 	weapon.angles = (0,(box.angles[1] + 90),0);
 	weapon.done = false;
 	weapon hide();
-	weapon showtoplayer(self);
+	weapon showToPlayer( self );
 	weapon moveZ( 32, 2.4 );
 	lastnum = weapon createRandomItem(self);
 	self.box_weapon = weapon;
