@@ -21,74 +21,49 @@
 init()
 {
 	level.mys_wep = [];
-	addMysWep("weapon_ak47", "ak47_mp", "primary");
-	addMysWep("weapon_m4gre_sp_silencer_reflex", "m4_acog_mp", "primary");
-	addMysWep("weapon_m40a3", "m40a3_mp", "primary");
-	addMysWep("weapon_benelli_super_90", "m1014_grip_mp", "primary");
-	addMysWep("weapon_m14_scout_mp", "m14_mp", "primary");
-	addMysWep("weapon_ak74u", "ak74u_mp", "primary");
-	addMysWep("weapon_g36", "g36c_acog_mp", "primary");
-	addMysWep("weapon_m16_mp", "m16_mp", "primary");
-	addMysWep("weapon_m60", "m60e4_mp", "primary");
-	addMysWep("weapon_p90", "p90_acog_mp", "primary");
+	addMysWep( "ak47_mp", "primary");
+	addMysWep( "m4_acog_mp", "primary");
+	addMysWep( "m40a3_mp", "primary");
+	addMysWep( "m1014_grip_mp", "primary");
+	addMysWep( "m14_mp", "primary");
+	addMysWep( "ak74u_mp", "primary");
+	addMysWep( "g36c_acog_mp", "primary");
+	addMysWep( "m16_mp", "primary");
+	addMysWep( "m60e4_mp", "primary");
+	addMysWep( "p90_acog_mp", "primary");
 	
-	addMysWep("weapon_usp", "usp_mp", "secondary");
-	addMysWep("weapon_beretta" , "beretta_mp", "secondary");
-	addMysWep("weapon_colt1911_silencer" , "colt45_silencer_mp", "secondary");
-	addMysWep("weapon_crossbow_1" , "crossbow_mp", "secondary");
-	addMysWep("weapon_desert_eagle_gold", "deserteaglegold_mp", "secondary");
-	addMysWep("weapon_mini_uzi", "uzi_mp", "secondary");
-	addMysWep("weapon_desert_eagle_gold", "deserteaglegold_mp", "secondary");
+	addMysWep( "usp_mp", "secondary");
+	addMysWep( "beretta_mp", "secondary");
+	addMysWep( "colt45_silencer_mp", "secondary");
+	addMysWep( "crossbow_mp", "secondary");
+	addMysWep( "deserteaglegold_mp", "secondary");
+	addMysWep( "uzi_mp", "secondary");
+	addMysWep( "deserteaglegold_mp", "secondary");
 	
-	addMysWep("weapon_mw2_f2000_wm", "m14_acog_mp", "primary");
-	addMysWep("weapon_spas12", "m1014_reflex_mp", "primary");
-	addMysWep("weapon_aug", "rpd_acog_mp", "primary");
-	addMysWep("mw2_aa12_worldmodel", "m60e4_acog_mp", "primary");
-	addMysWep("worldmodel_bo_minigun", "saw_acog_mp", "primary");
-	addMysWep("weapon_tesla", "ak74u_acog_mp", "primary");
+	addMysWep( "m14_acog_mp", "primary");
+	addMysWep( "m1014_reflex_mp", "primary");
+	addMysWep( "rpd_acog_mp", "primary");
+	addMysWep( "m60e4_acog_mp", "primary");
+	addMysWep( "saw_acog_mp", "primary");
+	addMysWep( "ak74u_acog_mp", "primary");
 	
-	addMysWep("mw2_mp5k_worldmodel", "mp5_acog_mp", "secondary");
+	addMysWep( "mp5_acog_mp", "secondary");
 	
-	addMysWep("weapon_raygun", "barret_acog_mp", "primary");
-	addMysWep("weapon_flamethrower", "skorpion_acog_mp", "primary");
-	addMysWep("mw2_intervention_wm", "deserteagle_mp", "primary");
-
-	//precache();
+	addMysWep( "barret_acog_mp", "primary");
+	addMysWep( "skorpion_acog_mp", "primary");
+	addMysWep( "deserteagle_mp", "primary");
 }
 
 
-addMysWep(model, weaponName, slot)
+addMysWep( weaponName, slot )
 {
-	precachemodel(model);
 	struct = spawnstruct();
 	level.mys_wep[level.mys_wep.size] = struct;
-	struct.model = model;
+	struct.model = getWeaponModel( weaponName, 0 );
 	struct.weaponName = weaponName;
 	struct.slot = slot;
-}
 
-precache()
-{
-	precachemodel("weapon_ak47");
-	precachemodel("weapon_m4gre_sp_silencer_reflex");
-	precachemodel("weapon_beretta");
-	precachemodel("weapon_usp");
-	precachemodel("weapon_crossbow_1");
-	precachemodel("weapon_saw_new_rescue");
-	precachemodel("weapon_colt1911_silencer");
-	precachemodel("weapon_m40a3");
-	precachemodel("weapon_benelli_super_90");
-	precachemodel("weapon_m67_grenade");
-	precachemodel("weapon_m14_scout_mp");
-	precachemodel("weapon_ak74u");
-	precachemodel("weapon_g36");
-	precachemodel("weapon_desert_eagle_gold");
-	precachemodel("weapon_m16_mp");
-	precachemodel("weapon_m60");
-	precachemodel("weapon_p90");
-	precachemodel("weapon_mini_uzi");
-	precachemodel("weapon_desert_eagle_silver");
-
+	precacheModel( struct.model );
 }
 
 mystery_box(box)
