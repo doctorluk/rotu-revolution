@@ -30,71 +30,22 @@ init()
 	
 	level.specialWeps = [];
 	
-// assigns weapons with stat numbers from 0-149
-	// attachments are now shown here, they are per weapon settings instead
-	
-	// generating weaponIDs array
-	level.weaponIDs = [];
-	max_weapon_num = 149;
-	attachment_num = 150;
-	for( i = 0; i <= max_weapon_num; i++ )
-	{
-		weapon_name = tablelookup( "mp/statstable.csv", 0, i, 4 );
-		if( !isdefined( weapon_name ) || weapon_name == "" )
-		{
-			level.weaponIDs[i] = "";
-			continue;
-		}
-		level.weaponIDs[i] = weapon_name + "_mp";
-		
-		// generating attachment combinations
-		attachment = tablelookup( "mp/statstable.csv", 0, i, 8 );
-		if( !isdefined( attachment ) || attachment == "" )
-			continue;
-			
-		attachment_tokens = strtok( attachment, " " );
-		if( !isdefined( attachment_tokens ) )
-			continue;
-		if( attachment_tokens.size == 0 )
-		{
-			level.weaponIDs[attachment_num] = weapon_name + "_" + attachment + "_mp";
-			attachment_num++;
-		}
-		else
-		{
-			for( k = 0; k < attachment_tokens.size; k++ )
-			{
-				level.weaponIDs[attachment_num] = weapon_name + "_" + attachment_tokens[k] + "_mp";
-				attachment_num++;
-			}
-		}
-	}
-	// generating weaponNames array
-	level.weaponNames = [];
-	for ( index = 0; index < max_weapon_num; index++ )
-	{
-		if ( !isdefined( level.weaponIDs[index] ) || level.weaponIDs[index] == "" )
-			continue;
-			
-		level.weaponNames[level.weaponIDs[index]] = index;
-	}
+	// number of weapons for players
+	max_weapon_num = 110;
 	
 	// generating weaponlist array
-	level.weaponlist = [];
-	assertex( isdefined( level.weaponIDs.size ), "level.weaponIDs is corrupted" );
-	for( i = 0; i < level.weaponIDs.size; i++ )
+	level.weaponList = [];
+	level.weaponListR = [];
+	for( i = 0; i < max_weapon_num; i++ )
 	{
-		if( !isdefined( level.weaponIDs[i] ) || level.weaponIDs[i] == "" )
+		weapon_name = tableLookup( "mp/weaponTable.csv", 0, i, 2 );
+		if( !isDefined(weapon_name) || weapon_name == "" )
 			continue;
-
-		level.weaponlist[level.weaponlist.size] = level.weaponIDs[i];
-	}
-
-	// based on weaponList array, precache weapons in list
-	for ( index = 0; index < level.weaponList.size; index++ )
-	{
-		precacheItem( level.weaponList[index] );
-		println( "Precached weapon: " + level.weaponList[index] );	
+		
+		level.weaponList[weapon_name] = tableLookup( "mp/weaponTable.csv", 0, i, 3 );
+		level.weaponListR[level.weaponList[weapon_name]] = weapon_name;
+		precacheItem( level.weaponList[weapon_name] );
+		printLn( "Precached weapon: " + weapon_name + "; " + level.weaponList[weapon_name] );	
 	}
 
 	precacheShellShock( "default" );
