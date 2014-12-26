@@ -156,10 +156,11 @@ AStarSearch( startWp, goalWp )
 				parent = x.parent;
 				if( parent.parent.wpIdx == -1 )
 					return x.wpIdx;
+				
 				// line(level.waypoints[x.wpIdx].origin, level.waypoints[parent.wpIdx].origin, (0,1,0));
 				x = parent;
 			}
-
+			
 			return -1;      
 		}
 
