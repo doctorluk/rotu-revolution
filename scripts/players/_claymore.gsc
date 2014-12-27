@@ -83,8 +83,10 @@ WatchClaymore()
 			return;
 		}
 		
-		if( !isDefined( self.owner ) )
+		if( !isDefined( self.owner ) ){
+			logPrint("LUK_DEBUG;self.owner undefined for triggered claymore!\n");
 			return;
+		}
 		
 		if( player.pers["team"] == self.owner.pers["team"] )
 			continue;
@@ -115,5 +117,4 @@ RemoveOn( till, owner )
 	self.fx delete();
 	self.trigger delete();
 	self delete();
-	self notify( "death" );
 }
