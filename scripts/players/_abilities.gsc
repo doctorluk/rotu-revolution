@@ -36,6 +36,9 @@ precache()
 	level.heal_glow_body		= loadfx( "misc/heal_glow_body");
 	level.heal_glow_effect 		= loadfx( "misc/heal_glow");
 	level.healingEffect    		= loadfx( "misc/healing" );
+	
+	precacheModel("armored_dome");
+	
 	precacheShader("icon_medkit_placed");
 	precacheShader("icon_ammobox_placed");
 }
@@ -52,6 +55,9 @@ loadAbilityStats()
 	level.special["aura"]["duration"] = 20;
 	
 	level.special["armoredshield"]["recharge_time"] = 60;
+	level.special["armoredshield"]["duration"] = 60;
+	level.special["armoredshield"]["damagereduction"] = 0.6;
+	
 	level.special["invincible"]["recharge_time"] = 60;
 	level.special["invincible"]["duration"] = 20;
 	
@@ -540,13 +546,13 @@ MEDIC_PRIMARY(ability)
 {
 	switch (ability)
 	{
-		case "AB1": /* TODO: REENABLE */
-			// self giveWeapon( "helicopter_mp" );
-			// self setWeaponAmmoClip( "helicopter_mp", 0 );
-			// self setActionSlot( 3, "weapon", "helicopter_mp" ); // Actionslot [5]
-			// self thread watchMedkits();
-			// self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
-			// self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
+		case "AB1":
+			self giveWeapon( "helicopter_mp" );
+			self setWeaponAmmoClip( "helicopter_mp", 0 );
+			self setActionSlot( 3, "weapon", "helicopter_mp" ); // Actionslot [5]
+			self thread watchMedkits();
+			self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
+			self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
 		break;
 		case "AB2":
 			self loadSpecialAbility("aura");
@@ -599,17 +605,21 @@ ARMORED_PRIMARY(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self giveWeapon( "m60e4_reflex_mp" );
-			self giveMaxAmmo( "m60e4_reflex_mp" );
-			self setActionSlot( 3, "weapon", "m60e4_reflex_mp" );
+			// self giveWeapon( "m60e4_reflex_mp" );
+			// self giveMaxAmmo( "m60e4_reflex_mp" );
+			// self setActionSlot( 3, "weapon", "m60e4_reflex_mp" );
+			self giveWeapon( "c4_mp" );
+			self giveMaxAmmo( "c4_mp" );
+			self setActionSlot( 3, "weapon", "c4_mp" );
+			self thread watchArmoredDome();
 			// self.actionslotweapons[self.actionslotweapons.size] = "m60e4_reflex_mp";
 		break;
 		case "AB2":
 			self loadSpecialAbility("invincible");
 		break;
 		case "AB3":
-			self.heavyArmor = true;
-			self giveArmoredHud();
+			// self.heavyArmor = true;
+			// self giveArmoredHud();
 		break;
 	}
 }
@@ -796,10 +806,10 @@ watchArmoredDome()
 	while(1)
 	{
 		self waittill( "grenade_fire", shield, weaponName );
-		if( weaponName == "helicopter_mp" ) /* TODO: INSERT PROPER WEAPON */ 
+		if( weaponName == "c4_mp" ) /* TODO: INSERT PROPER WEAPON */ 
 		{
 			shield.owner = self;
-			shield thread beArmoredDome( self.shieldTime, self.shieldDamageReduction);
+			shield thread beArmoredDome( level.special["armoredshield"]["duration"], level.special["armoredshield"]["damagereduction"]);
 			self thread restoreArmoredDome(level.special["armoredshield"]["recharge_time"]);
 			// self playsound("take_medkit"); /* TODO: INSERT PROPER "DEPLOYING SHIELD" SOUND */
 		}
@@ -850,9 +860,9 @@ restoreArmoredDome(time)
 	self endon("downed");
 	self endon("death");
 	self endon("disconnect");
-	self addTimer(&"ZOMBIE_ARMOREDDOME_IN", "", time); // TODO: ADD TRANSLATION
+	self addTimer(&"ZOMBIE_ARMOREDDOME_IN", "", time);
 	wait time;
-	// self setWeaponAmmoClip("helicopter_mp", self getweaponammoclip("helicopter_mp") + 1); // TODO: 
+	self setWeaponAmmoClip("c4_mp", self getweaponammoclip("c4_mp") + 1);
 }
 
 restoreMedkit(time)
@@ -964,19 +974,29 @@ beMedkit(time, heal)
 	}
 	self delete();
 }
-
-beArmoredDome(duration, damagereduction){
-	self endon("death");
-	
+/* TODO: THIS IS FOR DEBUGGING */
+beArmoredDome(duration, damagereduction){	
 	self waitTillNotMoving();
 	
 	if( !isDefined(self) ) return;
 	
-	wait 1;
+	targetDestination = self.origin;
+	
+	self hide();
+	self.dome = spawn("script_model", targetDestination);
+	wait 0.05;
+	self.dome setModel("armored_dome");
+	self.dome notSolid();
+	
+	wait 5;
 	
 	for( i = 0; i < duration; i++ ){
+		if( !isDefined(self.owner) || !isReallyPlaying(self.owner) )
+			break;
 		wait 1;
 	}
+	
+	self.dome delete();
 	self delete();
 
 }

@@ -649,3 +649,6 @@ xmodel,com_vending_can_new1_lit
 
 // Santa hat for the winter season
 xmodel,santa_hat
+
+// Armored Dome
+xmodel,armored_dome
