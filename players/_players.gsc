@@ -24,6 +24,8 @@
 #include scripts\include\data;
 #include scripts\include\strings;
 #include scripts\include\useful;
+#include scripts\include\weapons;
+
 init()
 {
 	
@@ -870,10 +872,6 @@ spawnPlayer(forceSpawn)
 	}
 
 	self.persData.class = self.curClass;
-	
-
-	
-	
 
 	// Setting random player class model
 	self scripts\players\_playermodels::setPlayerClassModel(self.curClass);
@@ -887,13 +885,11 @@ spawnPlayer(forceSpawn)
 	self.health = self.maxhealth;
 	self updateHealthHud(1);
 	
-	
 	waittillframeend;
 	
-	if (self.nighvision)
-	self setActionSlot( 1, "nightvision" );
+	if( self.nighvision )
+		self setActionSlot( 1, "nightvision" );
 
-	
 	// Give weapons
 	self scripts\players\_weapons::initPlayerWeapons();
 	self scripts\players\_weapons::givePlayerWeapons();
@@ -1010,16 +1006,14 @@ resetUnlocks() {
 	self.persData.secondary = getdvar("surv_"+self.class+"_unlocksecondary"+self.unlock["secondary"]);
 	self.persData.extra = getdvar( "surv_"+self.class+"_extra_unlock"+(self.unlock["extra"]+1) );
 
+	self.persData.primaryAmmoClip = weapClipSize(self.persData.primary);
+	self.persData.primaryAmmoStock = weapMaxAmmo(self.persData.primary);
 	
-	self.persData.primaryAmmoClip = WeaponClipSize(self.persData.primary);
-	self.persData.primaryAmmoStock = WeaponMaxAmmo(self.persData.primary);
-	
-	self.persData.secondaryAmmoClip = WeaponClipSize(self.persData.secondary);
-	self.persData.secondaryAmmoStock = WeaponMaxAmmo(self.persData.secondary);
+	self.persData.secondaryAmmoClip = weapClipSize(self.persData.secondary);
+	self.persData.secondaryAmmoStock = weapMaxAmmo(self.persData.secondary);
 	
 	self.persData.extraAmmoClip = 0;
-	self.persData.extraAmmoStock = 0;
-	
+	self.persData.extraAmmoStock = 0;	
 }
 
 

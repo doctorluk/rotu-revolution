@@ -21,6 +21,7 @@
 #include scripts\include\hud;
 #include scripts\include\data;
 #include scripts\include\entities;
+#include scripts\include\weapons;
 
 init()
 {
@@ -31,7 +32,7 @@ init()
 /* Idea by LEGX|Jeffskye */
 spawnMoveprevention(){
 
-	level.antimove = spawn( "script_origin", ( 0, 0, 0) );
+	level.antimove = spawn( "script_origin", (0, 0, 0) );
 	level.antimove hide();
 }
 
@@ -64,7 +65,6 @@ removeUsable(ent)
 	}
 	
 	self.useObjects = removeFromArray(self.useObjects, ent);
-	
 }
 
 checkForUsableObjects()
@@ -235,13 +235,13 @@ usableUse()
 				}
 				if (level.ammoStockType == "upgrade")
 				{
-					wep = self getcurrentWeapon();
-					if (wep == self.primary)
-					scripts\gamemodes\_upgradables::doUpgrade("primary");
-					if (wep == self.secondary)
-					scripts\gamemodes\_upgradables::doUpgrade("secondary");
-					if (wep == self.extra)
-					scripts\gamemodes\_upgradables::doUpgrade("extra");
+					wep = self getCurrentWeap();
+					if( wep == self.primary )
+						scripts\gamemodes\_upgradables::doUpgrade("primary");
+					else if( wep == self.secondary )
+						scripts\gamemodes\_upgradables::doUpgrade("secondary");
+					else if( wep == self.extra )
+						scripts\gamemodes\_upgradables::doUpgrade("extra");
 				}
 				if (level.ammoStockType == "weapon")
 				{

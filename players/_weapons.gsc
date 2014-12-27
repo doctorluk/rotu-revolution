@@ -182,45 +182,6 @@ watchWeaponUsage()
 	}
 }
 
-thunderBlast(dam, realdam, player) {
-						
-	direction = (0,0,0);
-	oldhealth = player.health;
-	player unlink();
-	for (ii=0; ii<4; ii++)
-	{
-		if (ii==0) { direction = (0,0,1); }
-		if (ii==1) { direction = vectorNormalize(player.origin+(0,0,20)-self.origin); }
-		player.health = player.health + dam;		
-		if (isalive(player)) {
-		player finishPlayerDamage(self, self, dam, 0, "MOD_PROJECTILE", "thundergun_mp", direction, direction, "none", 0);
-		}
-		wait 0.05;
-	}
-	wait .05;
-	player.health = oldhealth;
-	//iprintlnbold(oldhealth);
-	if (realdam >= player.health) {
-		player finishPlayerDamage(self, self, dam, 0, "MOD_PROJECTILE", "thundergun_mp", direction, direction, "none", 0);
-	}
-	else {
-		
-		player thread [[level.callbackPlayerDamage]](
-			self, // eInflictor The entity that causes the damage.(e.g. a turret)
-			self, // eAttacker The entity that is attacking.
-			realdam, // iDamage Integer specifying the amount of damage done
-			0, // iDFlags Integer specifying flags that are to be applied to the damage
-			"MOD_EXPLOSIVE", // sMeansOfDeath Integer specifying the method of death
-			"g3_acog_mp", // sWeapon The weapon number of the weapon used to inflict the damage
-			self.origin, // vPoint The point the damage is from?
-			direction, // vDir The direction of the damage
-			"none", // sHitLoc The location of the hit
-			0 // psOffsetTime The time offset for the damage
-		);
-	}
-	//player mod\_mod::PlayerDamage(self, self, realdam, 0, "MOD_PROJECTILE", "thundergun_mp", direction, direction, "none", 0);
-}
-
 alertTillEndFiring()
 {
 	self endon( "death" );
@@ -248,58 +209,56 @@ watchWeaponSwitching()
 {	
 	self endon("death");
 	self endon("disconnect");
-	lastWeapon = "none";
-	for ( ;; )
+
+	lastWeapon = self getCurrentWeap();
+	for(;;)
 	{
-		lastWeapon = self getCurrentWeapon();
-		self waittill( "weapon_change" );
+		self waittill( "weapon_change", weapon );
 		
-		currentWeapon = self getCurrentWeapon();
-		if(lastWeapon != currentWeapon && currentWeapon != "none")
-			self thread rotateActionslotWeapons(currentWeapon);
-		switch( currentWeapon )
+		if( weapon == "none" )
+			continue;
+		
+		weapon = level.weaponKeyC2S[weapon];
+		if( lastWeapon != weapon )
+			self thread rotateActionslotWeapons( weapon );
+		
+		switch( weapon )
 		{
-			// case "saw_acog_mp":
-			// break;
-			case "helicopter_mp":
-				//self thread scripts\players\_parachute::parachute();
-				
-				//if ( lastWeapon != "none" )
-				//	self switchToWeapon( lastWeapon );
-				break;
-			case "none":
-				break;
-
-			default:
-				lastWeapon = self getCurrentWeapon();
-				break;
+		default:
+			lastWeapon = weapon;
+			break;
 		}
-
 	}
 }
 
 /* Look if the current weapon is in your actionslot.
 When switching the weapon, the actionslot should be replaced with another actionslot item in order
 to make rotating easier for the player */
-rotateActionSlotWeapons(weapon){
-	if(isActionslotWeapon(weapon) && self.actionslotweapons.size > 1){
-		for(i = 0; i < self.actionslotweapons.size; i++){
-			if(!self hasWeapon(self.actionslotweapons[i])){
+rotateActionSlotWeapons( weapon )
+{
+	if( isActionslotWeapon(weapon) && self.actionslotweapons.size > 1 ){
+		for( i = 0; i < self.actionslotweapons.size; i++ ){
+			if( !self hasWeap(self.actionslotweapons[i]) ){
 				self.actionslotweapons = removeFromArray(self.actionslotweapons, self.actionslotweapons[i]);
 				i = 0;
 			}
 		}
-		if(self.actionslotweapons.size > 1)
+		
+		if( self.actionslotweapons.size > 1 )
 			self.actionslotweapons = removeFromArray(self.actionslotweapons, weapon);
-		self setActionSlot( 4, "weapon", self.actionslotweapons[0] );
+		
+		self setActionSlot( 4, "weapon", level.weaponKeyS2C[self.actionslotweapons[0]] );
 		self.actionslotweapons[self.actionslotweapons.size] = weapon;
 	}
 }
 
-isActionslotWeapon(weapon){
-	for(i = 0; i < self.actionslotweapons.size; i++)
-		if(weapon == self.actionslotweapons[i])
+isActionslotWeapon( weapon ){
+	for( i = 0; i < self.actionslotweapons.size; i++ )
+	{
+		if( weapon == self.actionslotweapons[i] )
 			return true;
+	}
+
 	return false;
 }
 
@@ -308,41 +267,47 @@ swapWeapons(type, weapon)
 	switch (type)
 	{
 	case "primary":
-		if (self.primary != "none")
-			self takeweapon(self.primary);
-		self giveWeapon( weapon ); 
-		self giveMaxAmmo( weapon );
-		self SwitchToWeapon( weapon );
+		if( self.primary != "none" && self.primary != "" )
+			self takeWeap( self.primary );
+		
+		self giveWeap( weapon ); 
+		self giveWeapMaxAmmo( weapon );
+		self switchToWeap( weapon );
+		
 		self.primary = weapon;
 		self.persData.primary = self.primary;
-		self.persData.primaryAmmoClip = self getWeaponAmmoClip(self.primary);
-		self.persData.primaryAmmoStock = self GetWeaponAmmoStock(self.primary);
+		self.persData.primaryAmmoClip = self getWeapAmmoClip(self.primary);
+		self.persData.primaryAmmoStock = self GetWeapAmmoStock(self.primary);
 		break;
-		case "secondary":
-		if (self.secondary != "none")
-			self takeweapon(self.secondary);
-		self giveWeapon( weapon ); 
-		self giveMaxAmmo( weapon );
-		self SwitchToWeapon( weapon );
+	case "secondary":
+		if( self.secondary != "none" && self.secondary != "" )
+			self takeWeap( self.secondary );
+		
+		self giveWeap( weapon ); 
+		self giveWeapMaxAmmo( weapon );
+		self switchToWeap( weapon );
+		
 		self.secondary = weapon;
 		self.persData.secondary = self.secondary;
-		self.persData.secondaryAmmoClip = self getWeaponAmmoClip(self.secondary);
-		self.persData.secondaryAmmoStock = self GetWeaponAmmoStock(self.secondary);
+		self.persData.secondaryAmmoClip = self getWeapAmmoClip(self.secondary);
+		self.persData.secondaryAmmoStock = self GetWeapAmmoStock(self.secondary);
 		break;
-		case "extra":
-			if (self.extra != "none")
-				self takeweapon(self.extra);
-			self giveWeapon( weapon ); 
-			self giveMaxAmmo( weapon );
-			self SwitchToWeapon( weapon );
-			self.extra = weapon;
-			self.persData.extra = self.extra;
-			self.persData.extraAmmoClip = self getWeaponAmmoClip(self.extra);
-			self.persData.extraAmmoStock = self GetWeaponAmmoStock(self.extra);
+	case "extra":
+		if( self.extra != "none" && self.extra != "" )
+			self takeWeap( self.extra );
+		
+		self giveWeap( weapon ); 
+		self giveWeapMaxAmmo( weapon );
+		self switchToWeap( weapon );
+		
+		self.extra = weapon;
+		self.persData.extra = self.extra;
+		self.persData.extraAmmoClip = self getWeapAmmoClip(self.extra);
+		self.persData.extraAmmoStock = self GetWeapAmmoStock(self.extra);
 		break;
-		case "grenade":
-			self giveWeapon( weapon ); 
-			self giveMaxAmmo( weapon );
+	case "grenade":
+		self giveWeap( weapon ); 
+		self giveWeapMaxAmmo( weapon );
 		break;
 	}
 }
@@ -359,7 +324,7 @@ isSniper(weapon)
 		return true;
 	if ( weapon == "remington700_acog_mp" )
 		return true;
-	if (weapon == "deserteagle_mp" )
+	if ( weapon == "deserteagle_mp" )
 		return true;
 	return false;
 }
@@ -380,9 +345,9 @@ isRifle(weapon)
 		return true;
 	if ( isSubStr( weapon, "mp44" ) )
 		return true;
-	if (weapon == "uzi_acog_mp" )
+	if ( weapon == "uzi_acog_mp" )
 		return true;
-	if (weapon == "rpd_acog_mp" )
+	if ( weapon == "rpd_acog_mp" )
 		return true;
 	return false;
 }
@@ -486,7 +451,7 @@ watchThrowable()
 	while(1)
 	{
 		self waittill( "grenade_fire", c4, weapname );
-		if ( weapname == "c4" || weapname == "c4_mp" )
+		if( weapname == "c4" || weapname == "c4_mp" )
 		{
 			//if ( !self.c4array.size )
 			//	self thread watchC4AltDetonate();
@@ -572,15 +537,13 @@ triggerThrowable()
 	{
 		self waittill( "detonate" );
 		weap = self getCurrentWeapon();
-		if ( weap == "c4_mp" )
+		if( weap == "c4_mp" )
 		{
-			for ( i = 0; i < self.c4Array.size; i++ )
+			for( i = 0; i < self.c4Array.size; i++ )
 			{
 				c4 = self.c4Array[i];
-				if ( isdefined(self.c4Array[i]) )
-				{
-						c4 thread waitAndDetonate( 0.1 );
-				}
+				if( isdefined(c4) )
+					c4 thread waitAndDetonate( 0.1 );
 			}
 			self.c4array = [];
 			self notify ( "detonated" );
@@ -590,7 +553,7 @@ triggerThrowable()
 
 waitAndDetonate( delay )
 {
-	self endon("death");
+	self endon( "death" );
 	wait delay;
 
 	self detonate();
