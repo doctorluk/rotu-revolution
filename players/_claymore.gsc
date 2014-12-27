@@ -104,7 +104,6 @@ WatchClaymore()
 		self.owner.claymores--;
 		assert(self.owner.claymores >= 0);
 		self detonate();
-		self notify( "death" );
 	}
 }
 
