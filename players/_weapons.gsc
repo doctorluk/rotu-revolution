@@ -19,6 +19,7 @@
 //
 
 #include scripts\include\entities;
+#include scripts\include\weapons;
 #include scripts\include\data;
 
 init()
@@ -32,20 +33,31 @@ init()
 	
 	// number of weapons for players
 	max_weapon_num = 110;
-	
+
 	// generating weaponlist array
-	level.weaponList = [];
-	level.weaponListR = [];
+//	level.weaponList = [];
+	level.weaponKeyS2C = [];
+	level.weaponKeyC2S = [];
 	for( i = 0; i < max_weapon_num; i++ )
 	{
 		weapon_name = tableLookup( "mp/weaponTable.csv", 0, i, 2 );
 		if( !isDefined(weapon_name) || weapon_name == "" )
 			continue;
 		
-		level.weaponList[weapon_name] = tableLookup( "mp/weaponTable.csv", 0, i, 3 );
-		level.weaponListR[level.weaponList[weapon_name]] = weapon_name;
-		precacheItem( level.weaponList[weapon_name] );
-		printLn( "Precached weapon: " + weapon_name + "; " + level.weaponList[weapon_name] );	
+		console_name = tableLookup( "mp/weaponTable.csv", 0, i, 3 );
+		
+		// this array stores various infos about the weapons as tableLookup is a demanding function and we don't want to call it whenever
+		// maybe we will need it later, for now we don't really bother
+//		level.weaponList[weapon_name] = [];
+//		level.weaponList[weapon_name]["console"] = console_name;
+//		level.weaponList[weapon_name]["class"] = tableLookup( "mp/weaponTable.csv", 0, i, 1 );
+		
+		// whenever we give a weapon, etc. we need the actual console name of the weapon
+		// these two arrays hold the names for easy converting
+		level.weaponKeyS2C[weapon_name] = console_name;
+		level.weaponKeyC2S[console_name] = weapon_name;
+		precacheItem( console_name );
+		print( "Precached weapon: " + weapon_name + "; " + console_name + "\n" );	
 	}
 
 	precacheShellShock( "default" );
@@ -67,8 +79,8 @@ init()
 }
 
 isSpecialWeap(weap){
-	for (i=0; i < level.specialWeps.size; i++) {
-		if (level.specialWeps[i] == weap)
+	for( i = 0; i < level.specialWeps.size; i++ ) {
+		if( level.specialWeps[i] == weap )
 			return true;
 	}
 	return false;
@@ -82,6 +94,7 @@ initPlayerWeapons()
 	self.extra = "none";
 }
 
+// whatever this is used for, it makes no sense, silenced weapons have no flash, some pistols do
 checkWeaponFlash( weapon )
 {
 	if (isPistol(weapon))
@@ -96,73 +109,36 @@ checkWeaponFlash( weapon )
 
 givePlayerWeapons()
 {
-	//return;
-	//switch (level.onGiveWeapons)
-	//{
-		//case 0:
-			self.primary = self.persData.primary;
-			self.secondary = self.persData.secondary;
-			self.extra = self.persData.extra;
-			
-			//iprintlnbold(self.primary);
-			
-			if (self.secondary != "none")
-			{
-				self giveWeapon( self.secondary );
-				self setSpawnWeapon( self.secondary );
-				self SwitchToWeapon( self.secondary);
-				//self giveMaxAmmo( self.secondary );
-				self setWeaponAmmoStock(self.secondary , self.persData.secondaryAmmoStock);
-				self setWeaponAmmoClip(self.secondary , self.persData.secondaryAmmoClip);
-			}
-			if (self.primary != "none")
-			{
-				self giveWeapon( self.primary ); 
-				self setSpawnWeapon( self.primary );
-				self SwitchToWeapon( self.primary );
-				//self giveMaxAmmo( self.primary );
-//				iprintlnbold(self.persData.primaryAmmoStock);
-				self setWeaponAmmoStock(self.primary, self.persData.primaryAmmoStock);
-				self setWeaponAmmoClip(self.primary, self.persData.primaryAmmoClip);
-			}
-			if (self.extra != "none")
-			{
-				self giveWeapon( self.extra );
-				self setWeaponAmmoStock(self.extra , self.persData.extraAmmoStock);
-				self setWeaponAmmoClip(self.extra , self.persData.extraAmmoClip);
-			}
-		/*break;
-		case 1:
-			self.primary =  getdvar("surv_"+self.class+"_unlockprimary"+self.unlock["primary"]);
-			self.secondary = getdvar("surv_"+self.class+"_unlocksecondary"+self.unlock["secondary"]);
-			if (self.unlock["primary"]) {
-			}
-			
-			if (self.secondary != "")
-			{
-				self giveWeapon( self.secondary );
-				self setSpawnWeapon( self.secondary );
-				self SwitchToWeapon( self.secondary);
-				self giveMaxAmmo( self.secondary );
-			}
-			if (self.primary != "")
-			{
-				self giveWeapon( self.primary ); 
-				self setSpawnWeapon( self.primary );
-				self SwitchToWeapon( self.primary );
-				self giveMaxAmmo( self.primary );
-				
-			}
-		
-		break;
-		default:
-			iprintlnbold("^1ERROR: ^7 no weapon handling");
-		break;
-	}*/
+	self.primary = self.persData.primary;
+	self.secondary = self.persData.secondary;
+	self.extra = self.persData.extra;
+
+	if( self.secondary != "none" && self.secondary != "" )
+	{
+		self giveWeap( self.secondary );
+		self setSpawnWeap( self.secondary );
+		self setWeapAmmoStock( self.secondary, self.persData.secondaryAmmoStock );
+		self setWeapAmmoClip( self.secondary, self.persData.secondaryAmmoClip );
+	}
+
+	if( self.primary != "none" && self.primary != "" )
+	{
+		self giveWeap( self.primary ); 
+		self setSpawnWeap( self.primary );
+		self setWeapAmmoStock( self.primary, self.persData.primaryAmmoStock );
+		self setWeapAmmoClip( self.primary, self.persData.primaryAmmoClip );
+	}
+
+	if( self.extra != "none" && self.extra != "" )
+	{
+		self giveWeap( self.extra );
+		self setWeapAmmoStock( self.extra, self.persData.extraAmmoStock );
+		self setWeapAmmoClip( self.extra, self.persData.extraAmmoClip );
+	}
 }
 
 canRestoreAmmo(wep) {
-	if (wep=="helicopter_mp" || scripts\players\_weapons::isSpecialWeap(wep) || wep=="m14_reflex_mp" /* Ammobox */ || wep=="none" || wep == level.weapons["flash"] /* Monkey Bomb */)
+	if( wep=="helicopter_mp" || scripts\players\_weapons::isSpecialWeap(wep) || wep=="m14_reflex_mp" /* Ammobox */ || wep=="none" || wep == level.weapons["flash"] /* Monkey Bomb */)
 		return false;
 	return true;
 }
@@ -171,16 +147,16 @@ watchWeaponUsage()
 {
 	self endon( "death" );
 	self endon( "disconnect" );
-	self endon("downed");
+	self endon( "downed" );
 	//level endon ( "game_ended" );
 	
 	self.firingWeapon = false;
 	
-	for ( ;; )
-	{	
+	for(;;)
+	{
 		self waittill ( "begin_firing" );
 		
-		weap = self getcurrentweapon();
+		weap = self getCurrentWeap();
 		
 		ent = undefined;
 		
@@ -190,16 +166,16 @@ watchWeaponUsage()
 		self waittill( "end_firing" );
 		
 		if (weap == self.primary){
-			self.persData.primaryAmmoClip = self getweaponammoclip(self.primary);
-			self.persData.primaryAmmoStock = self getweaponammostock(self.primary);
+			self.persData.primaryAmmoClip = self getWeapAmmoClip(self.primary);
+			self.persData.primaryAmmoStock = self getWeapAmmoStock(self.primary);
 		}
 		else if (weap == self.secondary){
-			self.persData.secondaryAmmoClip = self getweaponammoclip(self.secondary);
-			self.persData.secondaryAmmoStock = self getweaponammostock(self.secondary);
+			self.persData.secondaryAmmoClip = self getWeapAmmoClip(self.secondary);
+			self.persData.secondaryAmmoStock = self getWeapAmmoStock(self.secondary);
 		}
 		else if (weap == self.extra){
-			self.persData.extraAmmoClip = self getweaponammoclip(self.extra);
-			self.persData.extraAmmoStock = self getweaponammostock(self.extra);
+			self.persData.extraAmmoClip = self getWeapAmmoClip(self.extra);
+			self.persData.extraAmmoStock = self getWeapAmmoStock(self.extra);
 		}
 		
 		self.firingWeapon = false;
