@@ -49,9 +49,6 @@ init()
 		
 	if (getdvar("surv_soldier_unlocksecondary3") == "")
 	setdvar("surv_soldier_unlocksecondary3", "g36c_gl_mp");
-	
-
-	
 		
 	if (getdvar("surv_stealth_unlockprimary0") == "")
 	setdvar("surv_stealth_unlockprimary0", "skorpion_silencer_mp");
@@ -247,32 +244,33 @@ init()
 	}
 }
 
-doUpgrade(type)
+doUpgrade( type )
 {
 	newupgr = self.unlock[type] + 1;
-	if (type=="extra")
-	newwep = getdvar("surv_extra_unlock"+newupgr);
+	if( type=="extra" )
+		newwep = getDvar( "surv_extra_unlock"+newupgr );
 	else
-	newwep = getdvar("surv_"+self.curClass+"_unlock"+type+newupgr);
-	costs = getdvarint("surv_unlock"+type+newupgr+"_points")*getdvarint("surv_unlock_mp");
-	if (newwep != "")
+		newwep = getDvar( "surv_"+self.curClass+"_unlock"+type+newupgr );
+
+	costs = getDvarInt( "surv_unlock"+type+newupgr+"_points" ) * getDvarInt( "surv_unlock_mp" );
+	if( newwep != "" )
 	{
-		if (self.points >= costs)
+		if( self.points >= costs )
 		{
 			self scripts\players\_players::incUpgradePoints(-1*costs);
-			self scripts\players\_weapons::swapWeapons(type, newwep);
+			self scripts\players\_weapons::swapWeapons( type, newwep );
 			if(type == "extra" && newupgr == 4)
 				if(!isDefined(level.gotFirstMinigun))
 					level.gotFirstMinigun = self;
-			self.unlock[type] ++;
+			self.unlock[type]++;
 			self.persData.unlock[type]=self.unlock[type];
-			self playsound("buy_upgradebox");
+			self playSound( "buy_upgradebox" );
 		}
 		else
 		{
-			self iprintlnbold("You do not have enough points: "+costs);
+			self iPrintLnBold( "You do not have enough points: "+costs );
 		}
 	}
 	else
-		self iprintlnbold("No more upgrades for this weapon!");
+		self iPrintLnBold( "No more upgrades for this weapon!" );
 }

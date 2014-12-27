@@ -26,9 +26,24 @@ giveWeap( weap, var )
 	self giveWeapon( level.weaponKeyS2C[weap], var );
 }
 
+takeWeap( weap )
+{
+	self takeWeapon( level.weaponKeyS2C[weap] );	
+}
+
 setSpawnWeap( weap )
 {
 	self setSpawnWeapon( level.weaponKeyS2C[weap] );
+}
+
+switchToWeap( weap )
+{
+	self switchToWeapon( level.weaponKeyS2C[weap] );	
+}
+
+giveWeapMaxAmmo( weap )
+{
+	self giveMaxAmmo( level.weaponKeyS2C[weap] );
 }
 
 setWeapAmmoStock( weap, ammo )
@@ -53,6 +68,20 @@ getWeapAmmoClip( weap )
 
 getCurrentWeap()
 {
-//	weap = self getCurrentWeapon();
 	return level.weaponKeyC2S[self getCurrentWeapon()];	
+}
+
+hasWeap( weap )
+{
+	return self hasWeapon( level.weaponKeyS2C[weap] );
+}
+
+weapClipSize( weap )
+{
+	return weaponClipSize( level.weaponKeyS2C[weap] );
+}
+
+weapMaxAmmo( weap )
+{
+	return weaponMaxAmmo( level.weaponKeyS2C[weap] );
 }

@@ -181,8 +181,6 @@ waittillStart()
 	
 	while( level.activePlayers == 0 )
 		wait .5;
-		
-	
 }
 
 buildBarricade(targetname, parts, health, deathFx, buildFx, dropAll)

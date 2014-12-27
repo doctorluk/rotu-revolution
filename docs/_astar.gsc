@@ -127,7 +127,7 @@ generatePath (destNode, startNode, blockedNodes)
 
 	// WAT?
 	assert( isDefined(destNode.parentNode) );
-	
+
 	// we build an array of nodes from the destNode to the startNode
 	curNode = destNode;
 	while( curNode != startNode )
