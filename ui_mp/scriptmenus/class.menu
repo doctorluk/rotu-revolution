@@ -161,7 +161,7 @@
 
 		/* prestige mode locked */
 		//CHOICE_BUTTON_FOCUS_VIS_NOHI( 5, "", ;, exec "set ui_hint_text @MPUI_DESC_PRESTIGE2", CLEARUIHINT, when( PRESTIGE_AVAIL==0 && PRESTIGE_FINISH==0 ) ) //
-		CHOICE_DBUTTON_VIS( 5, "@MPUI_PRESTIGE_MODE", when( PRESTIGE_AVAIL == 0 && PRESTIGE_FINISH == 0 ) )
+		CHOICE_DBUTTON_VIS( 5, "@MPUI_PRESTIGE_MODE", when( PRESTIGE_AVAIL == 0 ) )
 		CHOICE_NEWICON_VIS( 5, "specialty_locked", when( PRESTIGE_AVAIL == 0 && PRESTIGE_FINISH == 0 ) )
 		
 		
