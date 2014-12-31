@@ -245,9 +245,9 @@ usableUse()
 				}
 				if (level.ammoStockType == "weapon")
 				{
-					if (!isdefined( self.box_weapon))
+					if( !isDefined(self.box_weapon) )
 					{
-						if (self.points >= level.dvar["surv_waw_costs"])
+						if( self.points >= level.dvar["surv_waw_costs"] )
 						{
 							if (level.dvar["surv_waw_alwayspay"])
 							self scripts\players\_players::incUpgradePoints(-1*level.dvar["surv_waw_costs"]);
@@ -256,13 +256,12 @@ usableUse()
 					}
 					else
 					{
-						if (self.box_weapon.done)
+						if( self.box_weapon.done && (!level.dvar["surv_waw_alwayspay"] || self.points >= level.dvar["surv_waw_costs"]) )
 						{
-							self scripts\players\_weapons::swapWeapons(self.box_weapon.slot, self.box_weapon.weaponName);
+							self scripts\players\_weapons::swapWeapons( self.box_weapon.slot, self.box_weapon.weaponName );
 							self.box_weapon delete();
-							if (!level.dvar["surv_waw_alwayspay"])
-							self scripts\players\_players::incUpgradePoints(-1*level.dvar["surv_waw_costs"]);
-							
+							if( !level.dvar["surv_waw_alwayspay"] )
+								self scripts\players\_players::incUpgradePoints(-1*level.dvar["surv_waw_costs"]);
 						}
 					}
 					

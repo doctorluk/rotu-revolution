@@ -1000,17 +1000,41 @@ resetUnlocks() {
 	self.persData.unlock["primary"] = 0;
 	self.persData.unlock["secondary"] = 0;
 	self.persData.unlock["extra"] = 0;
-	
-	self.persData.primary =  getdvar("surv_"+self.class+"_unlockprimary"+self.unlock["primary"]);
-	self.persData.secondary = getdvar("surv_"+self.class+"_unlocksecondary"+self.unlock["secondary"]);
-	self.persData.extra = getdvar( "surv_"+self.class+"_extra_unlock"+(self.unlock["extra"]+1) );
 
-	self.persData.primaryAmmoClip = weapClipSize(self.persData.primary);
-	self.persData.primaryAmmoStock = weapMaxAmmo(self.persData.primary);
-	
-	self.persData.secondaryAmmoClip = weapClipSize(self.persData.secondary);
-	self.persData.secondaryAmmoStock = weapMaxAmmo(self.persData.secondary);
-	
+	if( level.dvar["surv_weaponmode"] == "wawzombies" )
+	{
+		self.persData.primary = getDvar( "surv_waw_spawnprimary" );
+		self.persData.secondary = getDvar( "surv_waw_spawnsecondary" );
+	}
+	else
+	{
+		self.persData.primary =  getDvar("surv_"+self.class+"_unlockprimary"+self.unlock["primary"]);
+		self.persData.secondary = getDvar("surv_"+self.class+"_unlocksecondary"+self.unlock["secondary"]);
+	}
+
+	if( self.persData.primary != "none" && self.persData.primary != "" )
+	{
+		self.persData.primaryAmmoClip = weapClipSize( self.persData.primary );
+		self.persData.primaryAmmoStock = weapMaxAmmo( self.persData.primary );
+	}
+	else
+	{
+		self.persData.primaryAmmoClip = 0;
+		self.persData.primaryAmmoStock = 0;
+	}
+
+	if( self.persData.secondary != "none" && self.persData.secondary != "" )
+	{
+		self.persData.secondaryAmmoClip = weapClipSize(self.persData.secondary);
+		self.persData.secondaryAmmoStock = weapMaxAmmo(self.persData.secondary);
+	}
+	else
+	{
+		self.persData.secondaryAmmoClip = 0;
+		self.persData.secondaryAmmoStock = 0;
+	}
+
+	self.persData.extra = "";			// If we set this the shop wouldn't work correctly!
 	self.persData.extraAmmoClip = 0;
 	self.persData.extraAmmoStock = 0;	
 }
