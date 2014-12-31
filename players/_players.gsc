@@ -75,14 +75,13 @@ precache()
 	precacheStatusIcon( "icon_stealth" );
 	precacheStatusIcon( "icon_scout" );
 	precacheStatusIcon( "icon_armored" );
-	
+
 	precacheStatusIcon( "icon_down" );
-	// precacheStatusIcon( "icon_admin");
 	precacheStatusIcon(	"icon_spec" );
-	// precacheStatusIcon(	"icon_dev" );
-	PreCacheShellShock("general_shock");
-	
-	precacheShader("overlay_armored");
+
+	precacheShellShock( "general_shock" );
+
+	precacheShader( "overlay_armored" );
 }
 
 setDown(isDown) {
