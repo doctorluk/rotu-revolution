@@ -85,3 +85,11 @@ weapMaxAmmo( weap )
 {
 	return weaponMaxAmmo( level.weaponKeyS2C[weap] );
 }
+
+getWeapModel( weap, var )
+{
+	if( !isDefined(var) )
+		var = 0;
+	
+	return getWeaponModel( level.weaponKeyS2C[weap], var );	
+}
