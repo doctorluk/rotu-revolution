@@ -13,3 +13,38 @@ LANG_ENGLISH		"^3Spectate"
 
 REFERENCE			STOPQUEUE
 LANG_ENGLISH		"^1Cancel Join"
+
+REFERENCE			RESTORING_HEALTH
+LANG_ENGLISH		"Restoring ^2health^7!"
+
+REFERENCE			RESTORING_HEALTH
+LANG_ENGLISH		"Restoring ^2health^7!"
+
+REFERENCE			ALREADY_AT_FULL_HEALTH
+LANG_ENGLISH		"^2You are already at max. health"
+
+REFERENCE			AMMO_RESTORED
+LANG_ENGLISH		"^3Ammo ^7restored"
+
+REFERENCE			ALREADY_AT_MAX_AMMO
+LANG_ENGLISH		"Your ^3ammo ^7is already full!"
+
+REFERENCE			N_IS_NO_LONGER_INFECTED
+LANG_ENGLISH		"^2&&1 is no longer infected!"
+
+REFERENCE			YOU_HAVE_BEEN_CURED
+LANG_ENGLISH		"^2Your infection has been cured!"
+
+REFERENCE			YOU_ARE_NOT_INFECTED
+LANG_ENGLISH		"^2You are not infected"
+
+REFERENCE			MAXIMUM_OF_N_BARRELS
+LANG_ENGLISH		"Sorry! Maximum of &&1 barrels!"
+
+REFERENCE			MAXIMUM_OF_N_TURRETS_PER_PLAYER
+LANG_ENGLISH		"Sorry! Maximum of &&1 turrets per player!"
+
+REFERENCE			MAXIMUM_OF_N_TURRETS
+LANG_ENGLISH		"Sorry! Maximum of &&1 total turrets!"
+
+ENDMARKER

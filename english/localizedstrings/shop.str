@@ -60,7 +60,7 @@ REFERENCE           DESC_C4_TITLE
 LANG_ENGLISH        "C4"
 
 REFERENCE           RAYGUN
-LANG_ENGLISH        "Ray Gun"
+LANG_ENGLISH        "Raygun"
 
 REFERENCE           DESC_RAYGUN
 LANG_ENGLISH        "The Raygun, known from WaW and newer CoD Zombie Modes, is a powerful weapon agains all kinds of zombies. It provides areal damage aswell as direct hit damage.\nIt can be ^3Upgraded ^7at the Upgrade Box!"
@@ -124,3 +124,5 @@ LANG_ENGLISH        "Portal"
 
 REFERENCE           EXIT
 LANG_ENGLISH        "Exit"
+
+ENDMARKER
