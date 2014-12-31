@@ -28,10 +28,10 @@ init()
 
 precache()
 {
-	PreCacheShellShock("infection");
-	precacheHeadIcon("icon_infection");
-	
-	precachemodel("ch_tombstone3");
+	precacheShellShock( "infection" );
+	precacheHeadIcon( "icon_infection" );
+
+	precacheModel( "ch_tombstone3" );
 }
 
 cureInfection()
@@ -50,19 +50,18 @@ goInfected()
 	self endon("infection_cured");
 	self endon("disconnect");
 	self endon("death");
-	if (self.infected || level.godmode)
-	return;
-	
+	if( self.infected || level.godmode )
+		return;
+
 	if (!self.isDown)
-	// level scripts\players\_usables::addUsable(self, "infected", "Press USE to cure", 96);
 		level scripts\players\_usables::addUsable(self, "infected", &"USE_CURE", 96);
-	
+
 	self.headicon = "icon_infection";
 	self.headiconteam = "allies";
 	self.infection_overlay = createHealthOverlay((0,1,0));
 	self.infection_overlay.alpha = .5;
 	self.infected = true;
-	iprintln("^1" + self.name + "^1 has been infected!");
+	iPrintLn("^1" + self.name + "^1 has been infected!");		// TODO: Make this a localized string!
 	self glowMessage(&"ZOMBIE_INFECTED", "", (1, 0, 0), 6, 50, 2);
 	
 	wait level.dvar["zom_infectiontime"];
