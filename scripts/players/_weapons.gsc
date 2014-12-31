@@ -35,7 +35,7 @@ init()
 	max_weapon_num = 110;
 
 	// generating weaponlist array
-//	level.weaponList = [];
+	level.weaponList = [];
 	level.weaponKeyS2C = [];
 	level.weaponKeyC2S = [];
 	for( i = 0; i < max_weapon_num; i++ )
@@ -48,9 +48,8 @@ init()
 		
 		// this array stores various infos about the weapons as tableLookup is a demanding function and we don't want to call it whenever
 		// maybe we will need it later, for now we don't really bother
-//		level.weaponList[weapon_name] = [];
-//		level.weaponList[weapon_name]["console"] = console_name;
-//		level.weaponList[weapon_name]["class"] = tableLookup( "mp/weaponTable.csv", 0, i, 1 );
+		level.weaponList[weapon_name] = [];
+		level.weaponList[weapon_name]["class"] = tableLookup( "mp/weaponTable.csv", 0, i, 1 );
 		
 		// whenever we give a weapon, etc. we need the actual console name of the weapon
 		// these two arrays hold the names for easy converting
@@ -312,133 +311,65 @@ swapWeapons(type, weapon)
 	}
 }
 
-isSniper(weapon)
+isSniper( weapon )
 {
-	if ( weapon == "m21_mp" )
-		return true;
-	if ( weapon == "barrett_mp" )
-		return true;
-	if ( weapon == "m40a3_mp" )
-		return true;
-	if ( weapon == "remington700_mp" )
-		return true;
-	if ( weapon == "remington700_acog_mp" )
-		return true;
-	if ( weapon == "deserteagle_mp" )
-		return true;
-	return false;
-}
-
-isRifle(weapon)
-{
-	if ( isSubStr( weapon, "ak47_" ) )
-		return true;
-	if ( isSubStr( weapon, "m16_" ) )
-		return true;
-	if ( isSubStr( weapon, "g3_" ) )
-		return true;
-	if ( isSubStr( weapon, "g36c_" ) )
-		return true;
-	if ( isSubStr( weapon, "m4_" ) )
-		return true;
-	if ( isSubStr( weapon, "m14" ) )
-		return true;
-	if ( isSubStr( weapon, "mp44" ) )
-		return true;
-	if ( weapon == "uzi_acog_mp" )
-		return true;
-	if ( weapon == "rpd_acog_mp" )
-		return true;
-	return false;
-}
-
-isShotgun(weapon)
-{
-	if ( weapon == "m60e4_acog_mp" )
-		return true;
-	if ( weapon == "m1014_grip_mp" )
-		return true;
-	if ( weapon == "m1014_reflex_mp" )
-		return true;
-	if ( weapon == "winchester1200_grip_mp" )
-		return true;
-	
-	return false;
-}
-
-isLMG(weapon)
-{
-	if ( weapon == "rpd_reflex_mp" )
-		return true;
-	if ( weapon == "saw_reflex_mp" )
-		return true;
-	if ( weapon == "saw_mp" )
-		return true;
-		
-	return false;
-}
-
-isSMG(weapon)
-{
-	if ( isSubStr( weapon, "mp5" ) )
-		return true;
-	if ( isSubStr( weapon, "ak74u" ) )
-		return true;
-	if ( isSubStr( weapon, "p90" ) )
-		return true;
-	if ( isSubStr( weapon, "uzi" ) )
-		return true;
-	if ( isSubStr( weapon, "skorpion" ) )
-		return true;
-		
-	return false;
-}
-
-isExplosive(weapon)
-{
-	if ( weapon == "c4_mp" )
-		return true;
-	if ( weapon == "claymore_mp" )
-		return true;
-	if ( weapon == "rpg_mp" )
-		return true;
-	if ( weapon == "at4_mp" )
-		return true;
-	if ( weapon == "usp_silencer_mp" )
-		return true;
-	if ( weapon == "dragunov_acog_mp" )
+	if( level.weaponList[weapon]["class"] == "weapon_sniper" )
 		return true;
 
 	return false;
 }
 
-isPistol(weapon)
+isRifle( weapon )
 {
-	if ( isSubStr( weapon, "beretta" ) )
+	if( level.weaponList[weapon]["class"] == "weapon_assault" )
 		return true;
-	if ( isSubStr( weapon, "usp" ) )
-		return true;
-	if ( isSubStr( weapon, "colt45" ) )
-		return true;
-	if ( isSubStr( weapon, "deserteaglegold" ) )
-		return true;
-		
+
 	return false;
 }
 
-isSilenced( weapon)
+isShotgun( weapon )
 {
-	if ( weapon == "colt45_silencer_mp" )
+	if( level.weaponList[weapon]["class"] == "weapon_shotgun" )
 		return true;
-	if ( weapon == "p90_silencer_mp" )
-		return true;
-	if ( weapon == "skorpion_silencer_mp" )
-		return true;
-	if ( weapon == "uzi_silencer_mp" )
-		return true;
-	if ( weapon == "g36c_silencer_mp" )
-		return true;
+
 	return false;
+}
+
+isLMG( weapon )
+{
+	if( level.weaponList[weapon]["class"] == "weapon_lmg" )
+		return true;
+
+	return false;
+}
+
+isSMG( weapon )
+{
+	if( level.weaponList[weapon]["class"] == "weapon_smg" )
+		return true;
+
+	return false;
+}
+
+isExplosive( weapon )
+{
+	if( level.weaponList[weapon]["class"] == "weapon_explosive" )
+		return true;
+
+	return false;
+}
+
+isPistol( weapon )
+{
+	if( level.weaponList[weapon]["class"] == "weapon_pistol" )
+		return true;
+
+	return false;
+}
+
+isSilenced( weapon )
+{
+	return isSubStr( weapon, "_silencer_" );
 }
 
 watchThrowable()
