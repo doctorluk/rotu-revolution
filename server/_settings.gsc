@@ -155,23 +155,16 @@ loadSettings()
 	dvarInt(	"shop", 		"item1_costs",	 		2000,		1,		100000); // Restore Health
 	dvarInt(	"shop", 		"item2_costs",	 		1500,		1,		100000); // Restore Ammo
 	dvarInt(	"shop", 		"item3_costs",	 		3500,		1,		100000); // Cure Infection
-	dvarInt(	"shop", 		"item4_costs",	 		1000,		1,		100000); // Frag Grenades
-	dvarInt(	"shop", 		"item5_costs",	 		1250,		1,		100000); // C4
-	dvarInt(	"shop", 		"item6_costs",	 		2000,		1,		100000); // Claymore
-	dvarInt(	"shop", 		"item7_costs",	 		10000,		1,		100000); // Raygun
+	
+	dvarInt(	"shop", 		"weapon1_costs",	 	1000,		1,		100000); // Frag Grenades
+	dvarInt(	"shop", 		"weapon2_costs",	 	1250,		1,		100000); // C4
+	dvarInt(	"shop", 		"weapon3_costs",	 	2000,		1,		100000); // Claymore
+	dvarInt(	"shop", 		"weapon4_costs",	 	10000,		1,		100000); // Raygun
 	
 	dvarInt(	"shop", 		"defensive1_costs",	 	1000,		1,		100000); // Barrel
 	dvarInt(	"shop", 		"defensive2_costs",	 	1500,		1,		100000); // Exploding Barrel
 	dvarInt(	"shop", 		"defensive3_costs",	 	4000,		1,		100000); // Sentry Turret
 	dvarInt(	"shop", 		"defensive4_costs",	 	7000,		1,		100000); // GL Turret
-	dvarInt(	"shop", 		"defensive5_costs",	 	8000,		1,		100000); // Barrel + MG
-	dvarInt(	"shop", 		"defensive6_costs",	 	8500,		1,		100000); // Portal
-	
-	dvarInt(	"shop", 		"support1_costs",	 	2500,		1,		100000);
-	dvarInt(	"shop", 		"support2_costs",	 	15000,		1,		100000);
-	dvarInt(	"shop", 		"support3_costs",	 	20000,		1,		100000);
-	dvarInt(	"shop", 		"support4_costs",	 	30000,		1,		100000);
-	dvarInt(	"shop", 		"support5_costs",	 	50000,		1,		100000);
 	
 	dvarBool(	"shop",			"multiply_costs",			1);
 	dvarInt(	"shop", 		"multiply_costs_amount",	 	40,		0,		100);
@@ -179,6 +172,15 @@ loadSettings()
 	dvarString(	"surv",			"playedmaps",	"");
 	dvarString(	"surv",			"recentmaps",	"");
 
+	// I guess I could also just add them to the level.dvar array...
+	i = 1;
+	val = getDvar( "surv_unlock1_multiplier" );
+	while( isDefined(val) && val != "" )
+	{
+		dvarInt(	"surv",			"unlock"+i+"_multiplier",	1,			1,		1000 );
+		i++;
+		val = getDvar( "unlock"+i+"_multiplier" );
+	}
 
 	setdvar("g_teamname_axis", "^9Zombies");
 	setdvar("g_teamname_allies", "Survivors");

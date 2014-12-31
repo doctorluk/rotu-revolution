@@ -25,46 +25,23 @@ playerSetupShop()
 {
 	self endon("disconnect");
 	self.points = level.dvar["game_startpoints"];
-	self.support_level = 0;
-	self.upgrade_damMod = 1;
+
 	wait 0.1; // Security wait to ensure that not too many clientdvars are set
-	// for (i=0; i<7; i++)
-	// {
-		// self setclientdvar("ui_costs"+i, level.dvar["shop_item"+(i+1)+"_costs"]);
-		// wait .05;
-	// }
-	// for (i=0; i<6; i++)
-	// {
-		// self setclientdvar("ui_itemcosts"+i, level.dvar["shop_defensive"+(i+1)+"_costs"]);
-		// wait .05;
-	// }
-	// for (i=0; i<5; i++)
-	// {
-		// self setclientdvar("ui_supportcosts"+i, level.dvar["shop_support"+(i+1)+"_costs"]);
-		// wait .05;
-	// }
-	self setclientdvars("ui_points", int(self.points), "ui_upgrade", 0, "ui_supupgrade", 0,
-	
-						"ui_costs"+0, level.dvar["shop_item"+(0+1)+"_costs"],
-						"ui_costs"+1, level.dvar["shop_item"+(1+1)+"_costs"],
-						"ui_costs"+2, level.dvar["shop_item"+(2+1)+"_costs"],
-						"ui_costs"+3, level.dvar["shop_item"+(3+1)+"_costs"],
-						"ui_costs"+4, level.dvar["shop_item"+(4+1)+"_costs"],
-						"ui_costs"+5, level.dvar["shop_item"+(5+1)+"_costs"],
-						"ui_costs"+6, level.dvar["shop_item"+(6+1)+"_costs"],
+	self setClientDvars("ui_points", self.points, "ui_upgrade", 0, "ui_supupgrade", 0,
 						
-						"ui_itemcosts"+0, level.dvar["shop_defensive"+(0+1)+"_costs"],
-						"ui_itemcosts"+1, level.dvar["shop_defensive"+(1+1)+"_costs"],
-						"ui_itemcosts"+2, level.dvar["shop_defensive"+(2+1)+"_costs"],
-						"ui_itemcosts"+3, level.dvar["shop_defensive"+(3+1)+"_costs"],
-						"ui_itemcosts"+4, level.dvar["shop_defensive"+(4+1)+"_costs"],
-						"ui_itemcosts"+5, level.dvar["shop_defensive"+(5+1)+"_costs"],
+						"ui_costs0", level.dvar["shop_item1_costs"],
+						"ui_costs1", level.dvar["shop_item2_costs"],
+						"ui_costs2", level.dvar["shop_item3_costs"],
+						// TODO: Change the ui dvars in the menu and here
+						"ui_costs3", level.dvar["shop_weapon1_costs"],
+						"ui_costs4", level.dvar["shop_weapon2_costs"],
+						"ui_costs5", level.dvar["shop_weapon3_costs"],
+						"ui_costs6", level.dvar["shop_weapon4_costs"],
 						
-						"ui_supportcosts"+0, level.dvar["shop_support"+(0+1)+"_costs"],
-						"ui_supportcosts"+1, level.dvar["shop_support"+(1+1)+"_costs"],
-						"ui_supportcosts"+2, level.dvar["shop_support"+(2+1)+"_costs"],
-						"ui_supportcosts"+3, level.dvar["shop_support"+(3+1)+"_costs"],
-						"ui_supportcosts"+4, level.dvar["shop_support"+(4+1)+"_costs"]);
+						"ui_itemcosts0", level.dvar["shop_defensive1_costs"],
+						"ui_itemcosts1", level.dvar["shop_defensive2_costs"],
+						"ui_itemcosts2", level.dvar["shop_defensive3_costs"],
+						"ui_itemcosts3", level.dvar["shop_defensive4_costs"] );
 }
 
 updateShopCosts()
@@ -78,39 +55,45 @@ raiseCosts()
 {
 	for( i=1; i<7; i++ )
 	{
-		level.dvar["shop_defensive"+i+"_costs"] += int(level.dvar["shop_defensive"+i+"_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
-		level.dvar["shop_item"+i+"_costs"] += int(level.dvar["shop_item"+i+"_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
+		// not all the item categories have the same amount, thus the ifDefined
+		if( isDefined(level.dvar["shop_item"+i+"_costs"]) )
+			level.dvar["shop_item"+i+"_costs"] += int(level.dvar["shop_item"+i+"_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
+		
+		if( isDefined(level.dvar["shop_weapon"+i+"_costs"]) )
+			level.dvar["shop_weapon"+i+"_costs"] += int(level.dvar["shop_weapon"+i+"+_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
+		
+		if( isDefined(level.dvar["shop_defensive"+i+"_costs"]) )
+			level.dvar["shop_defensive"+i+"_costs"] += int(level.dvar["shop_defensive"+i+"_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
+		
+		// if no more are defined we are done
+		if( !isDefined(level.dvar["shop_item"+i+"_costs"]) && !isDefined(level.dvar["shop_weapon"+i+"_costs"]) && !isDefined(level.dvar["shop_defensive"+i+"_costs"]) )
+			break;
 	}
-	level.dvar["shop_support1_costs"] += int(level.dvar["shop_support1_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
 }
 
 updateCosts()
 {
 	self endon( "disconnect" );
-	self setClientDvars("ui_costs"+0, level.dvar["shop_item"+(0+1)+"_costs"],
-						"ui_costs"+1, level.dvar["shop_item"+(1+1)+"_costs"],
-						"ui_costs"+2, level.dvar["shop_item"+(2+1)+"_costs"],
-						"ui_costs"+3, level.dvar["shop_item"+(3+1)+"_costs"],
-						"ui_costs"+4, level.dvar["shop_item"+(4+1)+"_costs"],
-						"ui_costs"+5, level.dvar["shop_item"+(5+1)+"_costs"],
-						"ui_costs"+6, level.dvar["shop_item"+(6+1)+"_costs"],
+	self setClientDvars("ui_costs0", level.dvar["shop_item1_costs"],
+						"ui_costs1", level.dvar["shop_item2_costs"],
+						"ui_costs2", level.dvar["shop_item3_costs"],
+						// TODO: Change the dvars in the menu and here
+						"ui_costs3", level.dvar["shop_weapon1_costs"],
+						"ui_costs4", level.dvar["shop_weapon2_costs"],
+						"ui_costs5", level.dvar["shop_weapon3_costs"],
+						"ui_costs6", level.dvar["shop_weapon4_costs"],
 						
-						"ui_itemcosts"+0, level.dvar["shop_defensive"+(0+1)+"_costs"],
-						"ui_itemcosts"+1, level.dvar["shop_defensive"+(1+1)+"_costs"],
-						"ui_itemcosts"+2, level.dvar["shop_defensive"+(2+1)+"_costs"],
-						"ui_itemcosts"+3, level.dvar["shop_defensive"+(3+1)+"_costs"],
-						"ui_itemcosts"+4, level.dvar["shop_defensive"+(4+1)+"_costs"],
-						"ui_itemcosts"+5, level.dvar["shop_defensive"+(5+1)+"_costs"],
-						
-						"ui_supportcosts"+0, level.dvar["shop_support"+(1+1)+"_costs"],
-						"ui_supportcosts"+1, level.dvar["shop_support"+(2+1)+"_costs"],
-						"ui_supportcosts"+2, level.dvar["shop_support"+(3+1)+"_costs"],
-						"ui_supportcosts"+3, level.dvar["shop_support"+(4+1)+"_costs"] );
+						"ui_itemcosts0", level.dvar["shop_defensive1_costs"],
+						"ui_itemcosts1", level.dvar["shop_defensive2_costs"],
+						"ui_itemcosts2", level.dvar["shop_defensive3_costs"],
+						"ui_itemcosts3", level.dvar["shop_defensive4_costs"],
+						"ui_itemcosts4", level.dvar["shop_defensive5_costs"] );
 }
 
 processResponse(response)
 {
-	switch (response)
+	// TODO: Localize all strings below
+	switch( response )
 	{
 		case "item0":
 			if (self.points >= level.dvar["shop_item1_costs"])
@@ -122,7 +105,7 @@ processResponse(response)
 					self playsound("buy_upgradebox");
 				}
 				else
-					self iprintlnbold("^2You are already at max. health");	
+					self iprintlnbold("^2You are already at max. health");
 			}
 			break;
 		case "item1":
@@ -210,12 +193,7 @@ processResponse(response)
 		case "item10":
 			if (self.points >= level.dvar["shop_defensive1_costs"])
 			{
-				/*self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item4_costs"]);
-				self.upgrade_damMod = 1.05;
-				self.upgrade_level ++;
-				self setclientdvar("ui_upgrade", upgrade_level);
-				self glowMessage(&"ZOMBIE_DAMMOD", self.damMod, (1,0,0), 3, 100, 2);*/
-				if (level.barrels[0] + level.barrels[2] < level.dvar["game_max_barrels"])
+				if( level.barrels[0] + level.barrels[2] < level.dvar["game_max_barrels"] )
 				{
 					self scripts\players\_barricades::giveBarrel();
 					self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_defensive1_costs"]);
@@ -281,25 +259,15 @@ processResponse(response)
 			}
 			break;
 		case "item14":
-			if (self.points >= level.dvar["shop_defensive5_costs"])
+			if( self.points >= level.dvar["shop_defensive5_costs"] )
 			{
-				// Barrle + MG was here
+				// Barrel + MG was here
 			}
 			break;
 		case "item15":
-			if (self.points >= level.dvar["shop_defensive6_costs"]){
-				// Teleporter was here
-			}
-			break;
-		case "item20":
-			if (self.points >= level.dvar["shop_support1_costs"] && self.support_level == 0)
+			if( self.points >= level.dvar["shop_defensive6_costs"] )
 			{
-				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_support1_costs"]);
-				self.support_level++;
-				self setclientdvar("ui_supupgrade", self.support_level);
-				self setActionSlot( 1, "nightvision" );
-				self.nighvision = true;
-				self playsound("buy_upgradebox");
+				// Teleporter was here
 			}
 			break;
 	}
