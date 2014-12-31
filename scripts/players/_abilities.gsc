@@ -231,7 +231,7 @@ getDamageModifier( weapon, means, target, damage )
 		wpnlvl = self.unlock["extra"]+1;
 
 	if( isDefined(level.dvar["surv_unlock"+wpnlvl+"_multiplier"]) )
-		MP += level.dvar["surv_unlock"+wpnlvl+"_multiplier"];
+		MP += (level.dvar["surv_unlock"+wpnlvl+"_multiplier"]/100);
 
 //	self iPrintLn( "MP = ", MP );
 	return MP;
