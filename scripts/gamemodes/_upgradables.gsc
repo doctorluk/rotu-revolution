@@ -23,6 +23,7 @@ init()
 	if (getdvar("surv_unlock_mp") == "")
 	setdvar("surv_unlock_mp", 10);
 	
+	// TODO: Check all these dvars for integrity
 	if (getdvar("surv_soldier_unlockprimary0") == "")
 	setdvar("surv_soldier_unlockprimary0", "m16_mp");
 	

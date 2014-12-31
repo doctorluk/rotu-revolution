@@ -324,7 +324,7 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 
 	if( !(iDFlags & level.iDFLAGS_NO_PROTECTION) )
 	{
-		if( sWeapon == "ak74u_acog_mp" || sWeapon == "barrett_acog_mp" || sWeapon == "at4_mp" || sWeapon == "rpg_mp" || issubstr(sMeansOfDeath, "GRENADE") )
+		if( sWeapon == "ak74u_acog_mp" || sWeapon == "barrett_acog_mp" || sWeapon == "at4_mp" || sWeapon == "rpg_mp" || issubstr(sMeansOfDeath, "GRENADE") )	// TODO: What were these weapons, what are they now?
 			return;
 		
 		iDamage = int(iDamage * self.damageDoneMP);
