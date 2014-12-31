@@ -233,7 +233,7 @@ getDamageModifier( weapon, means, target, damage )
 	if( isDefined(level.dvar["surv_unlock"+wpnlvl+"_multiplier"]) )
 		MP += level.dvar["surv_unlock"+wpnlvl+"_multiplier"];
 
-	self iPrintLn( "MP = ", MP );
+//	self iPrintLn( "MP = ", MP );
 	return MP;
 }
 
