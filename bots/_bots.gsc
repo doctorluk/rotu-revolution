@@ -508,54 +508,53 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		return;
 	if( isDefined( self.alertLevel )) self.alertLevel += 200;
 	
-	if (isdefined(eAttacker))
-		if (isplayer(eAttacker))
-		{
-			// Check for insta-explosive grenades
-			if( eAttacker.chargedGrenades ){
-				if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp" ){
-					eInflictor detonate();
-					return;
-				}
-			}
-			
-			// Explosive Crossbow sticking to the zombie
-			if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp" ){
-				eInflictor followTarget(self, ( eInflictor.origin - self.origin ) );
+	if( isDefined(eAttacker) && isPlayer(eAttacker) )
+	{
+		// Check for insta-explosive grenades
+		if( eAttacker.chargedGrenades ){
+			if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp" ){
+				eInflictor detonate();
 				return;
 			}
-			
-			// Special Recharge Armored -> KNIFE
-			if ( eAttacker.curClass == "armored" && !eAttacker.isDown ) {
-				if ( sMeansOfDeath == "MOD_MELEE" ) {
-					if (iDamage>self.health)
-						eAttacker scripts\players\_abilities::rechargeSpecial(self.health/25);
-					else
-						eAttacker scripts\players\_abilities::rechargeSpecial(iDamage/25);
-				}
-			}
-			
-			if( !isDefined( iDamage ) || !isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) || !isDefined( self.incdammod ) ){
-				logPrint( "LUK_DEBUG; Definition: iDamage: " + isDefined(iDamage) + ", getDamageModifier: " + isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) + ", self.incdammod: " + isDefined(self.incdammod) + ", weapon: " + sWeapon + "\n" );
-				return;
-			}
-			
-			iDamage = int( iDamage * eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) * self.incdammod);
-			
-			eAttacker notify("damaged_bot", self);
-			
-			if( isDefined( eInflictor.isTurret ) && eInflictor.isTurret && isDefined( eInflictor.owner ) )
-				eAttacker scripts\players\_damagefeedback::updateTurretDamageFeedback();
-			else
-				eAttacker scripts\players\_damagefeedback::updateDamageFeedback();
-				
-			if (self.isBot)
-				self addToAssist(eAttacker, iDamage);
 		}
-	
-	if(self.sessionteam == "spectator")
-		return;
 		
+		// Explosive Crossbow sticking to the zombie
+		if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp" ){
+			eInflictor followTarget( self, ( eInflictor.origin - self.origin ) );
+			return;
+		}
+		
+		// Special Recharge Armored -> KNIFE
+		if ( eAttacker.curClass == "armored" && !eAttacker.isDown ) {
+			if ( sMeansOfDeath == "MOD_MELEE" ) {
+				if (iDamage>self.health)
+					eAttacker scripts\players\_abilities::rechargeSpecial(self.health/25);
+				else
+					eAttacker scripts\players\_abilities::rechargeSpecial(iDamage/25);
+			}
+		}
+		
+		if( !isDefined( iDamage ) || !isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) || !isDefined( self.incdammod ) ){
+			logPrint( "LUK_DEBUG; Definition: iDamage: " + isDefined(iDamage) + ", getDamageModifier: " + isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) + ", self.incdammod: " + isDefined(self.incdammod) + ", weapon: " + sWeapon + "\n" );
+			return;
+		}
+		
+		iDamage = int( iDamage * eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) * self.incdammod );
+		
+		eAttacker notify( "damaged_bot", self );
+		
+		if( isDefined( eInflictor.isTurret ) && eInflictor.isTurret && isDefined( eInflictor.owner ) )
+			eAttacker scripts\players\_damagefeedback::updateTurretDamageFeedback();
+		else
+			eAttacker scripts\players\_damagefeedback::updateDamageFeedback();
+			
+		if( self.isBot )
+			self addToAssist(eAttacker, iDamage);
+	}
+
+	if( self.sessionteam == "spectator" )
+		return;
+
 	//Check for Incendiary/Poisonous Ammo
 	if( isDefined(eAttacker.bulletMod) && randomfloat(1) <= 0.05){
 		if( self.type != "burning" && self.type != "napalm" && self.type != "hellhound" && self.type != "boss" && self.type != "halfboss" )

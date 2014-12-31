@@ -145,17 +145,21 @@ resetAbilities()
 }
 
 
-getDamageModifier(weapon, means, target, damage)
+getDamageModifier( weapon, means, target, damage )
 {
-	if(weapon == "none" || weapon == "turret_mp")
+	if( weapon == "none" || weapon == "turret_mp" )
 		return 1;
+
 	MP = 1;
-	if (issubstr(self.weaponMod, "soldier"))
+	weapon = level.weaponKeyC2S[weapon];
+
+	// class damage modifiers
+	if( isSubStr(self.weaponMod, "soldier") )
 	{
-		if (scripts\players\_weapons::isRifle(weapon))
+		if( scripts\players\_weapons::isRifle(weapon) )
 			MP += .1;
 	}
-	if (issubstr(self.weaponMod, "assassin"))
+	if( isSubStr(self.weaponMod, "assassin") )		// would a else if also do, or can you actually have multiple?
 	{
 		if (!WeaponIsBoltAction(weapon) && !WeaponIsSemiAuto(weapon))
 			MP -= .15;
@@ -166,19 +170,19 @@ getDamageModifier(weapon, means, target, damage)
 		else
 			MP += .05;
 	}
-	if (issubstr(self.weaponMod, "hitman"))
+	if( isSubStr(self.weaponMod, "hitman") )
 	{
 		if (!WeaponIsBoltAction(weapon) && !WeaponIsSemiAuto(weapon) && means == "MOD_HEAD_SHOT")
 			MP += .45;
 		if (!target scripts\bots\_bots::zomSpot(self))
 			MP += .15;
 	}
-	if (issubstr(self.weaponMod, "strength"))
+	if( isSubStr(self.weaponMod, "strength") )
 	{
 		if (means == "MOD_MELEE")
 			MP += .35;
 	}
-	if (issubstr(self.weaponMod, "engineer"))
+	if( isSubStr(self.weaponMod, "engineer") )
 	{
 		if (means == "MOD_EXPLOSIVE")
 			MP += .1;
@@ -187,37 +191,49 @@ getDamageModifier(weapon, means, target, damage)
 		if (scripts\players\_weapons::isShotgun(weapon))
 			MP += .1;
 	}
-	if (issubstr(self.weaponMod, "armored"))
+	if( isSubStr(self.weaponMod, "armored") )
 	{
 		if (scripts\players\_weapons::isLMG(weapon))
 			MP += .15;
 		if (scripts\players\_weapons::isSniper(weapon) || scripts\players\_weapons::isPistol(weapon) || scripts\players\_weapons::isSMG(weapon))
 			MP -= .15;
 	}
-	if (issubstr(self.weaponMod, "lmg"))
+	if( isSubStr(self.weaponMod, "lmg") )
 	{
 		if (scripts\players\_weapons::isLMG(weapon))
 			MP += .5;
 	}
-	if (issubstr(self.weaponMod, "scout"))
+	if( isSubStr(self.weaponMod, "scout") )
 	{
 		if (scripts\players\_weapons::isLMG(weapon) || scripts\players\_weapons::isRifle(weapon))
 			MP -= .15;
 		if (scripts\players\_weapons::isSniper(weapon) || scripts\players\_weapons::isPistol(weapon) || scripts\players\_weapons::isSMG(weapon))
 			MP += .1;
 	}
-	if (issubstr(self.knifeMod, "assassin"))
+	if( isSubStr(self.knifeMod, "assassin") )
 	{
-		if (means == "MOD_MELEE")
+		if( means == "MOD_MELEE" )
 			MP += 1;
 	}
-	if (issubstr(self.knifeMod, "armored"))
+	if( issubstr(self.knifeMod, "armored") )
 	{
-		if (means == "MOD_MELEE")
+		if( means == "MOD_MELEE" )
 			MP += 0.35;
 	}
-	//self.upgrade_damMod = 1;
-	MP = MP * self.upgrade_damMod;
+	
+	// weapon upgrade damage modifiers
+	wpnlvl = 1;
+	if( weapon == self.primary )
+		wpnlvl = self.unlock["primary"]+1;
+	else if( weapon == self.secondary )
+		wpnlvl = self.unlock["secondary"]+1;
+	else if( weapon == self.extra )
+		wpnlvl = self.unlock["extra"]+1;
+
+	if( isDefined(level.dvar["surv_unlock"+wpnlvl+"_multiplier"]) )
+		MP += level.dvar["surv_unlock"+wpnlvl+"_multiplier"];
+
+	self iPrintLn( "MP = ", MP );
 	return MP;
 }
 

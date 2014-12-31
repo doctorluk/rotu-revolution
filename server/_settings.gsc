@@ -177,9 +177,9 @@ loadSettings()
 	val = getDvar( "surv_unlock1_multiplier" );
 	while( isDefined(val) && val != "" )
 	{
-		dvarInt(	"surv",			"unlock"+i+"_multiplier",	1,			1,		1000 );
+		dvarInt(	"surv",			"unlock"+i+"_multiplier",	i-1,			0,		1000 );
 		i++;
-		val = getDvar( "unlock"+i+"_multiplier" );
+		val = getDvar( "surv_unlock"+i+"_multiplier" );
 	}
 
 	setdvar("g_teamname_axis", "^9Zombies");
