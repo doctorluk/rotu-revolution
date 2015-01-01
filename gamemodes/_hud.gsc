@@ -371,7 +371,7 @@ specialRechargeFeedback(){
 }
 
 
-addTimer(label, string, time)
+addTimer( label, string, time )
 {
 	if( !isDefined( time ) || time < 1 )
 		return;
@@ -397,8 +397,8 @@ addTimer(label, string, time)
 	timer.hud_timer.alpha = 1;
 	timer.hud_timer.glowAlpha = 0;
 	timer.hud_timer.glowColor = (1,1,0);
-	timer.hud_timer SetTimer(time);
-	
+	timer.hud_timer SetTimer( time );
+
 	timer.hud_timertext = newClientHudElem(self);
 	timer.hud_timertext.elemType = "font";
 	timer.hud_timertext.font = "default";
@@ -416,22 +416,34 @@ addTimer(label, string, time)
 	timer.hud_timertext.glowAlpha = 0;
 	timer.hud_timertext.glowColor = (1,1,0);
 	timer.hud_timertext.label = label;
-	timer.hud_timertext setText(string);
-	
+	timer.hud_timertext setText( string );
+
+	self thread removeTimerAfterTime( timer, time );
+	return timer;
+}
+
+removeTimerAfterTime( timer, time )
+{
 	wait time;
-	if(isDefined(timer.hud_timer))
+
+	self removeTimer( timer );
+}
+
+removeTimer( timer )
+{
+	if( isDefined(timer.hud_timer) )
 		timer.hud_timer destroy();
-	if(isDefined(timer.hud_timertext))
+
+	if( isDefined(timer.hud_timertext) )
 		timer.hud_timertext destroy();
-	
-	self.hud_timers = removefromarray(self.hud_timers, timer);
-	for (i=0; i<self.hud_timers.size; i++)
+
+	self.hud_timers = removefromarray( self.hud_timers, timer );
+	for( i=0; i<self.hud_timers.size; i++ )
 	{
 		self.hud_timers[i].id = i;
 		self.hud_timers[i].hud_timer.y = -48-i*32;
 		self.hud_timers[i].hud_timertext.y = -64-i*32;
 	}
-	
 }
 
 removeTimers()
