@@ -53,7 +53,12 @@ healthFeedback()
 
 addTimer(label, string, time)
 {
-	thread scripts\gamemodes\_hud::addTimer(label, string, time);
+	return self scripts\gamemodes\_hud::addTimer(label, string, time);
+}
+
+removeTimer( timer )
+{
+	self scripts\gamemodes\_hud::removeTimer( timer );
 }
 
 removeTimers()

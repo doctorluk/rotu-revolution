@@ -22,6 +22,7 @@
 #include scripts\include\data;
 #include scripts\include\useful;
 #include scripts\include\physics;
+#include scripts\include\weapons;
 #include common_scripts\utility;
 
 init()
@@ -47,6 +48,8 @@ loadAbilityStats()
 {
 	level.special["fake_death"]["recharge_time"] = 55;
 	level.special["fake_death"]["duration"] = 15;
+	
+	level.special["smoke_grenade"]["recharge_time"] = 5;		// TODO: This is for debugging, get a more realistic time
 	
 	level.special["rampage"]["recharge_time"] = 50;
 	level.special["rampage"]["duration"] = 15;
@@ -495,12 +498,11 @@ STEALTH_PRIMARY(ability)
 	switch (ability)
 	{
 		case "AB1":
-			if( !self hasWeapon("dragunov_mp") ){
-				self giveWeapon( "dragunov_mp" );
-				self giveMaxAmmo( "dragunov_mp" );
-			}
-			self setActionSlot( 3, "weapon", "dragunov_mp" );
-			// self.actionslotweapons[self.actionslotweapons.size] = "dragunov_mp";
+			self giveWeap( "smoke_grenade_mp" );
+			self setWeapAmmoClip( "smoke_grenade_mp", 0 );
+			self setOffhandSecondaryClass( "smoke" );
+			self thread watchSmokeGrenades();
+			self thread restoreSmokeGrenade( level.special["smoke_grenade"]["recharge_time"] );
 		break;
 		case "AB2":
 			self loadSpecialAbility("fake_death");
@@ -508,8 +510,6 @@ STEALTH_PRIMARY(ability)
 		case "AB3":
 			self thread quickEscape();
 			self SetMoveSpeedScale(self.speed+.2);
-			
-			// self.actionslotweapons[self.actionslotweapons.size] = "dragunov_acog_mp";
 		break;
 	}
 }
@@ -528,15 +528,7 @@ STEALTH_PASSIVE(ability)
 			self thread stealthMovement();
 		break;
 		case "AB4":
-			if(self hasWeapon("dragunov_mp")){
-				self takeWeapon("dragunov_mp");
-				// self.actionslotweapons = removeFromArray(self.actionslotweapons, "dragunov_mp"); // Removing previously given dragunov_mp (bad crossbow)
-			}
-			if(!self hasWeapon("dragunov_acog_mp")){
-				self giveWeapon( "dragunov_acog_mp" );
-				self giveMaxAmmo( "dragunov_acog_mp" );
-			}
-			self setActionSlot( 3, "weapon", "dragunov_acog_mp" );
+			// The explosive crossbow was here
 		break;
 	}
 }
@@ -563,12 +555,12 @@ MEDIC_PRIMARY(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self giveWeapon( "helicopter_mp" );
-			self setWeaponAmmoClip( "helicopter_mp", 0 );
-			self setActionSlot( 3, "weapon", "helicopter_mp" ); // Actionslot [5]
+			self giveWeap( "medic_mp" );
+			self setWeapAmmoClip( "medic_mp", 0 );
+			self setActionSlot( 3, "weapon", "medic_mp" ); // Actionslot [5]
 			self thread watchMedkits();
-			self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
-			self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
+			self thread restoreMedkit( level.special["medkit"]["recharge_time"] );
+			self thread restoreMedkit( level.special["medkit"]["recharge_time"] );
 		break;
 		case "AB2":
 			self loadSpecialAbility("aura");
@@ -832,6 +824,26 @@ watchArmoredDome()
 	}
 }
 
+watchSmokeGrenades()
+{
+	self endon("reset_abilities");
+	self endon("downed");
+	self endon("death");
+	self endon("disconnect");
+
+	while(1)
+	{
+		self waittill ( "grenade_fire", nade, weaponName );
+		if( weaponName == level.weaponKeyS2C["smoke_grenade_mp"] )
+		{
+			nade.owner = self;
+			nade thread beSmokeGrenade( self.smokeTime );
+			self thread restoreSmokeGrenade( level.special["smoke_grenade"]["recharge_time"] );
+			self playSound( "throw_smoke" );
+		}
+	}
+}
+
 watchMedkits()
 {
 	self endon("reset_abilities");
@@ -841,12 +853,12 @@ watchMedkits()
 	while (1)
 	{
 		self waittill ( "grenade_fire", kit, weaponName );
-		if (weaponName == "helicopter_mp")
+		if( weaponName == level.weaponKeyS2C["medic_mp"] )		// weaponName might be none
 		{
 			kit.owner = self;
 			kit thread beMedkit( self.medkitTime, self.medkitHealing);
 			self thread restoreMedkit(level.special["medkit"]["recharge_time"]);
-			self playsound("take_medkit");
+			self playSound( "take_medkit" );
 		}
 	}
 }
@@ -860,7 +872,7 @@ watchAmmobox()
 	while (1)
 	{
 		self waittill ( "grenade_fire", kit, weaponName );
-		if (weaponName == "m14_reflex_mp")
+		if( weaponName == level.weaponKeyS2C["supply_mp"] )
 		{
 			kit.owner = self;
 			kit thread beAmmobox( self.ammoboxTime );
@@ -876,9 +888,24 @@ restoreArmoredDome(time)
 	self endon("downed");
 	self endon("death");
 	self endon("disconnect");
+
 	self addTimer(&"ZOMBIE_ARMOREDDOME_IN", "", time);
 	wait time;
-	self setWeaponAmmoClip("c4_mp", self getweaponammoclip("c4_mp") + 1);
+
+	self setWeapAmmoClip( "c4_mp", self getWeapAmmoClip("c4_mp") + 1 );
+}
+
+restoreSmokeGrenade( time )
+{
+	self endon("reset_abilities");
+	self endon("downed");
+	self endon("death");
+	self endon("disconnect");
+
+	self addTimer( &"ZOMBIE_SMOKEGRENADE_IN", "", time );
+	wait time;
+
+	self setWeapAmmoClip( "smoke_grenade_mp", self getWeapAmmoClip("smoke_grenade_mp") + 1 );
 }
 
 restoreMedkit(time)
@@ -887,9 +914,11 @@ restoreMedkit(time)
 	self endon("downed");
 	self endon("death");
 	self endon("disconnect");
+
 	self addTimer(&"ZOMBIE_MEDKIT_IN", "", time);
 	wait time;
-	self setWeaponAmmoClip("helicopter_mp", self getweaponammoclip("helicopter_mp") + 1);
+
+	self setWeapAmmoClip( "medic_mp", self getWeapAmmoClip("medic_mp") + 1 );
 }
 
 restoreAmmobox(time)
@@ -898,9 +927,11 @@ restoreAmmobox(time)
 	self endon("downed");
 	self endon("death");
 	self endon("disconnect");
+
 	self addTimer(&"ZOMBIE_AMMOBOX_IN", "", time);
 	wait time;
-	self setWeaponAmmoClip("m14_reflex_mp", self getweaponammoclip("m14_reflex_mp") + 1);
+
+	self setWeapAmmoClip( "supply_mp", self getWeapAmmoClip("supply_mp") + 1 );
 }
 
 restoreMonkey(time)
@@ -909,22 +940,26 @@ restoreMonkey(time)
 	self endon("downed");
 	self endon("death");
 	self endon("disconnect");
+
 	self addTimer(&"ZOMBIE_MONKEY_IN", "", time);
 	wait time;
+
+	// Why not just give one...?
 	self takeWeapon( "usp_silencer_mp" );
 	self giveWeapon( "usp_silencer_mp" );
 }
 
 restoreInvisibility(time)
 {
-	self notify("remove_invis_timer");
 	self endon("reset_abilities");
-	self endon("remove_invis_timer");
-	self removeTimers();
 	// self endon("downed");
 	self endon("death");
 	self endon("disconnect");
-	self addTimer(&"ZOMBIE_INVISIBILITY_IN", "", time);
+	
+	if( isDefined(self.invisibiltyTimer) )
+		self removeTimer( self.invisibiltyTimer );
+
+	self.invisibiltyTimer = self addTimer( &"ZOMBIE_INVISIBILITY_IN", "", time );
 }
 
 beAmmobox(time)
@@ -957,6 +992,31 @@ beAmmobox(time)
 		wait 1;
 	}
 	self delete();
+}
+
+beSmokeGrenade( time )
+{
+//	self waittill( "explode" );		this will not work...
+	origin = self.origin;
+	while( isDefined(self) )
+	{
+		// so we work around by grabbing the origin while the grenade exists
+		if( origin != self.origin )
+			origin = self.origin;
+		wait 0.05;
+	}
+
+	// these should match the fx values
+	radius = 250;
+	height = 150;
+	duration = 30;
+	
+	// TODO: Make the trigger grow over time
+	trigger = spawn( "trigger_radius", origin, 0, radius, height );
+	trigger setContents( 2 );		// so zombies can't see through
+
+	wait duration;
+	trigger delete();
 }
 
 beMedkit(time, heal)
@@ -1104,12 +1164,12 @@ quickEscape() // When health gets below 25% we give ourselves a speedboost - for
 	self endon("death");
 	self endon("disconnect");
 	self endon("downed");
-	while (1)
+	while(1)
 	{
 		self waittill("damage", idamage);
-		if (idamage != 0)
+		if( idamage != 0 )
 		{
-			if (self.health <= self.maxhealth / 4 && !self.inTrance)
+			if( self.health <= self.maxhealth / 4 && !self.inTrance )
 			{
 				self trance_quickescape();
 				wait level.special_quickescape_intermission;//15 seconds
@@ -1120,14 +1180,13 @@ quickEscape() // When health gets below 25% we give ourselves a speedboost - for
 
 trance_quickescape()
 {
-	if (self.inTrance) 	// OVERRIDE!
+	// kill all previous threads
 	self notify("end_trance");
-	
 	self endon("end_trance");
-	
+
 	self.trance = "quick_escape";
 	self.inTrance = true;
-	
+
 	self SetMoveSpeedScale(self.speed+.2);
 	self.visible = false;
 	self playerFilmTweaks(1, 0, .75, ".25 1 .5",  "25 1 .7", .20, 1.4, 1.25);
