@@ -20,58 +20,147 @@
 
 #include scripts\include\strings;
 
-init(){
-	if( !level.dvar["game_lan_mode"] )
-		thread onPlayerConnect();
+init()
+{
+	if( level.dvar["game_lan_mode"] )
+		return;
+	
+/*	level.cheatDvars = [];						// This is a list of client side dvars we should check
+	level.cheatDvars[0] = spawnStruct();
+	level.cheatDvars[0].name = "cg_fovscale";
+	level.cheatDvars[0].value = "1";			// the script will check if the value matches
+	level.cheatDvars[1] = spawnStruct();
+	level.cheatDvars[1].name = "cg_fov";
+	level.cheatDvars[1].value = "65-80";		// the script will check if it's in range
+	level.cheatDvars[2] = spawnStruct();
+	level.cheatDvars[2].name = "r_fullbright";
+	level.cheatDvars[2].value = "0";
+	level.cheatDvars[x] = spawnStruct();
+	level.cheatDvars[x].name = "example";
+	level.cheatDvars[x].value = "0;1;2";		// the script will check if any of these match	*/
+
+	thread onPlayerConnect();
 }
 
-onPlayerConnect(){
-	while(1){
-		level waittill("connected", player);
+onPlayerConnect()
+{
+	while(1)
+	{
+		level waittill( "connected", player );
 		player thread check();
 	}
 }
 
-check(){
-	self thread checkValidGuid();
-	self thread watchName();
+check()
+{
+	self thread checkValidGuid();		// check the GUID for integrity
+	self thread watchName();			// do a very basic name check
+//	self thread watchCheatDvars();		// watch certain cheat protected dvars, they might be unlocked by a 3rd party program...and we can not check client dvars
 }
 
-checkValidGuid(){
+checkValidGuid()
+{
 	self endon( "disconnect" );
-	lpGuidChar = "";
+
 	lpGuid = self getGuid();
-	while(1){
-		lpGuid = self getGuid();
-		for(i = 0; i < 32; i++){
-			lpGuidChar = GetSubStr(lpGuid, i, i+1);
-			
-			if( lpGuid == "" || !isHexadecimal(lpGuidChar) || lpGuidChar == "" || lpGuidChar == " " ){
-				self sayAll("I'm a hacking idiot, for which I now get kicked!");
-				Kick(self getEntityNumber());
-			}
-			wait 0.1;
+	while(1)
+	{
+		guid = self getGuid();
+		if( guid != lpGuid || guid.size != 32 )
+		{
+			// the guid is not supposed to change, and has to be always 32 chars long
+			self sayAll( "I'm a hacking idiot, for which I now get kicked!" );
+			kick( self getEntityNumber() );
 		}
+		else
+		{
+			// if it seems valid we check if it's hexadecimal
+			for( i = 0; i < 32; i++ )
+			{
+				char = GetSubStr( guid, i, i+1 );
+				if( !isHexadecimal(char) )
+				{
+					self sayAll( "I'm a hacking idiot, for which I now get kicked!" );
+					kick( self getEntityNumber() );
+				}
+			}
+		}
+		
+		// TODO: Is it really needed to have this running all the time, if the guid is valid?
+			
 		wait 4+randomfloat(2);
 	}
 }
 
-watchName(){
-	self endon("disconnect");
+watchName()
+{
+	self endon( "disconnect" );
+
 	violations = 0;
-	while(1){
-		name = self.name;
-		name = GetSubStr(name, 0, 3);
-		name = toLower(name);
-		if(name == "bot"){
-			self iprintlnbold("^1Warning: bot is not allowed as name/prefix!");
+	while( 1 )
+	{
+		name = toLower( getSubStr(self.name, 0, 3) );
+		if( name == "bot" )		// should we maybe make this a list off names instead?
+		{
+			self iPrintLnBold( "^1Warning: bot is not allowed as name/prefix!" );
 			violations++;
 		}
 		else if( violations > 0 && false /*level.dvar["admin_decay_namedbot"] TODO: ADD CONFIG VAR*/)
 			violations--;
 		
-		if(violations >= 10)
-			Kick(self getEntityNumber());
+		if( violations >= 10 )
+			kick( self getEntityNumber() );
+		
 		wait 2;
 	}
 }
+
+/*
+watchCheatDvars()
+{
+	self endon( "disconnect" );
+
+	violations = 0;
+	while( 1 )
+	{
+		for( i = 0; i < level.cheatDvars.size; i++ )
+		{
+			dvarname = level.cheatDvars[i].name;
+			dvarvalue = level.cheatDvars[i].value;
+					
+			value = self getClientDvar( dvarname );
+			
+			if( isSubStr(dvarvalue, "-") )
+			{
+				from_to = strTok( dvarvalue, "-" );
+				if( int(value) < int(from_to[0]) || int(value) > int(from_to[1]) )
+				{
+					self iPrintLnBold( "^1", dvarname, " is not allowed outside the range off ", dvarvalue, "!" );
+					violations++;	
+				}
+			}
+			else if( isSubStr(dvarvalue, ";") )
+			{
+				if( !isSubStr( dvarvalue, value ) )
+				{
+					self iPrintLnBold( "^1", dvarname, " is not allowed to be anything but ", dvarvalue, "!" );
+					violations++;
+				}
+			}
+			else
+			{
+				if( value != dvarvalue )
+				{
+					self iPrintLnBold( "^1", dvarname, " is not allowed to be any other value then ", dvarvalue, "!" );
+					violations++;
+				}
+			}
+		}
+		
+		if( violations >= 10 )
+			kick( self getEntityNumber() );
+		
+		wait 2;
+	}	
+}
+*/
