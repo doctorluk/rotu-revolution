@@ -78,7 +78,7 @@ checkValidGuid()
 			for( i = 0; i < 32; i++ )
 			{
 				char = GetSubStr( guid, i, i+1 );
-				if( !isHexadecimal(char) )
+				if( !isHexadecimal(char) || char != toLower(char) )
 				{
 					self sayAll( "I'm a hacking idiot, for which I now get kicked!" );
 					kick( self getEntityNumber() );
