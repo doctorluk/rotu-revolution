@@ -155,7 +155,7 @@ beginGame()
 	say = "";
 	for(i = 0; i < level.waves.size; i++)
 		say += level.waves[i] + ",";
-	// iprintlnbold("Loading waves... -> " + getSubStr(say, 0, getStrLength(say)-1));
+	// iprintlnbold("Loading waves... -> " + getSubStr(say, 0, say.size - 1));
 	thread mainGametype();
 	//thread watchEnd();
 }

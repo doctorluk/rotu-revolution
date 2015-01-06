@@ -89,20 +89,9 @@ allToUpper(string){
 	if( !isDefined(string) || string == "" )
 		return;
 	returns = "";
-	for(i = 0; i < getStrLength(string); i++)
-		returns += toUpper(getSubStr(string, i, i+1));
+	for( i = 0; i < string.size; i++ )
+		returns += toUpper( getSubStr(string, i, i + 1) );
 	return returns;
-}
-
-/* Returns an int of the length of a string */
-getStrLength(string){
-	if(!isDefined(string) || string == "")
-		return 0;
-	i = 0;
-	while(GetSubStr( string, i, i+1) != "")
-		i++;
-	return i;
-
 }
 
 /* Gets a string and returns it as a vector in the format of (x,y,z) 
@@ -110,10 +99,10 @@ Strings come either as (x,y,z) or (xx,yy,zz) etc., we have to take care of this.
 strToVec(string){
 
 	vector = (0,0,0);
-	stringArr = strTok(string, ","); // Split string by ","-characters, results in (x(xx)? | y(yy)? | z(zz?))
-	x = atof(GetSubStr(stringArr[0], 1, getStrLength(stringArr[0])) ); // we have (x or (xx or (xxx now, so we need to cut from 0 (this is "(" ) until the end...
+	stringArr = strTok( string, "," ); // Split string by ","-characters, results in (x(xx)? | y(yy)? | z(zz?))
+	x = atof(GetSubStr( stringArr[0], 1, stringArr[0].size) ); // we have (x or (xx or (xxx now, so we need to cut from 0 (this is "(" ) until the end...
 	y = atof(stringArr[1]);
-	z = atof(GetSubStr(stringArr[2], 0, getStrLength(stringArr[2])-1) ); // we have z) or zz) or zzz), so we need to cut from end-1 to end which cuts out ")"
+	z = atof(GetSubStr( stringArr[2], 0, stringArr[2].size - 1 ) ); // we have z) or zz) or zzz), so we need to cut from end-1 to end which cuts out ")"
 	
 	vector = (x,y,z);
 	

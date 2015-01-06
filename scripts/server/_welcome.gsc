@@ -53,7 +53,7 @@ onPlayerSpawn()
 		self.hasBeenWelcomed = true;
 		for (i=0; i<level.welcomeMessages.size; i++)
 		{
-			duration = getTimeForString(getStrLength(level.welcomeMessages[i]), 3);
+			duration = getTimeForString(level.welcomeMessages[i].size, 3);
 			self thread scripts\gamemodes\_hud::welcomeMessage(&"", level.welcomeMessages[i], (1,1,1), duration, 100, 1.4, undefined, 120);
 			wait duration;
 		}
