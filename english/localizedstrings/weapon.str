@@ -19,14 +19,8 @@ LANG_ENGLISH        "Ammobox"
 REFERENCE           MEDKIT
 LANG_ENGLISH        "Medkit"
 
-REFERENCE           TOMAHAWK
-LANG_ENGLISH        "Tomahawk"
-
-REFERENCE           TESLA
-LANG_ENGLISH        "Wunderwaffe DG-2"
-
-REFERENCE           FLAMETHROWER
-LANG_ENGLISH        "Flamethrower"
+REFERENCE           MAGNUM
+LANG_ENGLISH        ".44 Magnum"
 
 REFERENCE           L96
 LANG_ENGLISH        "L96"
@@ -40,20 +34,14 @@ LANG_ENGLISH        "FN F2000"
 REFERENCE			RAYGUN
 LANG_ENGLISH		"Raygun"
 
+REFERENCE           TESLA
+LANG_ENGLISH        "Wunderwaffe DG-2"
+
 REFERENCE           MINIGUN
 LANG_ENGLISH        "Deathmachine"
 
-REFERENCE			AA12
-LANG_ENGLISH		"AA12"
-
 REFERENCE           SCAR_H
 LANG_ENGLISH        "SCAR-H"
-
-REFERENCE           AUG
-LANG_ENGLISH        "Steyr AUG"
-
-REFERENCE           L85
-LANG_ENGLISH        "Enfield"
 
 REFERENCE           KNIFE
 LANG_ENGLISH        "Knife"

@@ -487,6 +487,7 @@ xmodel,head_sp_spetsnaz_collins_vladbody
 // ## Custom Weapons
 // .44 Magnum
 xmodel,viewmodel_bf3_taurus44
+xmodel,weapon_bf3_taurus44
 
 xanim,viewmodel_magnum_ads_down
 xanim,viewmodel_magnum_ads_fire
