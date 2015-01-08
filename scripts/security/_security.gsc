@@ -87,7 +87,7 @@ checkValidGuid()
 		}
 		
 		// TODO: Is it really needed to have this running all the time, if the guid is valid?
-			
+		
 		wait 4+randomfloat(2);
 	}
 }
