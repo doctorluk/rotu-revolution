@@ -154,7 +154,6 @@ getDamageModifier( weapon, means, target, damage )
 		return 1;
 
 	MP = 1;
-	weapon = level.weaponKeyC2S[weapon];
 
 	// class damage modifiers
 	if( isSubStr(self.weaponMod, "soldier") )
@@ -557,7 +556,7 @@ MEDIC_PRIMARY(ability)
 		case "AB1":
 			self giveWeap( "medic_mp" );
 			self setWeapAmmoClip( "medic_mp", 0 );
-			self setActionSlot( 3, "weapon", "medic_mp" ); // Actionslot [5]
+			self setActionSlot( 3, "weapon", level.weaponKeyS2C["medic_mp"] ); // Actionslot [5]
 			self thread watchMedkits();
 			self thread restoreMedkit( level.special["medkit"]["recharge_time"] );
 			self thread restoreMedkit( level.special["medkit"]["recharge_time"] );
@@ -676,9 +675,9 @@ ENGINEER_PRIMARY(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self giveWeapon( "m14_reflex_mp" );
-			self setWeaponAmmoClip( "m14_reflex_mp", 0 );
-			self setActionSlot( 3, "weapon", "m14_reflex_mp" ); // Actionslot [5]
+			self giveWeap( "supply_mp" );
+			self setWeapAmmoClip( "supply_mp", 0 );
+			self setActionSlot( 3, "weapon", level.weaponKeyS2C["supply_mp"] ); // Actionslot [5]
 			self.ammoboxTime = 15;
 			self.ammoboxRestoration = 25;
 			self thread watchAmmobox();

@@ -503,14 +503,17 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 {
 	if(!isAlive(self) || isDefined(self.damageoff) )
 		return;
-		
-	if(!self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker))
-		return;
-	if( isDefined( self.alertLevel )) self.alertLevel += 200;
 	
+	sWeapon = level.weaponKeyC2S[sWeapon];
+	if( !self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker) )
+		return;
+
+	if( isDefined(self.alertLevel) )
+		self.alertLevel += 200;
+
 	if( isDefined(eAttacker) && isPlayer(eAttacker) )
 	{
-		// Check for insta-explosive grenades
+		// Check for insta-explosive grenades		TODO: Remove this and come up with a more useful function
 		if( eAttacker.chargedGrenades ){
 			if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp" ){
 				eInflictor detonate();
@@ -608,7 +611,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		}
 
 		// iprintln("Current damage at " + sHitLoc + " of bot " + self.name + " is " + self.damagePerLoc[sHitLoc]);
-		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
+		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, level.weaponKEyS2C[sWeapon], vPoint, vDir, sHitLoc, psOffsetTime);
 	}
 }
 
@@ -670,13 +673,14 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	if(self.sessionteam == "spectator")
 		return;
 
-	if( ( sHitLoc == "head" || sHitLoc == "helmet" ) && sMeansOfDeath != "MOD_MELEE" )
+	sWeapon = level.weaponKeyC2S[sWeapon];
+	if( (sHitLoc == "head" || sHitLoc == "helmet") && sMeansOfDeath != "MOD_MELEE" )
 		sMeansOfDeath = "MOD_HEAD_SHOT";
-	
-	if(sMeansOfDeath == "MOD_HEAD_SHOT")
+
+	if( sMeansOfDeath == "MOD_HEAD_SHOT" )
 		attacker.stats["headshotKills"]++;
 
-	if (level.dvar["zom_orbituary"])
+	if( level.dvar["zom_orbituary"] )
 		obituary(self, attacker, sWeapon, sMeansOfDeath);
 
 	self.sessionstate = "dead";
