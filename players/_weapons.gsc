@@ -45,16 +45,19 @@ init()
 			continue;
 		
 		console_name = tableLookup( "mp/weaponTable.csv", 0, i, 3 );
+		// whenever we give a weapon, etc. we need the actual console name of the weapon
+		// these two arrays hold the names for easy converting
+		level.weaponKeyS2C[weapon_name] = console_name;
+		level.weaponKeyC2S[console_name] = weapon_name;
+		
+		if( weapon_name == "none" )
+			continue;
 		
 		// this array stores various infos about the weapons as tableLookup is a demanding function and we don't want to call it whenever
 		// maybe we will need it later, for now we don't really bother
 		level.weaponList[weapon_name] = [];
 		level.weaponList[weapon_name]["class"] = tableLookup( "mp/weaponTable.csv", 0, i, 1 );
 		
-		// whenever we give a weapon, etc. we need the actual console name of the weapon
-		// these two arrays hold the names for easy converting
-		level.weaponKeyS2C[weapon_name] = console_name;
-		level.weaponKeyC2S[console_name] = weapon_name;
 		precacheItem( console_name );
 		print( "Precached weapon: " + weapon_name + "; " + console_name + "\n" );	
 	}
