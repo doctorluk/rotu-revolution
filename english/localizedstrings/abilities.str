@@ -7,10 +7,10 @@ REFERENCE			ABILITY1
 LANG_ENGLISH        "Primary Abilities"
 
 REFERENCE			ABILITY2
-LANG_ENGLISH        "Secondary Ability"
+LANG_ENGLISH        "Secondary Abilities"
 
 REFERENCE			ABILITY3
-LANG_ENGLISH        "Passive Abilities"
+LANG_ENGLISH        "Selectable Ability"
 
 ///////////////
 //	SOLDIER  //
@@ -587,4 +587,55 @@ LANG_ENGLISH		"A scouting drone provides the Scout with permanent vision on the 
 REFERENCE			DES_SCOUT_PS_AB4D
 LANG_ENGLISH		"A scouting drone provides the Scout with permanent vision on the Zombies' location. ^3Unlocked at Scout ^3rank 30."
 
+// SELECTABLE ABILITIES
 
+REFERENCE			COMMON_CM_AB1
+LANG_ENGLISH        "Common Ability 1"
+
+REFERENCE			COMMON_CM_AB1D
+LANG_ENGLISH        "Common Ability 1 (locked!)"
+
+REFERENCE			DES_COMMON_CM_AB1
+LANG_ENGLISH		"Common Ability 1 description"
+
+REFERENCE			DES_COMMON_CM_AB1D
+LANG_ENGLISH		"Common Ability 1 description (locked!)"
+
+
+REFERENCE			COMMON_CM_AB2
+LANG_ENGLISH        "Common Ability 2"
+
+REFERENCE			COMMON_CM_AB2D
+LANG_ENGLISH        "Common Ability 2 (locked!)"
+
+REFERENCE			DES_COMMON_CM_AB2
+LANG_ENGLISH		"Common Ability 2 description"
+
+REFERENCE			DES_COMMON_CM_AB2D
+LANG_ENGLISH		"Common Ability 2 description (locked!)"
+
+
+REFERENCE			COMMON_CM_AB3
+LANG_ENGLISH        "Common Ability 3"
+
+REFERENCE			COMMON_CM_AB3D
+LANG_ENGLISH        "Common Ability 3 (locked!)"
+
+REFERENCE			DES_COMMON_CM_AB3
+LANG_ENGLISH		"Common Ability 3 description"
+
+REFERENCE			DES_COMMON_CM_AB3D
+LANG_ENGLISH		"Common Ability 3 description (locked!)"
+
+
+REFERENCE			COMMON_CM_AB4
+LANG_ENGLISH        "Common Ability 4"
+
+REFERENCE			COMMON_CM_AB4D
+LANG_ENGLISH        "Common Ability 4 (locked!)"
+
+REFERENCE			DES_COMMON_CM_AB4
+LANG_ENGLISH		"Common Ability 4 description"
+
+REFERENCE			DES_COMMON_CM_AB4D
+LANG_ENGLISH		"Common Ability 4 description (locked!)"

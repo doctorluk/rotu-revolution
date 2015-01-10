@@ -158,18 +158,18 @@
 
 		CHOICE_BUTTON_BG( 2, 1 )
 		CHOICE_HIGHLIGHT( 2, 1 )
-		DESCRIPTION_BUTTON( 2, "^2" + LocString("@SHOP_RESTOREHEALTH") + " ("+dvarstring("ui_costs0")+")", scriptMenuResponse "item0";, when( dvarint("ui_points") >= dvarint("ui_costs0") ), "@SHOP_DESC_RESTOREHEALTH", "@SHOP_DESC_RESTOREHEALTH_TITLE" )
-		CHOICE_DBUTTON_VIS_NOHI( 2, "^1" + LocString("@SHOP_RESTOREHEALTH") + " ("+dvarstring("ui_costs0")+")", when( dvarint("ui_points") < dvarint("ui_costs0") ) )
+		DESCRIPTION_BUTTON( 2, "^2" + LocString("@SHOP_RESTOREHEALTH") + " ("+dvarstring("ui_buff_costs1")+")", scriptMenuResponse "item0";, when( dvarint("ui_points") >= dvarint("ui_buff_costs1") ), "@SHOP_DESC_RESTOREHEALTH", "@SHOP_DESC_RESTOREHEALTH_TITLE" )
+		CHOICE_DBUTTON_VIS_NOHI( 2, "^1" + LocString("@SHOP_RESTOREHEALTH") + " ("+dvarstring("ui_buff_costs1")+")", when( dvarint("ui_points") < dvarint("ui_buff_costs1") ) )
 
 		CHOICE_BUTTON_BG( 3, 1 )
 		CHOICE_HIGHLIGHT( 3, 1 )		
-		DESCRIPTION_BUTTON( 3, "^2" + LocString("@SHOP_RESTOREAMMO") + " ("+dvarstring("ui_costs1")+")", scriptMenuResponse "item1";, when( dvarint("ui_points") >= dvarint("ui_costs1") ), "@SHOP_DESC_RESTOREAMMO", "@SHOP_DESC_RESTOREAMMO_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 3, "^1" + LocString("@SHOP_RESTOREAMMO") + " ("+dvarstring("ui_costs1")+")", when( dvarint("ui_points") < dvarint("ui_costs1") ) )
+		DESCRIPTION_BUTTON( 3, "^2" + LocString("@SHOP_RESTOREAMMO") + " ("+dvarstring("ui_buff_costs2")+")", scriptMenuResponse "item1";, when( dvarint("ui_points") >= dvarint("ui_buff_costs2") ), "@SHOP_DESC_RESTOREAMMO", "@SHOP_DESC_RESTOREAMMO_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 3, "^1" + LocString("@SHOP_RESTOREAMMO") + " ("+dvarstring("ui_buff_costs2")+")", when( dvarint("ui_points") < dvarint("ui_buff_costs2") ) )
 
 		CHOICE_BUTTON_BG( 4, 1 )
 		CHOICE_HIGHLIGHT( 4, 1 )		
-		DESCRIPTION_BUTTON( 4, "^2" + LocString("@SHOP_CUREINFECTION") + " ("+dvarstring("ui_costs2")+")", scriptMenuResponse "item2";, when( dvarint("ui_points") >= dvarint("ui_costs2") ), "@SHOP_DESC_CUREINFECTION", "@SHOP_DESC_CUREINFECTION_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 4, "^1" + LocString("@SHOP_CUREINFECTION") + " ("+dvarstring("ui_costs2")+")", when( dvarint("ui_points") < dvarint("ui_costs2") ) )
+		DESCRIPTION_BUTTON( 4, "^2" + LocString("@SHOP_CUREINFECTION") + " ("+dvarstring("ui_buff_costs3")+")", scriptMenuResponse "item2";, when( dvarint("ui_points") >= dvarint("ui_buff_costs3") ), "@SHOP_DESC_CUREINFECTION", "@SHOP_DESC_CUREINFECTION_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 4, "^1" + LocString("@SHOP_CUREINFECTION") + " ("+dvarstring("ui_buff_costs3")+")", when( dvarint("ui_points") < dvarint("ui_buff_costs3") ) )
 		
 		CHOICE_BUTTON_BG( 10, 1 )
 		CHOICE_HIGHLIGHT( 10, 1 )		
@@ -179,48 +179,48 @@
 		
 		CHOICE_BUTTON_BG( 12, 1 )
 		CHOICE_HIGHLIGHT( 12, 1 )		
-		DESCRIPTION_BUTTON( 12, "^2" + LocString("@SHOP_FRAG") + " ("+dvarstring("ui_costs3")+")", scriptMenuResponse "item3";, when( dvarint("ui_points") >= dvarint("ui_costs3") ), "@SHOP_DESC_FRAG", "@SHOP_DESC_FRAG_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 12, "^1" + LocString("@SHOP_FRAG") + " ("+dvarstring("ui_costs3")+")", when( dvarint("ui_points") < dvarint("ui_costs3") ) )
+		DESCRIPTION_BUTTON( 12, "^2" + LocString("@SHOP_FRAG") + " ("+dvarstring("ui_weapon_costs1")+")", scriptMenuResponse "item3";, when( dvarint("ui_points") >= dvarint("ui_weapon_costs1") ), "@SHOP_DESC_FRAG", "@SHOP_DESC_FRAG_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 12, "^1" + LocString("@SHOP_FRAG") + " ("+dvarstring("ui_weapon_costs1")+")", when( dvarint("ui_points") < dvarint("ui_weapon_costs1") ) )
 		
 		
 		CHOICE_BUTTON_BG( 13, 1 )
 		CHOICE_HIGHLIGHT( 13, 1 )		
-		DESCRIPTION_BUTTON( 13, "^2" + LocString("@SHOP_CLAYMORE") + " ("+dvarstring("ui_costs5")+")", scriptMenuResponse "item5";, when( dvarint("ui_points") >= dvarint("ui_costs5") ), "@SHOP_DESC_CLAYMORE", "@SHOP_DESC_CLAYMORE_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 13, "^1" + LocString("@SHOP_CLAYMORE") + " ("+dvarstring("ui_costs5")+")", when( dvarint("ui_points") < dvarint("ui_costs5") ) )
+		DESCRIPTION_BUTTON( 13, "^2" + LocString("@SHOP_CLAYMORE") + " ("+dvarstring("ui_weapon_costs2")+")", scriptMenuResponse "item5";, when( dvarint("ui_points") >= dvarint("ui_weapon_costs2") ), "@SHOP_DESC_CLAYMORE", "@SHOP_DESC_CLAYMORE_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 13, "^1" + LocString("@SHOP_CLAYMORE") + " ("+dvarstring("ui_weapon_costs2")+")", when( dvarint("ui_points") < dvarint("ui_weapon_costs2") ) )
 		
 		CHOICE_BUTTON_BG( 14, 1 )
 		CHOICE_HIGHLIGHT( 14, 1 )		
-		DESCRIPTION_BUTTON( 14, "^2" + LocString("@SHOP_C4") + " ("+dvarstring("ui_costs4")+")", scriptMenuResponse "item4";, when( dvarint("ui_points") >= dvarint("ui_costs4") ), "@SHOP_DESC_C4", "@SHOP_DESC_C4_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 14, "^1" + LocString("@SHOP_C4") + " ("+dvarstring("ui_costs4")+")", when( dvarint("ui_points") < dvarint("ui_costs4") ) )
+		DESCRIPTION_BUTTON( 14, "^2" + LocString("@SHOP_C4") + " ("+dvarstring("ui_weapon_costs3")+")", scriptMenuResponse "item4";, when( dvarint("ui_points") >= dvarint("ui_weapon_costs3") ), "@SHOP_DESC_C4", "@SHOP_DESC_C4_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 14, "^1" + LocString("@SHOP_C4") + " ("+dvarstring("ui_weapon_costs3")+")", when( dvarint("ui_points") < dvarint("ui_weapon_costs3") ) )
 		
 		
 		CHOICE_BUTTON_BG( 15, 1 )
 		CHOICE_HIGHLIGHT( 15, 1 )		
-		DESCRIPTION_BUTTON( 15, "^2" + LocString("@SHOP_RAYGUN") + " ("+dvarstring("ui_costs6")+")", scriptMenuResponse "item6";, when( dvarint("ui_points") >= dvarint("ui_costs6") ), "@SHOP_DESC_RAYGUN", "@SHOP_DESC_RAYGUN_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 15, "^1" + LocString("@SHOP_RAYGUN") + " ("+dvarstring("ui_costs6")+")", when( dvarint("ui_points") < dvarint("ui_costs6")  ) )
+		DESCRIPTION_BUTTON( 15, "^2" + LocString("@SHOP_RAYGUN") + " ("+dvarstring("ui_weapon_costs4")+")", scriptMenuResponse "item6";, when( dvarint("ui_points") >= dvarint("ui_weapon_costs4") ), "@SHOP_DESC_RAYGUN", "@SHOP_DESC_RAYGUN_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 15, "^1" + LocString("@SHOP_RAYGUN") + " ("+dvarstring("ui_weapon_costs4")+")", when( dvarint("ui_points") < dvarint("ui_weapon_costs4")  ) )
 
 		
 		CHOICE_SECTION_TITLE( 21, "Usables:" )
 		
 		CHOICE_BUTTON_BG( 22, 1 )
 		CHOICE_HIGHLIGHT( 22, 1 )
-		DESCRIPTION_BUTTON( 22, "^2" + LocString("@SHOP_BARREL") + " ("+dvarstring("ui_itemcosts0")+")", scriptMenuResponse "item10";, when( dvarint("ui_points") >= dvarint("ui_itemcosts0") ), "@SHOP_DESC_BARREL", "@SHOP_DESC_BARREL_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 22, "^1" + LocString("@SHOP_BARREL") + " ("+dvarstring("ui_itemcosts0")+")", when( dvarint("ui_points") < dvarint("ui_itemcosts0") ) )
+		DESCRIPTION_BUTTON( 22, "^2" + LocString("@SHOP_BARREL") + " ("+dvarstring("ui_item_costs1")+")", scriptMenuResponse "item10";, when( dvarint("ui_points") >= dvarint("ui_item_costs1") ), "@SHOP_DESC_BARREL", "@SHOP_DESC_BARREL_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 22, "^1" + LocString("@SHOP_BARREL") + " ("+dvarstring("ui_item_costs1")+")", when( dvarint("ui_points") < dvarint("ui_item_costs1") ) )
 
 		CHOICE_BUTTON_BG( 23, 1 )
 		CHOICE_HIGHLIGHT( 23, 1 )		
-		DESCRIPTION_BUTTON( 23, "^2" + LocString("@SHOP_EXPLODINGBARREL") + " ("+dvarstring("ui_itemcosts1")+")", scriptMenuResponse "item11";, when( dvarint("ui_points") >= dvarint("ui_itemcosts1") ), "@SHOP_DESC_EXPLODINGBARREL", "@SHOP_DESC_EXPLODINGBARREL_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 23, "^1" + LocString("@SHOP_EXPLODINGBARREL") + " ("+dvarstring("ui_itemcosts1")+")", when( dvarint("ui_points") < dvarint("ui_itemcosts1") ) )
+		DESCRIPTION_BUTTON( 23, "^2" + LocString("@SHOP_EXPLODINGBARREL") + " ("+dvarstring("ui_item_costs2")+")", scriptMenuResponse "item11";, when( dvarint("ui_points") >= dvarint("ui_item_costs2") ), "@SHOP_DESC_EXPLODINGBARREL", "@SHOP_DESC_EXPLODINGBARREL_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 23, "^1" + LocString("@SHOP_EXPLODINGBARREL") + " ("+dvarstring("ui_item_costs2")+")", when( dvarint("ui_points") < dvarint("ui_item_costs2") ) )
 
 		CHOICE_BUTTON_BG( 24, 1 )
 		CHOICE_HIGHLIGHT( 24, 1 )		
-		DESCRIPTION_BUTTON( 24, "^2" + LocString("@SHOP_SENTRYTURRET") + " ("+dvarstring("ui_itemcosts2")+")", scriptMenuResponse "item12";, when( dvarint("ui_points") >= dvarint("ui_itemcosts2") && dvarint("ui_turretsDisabled") == 0), "@SHOP_DESC_SENTRYTURRET", "@SHOP_DESC_SENTRYTURRET_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 24, "^1" + LocString("@SHOP_SENTRYTURRET") + " ("+dvarstring("ui_itemcosts2")+")", when( (dvarint("ui_points") < dvarint("ui_itemcosts2") ) || dvarint("ui_turretsDisabled") == 1) )
+		DESCRIPTION_BUTTON( 24, "^2" + LocString("@SHOP_SENTRYTURRET") + " ("+dvarstring("ui_item_costs3")+")", scriptMenuResponse "item12";, when( dvarint("ui_points") >= dvarint("ui_item_costs3") && dvarint("ui_turretsDisabled") == 0), "@SHOP_DESC_SENTRYTURRET", "@SHOP_DESC_SENTRYTURRET_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 24, "^1" + LocString("@SHOP_SENTRYTURRET") + " ("+dvarstring("ui_item_costs3")+")", when( (dvarint("ui_points") < dvarint("ui_item_costs3") ) || dvarint("ui_turretsDisabled") == 1) )
 
 		CHOICE_BUTTON_BG( 25, 1 )
 		CHOICE_HIGHLIGHT( 25, 1 )		
-		DESCRIPTION_BUTTON( 25, "^2" + LocString("@SHOP_GLTURRET") + " ("+dvarstring("ui_itemcosts3")+")", scriptMenuResponse "item13";, when( dvarint("ui_points") >= dvarint("ui_itemcosts3") && dvarint("ui_turretsDisabled") == 0), "@SHOP_DESC_GLTURRET", "@SHOP_DESC_GLTURRET_TITLE"  )
-		CHOICE_DBUTTON_VIS_NOHI( 25, "^1" + LocString("@SHOP_GLTURRET") + " ("+dvarstring("ui_itemcosts3")+")", when( ( dvarint("ui_points") < dvarint("ui_itemcosts3") ) || dvarint("ui_turretsDisabled") == 1) )
+		DESCRIPTION_BUTTON( 25, "^2" + LocString("@SHOP_GLTURRET") + " ("+dvarstring("ui_item_costs4")+")", scriptMenuResponse "item13";, when( dvarint("ui_points") >= dvarint("ui_item_costs4") && dvarint("ui_turretsDisabled") == 0), "@SHOP_DESC_GLTURRET", "@SHOP_DESC_GLTURRET_TITLE"  )
+		CHOICE_DBUTTON_VIS_NOHI( 25, "^1" + LocString("@SHOP_GLTURRET") + " ("+dvarstring("ui_item_costs4")+")", when( ( dvarint("ui_points") < dvarint("ui_item_costs4") ) || dvarint("ui_turretsDisabled") == 1) )
 		
 		// CHOICE_BUTTON_BG( 26, 1 )
 		// CHOICE_HIGHLIGHT( 26, 1 )		
