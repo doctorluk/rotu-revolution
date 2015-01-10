@@ -1314,8 +1314,8 @@ getScarySpawnpoint(){
 			p = level.players[ii];
 			if( !isReallyPlaying(p) ) // Ignore not playing players
 				continue;
-			distance = distance2d(p.origin, wp.origin);
-			if( distance <= minDistance || distance > maxDistance){ // If any of the players is too close, stop here and continue with the next waypoint
+			distance = distance2d( p.origin, wp.origin );
+			if( distance <= minDistance || distance > maxDistance ){ // If any of the players is too close, stop here and continue with the next waypoint
 				valid = false;
 				break;
 			}
@@ -1325,21 +1325,26 @@ getScarySpawnpoint(){
 		}
 	}
 	// In case there are no spawnpoints that are not too close + not too far, just consider the minDistance for the next search, so we avoid spawning the zombies too close to the players
-	if(validSpawnpoints.size <= 1){
+	if( validSpawnpoints.size <= 1 ){
 		validSpawnpoints = [];
+		
 		for(i = 0; i < level.waypoints.size; i++){
 			wp = level.waypoints[i];
 			valid = true;
+			
 			for(ii = 0; ii < level.players.size; ii++){
 				p = level.players[ii];
+				
 				if( !isReallyPlaying(p) ) // Ignore not playing players
 					continue;
+					
 				distance = distance2d(p.origin, wp.origin);
 				if( distance <= minDistance ){ // If any of the players is too close, stop here and continue with the next waypoint
 					valid = false;
 					break;
 				}
 			}
+			
 			if(valid){
 				validSpawnpoints[validSpawnpoints.size] = wp;
 			}

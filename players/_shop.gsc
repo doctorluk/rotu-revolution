@@ -44,19 +44,19 @@ playerSetupShop()
 	wait 0.1; // Security wait to ensure that not too many clientdvars are set
 	self setClientDvars("ui_points", self.points, "ui_upgrade", 0, "ui_supupgrade", 0,
 						
-						"ui_costs0", level.dvar["shop_item1_costs"],
-						"ui_costs1", level.dvar["shop_item2_costs"],
-						"ui_costs2", level.dvar["shop_item3_costs"],
-						// TODO: Change the ui dvars in the menu and here
-						"ui_costs3", level.dvar["shop_weapon1_costs"],
-						"ui_costs4", level.dvar["shop_weapon2_costs"],
-						"ui_costs5", level.dvar["shop_weapon3_costs"],
-						"ui_costs6", level.dvar["shop_weapon4_costs"],
+						"ui_buff_costs1", level.dvar["shop_item1_costs"],
+						"ui_buff_costs2", level.dvar["shop_item2_costs"],
+						"ui_buff_costs3", level.dvar["shop_item3_costs"],
 						
-						"ui_itemcosts0", level.dvar["shop_defensive1_costs"],
-						"ui_itemcosts1", level.dvar["shop_defensive2_costs"],
-						"ui_itemcosts2", level.dvar["shop_defensive3_costs"],
-						"ui_itemcosts3", level.dvar["shop_defensive4_costs"] );
+						"ui_weapon_costs1", level.dvar["shop_weapon1_costs"],
+						"ui_weapon_costs2", level.dvar["shop_weapon2_costs"],
+						"ui_weapon_costs3", level.dvar["shop_weapon3_costs"],
+						"ui_weapon_costs4", level.dvar["shop_weapon4_costs"],
+						
+						"ui_item_costs1", level.dvar["shop_defensive1_costs"],
+						"ui_item_costs2", level.dvar["shop_defensive2_costs"],
+						"ui_item_costs3", level.dvar["shop_defensive3_costs"],
+						"ui_item_costs4", level.dvar["shop_defensive4_costs"]);
 }
 
 updateShopCosts()
@@ -72,13 +72,13 @@ raiseCosts()
 	{
 		// not all the item categories have the same amount, thus the ifDefined
 		if( isDefined(level.dvar["shop_item"+i+"_costs"]) )
-			level.dvar["shop_item"+i+"_costs"] += int(level.dvar["shop_item"+i+"_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
+			level.dvar["shop_item"+i+"_costs"] += int(level.dvar["shop_item"+i+"_costs"] * (level.dvar["shop_multiply_costs_amount"] / 100));
 		
 		if( isDefined(level.dvar["shop_weapon"+i+"_costs"]) )
-			level.dvar["shop_weapon"+i+"_costs"] += int(level.dvar["shop_weapon"+i+"+_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
+			level.dvar["shop_weapon"+i+"_costs"] += int(level.dvar["shop_weapon"+i+"+_costs"] * (level.dvar["shop_multiply_costs_amount"] / 100));
 		
 		if( isDefined(level.dvar["shop_defensive"+i+"_costs"]) )
-			level.dvar["shop_defensive"+i+"_costs"] += int(level.dvar["shop_defensive"+i+"_costs"]*(level.dvar["shop_multiply_costs_amount"]/100));
+			level.dvar["shop_defensive"+i+"_costs"] += int(level.dvar["shop_defensive"+i+"_costs"] * (level.dvar["shop_multiply_costs_amount"] / 100));
 		
 		// if no more are defined we are done
 		if( !isDefined(level.dvar["shop_item"+i+"_costs"]) && !isDefined(level.dvar["shop_weapon"+i+"_costs"]) && !isDefined(level.dvar["shop_defensive"+i+"_costs"]) )
@@ -89,20 +89,19 @@ raiseCosts()
 updateCosts()
 {
 	self endon( "disconnect" );
-	self setClientDvars("ui_costs0", level.dvar["shop_item1_costs"],
-						"ui_costs1", level.dvar["shop_item2_costs"],
-						"ui_costs2", level.dvar["shop_item3_costs"],
+	self setClientDvars("ui_buff_costs1", level.dvar["shop_item1_costs"],
+						"ui_buff_costs2", level.dvar["shop_item2_costs"],
+						"ui_buff_costs3", level.dvar["shop_item3_costs"],
 						// TODO: Change the dvars in the menu and here
-						"ui_costs3", level.dvar["shop_weapon1_costs"],
-						"ui_costs4", level.dvar["shop_weapon2_costs"],
-						"ui_costs5", level.dvar["shop_weapon3_costs"],
-						"ui_costs6", level.dvar["shop_weapon4_costs"],
+						"ui_weapon_costs1", level.dvar["shop_weapon1_costs"],
+						"ui_weapon_costs2", level.dvar["shop_weapon2_costs"],
+						"ui_weapon_costs3", level.dvar["shop_weapon3_costs"],
+						"ui_weapon_costs4", level.dvar["shop_weapon4_costs"],
 						
-						"ui_itemcosts0", level.dvar["shop_defensive1_costs"],
-						"ui_itemcosts1", level.dvar["shop_defensive2_costs"],
-						"ui_itemcosts2", level.dvar["shop_defensive3_costs"],
-						"ui_itemcosts3", level.dvar["shop_defensive4_costs"],
-						"ui_itemcosts4", level.dvar["shop_defensive5_costs"] );
+						"ui_item_costs1", level.dvar["shop_defensive1_costs"],
+						"ui_item_costs2", level.dvar["shop_defensive2_costs"],
+						"ui_item_costs3", level.dvar["shop_defensive3_costs"],
+						"ui_item_costs4", level.dvar["shop_defensive4_costs"]);
 }
 
 processResponse(response)
@@ -114,7 +113,7 @@ processResponse(response)
 		{
 			if(self.health < self.maxhealth){
 				self thread scripts\players\_players::fullHeal(3);
-				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item1_costs"]);
+				self scripts\players\_players::incUpgradePoints( -1 * level.dvar["shop_item1_costs"] );
 				self iPrintLnbold( &"ZOMBIEUI_RESTORING_HEALTH" );
 				self playsound("buy_upgradebox");
 			}
@@ -127,7 +126,7 @@ processResponse(response)
 		{
 			if(!self scripts\players\_players::hasFullAmmo()){
 				self scripts\players\_players::restoreAmmo();
-				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item2_costs"]);
+				self scripts\players\_players::incUpgradePoints( -1 * level.dvar["shop_item2_costs"] );
 				self iPrintLnBold( &"ZOMBIEUI_AMMO_RESTORED" );
 				self playSound("buy_upgradebox");
 			}
@@ -140,7 +139,7 @@ processResponse(response)
 		{
 			if(self.infected){
 				self scripts\players\_infection::cureInfection();
-				self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_item3_costs"]);
+				self scripts\players\_players::incUpgradePoints( -1 * level.dvar["shop_item3_costs"] );
 				iPrintLn( &"ZOMBIEUI_N_IS_NO_LONGER_INFECTED", self );
 				self iPrintLnBold( &"ZOMBIEUI_YOU_HAVE_BEEN_CURED" );
 				self playSound( "buy_upgradebox" );
@@ -153,7 +152,7 @@ processResponse(response)
 		if (self.points >= level.dvar["shop_weapon1_costs"])
 		{
 			self scripts\players\_weapons::swapWeapons( "grenade", "frag_grenade_mp" );
-			self scripts\players\_players::incUpgradePoints( -1*level.dvar["shop_weapon1_costs"] );
+			self scripts\players\_players::incUpgradePoints( -1 * level.dvar["shop_weapon1_costs"] );
 			self playsound("buy_upgradebox");
 		}
 		break;
@@ -167,7 +166,7 @@ processResponse(response)
 			if( !self scripts\players\_weapons::isActionslotWeapon("c4_mp") )
 				self.actionslotweapons[self.actionslotweapons.size] = "c4_mp";
 			self switchToWeapon( "c4_mp" );
-			self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_weapon2_costs"]);
+			self scripts\players\_players::incUpgradePoints( -1 * level.dvar["shop_weapon2_costs"] );
 			self playSound( "buy_upgradebox" );
 		}
 		break;
@@ -181,7 +180,7 @@ processResponse(response)
 			if( !self scripts\players\_weapons::isActionslotWeapon("claymore_mp") )
 				self.actionslotweapons[self.actionslotweapons.size] = "claymore_mp";
 			self switchToWeapon( "claymore_mp" );
-			self scripts\players\_players::incUpgradePoints( -1*level.dvar["shop_weapon3_costs"] );
+			self scripts\players\_players::incUpgradePoints( -1 * level.dvar["shop_weapon3_costs"] );
 			self playSound( "buy_upgradebox" );
 		}
 		break;
@@ -197,7 +196,7 @@ processResponse(response)
 			self giveWeap( self.extra );
 			self giveWeapMaxAmmo( self.extra );
 			self switchToWeap( self.extra );
-			self scripts\players\_players::incUpgradePoints(-1*level.dvar["shop_weapon4_costs"]);
+			self scripts\players\_players::incUpgradePoints( -1 * level.dvar["shop_weapon4_costs"] );
 			self playSound( "buy_upgradebox" );
 		}
 		break;
@@ -207,7 +206,7 @@ processResponse(response)
 			if( level.barrels[0] + level.barrels[1] < level.dvar["game_max_barrels"] )
 			{
 				self scripts\players\_barricades::giveBarrel();
-				self scripts\players\_players::incUpgradePoints( -1*level.dvar["shop_defensive1_costs"] );
+				self scripts\players\_players::incUpgradePoints( -1 * level.dvar["shop_defensive1_costs"] );
 				self playSound( "buy_upgradebox" );
 			}
 			else
