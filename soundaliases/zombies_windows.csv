@@ -35,6 +35,9 @@
 
 name,sequence,file,vol_min,vol_max,vol_mod,pitch_min,pitch_max,dist_min,dist_max,channel,type,probability,loop,masterslave,loadspec,subtitle,compression,secondaryaliasname,volumefalloffcurve,startdelay,speakermap,reverb,lfe percentage,center percentage,platform,envelop_min,envelop_max,envelop percentage
 
+music_mainmenu_mp,1,music/main_menu1.mp3,0.35,,music,,,,,menu,streamed,,looping,,menu,,,,,,music,,,,!PC,,,
+music_mainmenu_mp,2,music/main_menu2.mp3,0.35,,music,,,,,menu,streamed,,looping,,menu,,,,,,music,,,,!PC,,,
+
 ## --- ZOMBIES --- ##
 zom_run,1,misc/zombie_run0.wav,0.7,0.7,,0.85,1.15,360,600,voice,streamed,,,master,all_mp,,,,,,,,,0.1
 zom_run,2,misc/zombie_run1.wav,0.7,0.7,,0.85,1.15,360,600,voice,streamed,,,master,all_mp,,,,,,,,,0.1
