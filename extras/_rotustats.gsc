@@ -20,6 +20,10 @@
 
 #include scripts\include\useful;
 
+init(){
+
+}
+
 saveGameStats(win){
 	if( !level.dvar["surv_rotu_stats"] )
 		return;
