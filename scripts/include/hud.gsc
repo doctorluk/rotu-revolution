@@ -220,6 +220,7 @@ upgradeHud(points)
 	points = self.upgradeHudPoints;
 	self.upgradeHudPoints = 0;
 	
+	self setclientdvar("ui_upgradetext", "Upgrade Points: " + int(self.points) );
 	hud_score = NewClientHudElem(self);
 	hud_score.alpha = 0;
 	hud_score.font = "objective";

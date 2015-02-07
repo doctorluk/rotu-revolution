@@ -559,6 +559,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		return;
 
 	//Check for Incendiary/Poisonous Ammo
+	// TODO: Reduce the amount of if clauses here
 	if( isDefined(eAttacker.bulletMod) && randomfloat(1) <= 0.05){
 		if( self.type != "burning" && self.type != "napalm" && self.type != "hellhound" && self.type != "boss" && self.type != "halfboss" )
 				if( eAttacker.bulletMod == "incendiary" )
@@ -595,14 +596,12 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 			eAttacker.stats["damageDealt"] += iDamage;
 			
 		// Medic Transfusion
-		if( eInflictor == eAttacker && !eAttacker.isDown && eAttacker.health < eAttacker.maxhealth && eAttacker.transfusion && (eAttacker.lastTransfusion + 1000 < getTime()) && randomfloat(1) <= 0.2 ){
-			eAttacker.lastTransfusion = getTime();
-			eAttacker scripts\players\_players::healPlayer(self.maxhealth * 0.03);
-		}
-		
-		// if(isDefined(self.head) && (sHitLoc == "head" || sHitLoc == "neck") )
-			// self detach(self.head);
-		// self scripts\bots\_types::loadZomModel(self.type);
+		if( isDefined( eAttacker ) && isPlayer(eAttacker) && eInflictor == eAttacker && isDefined( eAttacker.lastTransfusion ) )
+			if( !eAttacker.isDown && eAttacker.health < eAttacker.maxhealth && eAttacker.transfusion && (eAttacker.lastTransfusion + 1000 < getTime()) && randomfloat(1) <= 0.2 ){
+				eAttacker.lastTransfusion = getTime();
+				eAttacker scripts\players\_players::healPlayer(self.maxhealth * 0.03);
+			}
+
 		if( isDefined( self.damagePerLoc ) && isDefined (sHitLoc) ){
 			if(!isDefined(self.damagePerLoc[sHitLoc]))
 				self.damagePerLoc[sHitLoc] = iDamage;
@@ -610,8 +609,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 				self.damagePerLoc[sHitLoc] += iDamage;
 		}
 
-		// iprintln("Current damage at " + sHitLoc + " of bot " + self.name + " is " + self.damagePerLoc[sHitLoc]);
-		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, level.weaponKEyS2C[sWeapon], vPoint, vDir, sHitLoc, psOffsetTime);
+		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, level.weaponKeyS2C[sWeapon], vPoint, vDir, sHitLoc, psOffsetTime);
 	}
 }
 

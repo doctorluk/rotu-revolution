@@ -1101,7 +1101,6 @@ incUpgradePoints(inc)
 	}
 	if(inc < 0)
 		self.stats["upgradepointsSpent"] += (inc * -1);
-	self setclientdvar("ui_upgradetext", "Upgrade Points: " + int(self.points) );
 	thread upgradeHud(inc);
 }
 
