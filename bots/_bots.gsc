@@ -599,7 +599,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		if( isDefined( eAttacker ) && isPlayer(eAttacker) && eInflictor == eAttacker && isDefined( eAttacker.lastTransfusion ) )
 			if( !eAttacker.isDown && eAttacker.health < eAttacker.maxhealth && eAttacker.transfusion && (eAttacker.lastTransfusion + 1000 < getTime()) && randomfloat(1) <= 0.2 ){
 				eAttacker.lastTransfusion = getTime();
-				eAttacker scripts\players\_players::healPlayer(self.maxhealth * 0.03);
+				eAttacker scripts\players\_players::healPlayer(eAttacker.maxhealth * 0.03);
 			}
 
 		if( isDefined( self.damagePerLoc ) && isDefined (sHitLoc) ){

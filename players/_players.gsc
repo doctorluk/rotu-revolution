@@ -28,7 +28,7 @@
 
 init()
 {
-	
+	// Initialize default vars
 	level.activePlayers = 0;
 	level.activePlayersArray = [];
 	level.alivePlayers = 0;
@@ -38,13 +38,15 @@ init()
 	level.intermission = 1;
 	level.joinQueue = [];
 	level.godmode = level.dvar["game_godmode"];
-	// level.luk = 0;
-	level.spawnQueue = ::spawnJoinQueueLoop;
 	
+	// Precache icons before starting other processes
 	precache();
 	
+	// Setup var-function-links
 	level.callbackPlayerLastStand = ::Callback_PlayerLastStand;
+	level.spawnQueue = ::spawnJoinQueueLoop;
 	
+	// Start important player-side inits from here
 	thread scripts\players\_menus::init();
 	thread scripts\players\_classes::init();
 	thread scripts\players\_abilities::init();
@@ -57,17 +59,21 @@ init()
 	thread scripts\players\_barricades::init();
 	thread scripts\players\_turrets::init();
 	thread scripts\players\_rank::init();
-	//thread scripts\players\_challenges::buildChallegeInfo();
+	
+	// Start Player-Alive monitor
 	thread updateActiveAliveCounts();
 }
 
+/*
+	Precache Icons, Shellshocks and Shaders
+*/
 precache()
 {
-	level.flashlightGlow		= loadfx( "light/flashlight_glow" );
+	level.flashlightGlow = loadfx( "light/flashlight_glow" );
 	
-	precacheHeadIcon("hud_icon_lowhp");
-	precacheHeadIcon("hud_icon_developer");
-	precacheHeadIcon("hud_icon_low_ammo");
+	precacheHeadIcon( "hud_icon_lowhp" );
+	precacheHeadIcon( "hud_icon_developer" );
+	precacheHeadIcon( "hud_icon_low_ammo" );
 
 	precacheStatusIcon( "icon_medic" );
 	precacheStatusIcon( "icon_engineer" );
@@ -75,7 +81,6 @@ precache()
 	precacheStatusIcon( "icon_stealth" );
 	precacheStatusIcon( "icon_scout" );
 	precacheStatusIcon( "icon_armored" );
-
 	precacheStatusIcon( "icon_down" );
 	precacheStatusIcon(	"icon_spec" );
 
@@ -84,141 +89,164 @@ precache()
 	precacheShader( "overlay_armored" );
 }
 
-setDown(isDown) {
+/*
+	Callback when a player goes down, updating his persistency stat
+*/
+setDown( isDown )
+{
 	self.isDown = isDown;
 	self.persData.isDown = isDown;
-	if (isDown) {
+	
+	if ( isDown )
 		self.downOrigin = self.origin;
-	}
 }
 
-testloop(){
-	self endon("disconnect");
+/*
+	Debugging-Loop started onPlayerSpawn
+*/
+testloop()
+{
+	self endon( "disconnect" );
 }
 
+/*
+	Handling of players going down when gaining fatal damage
+*/
 Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
 {
-	level scripts\players\_usables::removeUsable(self);
-	
-	self notify("downed");
-	level notify("downed", self);
-
-	//self.health = int(self.maxhealth / 4);
-	self setDown(true);
+	// Notify other threads that the player is down
+	level scripts\players\_usables::removeUsable( self );
+	level notify( "downed", self );
+	self notify( "downed" );
+	self setDown( true );
+	self scripts\players\_usables::usableAbort();
 	self.isTargetable = false;
 	
-	// Removes a carrying object (turret, barrel, etc.) on down
-	// if( isDefined( self.carryObj ) ){
-		// self.carryObj delete();
-		// self enableweapons();
-		// self.canUse = true;
-	// }
-	
-	self scripts\players\_usables::usableAbort();
-	
+	// Save the currently held weapons to restore later when he's revived
 	self.lastStandWeapons = self getweaponslist();
 	self.lastStandAmmoStock = [];
 	self.lastStandAmmoClip = [];
 	for( i = 0; i < self.lastStandWeapons.size; i++ )
 	{
-		self.lastStandAmmoClip[i] = self getWeaponAmmoClip(self.lastStandWeapons[i]);
-		self.lastStandAmmoStock[i] = self getWeaponAmmoStock(self.lastStandWeapons[i]);
+		self.lastStandAmmoClip[i] = self getWeaponAmmoClip( self.lastStandWeapons[i] );
+		self.lastStandAmmoStock[i] = self getWeaponAmmoStock( self.lastStandWeapons[i] );
 	}
-	
 	self.lastStandWeapon = self GetCurrentWeapon();
 	
-	self setclientdvars("ui_hintstring", "", "ui_specialtext", "^1Special Unavailable");
+	// Remove Hud-elements that are no longer needed
+	self setclientdvars( "ui_hintstring", "", "ui_specialtext", "^1Special Unavailable" );
 	self.hinttext.alpha = 0;
+	self.health = 10;
+	self updateHealthHud( 0 );
+	self removeTimers();
 	
-	// level scripts\players\_usables::addUsable(self, "revive", "Hold [^3USE^7] to revive", 96);
-	level scripts\players\_usables::addUsable(self, "revive", &"USE_REVIVE", 96);
+	// Reset any Specials
+	self scripts\players\_abilities::stopActiveAbility();
+	self setclientdvar( "ui_specialrecharge", 0 );
 	
-	self thread compassBlinkMe();
-	iPrintln( self.name + " ^7is down!" );
+	// Save this event in the player's stats
 	self.deaths++;
 	self.stats["deaths"]++;
 	self.isAlive = false;
 	self.stats["lastDowntime"] = getTime();
-	self setStatusIcon("icon_down");
 	
-	self removeTimers();
-	
-	//self usableAbort();
-	
-	self.health = 10;
-	self updateHealthHud(0);
-	
-	// Play down-sound
-	self playsound( "self_down" );
-	// self iprintln("Playing DOWN sound");
-	
-	weaponslist = self getweaponslist();
+	// Give the player a secondary weapon to shoot with while being down
+	weaponslist = self getWeaponslist();
 	for( i = 0; i < weaponslist.size; i++ )
 	{
 		weapon = weaponslist[i];
 		
-		if ( weapon == self.secondary  ) //scripts\players\_weapons::isPistol( weapon )
+		if ( weapon == self.secondary  )
 		{
-			self switchtoweapon(weapon);
+			self switchToWeapon( weapon );
 			continue;
 		}
 		else
-		self takeweapon(weapon);
+		self takeWeapon( weapon );
 	}
-		
-	self scripts\players\_abilities::stopActiveAbility();
-	self setclientdvar("ui_specialrecharge", 0);
+	
+	// Notify other players that this player is down
+	iPrintln( self.name + " ^7is down!" );
+	self playsound( "self_down" );
+	self setStatusIcon( "icon_down" );
+	level scripts\players\_usables::addUsable( self, "revive", &"USE_REVIVE", 96 );
+	self thread compassBlinkMe();
 }
 
-compassBlinkMe(){ // Makes the playersymbol blink in "!" signs to signalize that this player is currently down
 
-	self endon("revived");
-	self endon("disconnect");
-	self endon("death");
-	self endon("spawned");
+/*
+	Makes the playersymbol blink in "!" signs to signalize that this player is currently down
+*/
+compassBlinkMe()
+{
+	self endon( "revived" );
+	self endon( "disconnect" );
+	self endon( "death" );
+	self endon( "spawned" );
+	
 	while(1){
 		self pingPlayer();
 		wait 3;
 	}
 }
 
+/*
+	Fully restores a player's ammo for all weapons, except for weapons that do not allow being refilled
+*/
 restoreAmmo()
 {
-	weapons = self getweaponslist();
+	weapons = self getWeaponslist();
 	for( i = 0; i < weapons.size; i++ )
 	{
-		if (self scripts\players\_weapons::canRestoreAmmo(weapons[i])) {
-			self GiveMaxAmmo(weapons[i]);
-			self setWeaponAmmoClip(weapons[i], weaponClipSize(weapons[i]));
+		// Ignore all weapons that are not allowed to refill their ammo, e.g. special weapons
+		if ( self scripts\players\_weapons::canRestoreAmmo( weapons[i] ) )
+		{
+			self giveMaxAmmo( weapons[i] );
+			self setWeaponAmmoClip( weapons[i], weaponClipSize( weapons[i] ) );
 		}
 	}
 }
 
+/*
+	Returns whether a player has any weapon in his inventory that is missing ammo, 
+	except for weapons that do not allow being refilled
+*/
 hasFullAmmo()
 {
 	weapons = self getweaponslist();
 	for( i = 0; i < weapons.size; i++ )
 	{
-		if(isWeaponClipOnly(weapons[i])){
-			if(self GetAmmoCount(weapons[i]) != WeaponMaxAmmo(weapons[i]))
+		// We need to run a different check for weapons that do not have stock ammo, like C4
+		if( isWeaponClipOnly( weapons[i] ) )
+		{
+			if( self GetAmmoCount( weapons[i] ) != WeaponMaxAmmo( weapons[i] ) )
 				return false;
 		}
-		else if (self scripts\players\_weapons::canRestoreAmmo(weapons[i]) && ( self GetFractionMaxAmmo(weapons[i]) != 1 || weaponClipSize( weapons[i] ) != self GetWeaponAmmoClip( weapons[i] ) ))
+		else if ( self scripts\players\_weapons::canRestoreAmmo( weapons[i] ) && ( self GetFractionMaxAmmo( weapons[i] ) != 1 || weaponClipSize( weapons[i] ) != self GetWeaponAmmoClip( weapons[i] ) ) )
 			return false;
 	}
 	return true;
 }
 
+/*
+	Callback being called when a player disconnectes, used to save persistency data
+*/
 onPlayerDisconnect(){
 	self.stats["name"] = self.name;
 	self.persData.stats = self.stats;
 }
 
+/*
+	Callback being called when a player connects
+*/
 onPlayerConnect()
 {
-	if (level.gameEnded)
-	self.sessionstate = "intermission";
+	// Prevent players from loading when the game has ended
+	// TO-DO: implement better handling of players when connecting to an ended game, show them the mapvoting(?) etc.
+	if ( level.gameEnded )
+		self.sessionstate = "intermission";
 	
+	// Initialize default vars for the player
 	self.isObj = false;
 	self.useObjects = [];
 	self.class = "none";
@@ -226,367 +254,450 @@ onPlayerConnect()
 	self.isAlive = false;
 	self.isActive = false;
 	self.hasPlayed = false;
-	self.nighvision = false;
 	self.blur = 0;
 	self.actionslotweapons = [];
-	self setStatusIcon("icon_spec");
+	self setStatusIcon( "icon_spec" );
 
+	// First restore player info, then initialize the rest of the player's clientdvars and other vars
 	self thread scripts\players\_persistence::restoreData();
 	self thread scripts\players\_shop::playerSetupShop();
 	self thread scripts\players\_rank::onPlayerConnect();
 	self thread scripts\server\_environment::onPlayerConnect();
 	
+	// Wait a frame to send default ui-dvars and other clientdvars
 	waittillframeend;
-	self setclientdvars("g_scriptMainMenu", game["menu_class"], "cg_thirdperson", 0, "r_filmusetweaks", 0, "ui_class_ranks", (1 - level.dvar["game_class_ranks"]), "ui_specialrecharge", 0);
+	self setclientdvars( "g_scriptMainMenu", game["menu_class"], "cg_thirdperson", 0, "r_filmusetweaks", 0, "ui_class_ranks", ( 1 - level.dvar["game_class_ranks"] ), "ui_specialrecharge", 0 );
+	
+	// Every new players automatically joins Spectator onConnect
 	self joinSpectator();
-	//self thread scripts\players\_challenges::updateChallenges();
 }
 
-onPlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration)
+/*
+	Handling of Players being killed, this is ONLY called when a player has turned into
+	a zombie and is killed by other players
+*/
+onPlayerKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
 {
-	self endon("death");
-	self endon("disconnect");
-	if (self.isZombie)
+	// Prevent this from running if a player disconnects mid-cleanup
+	self endon( "death" );
+	self endon( "disconnect" );
+	
+	// Make sure the player resets entirely
+	if ( self.isZombie )
 	{
 		self thread scripts\players\_infection::cleanupZombie();
 		return;
 	}
-	// CLEANUP
 	self cleanup();
 	
-	self endon("spawned");
-	
-	self notify("killed_player");
+	self endon( "spawned" ); // ??
+	self notify( "killed_player" ); // ??
 
-	if(self.sessionteam == "spectator")
-		return;
-
-	if(sHitLoc == "head" && sMeansOfDeath != "MOD_MELEE")
-		sMeansOfDeath = "MOD_HEAD_SHOT";
-
-	if (level.dvar["zom_orbituary"])
-	obituary(self, attacker, sWeapon, sMeansOfDeath);
-
-	self.sessionstate = "dead";
-	
-
-	//if (isplayer(attacker) && attacker != self)
-	//attacker.score++;
-	//self.deaths++;
-	
-	body = self clonePlayer( deathAnimDuration );
-	
-	doRagdoll = true;
-	
-	if (doRagdoll)
-	{
-		if ( self isOnLadder() || self isMantling() )
-		body startRagDoll();
-				
-		thread delayStartRagdoll( body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath );
-	}
-	
-}
-
-onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime)
-{
-
+	// Prevent further handling if a player has joined the Spectators
 	if( self.sessionteam == "spectator" )
 		return;
 
-	if( isDefined(eAttacker) && isPlayer(eAttacker) && eAttacker.team == self.team )
+	// TO-DO: Is this needed at all?
+	if( sHitLoc == "head" && sMeansOfDeath != "MOD_MELEE" )
+		sMeansOfDeath = "MOD_HEAD_SHOT";
+	if ( level.dvar["zom_orbituary"] )
+		obituary( self, attacker, sWeapon, sMeansOfDeath );
+	//
+	
+	self.sessionstate = "dead";
+	
+	body = self clonePlayer( deathAnimDuration );
+
+	if ( self isOnLadder() || self isMantling() )
+		body startRagDoll();
+
+	thread delayStartRagdoll( body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath );
+}
+
+/*
+	Callback when a player takes damage (Warning: Huge ._.)
+*/
+onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime )
+{
+	// Prevent damage on Spectator Entities
+	if( self.sessionteam == "spectator" )
+		return;
+	
+	// Check for damage between regular and zombified players
+	if( isDefined( eAttacker ) && isPlayer( eAttacker ) && eAttacker.team == self.team )
 	{
-		if (self.isZombie)
+		// Run damage to a zombified player through the bot damage callback
+		if ( self.isZombie )
 		{
-			self scripts\bots\_bots::Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
-			updateHealthHud(self.health/self.maxhealth);
+			self scripts\bots\_bots::Callback_BotDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime );
+			updateHealthHud( self.health / self.maxhealth );
 			return;
 		}
-		else if (!level.dvar["game_friendlyfire"] && eAttacker != self)
+		// Prevent further processing if friendly fire is on or the attacker is not zombifed
+		else if ( !level.dvar["game_friendlyfire"] && eAttacker != self )
 		{
-			if (!eAttacker.isZombie)
+			if ( !eAttacker.isZombie )
 			return;
 		}
 	}
 	else
 	{
-		if (!level.hasReceivedDamage)
+		// Used to monitor whether zombies are attacking players (for bugged-zombies-check)
+		if ( !level.hasReceivedDamage )
 			level.hasReceivedDamage = 1;
 	}
-	if (self.god || level.godmode || ( self.spawnProtectionTime + (level.dvar["game_player_spawnprotection_time"]*1000) > getTime() && level.dvar["game_player_spawnprotection"]) )
-		return;
 	
-	if ( self.isDown )
+	// Check all cases of immunity of the player
+	if ( self.isDown || self.god || level.godmode || ( self.spawnProtectionTime + ( level.dvar["game_player_spawnprotection_time"] * 1000 ) > getTime() && level.dvar["game_player_spawnprotection"] ) )
 		return;
 
+	// ??
 	if( !isDefined(vDir) )
 		iDFlags |= level.iDFLAGS_NO_KNOCKBACK;
-
+	// ??
 	if( !(iDFlags & level.iDFLAGS_NO_PROTECTION) )
 	{
-		if( sWeapon == "ak74u_acog_mp" || sWeapon == "barrett_acog_mp" || sWeapon == "at4_mp" || sWeapon == "rpg_mp" || issubstr(sMeansOfDeath, "GRENADE") )	// TODO: What were these weapons, what are they now?
+		if( sWeapon == "ak74u_acog_mp" || sWeapon == "barrett_acog_mp" || sWeapon == "at4_mp" || sWeapon == "rpg_mp" || issubstr( sMeansOfDeath, "GRENADE" ) )	// TODO: What were these weapons, what are they now?
 			return;
 		
-		iDamage = int(iDamage * self.damageDoneMP);
-		if(self.heavyArmor)
+		// Reduce damage by Armored Damage reduction (10%)
+		iDamage = int( iDamage * self.damageDoneMP );
+		
+		// Check for Armored Health & Ability
+		if( self.heavyArmor )
 		{
-			if (self.health / self.maxhealth >= .65)
+			if ( self.health / self.maxhealth >= 0.65 )
 			{
-				iDamage = int(iDamage / 2);
-				self thread screenFlash((0,0,.7), .35, .5);
+				iDamage = int( iDamage / 2 );
+				// Flash the screen of the armored in blue to make him notice he's taking reduced damage (TO-DO: Find different means
+				// of notifying the player that he's taking reduced damage
+				self thread screenFlash( ( 0, 0, .7 ), 0.35, 0.5 );
 			}
 		}
+		
+		// Make sure that damage cannot be 0
 		if(iDamage < 1)
 			iDamage = 1;
-			
-		iDamage = int(iDamage * self.incdammod);
 		
-		if(isDefined(self.lastHurtTime) && (self.lastHurtTime < (getTime() - 1000) ) && iDamage < self.health ){
-			self playsound("self_hurt");
-			// self iprintln("Playing HURT sound");
+		// Apply damage-multipliers of certain zombie types
+		iDamage = int( iDamage * self.incdammod );
+		
+		// Play 'hurt' sound of players and keep track of it being last played to prevent it from being spammed
+		if( isDefined( self.lastHurtTime ) && ( self.lastHurtTime < ( getTime() - 1000 ) ) && iDamage < self.health ){
+			self playsound( "self_hurt" );
 			self.lastHurtTime = getTime();
 		}
-		// Medics take half damage while reviving
-		if( self.reviveWill && isDefined(self.curEnt) && self.curEnt.type == "revive" && self.isBusy )
-			iDamage = int(iDamage * 0.5);
-			
-		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
 		
-		updateHealthHud(self.health/self.maxhealth);
+		// Medics take half damage while reviving
+		if( self.reviveWill && isDefined( self.curEnt ) && self.curEnt.type == "revive" && self.isBusy )
+			iDamage = int( iDamage * 0.5 );
+		
+		// Calculation is done, make the actual damage happen
+		self finishPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime );
+		
+		// Update the health bar of that player
+		updateHealthHud( self.health / self.maxhealth );
 	}
 }
 
-hasLowAmmo(){
-
-	if( scripts\players\_weapons::canRestoreAmmo( self getCurrentWeapon() ) ){
+/*
+	Returns whether a player's current weapon has less or equal to 30% of it's maximum capacity
+*/
+hasLowAmmo()
+{
+	if( scripts\players\_weapons::canRestoreAmmo( self getCurrentWeapon() ) )
+	{
 		max = self GetFractionMaxAmmo( self getCurrentWeapon() );
-		if(max <= 0.3)
+		if( max <= 0.3 )
 			return true;
 	}
+	
 	return false;
 }
 
-getBestPlayer(type, returns){
-	if(!isDefined(type))
+/*
+	Returns the best player, based on a minimum or maximum threshold for certain stats
+	TO-DO: Put this into the _gamemodes.gsc since the ending is handled there, too?
+*/
+getBestPlayer( type, returns )
+{
+	// Prevent faulty arguments
+	if( !isDefined( type ) )
 		return undefined;
-		
-	if(!isDefined(returns))
+	if( !isDefined( returns ) )
 		returns = "player";
-		
+	
+	// Define default vars
 	player = undefined;
 	amount = 0;
 	amount2 = 999999999;
-	for(i = 0; i < level.players.size; i++){
+	// Loop through every single player
+	for( i = 0; i < level.players.size; i++ )
+	{
+		// Exclude bots and players that never played
 		if( level.players[i].isBot || !level.players[i].hasPlayed )
 			continue;
 			
+		// Depending on what we are looking for (type), enter the player into our list if he has more/less than the one checked before
+		// resulting in the highest/lowest player being found for the stats
 		switch(type){
 			case "kills":
-				if(level.players[i].kills > amount){
+				if(level.players[i].kills > amount)
+				{
 					player = level.players[i];
 					amount = level.players[i].kills;
 				}
 				break;
 			case "deaths":
-				if(level.players[i].deaths > amount && !isDefined(level.players[i].statsSurvivorWinner)){
+				if( level.players[i].deaths > amount && !isDefined( level.players[i].statsSurvivorWinner ) )
+				{
 					player = level.players[i];
 					amount = level.players[i].deaths;
 				}
 				break;
 			case "assists":
-				if(level.players[i].assists > amount){
+				if( level.players[i].assists > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].assists;
 				}
 				break;
 			case "downtime":
-				if(level.players[i].stats["downtime"] > amount && level.players[i].stats["downtime"] > 1000){
+				if( level.players[i].stats["downtime"] > amount && level.players[i].stats["downtime"] > 1000 )
+				{
 					player = level.players[i];
 					amount = level.players[i].stats["downtime"];
 				}
 				break;
 			case "heals":
-				if(level.players[i].stats["healsGiven"] > amount){
+				if( level.players[i].stats["healsGiven"] > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].stats["healsGiven"];
 				}
 				break;
 			case "ammo":
-				if(level.players[i].stats["ammoGiven"] > amount){
+				if( level.players[i].stats["ammoGiven"] > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].stats["ammoGiven"];
 				}
 				break;
 			case "timeplayed":
-				if(level.players[i].stats["timeplayed"] > amount){
+				if( level.players[i].stats["timeplayed"] > amount )
+				{
 					player = level.players[i];
+					
 					// Workaround for server-initiate delay
-					if(level.players[i].stats["timeplayed"] > (level.gameEndTime - level.startTime) )
+					if( level.players[i].stats["timeplayed"] > ( level.gameEndTime - level.startTime ) )
 						amount = level.gameEndTime - level.startTime;
 					else
 						amount = level.players[i].stats["timeplayed"];
 				}
 				break;
 			case "damagedealt":
-				if(level.players[i].stats["damageDealt"] > amount){
+				if( level.players[i].stats["damageDealt"] > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].stats["damageDealt"];
 				}
 				break;
 			case "damagedealtToBoss":
-				if(level.players[i].stats["damageDealtToBoss"] > amount){
+				if( level.players[i].stats["damageDealtToBoss"] > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].stats["damageDealtToBoss"];
 				}
 				break;
 			case "turretkills":
-				if(level.players[i].stats["turretKills"] > amount){
+				if( level.players[i].stats["turretKills"] > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].stats["turretKills"];
 				}
 				break;
 			case "upgradepointsspent":
-				if(level.players[i].stats["upgradepointsSpent"] > amount){
+				if( level.players[i].stats["upgradepointsSpent"] > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].stats["upgradepointsSpent"];
 				}
 				break;
 			case "upgradepoints":
-				if(level.players[i].points > amount){
+				if( level.players[i].points > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].points;
 				}
 				break;
 			case "explosivekills":
-				if(level.players[i].stats["explosiveKills"] > amount){
+				if( level.players[i].stats["explosiveKills"] > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].stats["explosiveKills"];
 				}
 				break;
 			case "knifekills":
-				if(level.players[i].stats["knifeKills"] > amount){
+				if( level.players[i].stats["knifeKills"] > amount )
+				{
 					player = level.players[i];
 					amount = level.players[i].stats["knifeKills"];
 				}
 				break;
 			case "survivor":
-				if(level.players[i].deaths < amount2 && !isDefined(level.players[i].statsDeathsWinner) ){
+				if( level.players[i].deaths < amount2 && !isDefined( level.players[i].statsDeathsWinner ) )
+				{
 					player = level.players[i];
 					amount2 = level.players[i].deaths;
 				}
 				break;
 			case "zombiefied":
-				if(level.players[i].stats["timesZombie"] > amount){
+				if( level.players[i].stats["timesZombie"] > amount )
+				{
 					player = level.players[i];
 					amount2 = level.players[i].stats["timesZombie"];
 				}
 				break;
 			case "ignitions":
-				if(level.players[i].stats["ignitions"] > amount){
+				if( level.players[i].stats["ignitions"] > amount )
+				{
 					player = level.players[i];
 					amount2 = level.players[i].stats["ignitions"];
 				}
 				break;
 			case "poisons":
-				if(level.players[i].stats["poisons"] > amount){
+				if( level.players[i].stats["poisons"] > amount )
+				{
 					player = level.players[i];
 					amount2 = level.players[i].stats["poisons"];
 				}
 				break;
 			case "headshots":
-				if(level.players[i].stats["headshotKills"] > amount){
+				if( level.players[i].stats["headshotKills"] > amount )
+				{
 					player = level.players[i];
 					amount2 = level.players[i].stats["headshotKills"];
 				}
 				break;
 			case "barriers":
-				if(level.players[i].stats["barriersRestored"] > amount){
+				if( level.players[i].stats["barriersRestored"] > amount )
+				{
 					player = level.players[i];
 					amount2 = level.players[i].stats["barriersRestored"];
 				}
 				break;
 			case "firstminigun":
-				if(isDefined(level.gotFirstMinigun)){
+				if( isDefined( level.gotFirstMinigun ) )
+				{
 					player = level.gotFirstMinigun;
 					amount = "";
 				}
 				break;
 			case "moredeathsthankills":
-				if(level.players[i].deaths > level.players[i].kills)
-					if(level.players[i].kills > 0){ // DO NOT DIVIDE BY 0!
-						if( (level.players[i].deaths / level.players[i].kills) > amount) // We want the person with most deaths per kill, in case there is more than 1 guy on the Srv with Deaths > Kills
+				if( level.players[i].deaths > level.players[i].kills )
+				
+					// DO NOT DIVIDE BY 0!
+					if( level.players[i].kills > 0 )
+					{
+						// We want the person with most deaths per kill, in case there is more than 1 guy on the Srv with Deaths > Kills
+						if( ( level.players[i].deaths / level.players[i].kills ) > amount )
 						{
 							player = level.players[i];
 							amount = "";
 						}
 					}
-					else if(!isDefined(player)){ // In case there is a player with 0 Kills and more than 0 deaths, but no other player on the Server with Deaths > Kills, still give him the award, even though he has 0 Kills
-							player = level.players[i];
-					}
+					// In case there is a player with 0 Kills and more than 0 deaths, but no other player on the Server with Deaths > Kills, still give him the award, even though he has 0 Kills
+					else if( !isDefined( player ) )
+						player = level.players[i];
 				break;
 			default:
 				break;
 		}
 	}
-	if(returns == "player"){
-		if(type == "deaths" && isDefined(player))
+	
+	if( returns == "player" )
+	{
+		if( type == "deaths" && isDefined( player ) )
 			player.statsDeathsWinner = true;
-		if(type == "survivor" && isDefined(player))
+		if( type == "survivor" && isDefined( player ) )
 			player.statsSurvivorWinner = true;
 		return player;
 	}
-	else if (returns == "amount"){
-		if(amount2 != 999999999)
+	else if ( returns == "amount" )
+	{
+		if( amount2 != 999999999 )
 			return amount2;
 		else
 			return amount;
 	}
-	iprintlnbold("^1ERROR: ^7Invalid use of getBestPlayer()");
+	
+	iprintlnbold( "^1ERROR: ^7Invalid use of getBestPlayer()" );
 	return undefined;
 }
 
+/*
+	Loop that regularly updates a player's headicon to notify other players of him having low health and/or low ammo
+*/
 watchHPandAmmo()
 {
-	self endon("death");
-	self endon("disconnect");
+	// Only run when a player is playing
+	self endon( "death" );
+	self endon( "disconnect" );
 	
+	// Initialize default value for this player
 	if( !isDefined( self.overwriteHeadicon ) )
 		self.overwriteHeadicon = "";
-		
-	while( 1 ){
+	
+	// Loop infinitely
+	while( 1 )
+	{
 		wait 0.5;
+		
+		// If the player is infected, we don't want other icons to appear above his head
 		if( !self.infected )
 		{
-			if( self.isDown ){
+			if( self.isDown )
+			{
 				if( self.headicon != self.overwriteHeadicon )
 					self.headicon = self.overwriteHeadicon;
 				continue;
 			}
-			if( self.health <= 40 ){
+			// Critically low HP
+			if( self.health <= 40 )
+			{
+				// If his old headicon was for ammo, put it for HP now
 				if( self.headicon == self.overwriteHeadicon || self.headicon == "hud_icon_low_ammo" )
 				{
 					self.headicon = "hud_icon_lowhp";
 					continue;
 				}
-
+				
+				// If his old headicon was for HP, put it for ammo now
 				if( self.headicon != "hud_icon_low_ammo" && self hasLowAmmo() )
 					self.headicon = "hud_icon_low_ammo";
 				else
 					self.headicon = self.overwriteHeadicon;
+				
 				continue;
 			}
-			else if( self.health <= 75 ){
+			// Could use some health, lol
+			else if( self.health <= 75 )
+			{
+				// If he has a different headicon that for low HP, give the HP icon
 				if( self.headicon != "hud_icon_lowhp" ){
 					self.headicon = "hud_icon_lowhp";
 					continue;
 				}
-
+				
+				// If he has the HP icon already, but also has low ammo, make it change to ammo
 				if( self.headicon != "hud_icon_low_ammo" && self hasLowAmmo() )
 					self.headicon = "hud_icon_low_ammo";
 					
 				continue;
 			}
-			else if( self hasLowAmmo() ){
+			// In case he is >75% health, only show the low-ammo icon
+			else if( self hasLowAmmo() )
+			{
 				self.headicon = "hud_icon_low_ammo";
 				continue;
 			}
@@ -598,190 +709,267 @@ watchHPandAmmo()
 	}
 }
 
-doAreaDamage(range, damage, attacker)
+/*
+	Area damage function against bots, used by Explosive Barrels
+	TO-DO: Move to _barricade.gsc (?) where Explosive Barrels are located, too
+*/
+doAreaDamage( range, damage, attacker )
 {
-	for (i=0; i<=level.bots.size; i++)
+	for ( i = 0; i <= level.bots.size; i++ )
 	{
 		target = level.bots[i];
-		if (isdefined(target) && isalive(target))
+		
+		if ( isDefined( target ) && isAlive( target ) )
 		{
-			distance = distance(self.origin, target.origin);
-			if (isDefined(distance) && distance < range)
+			distance = distance( self.origin, target.origin );
+			
+			if ( isDefined( distance ) && distance < range )
 			{
-				target.isPlayer = true;
+				// WHAT THE ACTUAL FUCK? Here we set the Bot to be a PLAYER? wowowowo, dude....
+				// target.isPlayer = true;
+				
 				target.entity = target;
-				target damageEnt(
-					self, // eInflictor = the entity that causes the damage (e.g. a claymore)
-					attacker, // eAttacker = the player that is attacking
-					damage, // iDamage = the amount of damage to do
-					"MOD_EXPLOSIVE", // sMeansOfDeath = string specifying the method of death (e.g. "MOD_PROJECTILE_SPLASH")
-					"none", // sWeapon = string specifying the weapon used (e.g. "claymore_mp")
-					self.origin, // damagepos = the position damage is coming from 
-					vectorNormalize(target.origin-self.origin)
-				);
+				target damageEnt( self, attacker, damage, "MOD_EXPLOSIVE", "none", 	self.origin, vectorNormalize( target.origin - self.origin ) );
 			}
 		}
 	}
 }
 
-cleanup() // CLEANUP ON DEATH (SPEC) OR DISCONNECT
+/*
+	General Player cleanup, used whenever a player is being revived or returns to a normal player when being zombified etc. etc.
+*/
+cleanup()
 {
-	if ( isDefined(self.isDown) && self.isDown )
-		scripts\players\_usables::removeUsable(self);
-		
+	// Remove the player from the usable game object list
+	scripts\players\_usables::removeUsable( self );
+	
+	// Stop the player from using anything
 	self scripts\players\_usables::usableAbort();
+	
+	// Empty the player's actionslotweapons (C4, Claymores etc.)
 	self.actionslotweapons = [];
 		
-	if ( isDefined(self.infection_overlay) )
+	// Destroy any existing hud elements
+	if ( isDefined( self.infection_overlay ) )
 		self.infection_overlay destroy();
+	
+	if( isDefined( self.armored_hud ) )
+		self.armored_hud destroy();
 		
-	if ( isDefined(self.tombEnt) )
+	self destroyProgressBar();
+	self removeTimers();
+	self flashlightOff();
+	self setStatusIcon( "" );
+	self.headicon = "";
+	
+	// Remove the tomb if the player was zombified
+	if ( isDefined( self.tombEnt ) )
 		self.tombEnt delete();
 	
-	if( isDefined(self.armored_hud) )
-		self.armored_hud destroy();
-	
-	self.headicon = "";
-	self setStatusIcon("");
-	
+	// Make the player a non-valid target for bots
 	self.isTargetable = false;
 	
-	level scripts\players\_usables::removeUsable(self);
-	self scripts\players\_usables::usableAbort();
-	
-	self destroyProgressBar();
-	
-	self removeTimers();
-	
-	self.hasRadar = false;
+	// Replace all clientdvars with default values
 	self setclientdvars("r_filmusetweaks", 0, "ui_upgradetext", "", "ui_specialtext", "", "cg_draw2d", 1, "g_compassShowEnemies", 0, "ui_uav_client", 0, "ui_wavetext", "", "ui_waveprogress", 0, "ui_spawnqueue", "");
-	if (self.isActive)
+	
+	// Remove the player from the activity list and mark him as dead, also save all of his equipment via persistency
+	if ( self.isActive )
 	{
 		self.isActive = false;
-		if (self.isAlive)
+		if ( self.isAlive )
 		{
 			self.isAlive = false;
 			
-			if (self.primary!="none"){
-				self.persData.primaryAmmoClip = self getweaponammoclip(self.primary);
-				self.persData.primaryAmmoStock = self getweaponammostock(self.primary);
+			if ( self.primary != "none" )
+			{
+				self.persData.primaryAmmoClip = self getweaponammoclip( self.primary );
+				self.persData.primaryAmmoStock = self getweaponammostock( self.primary );
 			}
-			if (self.secondary!="none"){
-				self.persData.secondaryAmmoClip = self getweaponammoclip(self.secondary);
-				self.persData.secondaryAmmoStock = self getweaponammostock(self.secondary);
+			
+			if ( self.secondary != "none" )
+			{
+				self.persData.secondaryAmmoClip = self getweaponammoclip( self.secondary );
+				self.persData.secondaryAmmoStock = self getweaponammostock( self.secondary );
 			}
-			if (self.extra!="none"){
-				self.persData.extraAmmoClip = self getweaponammoclip(self.extra);
-				self.persData.extraAmmoStock = self getweaponammostock(self.extra);
+			
+			if ( self.extra != "none" )
+			{
+				self.persData.extraAmmoClip = self getweaponammoclip( self.extra );
+				self.persData.extraAmmoStock = self getweaponammostock( self.extra );
 			}
-		
 		}
-		
 	}
 	
-	self notify("end_trance");
-	self updateHealthHud(-1);
-	self flashlightOff();
+	// End invisibility for Assassins
+	self notify( "end_trance" );
+	
+	// Remove health hud
+	self updateHealthHud( -1 );
 	self unfreezePlayerForRoundEnd();
-	if(isDefined(level.cantPayLC) && arrayContains(level.cantPayLC, self))
-		level.cantPayLC = removeFromArray(level.cantPayLC, self);
+	
+	// If the last chance is running, remove the player from the potential list of money-recipients
+	if( isDefined( level.cantPayLC ) && arrayContains( level.cantPayLC, self ) )
+		level.cantPayLC = removeFromArray( level.cantPayLC, self );
 }
 
-addToJoinQueue(){
-	if( !arrayContains(level.joinQueue, self) ){ // See if to-be-added player is already in the queue
+/*
+	Adds the player to the join queue
+*/
+addToJoinQueue()
+{
+	// See if to-be-added player is already in the queue
+	if( !arrayContains( level.joinQueue, self ) )
 		level.joinQueue[level.joinQueue.size] = self;
-	}
+	
+	// Show the player the blinking "Pending Spawn" text on his hud
 	self setclientdvar("ui_spawnqueue", "@QUEUE_AWAITING_SPAWN_" + allToUpper(self.class));
 }
 
-spawnJoinQueue(){
+/*
+	Spawn all players placed inside the spawn queue
+*/
+spawnJoinQueue()
+{
+	// Run global queue notification
 	level notify("spawn_queue");
+	
+	// Array containing all players that are actually spawned by the queue
 	spawners = [];
-	for(i = 0; i < level.joinQueue.size; i++){
+	
+	for( i = 0; i < level.joinQueue.size; i++ )
+	{
 		player = level.joinQueue[i];
-		level.joinQueue = removeFromArray(level.joinQueue, player);
-		if( isReallyPlaying(player) ){
-			logPrint("We tried to spawn someone from the Spawnqueue who is already playing: " + player.name + "\n");
-			iprintln("We tried to spawn someone from the Spawnqueue who is already playing: " + player.name);
+		level.joinQueue = removeFromArray( level.joinQueue, player );
+		
+		// Better double-check if a player inside the queue has already spawned
+		// TO-DO: THIS SHOULD NEVER HAPPEN!
+		if( isReallyPlaying( player ) )
+		{
+			logPrint( "We tried to spawn someone from the Spawnqueue who is already playing: " + player.name + "\n" );
+			iprintln( "We tried to spawn someone from the Spawnqueue who is already playing: " + player.name );
 			continue;
 		}
 			
-		// if(player.sessionteam != "allies")
-			// player joinAllies();
-			
-		player thread spawnPlayer(true);
+		player thread spawnPlayer( true );
 		spawners[spawners.size] = player;
 	}
-	if(spawners.size > 0){ // Put out some names in the bottom left corner to inform people who has been spawned by the queue
+	
+	// Put out some names in the bottom left corner to inform people who has been spawned by the queue
+	if( spawners.size > 0 )
+	{
 		string = "^3";
-		have = "have";
-		for(i = 0; i < spawners.size; i++){
-			string += spawners[i].name + "^7 as ^3" + ( spawners[i] getFullClassName() ) + "^7, ^3"; 
-		}
-		string = getSubStr(string, 0, string.size-4);
+		haveOrHas = "have";
+		
+		// Add each player's class and name to the message
+		for( i = 0; i < spawners.size; i++ )
+			string += spawners[i].name + "^7 as ^3" + ( spawners[i] getFullClassName() ) + "^7, ^3";
+		
+		// Since we are adding characters AFTER the player's name in preparation of the next player
+		// we remove the additional characters from the end of the string when it's done
+		string = getSubStr( string, 0, string.size - 4 );
+		
+		// Make sure we use proper English, d'uh!
 		if( i <= 1 )
-			have = "has";
-		string += " " + have + " joined the fight!";
-		iprintln(string);
+			haveOrHas = "has";
+			
+		string += " " + haveOrHas + " joined the fight!";
+		
+		iprintln( string );
 	}
 }
 
-/* Spawn the players in certain situations and in certain states of the waves */
-spawnJoinQueueLoop(){
-	level endon("wave_finished");
-	level endon("game_ended");
-		
-	if( level.currentType == "boss" || level.waveSize < 20 ){
-		while(1){
+/* 
+	Spawn the players in certain situations and in certain states of the waves
+*/
+spawnJoinQueueLoop()
+{
+	// Prevent this from running during intermissions or after the game
+	level endon( "wave_finished" );
+	level endon( "game_ended" );
+	
+	// For very small waves or the boss the calculation we use doesn't make any sense, so we use a simple timer in these
+	if( level.currentType == "boss" || level.waveSize < 20 )
+	{
+		while(1)
+		{
 			wait 180;
 			spawnJoinQueue();
 		}
 	}
 	
-	zombiesKilled = 0;
-	
-	if(level.waveSize <= 100)
+	// Judging from the wave's size, we roughly select certain 'points' when players should be spawned
+	if( level.waveSize <= 100 )
 		intersections = 50;
-	else if(level.waveSize > 100 && level.waveSize < 300)
+	else if( level.waveSize > 100 && level.waveSize < 300 )
 		intersections = 70;
 	else
 		intersections = 100;
-		
-	while(zombiesKilled < level.waveSize){
-		level waittill("bot_killed");
+	
+	zombiesKilled = 0;
+	while( zombiesKilled < level.waveSize )
+	{
+		level waittill( "bot_killed" );
 		zombiesKilled++;
-		if(zombiesKilled % intersections == 0){
-			// iprintln("Trying to spawn the queue!");
+		
+		// When we've met a certain interval, spawn the players
+		if( zombiesKilled % intersections == 0 ){
 			spawnJoinQueue();
 		}
 	}
 }
 
-spawnPlayer(forceSpawn)
+/*
+	Removes the calling player from the Spawnqueue
+*/
+removeFromQueue()
 {
-	if( !isDefined(forceSpawn) )
+	// Reset the player's ui-dvars and remove the blinking 'PENDING SPAWN' hud element
+	self setclientdvars( "cg_thirdperson", 0, "ui_spawnqueue", "" );
+	
+	// Remove the player from the queue-list in case he's in there
+	if( arrayContains( level.joinQueue, self ) )
+	{
+		level.joinQueue = removeFromArray( level.joinQueue, self );
+		self iprintlnbold("You have been removed from the queue!");
+		
+		// A player that is removed from the queue is automatically considered a Spectator, thus moved there
+		self joinSpectator();
+	}
+}
+
+/*
+	Function to spawn a player
+*/
+spawnPlayer( forceSpawn )
+{
+	// Set default var if argument is not given
+	if( !isDefined( forceSpawn ) )
 		forceSpawn = false;
-		
-	if(!forceSpawn){
-		if ( level.gameEnded )
+	
+	// In case of a regular spawn
+	if( !forceSpawn )
+	{
+		// If the game has ended, the player is not in the queue or the game is in progress and the queue is enabled,
+		// do not spawn him
+		if( level.gameEnded )
 			return;
-	//	self endon("disconnect");
 		
-		if( self.sessionteam == "spectator" || arrayContains(level.joinQueue, self) )
+		if( self.sessionteam == "spectator" || arrayContains( level.joinQueue, self ) )
 			return;
 		
-		if ( !level.intermission && level.activePlayers > 2 && level.dvar["game_enable_join_queue"] )
+		if( !level.intermission && level.activePlayers > 2 && level.dvar["game_enable_join_queue"] )
 		{
 			self addToJoinQueue();
-			self iprintlnbold("You have been put into an automated joining queue.");
-			self iprintlnbold("You will join soon! Just be patient ;)");
+			self iprintlnbold( "You have been put into an automated joining queue." );
+			self iprintlnbold( "You will join soon! Just be patient ;)" );
 			return;
 		}
 	}
-	self notify("spawned");
 	
-	
-	// Setting neccessary variables
+	// Start spawning of the player
+	self notify( "spawned" );
+
+	// Setting up the player's team and necessary default vars
 	self.team = self.pers["team"];
 	self.sessionteam = self.team;
 	self.sessionstate = "playing";
@@ -789,28 +977,32 @@ spawnPlayer(forceSpawn)
 	self.killcamentity = -1;
 	self.archivetime = 0;
 	self.psoffsettime = 0;
+	
 	self.health = 100;
 	self.headicon = "";
-		
 	self.isPlayer = true;
-	if( self.persData.hasPlayed ){ // He played already, but disconnected during current map
+	
+	// Check whether this player has played already and load them
+	if( self.persData.hasPlayed )
+	{
 		self.stats = self.persData.stats;
 		self.hasPlayed = true;
 	}
-	else if( !self.hasPlayed ){ // Initiate first time stats
+	// Initiate first time stats if he's new
+	else if( !self.hasPlayed )
+	{
 		self.persData.stats = self.stats;
 		self.hasPlayed = true;
 		self.persData.hasPlayed = true;
 	}
+	// ?? If he has returned to play after going spec, offset his playtime by the time it takes the server to initialize
 	else{
 		self.stats["playtimeStart"] = getTime() - 5500;
 	}
 	
-	self.upgradeHudPoints = 0;
-	
-	self giveDelayedUpgradepoints();
-	
+	// Initialize a shit-ton of default vars and settings
 	self.spawnProtectionTime = getTime();
+	self.upgradeHudPoints = 0;
 	self.lastBossHit = undefined;
 	self.fireCatchCount = 0;
 	self.hasDoneCombat = false;
@@ -847,57 +1039,59 @@ spawnPlayer(forceSpawn)
 	self.lastHurtTime = getTime();
 	self.incdammod = 1;
 	self.c4Array = [];
-	self setStatusIcon("icon_"+self.class);
+	self setStatusIcon( "icon_" + self.class );
 	
 	resettimeout();
+	
+	// Give the player points for missed waves
+	self giveDelayedUpgradepoints();
 
-	// Getting spawn loc and spawning
+	// Spawn the player at a random point
 	if ( level.playerspawns == "" )
 		spawn = getRandomTdmSpawn();
 	else
-		spawn = getRandomEntity(level.playerspawns);
+		spawn = getRandomEntity( level.playerspawns );
 
 	origin = spawn.origin;
 	angles = spawn.angles;
 
 	self spawn( origin, angles );
 	
+	// Check whether the player's class he has now was the one he had before, otherwise make sure to return him to default progress
 	self.curClass = self.class;
-	
-	if (self.persData.class != self.curClass){
+	if( self.persData.class != self.curClass ){
 		resetUnlocks();
 		self.specialRecharge = 100; // Fully load the special on spawn when player has changed class
 		self.persData.specialRecharge = self.specialRecharge;
 	}
-
 	self.persData.class = self.curClass;
 
 	// Setting random player class model
 	self scripts\players\_playermodels::setPlayerClassModel(self.curClass);
 	
-	self setclientdvars("cg_thirdperson", 0, "ui_upgradetext", "Upgrade Points: " + int(self.points), "ui_specialtext", "^1Special Unavailable", "ui_specialrecharge", 1, "ui_spawnqueue", "");
+	// Set default clientdvars
+	self setclientdvars( "cg_thirdperson", 0, "ui_upgradetext", "Upgrade Points: " + int( self.points ), "ui_specialtext", "^1Special Unavailable", "ui_specialrecharge", 1, "ui_spawnqueue", "" );
 	
-	self scripts\players\_abilities::loadClassAbilities(self.curClass);
-	
-	self SetMoveSpeedScale(self.speed);
-
+	// Load class-specific stats
+	self scripts\players\_abilities::loadClassAbilities( self.curClass );
+	self SetMoveSpeedScale( self.speed );
 	self.health = self.maxhealth;
-	self updateHealthHud(1);
+	
+	// Set his Health-bar to 100%
+	self updateHealthHud( 1 );
 	
 	waittillframeend;
-	
-	if( self.nighvision )
-		self setActionSlot( 1, "nightvision" );
 
 	// Give weapons
 	self scripts\players\_weapons::initPlayerWeapons();
 	self scripts\players\_weapons::givePlayerWeapons();
 
-	self notify("spawned_player");
-	level notify("spawned_player", self);
+	// Notify locally and globally that he's now in the game
+	self notify( "spawned_player" );
+	level notify( "spawned_player", self );
 	
+	// Start all important threads a player must have
 	self thread scripts\players\_usables::checkForUsableObjects();
-	
 	self thread scripts\players\_weapons::watchWeaponUsage();
 	self thread scripts\players\_weapons::watchWeaponSwitching();
 	self thread scripts\players\_weapons::watchThrowable();
@@ -905,15 +1099,16 @@ spawnPlayer(forceSpawn)
 	self thread scripts\players\_claymore::init();
 	self thread scripts\players\_rank::onPlayerSpawned();
 	self thread scripts\players\_abilities::watchSpecialAbility();
-	
 	self thread scripts\server\_welcome::onPlayerSpawn();
 	self thread scripts\players\_spree::onPlayerSpawn();
-	
-	self thread testloop();
-	
 	self thread watchHPandAmmo();
-	if(level.flashlightEnabled)
-		self thread flashlightOn(true);
+	
+	// A loop for testing purposes
+	self thread testloop();
+
+	// Check for wave-dependent environment vars etc.
+	if( level.flashlightEnabled )
+		self thread flashlightOn( true );
 		
 	if( level.freezePlayers )
 		self thread freezePlayerForRoundEnd();
@@ -921,55 +1116,80 @@ spawnPlayer(forceSpawn)
 	if( level.disableWeapons )
 		self disableWeapons();
 	
+	// Lastly make him alive and update the game's class counters
 	self.isAlive = true;
-	level notify("spawned", self);
-	level notify("update_classcounts");
+	level notify( "spawned", self );
+	level notify( "update_classcounts" );
 }
 
-flashlightForAll(on){ // Whether it should be turned on or off
-	if(!isDefined(on))
+/*
+	Give all playing players the flashlight for the scary wave
+*/
+flashlightForAll( on )
+{
+	// Prevent missing argument
+	if( !isDefined( on ) )
 		return;
-
-	players = getentarray("player", "classname");
-	for (i = 0; i<players.size; i++)
+	
+	// Grants/removes the flashlight for all playing players
+	for( i = 0; i < level.players.size; i++ )
 	{
-		if( !isReallyPlaying(players[i]) )
+		if( !isReallyPlaying( level.players[i] ) )
 			continue;
-		if(on)
-			players[i] thread flashlightOn();
+			
+		if( on )
+			level.players[i] thread flashlightOn();
 		else
-			players[i] thread flashlightOff();
+			level.players[i] thread flashlightOff();
 	}
 }
 
-flashlightOn(noWait)
+/*
+	Called when the scary wave initializes
+*/
+flashlightOn( noWait )
 {
-	if(isDefined(self.flashlight) || self.sessionteam != "allies")
+	// Prevent multiple or wrongly creating a flashlight
+	if( isDefined( self.flashlight ) || !isReallyPlaying(self) )
 		return;
-	if(!isDefined(noWait))
-		wait randomfloat(6); // For some randomness
+	
+	// Give it some random delay or not
+	if( !isDefined( noWait ) )
+		wait randomfloat( 6 );
 	else
 		wait 0.1;
-	self.flashlight = undefined;
+	
+	// Spawn in an object that holds the flashlight effect
 	self.flashlight = spawn( "script_model", self getTagOrigin( "j_spinelower" ) );
 	self.flashlight setModel( "tag_origin" );
+	
 	wait 0.05;
+	
 	PlayFXOnTag( level.flashlightGlow, self.flashlight, "tag_origin" );
 	self.flashlight LinkTo( self );
-	self playsound("flashlight_on");
+	self playsound( "flashlight_on" );
+	
+	// Make sure to remove the glow on death
 	self thread removeLightOnDeath();
 }
 
+/*
+	Removes the flashlight effect if defined
+*/
 flashlightOff()
 {
-	if(!isDefined(self.flashlight))
+	if( !isDefined( self.flashlight ) )
 		return;
 	
 	self.flashlight delete();
 }
 
+/*
+	Removes the flashlight on death
+*/
 removeLightOnDeath()
 {
+	// Don't remove it if a player was cleaned up or simply disconnected
 	self endon( "disconnect" );
 	self endon( "join_spectator" );
 	self endon( "downed" );
@@ -980,6 +1200,9 @@ removeLightOnDeath()
 		self.flashlight delete();
 }
 
+/*
+	Done for debugging purposes. Shows the player the current mapname and his location and angles
+*/
 reportMyCoordinates(){
 
 	origin = self getOrigin();
@@ -993,7 +1216,11 @@ reportMyCoordinates(){
 	self iprintlnbold("Map: " + mapname);
 }
 
-resetUnlocks() {
+/*
+	Resets all weapon progress to 0
+*/
+resetUnlocks(){
+	// Reset current and persistency unlocks
 	self.unlock["primary"] = 0;
 	self.unlock["secondary"] = 0;
 	self.unlock["extra"] = 0;
@@ -1001,6 +1228,7 @@ resetUnlocks() {
 	self.persData.unlock["secondary"] = 0;
 	self.persData.unlock["extra"] = 0;
 
+	// If we use the magic box, give the player the weapons that are assigned via config
 	if( level.dvar["surv_weaponmode"] == "wawzombies" )
 	{
 		self.persData.primary = getDvar( "surv_waw_spawnprimary" );
@@ -1008,8 +1236,8 @@ resetUnlocks() {
 	}
 	else
 	{
-		self.persData.primary =  getDvar("surv_"+self.class+"_unlockprimary"+self.unlock["primary"]);
-		self.persData.secondary = getDvar("surv_"+self.class+"_unlocksecondary"+self.unlock["secondary"]);
+		self.persData.primary = getDvar( "surv_" + self.class + "_unlockprimary" + self.unlock["primary"] );
+		self.persData.secondary = getDvar( "surv_" + self.class + "_unlocksecondary" + self.unlock["secondary"] );
 	}
 
 	if( self.persData.primary != "none" && self.persData.primary != "" )
@@ -1025,400 +1253,518 @@ resetUnlocks() {
 
 	if( self.persData.secondary != "none" && self.persData.secondary != "" )
 	{
-		self.persData.secondaryAmmoClip = weapClipSize(self.persData.secondary);
-		self.persData.secondaryAmmoStock = weapMaxAmmo(self.persData.secondary);
+		self.persData.secondaryAmmoClip = weapClipSize( self.persData.secondary );
+		self.persData.secondaryAmmoStock = weapMaxAmmo( self.persData.secondary );
 	}
 	else
 	{
 		self.persData.secondaryAmmoClip = 0;
 		self.persData.secondaryAmmoStock = 0;
 	}
-
-	self.persData.extra = "";			// If we set this the shop wouldn't work correctly!
+	
+	// If we set this the shop wouldn't work correctly!
+	self.persData.extra = "";			
 	self.persData.extraAmmoClip = 0;
 	self.persData.extraAmmoStock = 0;	
 }
 
-
-setStatusIcon(icon)
+/*
+	Simple function to set the player's status icon
+*/
+setStatusIcon( icon )
 {
 	self.statusicon = icon;
 }
 
-bounce(direction)
+/*
+	Propells the player towards 'direction'
+*/
+bounce( direction )
 {
-	self endon("disconnect");
-	self endon("death");
-	for (i=0; i<2; i++)
+	self endon( "disconnect" );
+	self endon( "death" );
+	
+	// Give the player two boosts towards 'direction'
+	for ( i = 0; i < 2; i++ )
 	{
-		self.health = (self.health + 899);
-		self finishPlayerDamage(self, self, 899, 0, "MOD_PROJECTILE", "rpg_mp", direction, direction, "none", 0);
+		self.health = ( self.health + 899 );
+		self finishPlayerDamage( self, self, 899, 0, "MOD_PROJECTILE", "rpg_mp", direction, direction, "none", 0 );
 		wait 0.05;
 	}
 }
 
+/*
+	A timed loop that restores all HP for a player
+	speed = amount of HP healed per step
+*/
 fullHeal(speed)
 {
-	self endon("death");
-	self endon("disconnect");
-	self endon("downed");
-	
-	while (1)
+	self endon( "death" );
+	self endon( "disconnect" );
+	self endon( "downed" );
+
+	while(1)
 	{
 		self.health += speed;
-		if(self.health >= self.maxhealth){
+		
+		// Stop at >= 100% Health
+		if( self.health >= self.maxhealth )
+		{
 			self.health = self.maxhealth;
-			updateHealthHud(1);
+			updateHealthHud( 1 );
 			break;
 		}
-		updateHealthHud(self.health/self.maxhealth);
+		
+		updateHealthHud( self.health / self.maxhealth );
 		wait .1;
 	}
 }
 
-healPlayer(amount){
-	amount = int(amount);
+/*
+	Heals the calling player with 'amount'
+*/
+healPlayer( amount )
+{
+	// Make sure we only heal by whole numbers
+	amount = int( amount );
 	self.health += amount;
-	if(self.health > self.maxhealth)
+	
+	// Prevent healing > 100%
+	if( self.health > self.maxhealth )
 		self.health = self.maxhealth;
-		
+	
+	// Shows a little "+" spawning next to the health bar and updates the bar's display
 	self thread healthFeedback();
-	updateHealthHud(self.health/self.maxhealth);
+	updateHealthHud( self.health / self.maxhealth );
 }
 
-incUpgradePoints(inc)
+/*
+	Increases/decreases the calling player's upgradepoints by 'inc' amount
+*/
+incUpgradePoints( inc )
 {
+	// Make sure inc is a valid number and not <> than 1/-1
 	if ( !isdefined( inc ) || ( inc < 1 && inc > -1 ) )
 		return;
 		
 	self.points += inc;
 	self.persData.points += inc;
-	//iprintlnbold(self.persData.points);
-	if (inc > 0){
+	
+	// Whether we in- or decrease the upgradepoints, add it to our score or add it to the spent amount of money
+	if( inc > 0 )
+	{
 		self.score += inc;
 		self.stats["score"] = self.score;
 		self.stats["upgradepointsReceived"] += inc;
 	}
-	if(inc < 0)
-		self.stats["upgradepointsSpent"] += (inc * -1);
+	if( inc < 0 )
+		self.stats["upgradepointsSpent"] += ( inc * -1 );
+		
 	thread upgradeHud(inc);
 }
 
-/* For each wave missed, we give the players more upgradepoints (if enabled) */
-giveDelayedUpgradepoints(){
-
+/* 
+	For each wave missed, we give the players more upgradepoints (if enabled) 
+*/
+giveDelayedUpgradepoints()
+{
+	// Check whether we actually missed waves
 	if( ( level.currentWave - self.lastPlayedWave ) <= 1 )
 		return;
-
-	if( level.dvar["game_delayed_upgradepoints"] ){
-		self incUpgradePoints( ((level.currentWave - self.lastPlayedWave - 1) * level.dvar["game_delayed_upgradepoints_amount"]) );
-	}
+	
+	// Give us the points that we deserve!
+	if( level.dvar["game_delayed_upgradepoints"] )
+		self incUpgradePoints( ( ( level.currentWave - self.lastPlayedWave - 1 ) * level.dvar["game_delayed_upgradepoints_amount"] ) );
 }
 
-getTotalUpgradePoints(){
+/*
+	Returns the total amount of upgradepoints all players ever(!) have earned
+*/
+getTotalUpgradePoints()
+{
 	totalpoints = 0;
-	for(i = 0; i < level.players.size; i++){
+	
+	for( i = 0; i < level.players.size; i++ )
+	{
 		player = level.players[i];
-		if(player.isActive)
+		
+		if( player.isActive )
 			totalpoints += player.stats["upgradepointsReceived"];
 	}
+	
 	return totalpoints;
 }
 
-getAverageUpgradePoints(){
+/*
+	Returns the (basic) average amount of upgradepoints per player
+*/
+getAverageUpgradePoints()
+{
 	total = 0;
 	playercount = 0;
-	for(i = 0; i < level.players.size; i++){
+	
+	for( i = 0; i < level.players.size; i++ )
+	{
 		player = level.players[i];
-		if(player.isActive){
+		
+		if( player.isActive )
+		{
 			total += player.points;
 			playercount++;
 		}
 	}
-	return int(total/playercount);
+	
+	return int( total / playercount );
 }
 
-getRemainingUpgradePoints(){
+/*
+	Returns the total amount of upgradepoints all players have in total
+*/
+getRemainingUpgradePoints()
+{
 	totalpoints = 0;
-	for(i = 0; i < level.players.size; i++){
+	
+	for( i = 0; i < level.players.size; i++ )
+	{
 		player = level.players[i];
-		if(player.isActive)
+		
+		if( player.isActive )
 			totalpoints += player.points;
 	}
+	
 	return totalpoints;
 }
 
+/*
+	Called by a player joining the Survivors
+*/
 joinAllies()
 {
-	if (level.gameEnded)
-	return;
+	// Ignore it when the game has ended
+	if ( level.gameEnded )
+		return;
 	
-	if (self.pers["team"] != "allies")
+	// Apply necessary settings to this player if he isn't a Survivor already
+	if ( self.pers["team"] != "allies" )
 	{
-		//if (isalive(self))
-		//self suicide();
-		
 		self.sessionteam = "allies";
-
-		self setclientdvars("g_scriptMainMenu", game["menu_class"]);
-		
 		self.pers["team"] = "allies";
-		
-		//self spawnPlayer();
+		self setclientdvars( "g_scriptMainMenu", game["menu_class"] );
 	}
 }
 
-removeFromQueue(){
-	self setclientdvars("cg_thirdperson", 0, "ui_spawnqueue", "");
-	if( arrayContains(level.joinQueue, self) ){
-		level.joinQueue = removeFromArray(level.joinQueue, self);
-		self iprintlnbold("You have been removed from the queue!");
-
-		self joinSpectator();
-	}
-}
-
+/*
+	Called when a player is being set to Spectator
+*/
 joinSpectator()
 {
-	if (level.gameEnded)
-	return;
+	// By default we don't do anything if the game is over and we're inside the mapvoting process
+	if( level.gameEnded )
+		return;
 	
-	if (self.pers["team"] != "spectator")
+	// Process the player if he's not spectator alreay
+	if( self.pers["team"] != "spectator" )
 	{
-		if ( isalive(self) ){
-			// logPrint("Updated your lastPlayedWave, " + self.name + ", it is " + level.currentWave + "\n");
+		// In case he was living, save his stats in the persistency area and kill him
+		if( isAlive( self ) ){
 			self.persData.stats = self.stats;
 			self.lastPlayedWave = level.currentWave;
 			self.persData.lastPlayedWave = self.lastPlayedWave;
 			self suicide();
 		}
-			
+		
+		// Reset everything to default
 		self cleanup();
-		if ( isdefined(self.carryObj) )
+		// TO-DO Shouldn't the carryObj be removed in cleanup(), too?
+		if ( isDefined( self.carryObj ) )
 			self.carryObj delete();
 		
 		self.isActive = false;
 		self.isZombie = false;
 		
-		self notify("join_spectator");
-		level notify("spawned_spectator", self);
+		// Notify locally and globally that this player is now spectating
+		self notify( "join_spectator" );
+		level notify( "spawned_spectator", self );
 		
+		// Assign team vars for Spectator
 		self.pers["team"] = "spectator";
 		self.sessionteam = "spectator";
 		self.sessionstate = "spectator";
 		
-		spawns = getentarray("mp_global_intermission", "classname");
-		if(spawns.size > 0){
-			spawn = spawns[randomint(spawns.size)];
+		// Select one of the existing spectator positions to spawn him at
+		spawns = getEntArray( "mp_global_intermission", "classname" );
+		if( spawns.size > 0 ){
+			spawn = spawns[randomint( spawns.size )];
 			origin = spawn.origin;
 			angles = spawn.angles;
 		}
+		// Make sure to give coordinates even if the mapper forgot to add spectator-spawn entities
 		else{
-			origin = (0,50,50);
-			angles = (0,0,0);
+			origin = ( 0, 50, 50 );
+			angles = ( 0, 0, 0 );
 		}
 		
-		// new time = new time + (currentTime - timeAtWhichWeStarted)
-		if(self.hasPlayed)
+		// Save the player's playtime to his stats
+		if( self.hasPlayed )
 			self.stats["timeplayed"] += getTime() - self.stats["playtimeStart"];
-		spawnSpectator(origin, angles);
+		
+		// Finally spawn the player as spectator at the selected location
+		spawnSpectator( origin, angles );
 	}
-	if(self.hasPlayed)
+	
+	// Update the game's class counter
+	if( self.hasPlayed )
 		level notify("update_classcounts");
+	
+	// Starting the debug function to display the current coordinates of a player
 	self thread giveCoordinatesToSpec();
 }
 
-giveCoordinatesToSpec(){
+/*
+	Debug function that shows a spectator' coordinates when holding F for 3 Seconds
+*/
+giveCoordinatesToSpec()
+{
 	self notify("kill_coordinates");
 	self endon("disconnect");
 	self endon("spawned");
 	self endon("kill_coordinates");
 	
+	i = 0;
+	
 	wait .5;
-	while(1){
-		wait 1;
-			if(self useButtonPressed()){
-				wait 1;
-				if(self useButtonPressed()){
-					wait 1;
-					if(self useButtonPressed()){
-						self reportMyCoordinates();
-						wait 3;
-					}
-				}
-			}
-				
+	// Check if a player's holding the USE button for 3 Seconds, show the coordinates, reset it otherwise
+	while( 1 )
+	{
+		if( i == 2 )
+		{
+			self reportMyCoordinates();
+			i = 0;
+		}
+		else if( self useButtonPressed() ){
+			i++;
+		}
+		else
+			i = 0;
+			
+		wait 1;				
 	}
-
 }
 
+/*
+	Default Spawn function for a Spectator
+*/
 spawnSpectator(origin, angles)
 {
-
-	self notify("spawned");
-
+	self notify( "spawned" ); // ?? Is that good?
 	resettimeout();
-
+	
+	// Assign spectator team vars
 	self.sessionstate = "spectator";
 	self.spectatorclient = -1;
 	self.friendlydamage = undefined;
 	
-	self allowSpectateTeam("axis", !level.dvar["game_disable_spectating_bots"]);
+	// Give or take the player permission to spectate the bots
+	self allowSpectateTeam( "axis", !level.dvar["game_disable_spectating_bots"] );
 	
-	level notify("spawned_spectator", self);
+	// Global notification that this player is now spectating
+	level notify( "spawned_spectator", self );
 
 	self spawn( origin, angles );
 }
 
-revive(by)
+/*
+	This is being called when a player successfully held USE to revive a player, or when the endgame-revive kicks in
+	'by' optionally refers to the player that has revived the calling player
+*/
+revive( by )
 {
-	if (level.gameEnded)
-	return;
-	// Give me back my weapons!
+	// Don't do anything if the game is already over
+	if ( level.gameEnded )
+		return;
+		
 	self.isAlive = true;
-	weapons = self.lastStandWeapons;
 	
+	// Load the old weapons the player had when going down
+	weapons = self.lastStandWeapons;
 	ammoClip = self.lastStandAmmoClip;
 	ammoStock = self.lastStandAmmoStock;
-	
-	keptWeapons = self getweaponslist();
+	keptWeapons = self getWeaponsList();
 	keptAmmoStock = [];
 	keptAmmoClip = [];
 	for( i = 0; i < keptWeapons.size; i++ )
 	{
-		
-		keptAmmoClip[i] = self getWeaponAmmoClip(keptWeapons[i]);
-		keptAmmoStock[i] = self getWeaponAmmoStock(keptWeapons[i]);
+		keptAmmoClip[i] = self getWeaponAmmoClip( keptWeapons[i] );
+		keptAmmoStock[i] = self getWeaponAmmoStock( keptWeapons[i] );
 	}
 	
+	// Remove the weapons he had during last-stand (being down)
 	self takeallweapons();
 
-
-	if (self.lastStandWeapon == "none")
+	// ??
+	if ( self.lastStandWeapon == "none" )
 	{
-		if (weapons.size == 0)
-		{
-			if (keptWeapons.size != 0)
+		if ( weapons.size == 0 && keptWeapons.size != 0 )
 			self.lastStandWeapon = keptWeapons[0];
-		}
 		else 
-		self.lastStandWeapon = weapons[0];
+			self.lastStandWeapon = weapons[0];
 	}
 	
+	// Spawn the player again at his current position and orientation
 	self spawn( self.origin, self.angles );
 	
+	// Return his previously held weapons
 	for( i = 0; i < keptWeapons.size; i++ )
 	{
-		self giveweapon(keptWeapons[i]);
-		self setWeaponAmmoClip(keptWeapons[i], keptAmmoClip[i]);
-		self setWeaponAmmoStock(keptWeapons[i],  keptAmmoStock[i]);
+		self giveweapon( keptWeapons[i] );
+		self setWeaponAmmoClip( keptWeapons[i], keptAmmoClip[i] );
+		self setWeaponAmmoStock( keptWeapons[i],  keptAmmoStock[i] );
 	}
+	
 	for( i = 0; i < weapons.size; i++ )
 	{
-		if (!self HasWeapon(weapons[i]))
+		if ( !self hasWeapon( weapons[i] ) )
 		{
-			self giveweapon(weapons[i]);
-			self setWeaponAmmoClip(weapons[i], ammoClip[i]);
-			self setWeaponAmmoStock(weapons[i],  ammoStock[i]);
+			self giveWeapon( weapons[i] );
+			self setWeaponAmmoClip( weapons[i], ammoClip[i] );
+			self setWeaponAmmoStock( weapons[i],  ammoStock[i] );
 		}
 	}
 	
-	self setspawnweapon(self.lastStandWeapon);
-	self switchtoweapon(self.lastStandWeapon);
+	self setspawnweapon( self.lastStandWeapon );
+	self switchtoweapon( self.lastStandWeapon );
 	
-	
-	list = self getweaponslist();
-	
-	
-	// RELOADING PLAYER!
+	// Remove anything related to being down and make him targetable by Bots again
 	self setDown(false);
 	self.stats["downtime"] += getTime() - self.stats["lastDowntime"];
 	level scripts\players\_usables::removeUsable(self);
 	self.isTargetable = true;
-	self notify("revived");
 	
-	if (self.infected)
-	// level scripts\players\_usables::addUsable(self, "infected", "Press [^3USE^7] to cure", 96);
-	level scripts\players\_usables::addUsable(self, "infected", &"USE_CURE", 96);
+	// Notify locally that he's up again
+	self notify( "revived" );
 	
-	self scripts\players\_abilities::loadClassAbilities(self.curClass);
+	// Check whether he's still infected, make him curable again
+	if ( self.infected )
+		level scripts\players\_usables::addUsable( self, "infected", &"USE_CURE", 96 );
 	
-	self setMoveSpeedScale(self.speed);
+	// Reload his Class' abilities
+	self scripts\players\_abilities::loadClassAbilities( self.curClass );
+	self setMoveSpeedScale( self.speed );
 	self.health = self.maxhealth;
+	setStatusIcon( "icon_" + self.class );
 	
-	self updateHealthHud(1);
-	// self scripts\players\_abilities::resetSpecial();
-	self setclientdvar("ui_specialrecharge", self.specialRecharge/100);
+	// Reset health and special bar
+	self updateHealthHud( 1 );
+	self setclientdvar( "ui_specialrecharge", self.specialRecharge / 100 );
 	
-	setStatusIcon("icon_"+self.class);
-	
+	// Re-initialize player-side threads
 	self thread scripts\players\_usables::checkForUsableObjects();
-	
 	self thread scripts\players\_weapons::watchWeaponUsage();
 	self thread scripts\players\_weapons::watchWeaponSwitching();
 	self thread scripts\players\_abilities::watchSpecialAbility();
-	// Properly start Monkey Bomb countdown again
-	// if(self hasWeapon(level.weapons["flash"]) && self GetWeaponAmmoClip(level.weapons["flash"]) == 0)
-		// self thread scripts\players\_abilities::restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);
-	// Setting the first-in-queue weapon to be the actionslot weapon
-	if(self.actionslotweapons.size > 0)
+	// Reassign actionslotweapons if he has any
+	if( self.actionslotweapons.size > 0 )
 		self setActionSlot( 4, "weapon", self.actionslotweapons[0] );
 	
-	if(isDefined(by)){
-		self playsound("self_thanks_revived");
+	// Give credit to the player that has revived the calling player
+	if( isDefined( by ) ){
+		// Acknowledge the revive by saying 'thanks'... being polite and shit
+		self playsound( "self_thanks_revived" );
+		
+		// Players being revived gain a certain grace time where they can't be damaged, start calculating now
 		self.spawnProtectionTime = getTime();
-		if( isReallyPlaying(by) && by.curClass == "medic" )
-			by scripts\players\_abilities::rechargeSpecial(8);
+		
+		// Give the promised reward to the reviving player if he's medic
+		if( isReallyPlaying( by ) && by.curClass == "medic" )
+			by scripts\players\_abilities::rechargeSpecial( 8 );
+			
 		by.stats["revives"]++;
 	}
-	wait .05;
-	self switchtoweapon(self.lastStandWeapon);
+	
+	wait 0.05;
+	self switchToWeapon( self.lastStandWeapon );
 }
 
-flickeringHud(duration){
-	self endon("disconnect");
-	self endon("death");
-	while(getTime() < duration){
+/*
+	When a scary wave is being started, make the hud of all players flicker (turn on and off) randomly
+	'duration' defines the time in milliseconds the flickering will occur
+*/
+flickeringHud( duration )
+{
+	// Since this is a function with loops and waits, we cancel it when it's no longer needed
+	self endon( "disconnect" );
+	self endon( "death" );
+	
+	// Run the loop for 'duration' time
+	start = getTime();
+	while( start + duration >= getTime() )
+	{
 		ran1 = randomint(2);
 		
-		if(ran1 == 0)
+		// ran1 is an integer with a value of 0 or 1 and 0 refers to false and 1 to true, so no "==" check is required
+		if( ran1 )
 			self setclientdvar("cg_draw2d", 0);
 		else
 			self setclientdvar("cg_draw2d", 1);
-			
+		
+		// Add a minimal delay and some random delay
 		wait 0.05 + randomfloat(0.2);
 	}
+	
+	// After the flickering, reset it to "on"
 	self setclientdvar("cg_draw2d", 1);
 }
 
-/* Updates player counts twice a second because I'm too stupid to actually do this with kill/disconnect/spawn events */
-updateActiveAliveCounts(){
-	level endon("game_ended");
-	level notify("update_active_alive_counts");
-	level endon("update_active_alive_counts");
-	while(1){
+/* 
+	Counts through all players, checking whether they are active and/or alive and updates the game's vars accordingly
+	TO-DO: Implement callbacks to update these on-Spawn/-Connect/-Death or -Disconnect
+*/
+updateActiveAliveCounts()
+{
+	// Run this until the game ends
+	level endon( "game_ended" );
+	
+	// Make sure we never run this thread multiple times
+	level notify( "update_active_alive_counts" );
+	level endon( "update_active_alive_counts" );
+	
+	// Checks through all players and checks who of them is active and who of them is alive, gently (lol) incrementing the respective var counts
+	while( 1 )
+	{
 		level.activePlayers = 0;
 		level.alivePlayers = 0;
 		level.alivePlayersArray = undefined;
 		level.activePlayersArray = undefined;
 		level.alivePlayersArray = [];
 		level.activePlayersArray = [];
-		for(i = 0; i < level.players.size; i++){
+		
+		for( i = 0; i < level.players.size; i++ )
+		{
 			p = level.players[i];
+			
+			// Ignore Spectators
 			if( !isReallyPlaying ( p ) )
 				continue;
-			if( p.isActive ){
+				
+			if( p.isActive )
+			{
 				level.activePlayers++;
 				level.activePlayersArray[level.activePlayersArray.size] = p;
-				if( p.isAlive ){
+				
+				// isAlive can only be true when a player isActive, too
+				if( p.isAlive )
+				{
 					level.alivePlayers++;
 					level.alivePlayersArray[level.alivePlayersArray.size] = p;
 				}
 			}
 		}
+		
 		wait 0.5;
+		
 		if( level.lastAlivePlayers > 1 && level.activePlayers > 2 && level.alivePlayers == 1 )
 			level.alivePlayersArray[0] thread [[level.callbackLastManStanding]]();
+			
 		level.lastAlivePlayers = level.alivePlayers;
 	}
 }
