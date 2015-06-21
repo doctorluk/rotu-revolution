@@ -169,7 +169,7 @@ preWave(wavetype, type){
 			for(i = 0; i < level.players.size; i++){
 				if(level.players[i].isActive && level.players[i].isAlive){
 					level.players[i] shellshock("general_shock", 7);
-					level.players[i] thread scripts\players\_players::flickeringHud(getTime() + 6000);
+					level.players[i] thread scripts\players\_players::flickeringHud(6000);
 				}
 			}
 			wait 3;
