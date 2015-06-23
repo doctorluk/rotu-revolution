@@ -184,7 +184,7 @@ compassBlinkMe()
 	self endon( "death" );
 	self endon( "spawned" );
 	
-	while(1){
+	while( 1 ){
 		self pingPlayer();
 		wait 3;
 	}
@@ -213,7 +213,7 @@ restoreAmmo()
 */
 hasFullAmmo()
 {
-	weapons = self getweaponslist();
+	weapons = self getWeaponslist();
 	for( i = 0; i < weapons.size; i++ )
 	{
 		// We need to run a different check for weapons that do not have stock ammo, like C4
@@ -242,7 +242,7 @@ onPlayerDisconnect(){
 onPlayerConnect()
 {
 	// Prevent players from loading when the game has ended
-	// TO-DO: implement better handling of players when connecting to an ended game, show them the mapvoting(?) etc.
+	// TODO: implement better handling of players when connecting to an ended game, show them the mapvoting(?) etc.
 	if ( level.gameEnded )
 		self.sessionstate = "intermission";
 	
@@ -297,7 +297,7 @@ onPlayerKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHi
 	if( self.sessionteam == "spectator" )
 		return;
 
-	// TO-DO: Is this needed at all?
+	// TODO: Is this needed at all?
 	if( sHitLoc == "head" && sMeansOfDeath != "MOD_MELEE" )
 		sMeansOfDeath = "MOD_HEAD_SHOT";
 	if ( level.dvar["zom_orbituary"] )
@@ -369,8 +369,8 @@ onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon,
 			if ( self.health / self.maxhealth >= 0.65 )
 			{
 				iDamage = int( iDamage / 2 );
-				// Flash the screen of the armored in blue to make him notice he's taking reduced damage (TO-DO: Find different means
-				// of notifying the player that he's taking reduced damage
+				// Flash the screen of the armored in blue to make him notice he's taking reduced damage 
+				// TODO: Find better means of notifying the player that he's taking reduced damage
 				self thread screenFlash( ( 0, 0, .7 ), 0.35, 0.5 );
 			}
 		}
@@ -401,7 +401,7 @@ onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon,
 }
 
 /*
-	Returns whether a player's current weapon has less or equal to 30% of it's maximum capacity
+	Returns whether a player's current weapon has less or equal to 30% of its maximum capacity
 */
 hasLowAmmo()
 {
@@ -417,7 +417,7 @@ hasLowAmmo()
 
 /*
 	Returns the best player, based on a minimum or maximum threshold for certain stats
-	TO-DO: Put this into the _gamemodes.gsc since the ending is handled there, too?
+	TODO: Put this into the _gamemodes.gsc since the ending is handled there, too?
 */
 getBestPlayer( type, returns )
 {
@@ -431,6 +431,7 @@ getBestPlayer( type, returns )
 	player = undefined;
 	amount = 0;
 	amount2 = 999999999;
+	
 	// Loop through every single player
 	for( i = 0; i < level.players.size; i++ )
 	{
@@ -440,9 +441,10 @@ getBestPlayer( type, returns )
 			
 		// Depending on what we are looking for (type), enter the player into our list if he has more/less than the one checked before
 		// resulting in the highest/lowest player being found for the stats
-		switch(type){
+		switch( type )
+		{
 			case "kills":
-				if(level.players[i].kills > amount)
+				if( level.players[i].kills > amount )
 				{
 					player = level.players[i];
 					amount = level.players[i].kills;
@@ -711,7 +713,7 @@ watchHPandAmmo()
 
 /*
 	Area damage function against bots, used by Explosive Barrels
-	TO-DO: Move to _barricade.gsc (?) where Explosive Barrels are located, too
+	TODO: Move to _barricade.gsc (?) where Explosive Barrels are located, too
 */
 doAreaDamage( range, damage, attacker )
 {
@@ -842,7 +844,7 @@ spawnJoinQueue()
 		level.joinQueue = removeFromArray( level.joinQueue, player );
 		
 		// Better double-check if a player inside the queue has already spawned
-		// TO-DO: THIS SHOULD NEVER HAPPEN!
+		// TODO: THIS SHOULD NEVER HAPPEN!
 		if( isReallyPlaying( player ) )
 		{
 			logPrint( "We tried to spawn someone from the Spawnqueue who is already playing: " + player.name + "\n" );
@@ -1475,7 +1477,7 @@ joinSpectator()
 		
 		// Reset everything to default
 		self cleanup();
-		// TO-DO Shouldn't the carryObj be removed in cleanup(), too?
+		// TODO Shouldn't the carryObj be removed in cleanup(), too?
 		if ( isDefined( self.carryObj ) )
 			self.carryObj delete();
 		
@@ -1717,7 +1719,7 @@ flickeringHud( duration )
 
 /* 
 	Counts through all players, checking whether they are active and/or alive and updates the game's vars accordingly
-	TO-DO: Implement callbacks to update these on-Spawn/-Connect/-Death or -Disconnect
+	TODO: Implement callbacks to update these on-Spawn/-Connect/-Death or -Disconnect
 */
 updateActiveAliveCounts()
 {
