@@ -57,9 +57,9 @@ init()
 	turretData();
 }
 
-/*
-	We save static stats of both types of turrets to refer to them later and to make it easier to
-	modify them via config vars and difficulty settings
+/**
+*	We save static stats of both types of turrets to refer to them later and to make it easier to
+*	modify them via config vars and difficulty settings
 */
 turretData(){
 	level.turretData = [];
@@ -86,9 +86,9 @@ turretData(){
 	level.turretData["gl"].firetag = "tag_turret";
 }
 
-/*
-	Gives the calling player a turret
-	'augmented' keeps persistency for turrets that have been augmented by the Engineer's special and will be re-placed
+/**
+*	Gives the calling player a turret
+*	'augmented' keeps persistency for turrets that have been augmented by the Engineer's special and will be re-placed
 */
 giveTurret(turret_type, time, augmented)
 {
@@ -130,8 +130,8 @@ giveTurret(turret_type, time, augmented)
 	self thread placeTurret( turret_type, augmented );
 }
 
-/*
-	Handling the removal of turrets that are being held by players
+/**
+*	Handling the removal of turrets that are being held by players
 */
 onDeath()
 {
@@ -142,9 +142,9 @@ onDeath()
 	level.turrets_held--;
 }
 
-/*
-	The actual placement loop that monitors the desire of a player to place
-	the turret and to check the surroundings for a valid placement position
+/**
+*	The actual placement loop that monitors the desire of a player to place
+*	the turret and to check the surroundings for a valid placement position
 */
 placeTurret( turret_type, augmented )
 {
@@ -203,8 +203,8 @@ placeTurret( turret_type, augmented )
 	
 }
 
-/*
-	Returns whether a turret is placeable at the current position and places it, if a valid position has been found
+/**
+*	Returns whether a turret is placeable at the current position and places it, if a valid position has been found
 */
 deploy( turret_type, augmented )
 {
@@ -235,7 +235,8 @@ deploy( turret_type, augmented )
 	}
 
 	// If, however, we find a valid place, we run a trace to determine the ground position in front of us to place it at
-	trace = bulletTrace( end + (0,0,100), end - (0,0,300), false, self );
+	// TODO: This can place a turret far above the player if it encounters a wall just above him, also make it fail-save so it won't float (mp_fnrp_cube)
+	trace = bulletTrace( end + ( 0, 0, 100 ), end - ( 0, 0, 300 ), false, self );
 	
 	// During scary waves, the turrets are deactivated. If turrets are active however, we play a sound
 	if( !level.turretsDisabled )
@@ -246,37 +247,40 @@ deploy( turret_type, augmented )
 	return true;
 }
 
-/*
-	Here we spawn the actual turret at the given permission and assign the turret_type's values
+/**
+*	Here we spawn the actual turret at the given permission and assign the turret_type's values
 */
 defenceTurret( turret_type, pos, angles, augmented )
 {
 	// Since there's another wait in this thread, we make sure to not run into problems and kill it if the turret dies during initialization
-	self endon("kill_turret");
+	self endon( "kill_turret" );
 
-	level.turrets++;
 	offset = ( 0, 0, 0 );
+	
 	iprintln( "^2" + self.name + " ^2deployed a " + turret_type + " turret." );
+	level.turrets++;
+	
 	// The GL turret 'head' has to be moved up a little, so it stands on its base
 	if( turret_type == "gl" )
-		offset = (0,0,20);
+		offset = ( 0, 0, 20 );
 	
 	// Spawn the default models, assign the given turret_type models and hide necessary parts
-	self.turret_gun = spawn( "script_model", pos + offset);
+	self.turret_gun = spawn( "script_model", pos + offset );
 	self.turret_bipod = spawn( "script_model", pos );
 
 	self.turret_gun setModel( level.sentry_turret_model[turret_type] );
 	self.turret_bipod setModel( level.sentry_base_model[turret_type] );
 	
-	if(turret_type == "minigun"){
+	if( turret_type == "minigun" ){
 		self.turret_gun thread hideLowerParts();
 		self.turret_bipod hideUpperParts();
 	}
-
+	
+	// Make them not-solid
 	self.turret_gun setContents( 0 );
 	self.turret_bipod setContents( 0 );
 
-	self.turret_gun.angles = angles + (0,50,0);
+	self.turret_gun.angles = angles + ( 0, 50, 0 );
 	self.turret_bipod.angles = angles;
 
 	self.turret_gun.owner = self;
@@ -312,13 +316,13 @@ defenceTurret( turret_type, pos, angles, augmented )
 	
 	// Start the actual threads for the turrets, enemy-detection, rotation and shooting algorithms
 	self.turret_gun.isTurret = true;
-	self.turret_gun thread CheckForPlayers();
+	self.turret_gun thread targetAcquisition();
 	self.turret_gun thread rotate();
 	
-	if(self.turret_gun.turret_type  == "gl")
+	if( self.turret_gun.turret_type  == "gl" )
 		self.turret_gun thread shootGL();
 		
-	if(self.turret_gun.turret_type == "minigun")
+	if( self.turret_gun.turret_type == "minigun" )
 		self.turret_gun thread shootMinigun();
 	
 	// Process the time the turrets have been spawned to save them for later when they have to time out
@@ -337,7 +341,7 @@ defenceTurret( turret_type, pos, angles, augmented )
 	wait 1;
 	
 	// Make the turret pick-up-able (is that even a word?)
-	self scripts\players\_usables::addUsable(self.turret_gun, "turret", &"USE_TURRET", 96 );
+	self scripts\players\_usables::addUsable( self.turret_gun, "turret", &"USE_TURRET", 96 );
 	
 	// Give turrets an extended duration on the field if you've unlocked the Engineer's ability
 	if( self.longerTurrets )
@@ -350,8 +354,8 @@ defenceTurret( turret_type, pos, angles, augmented )
 	level thread deleteTurretOnDC( self.turret_gun, self.turret_bipod, duration - self.turret_gun.timePassed );
 }
 
-/*
-	Hides gun-part of Sentry Gun
+/**
+*	Hides gun-part of Sentry Gun
 */
 hideUpperParts()
 {
@@ -360,8 +364,8 @@ hideUpperParts()
 	self hidePart("tag_spin");
 }
 
-/*
-	Hides bipod-part of Sentry Gun
+/**
+*	Hides bipod-part of Sentry Gun
 */
 hideLowerParts()
 {
@@ -374,8 +378,8 @@ hideLowerParts()
 	playFXonTag( level.sentry_laser, self, "tag_flash" );
 }
 
-/*
-	Engineer's Special -> Boosts the default stats of the calling turret
+/**
+*	Engineer's Special -> Boosts the default stats of the calling turret
 */
 goAugmented()
 {
@@ -389,7 +393,8 @@ goAugmented()
 			self.cooldown = level.turretData[type].cooldown * 0.8;
 			self.isAugmented = true;
 			self thread scripts\players\_turrets::createEffectEntity( level._effect["augmented"], "tag_origin", "augmented" );
-			self.owner iprintln("^3Augmenting ^7GL turret!");
+			// TODO: Find a better way to signal augmentation
+			self.owner iprintln( "^3Augmenting ^7GL turret!" );
 			break;
 		case "minigun": 
 			self.numBullets = level.turretData[type].numbullets * 2;
@@ -398,16 +403,17 @@ goAugmented()
 			self.cooldown = level.turretData[type].cooldown * 0.5;
 			self.isAugmented = true;
 			self thread scripts\players\_turrets::createEffectEntity( level._effect["augmented"], "tag_origin", "augmented" );
-			self.owner iprintln("^3Augmenting ^7Sentry turret!");
+			// TODO: Find a better way to signal augmentation
+			self.owner iprintln( "^3Augmenting ^7Sentry turret!" );
 			break;
 		default:
-			iprintlnbold("^1ERROR: ^7Wrong turret type for Engineer special!");
+			iprintlnbold( "^1ERROR: ^7Wrong turret type for Engineer special!" );
 			break;
 	}
 }
 
-/*
-	Deleted the turret after it has reached the max. duration on the field
+/**
+*	Delete the turret after it has reached the max. duration on the field
 */
 deleteTurretInTime( gun, bipod, time, type, owner )
 {
@@ -417,24 +423,28 @@ deleteTurretInTime( gun, bipod, time, type, owner )
 	
 	wait time;
 	if( isDefined( owner ) )
+		// TODO: Find a better way to notify the player of a turret being removed
 		owner iPrintLn( "Your " + type + " turret timed out!" );
 		
 	thread deleteTurret( gun, bipod );
 }
 
-deleteTurretOnDC(gun, bipod, time)
+/**
+*	Delete the turret when the player disconnects or switches to spectator
+*/
+deleteTurretOnDC( gun, bipod, time )
 {
 	// Prevent this from executing if any of the turret is removed
 	gun endon( "death" );
 	bipod endon( "death" );
 	
 	// If the owner stopped participating in the game, remove it
-	gun.owner waittill_any( "disconnect", "join_spectator");
+	gun.owner waittill_any( "disconnect", "join_spectator" );
 	thread deleteTurret( gun, bipod );
 }
 
-/*
-	When the scary wave is running, the turrets show an animation of being disabled and stop firing
+/**
+*	When the scary wave is running, the turrets show an animation of being disabled and stop firing
 */
 disableEffects()
 {
@@ -442,11 +452,13 @@ disableEffects()
 	self endon( "death" );
 	level endon( "game_ended" );
 	
-	if( !level.turretsDisabled ){
+	if( !level.turretsDisabled )
+	{
 		level waittill( "turrets_disabled" );
 		// Add some randomness to the disable animation - prevents all turrets from breaking down at the same time
 		wait randomfloat( 2 );
 	}
+	
 	// Shows and plays the desired effects to display its broken state
 	self playsound( "turret_broken" );
 	self createEffectEntity( level.turret_broken, self.fireTag, "broken" );
@@ -456,8 +468,8 @@ disableEffects()
 	self thread enableAgain();
 }
 
-/*
-	Moves the turret's head downwards, so it either looks sad and broken
+/**
+*	Moves the turret's head downwards, so it looks sad and broken
 */
 moveDisabledPosition()
 {
@@ -469,8 +481,8 @@ moveDisabledPosition()
 		self rotateto( ( 15, currentAngle[1], 0 ), 3 );
 }
 
-/*
-	Enables disabled turrets with an animation
+/**
+*	Enables disabled turrets with an animation
 */
 enableAgain()
 {
@@ -493,8 +505,8 @@ enableAgain()
 	self thread disableEffects();
 }
 
-/*
-	Creates an augmentation or broken effect at the given position
+/**
+*	Creates an augmentation or broken effect at the given position
 */
 createEffectEntity( effect, origin, type )
 {
@@ -509,7 +521,7 @@ createEffectEntity( effect, origin, type )
 	// When working with effects, we most likely have a wait. Just like here, so we want it to be stopped if it's not there anymore
 	self endon( "death" );
 	
-	// Augmentation and broken effects are spawned differently, so we do distinguish them here
+	// Augmentation and broken effects are spawned differently, so we distinguish them here
 	if( type == "augmented" )
 	{
 		self.effect[type] = spawnFx( effect, self.origin, ( 0, 0, 1 ), ( 1, 0, 0 ) );
@@ -525,8 +537,8 @@ createEffectEntity( effect, origin, type )
 	}
 }
 
-/*
-	Removes a turret from the field
+/**
+*	Removes a turret from the field
 */
 deleteTurret( gun, bipod )
 {
@@ -551,10 +563,10 @@ deleteTurret( gun, bipod )
 	gun delete();
 }
 
-/*
-	Firing algorithm of the GL-Turret
+/**
+*	Bullet impact function for GL-Turret shots
 */
-glDamage(targetSpot, range, damage, attacker)
+glDamage( targetSpot, range, damage, attacker )
 {
 	// Loop through all existing bots
 	for ( i = 0 ; i < level.bots.size; i++ )
@@ -577,8 +589,8 @@ glDamage(targetSpot, range, damage, attacker)
 	}
 }
 
-/*
-	Approximately calculates the time it takes for a GL-bullet to travel to its target's destination
+/**
+*	Approximately calculates the time it takes for a GL-bullet to travel to its target's destination
 	Increases feel of realism
 */
 travelDistance( distance )
@@ -593,8 +605,8 @@ travelDistance( distance )
 	return( delay );
 }
 
-/*
-	Algorithm of the Grenade Launcher-Turret
+/**
+*	Algorithm of the Grenade Launcher-Turret
 */
 shootGL()
 {
@@ -605,11 +617,12 @@ shootGL()
 	shotsFired = 0;
 	while( 1 )
 	{
-		// First we need a target that our CheckForPlayers() algorithm has provided
+		// First we need a target that our targetAcquisition() algorithm has provided
 		if( isDefined( self.targetPlayer ) )
 		{
 			// A turret is a mechanical thing, so we wait for its rotation to have finished, before we're actually able to shoot
-			self waittill("rotation_done");
+			self waittill( "rotation_done" );
+			
 			for ( i = 0; i < self.numBullets; i++ )
 			{
 				// For each bullet we want to shoot, we need to check if the target is still valid, ergo: defined, in view and alive
@@ -618,7 +631,7 @@ shootGL()
 				
 				// Calculating the distance between the muzzle and the target's lower body position
 				// We want to prevent the turrets from firing too far and too close to themselves
-				dist = distance( self getTagOrigin(self.fireTag), self.targetPlayer getTagOrigin("tag_eye") - (0,0,36) );
+				dist = distance( self getTagOrigin( self.fireTag ), self.targetPlayer getTagOrigin( "tag_eye" ) - ( 0, 0, 36 ) );
 				if( dist > self.range || dist < 40 )
 					break;
 				
@@ -628,202 +641,272 @@ shootGL()
 				// We play a firing sound and an FX at the muzzle
 				self playsound( "weap_m203_fire_npc" );
 				playFx( level._effect["turret_flash"], self getTagOrigin( self.fireTag ), anglesToForward( self.angles - ( 0, 50, 0 ) ) );
+				
+				// Calculate the travel distance from the gun to the target and wait some time
 				targetSpot = self.targetPlayer.origin;
 				wait travelDistance(dist);
 				
+				// Since we wait some frames, the target can be disappeared in the mean time. We catch that here and wait one frame
 				if( !isDefined( self.targetPlayer ) ){
 					wait 0.05;
 					continue;
 				}
 				
-				
-				thread playSoundOnSpot("clusterbomb_explode_default", targetSpot);
+				// We play a sound at the impact position and show an impact effect
+				thread playSoundOnSpot( "clusterbomb_explode_default", targetSpot );
 				playFx( level.effect_sentry_hit[self.turret_type], targetSpot );
-
-				self thread glDamage(targetSpot, 195, int(self.minDamage + randomInt(self.maxDamageAdd)), self.owner);
+				
+				// All things are done for the turret itself, the only thing left is making the impact damage its surroundings
+				self thread glDamage( targetSpot, 195, int( self.minDamage + randomInt( self.maxDamageAdd ) ), self.owner );
 				
 				wait self.fireSpeed;
 			}
 			
-			if( (shotsFired / self.numBullets) * self.cooldown < 0.05 )
+			// In case we didn't fire all shots we have per salve, we wait for a fraction of time relative to the actual amount of fired shots
+			// We HAVE to wait for at least one frame to prevent an infinite loop, in case the calculated delay is below 0.05s
+			if( ( shotsFired / self.numBullets ) * self.cooldown < 0.05 )
 				wait 0.05;
 			else
-				wait (shotsFired / self.numBullets) * self.cooldown;
+				wait ( shotsFired / self.numBullets ) * self.cooldown;
 				
 			shotsFired = 0;
 		}
-		else if (shotsFired > 0) {
-			wait (shotsFired / self.numBullets) * self.cooldown;
+		// In case we lost our target, we make sure to cool ourselves down for the shots we fired already
+		else if ( shotsFired > 0 )
+		{
+			wait ( shotsFired / self.numBullets ) * self.cooldown;
 			shotsFired = 0;
 		}
-		wait .1;
-		resettimeout();
+		
+		wait 0.1;
+		resetTimeout();
 	}
 }
 
+/**
+*	Algorithm of the Sentry-Turret (Minigun)
+*/
 shootMinigun()
 {
-	self endon("death");
-	self endon("kill_turret");
+	// End the algorithm when the turret is removed
+	self endon( "death" );
+	self endon( "kill_turret" );
+	
 	shotsFired = 0;
-	while(1)
+	while( 1 )
 	{
+		// First we need a target that our targetAcquisition() algorithm has provided
 		if( isDefined( self.targetPlayer ) )
 		{
-			self waittill("rotation_done");
-			for ( i = 0; i < self.numBullets; i++ ) {
-				if (!isDefined(self.targetPlayer) || self isInView(self.targetPlayer) <= 0 || !isAlive(self.targetPlayer))
+			// Only start firing when the turret is aligned towards the target
+			self waittill( "rotation_done" );
+			
+			for ( i = 0; i < self.numBullets; i++ )
+			{
+				// For each bullet we want to shoot, we need to check if the target is still valid, ergo: defined, in view and alive
+				if ( !isDefined( self.targetPlayer ) || self isInView( self.targetPlayer ) <= 0 || !isAlive( self.targetPlayer ) )
 					break;
 				
-				dist = distance( self getTagOrigin(self.fireTag), self.targetPlayer getTagOrigin("tag_eye") - (0,0,36) );
-				if(dist > self.range || dist < 40)
+				// Calculating the distance between the muzzle and the target's lower body position
+				// We want to prevent the turrets from firing too far and too close to themselves
+				dist = distance( self getTagOrigin( self.fireTag ), self.targetPlayer getTagOrigin( "tag_eye" ) - ( 0, 0, 36 ) );
+				if( dist > self.range || dist < 40 )
 					break;
 				
+				// Checks finished, we're firing!
 				shotsFired++;
-				playFx( level._effect["turret_flash"], self getTagOrigin(self.fireTag), anglesToForward( self.angles - (0,50,0) ) );
-				playFx( level.effect_sentry_hit["minigun"], self.targetPlayer getTagOrigin("tag_eye") );
-				self playsound("weap_minigun_fire");
-
-				self.targetPlayer thread [[level.callbackPlayerDamage]](self, self.owner, (self.minDamage + randomInt(self.maxDamageAdd)), 0, "MOD_RIFLE_BULLET", "turret_mp", self.origin, vectornormalize(self.targetPlayer.origin - self.origin), "none", 0);
+				
+				// We show a shooting effect on the muzzle and an impact effect on the zombie's body plus a firing sound
+				playFx( level._effect["turret_flash"], self getTagOrigin( self.fireTag ), anglesToForward( self.angles - ( 0, 50, 0 ) ) );
+				playFx( level.effect_sentry_hit["minigun"], self.targetPlayer getTagOrigin( "tag_eye" ) );
+				self playsound( "weap_minigun_fire" );
+				
+				// Effects and checks are done, finally damage the selected target 
+				self.targetPlayer thread [[level.callbackPlayerDamage]]( self, self.owner, ( self.minDamage + randomInt( self.maxDamageAdd ) ), 0, "MOD_RIFLE_BULLET", "turret_mp", self.origin, vectorNormalize( self.targetPlayer.origin - self.origin ), "none", 0);
 				
 				wait self.fireSpeed;
 			}
-			// if(shotsFired == self.numBullets)
-				// playFx(level._effect["overheat"], self getTagOrigin("tag_flash"));
-			if( (shotsFired / self.numBullets) * self.cooldown < 0.05 )
+			
+			// In case we didn't fire all shots we have per salve, we wait for a fraction of time relative to the actual amount of fired shots
+			// We HAVE to wait for at least one frame to prevent an infinite loop, in case the calculated delay is below 0.05s
+			if( ( shotsFired / self.numBullets ) * self.cooldown < 0.05 )
 				wait 0.05;
 			else
-				wait (shotsFired / self.numBullets) * self.cooldown;
+				wait ( shotsFired / self.numBullets ) * self.cooldown;
 				
 			shotsFired = 0;
 		}
-		else if (shotsFired > 0) {
-			wait (shotsFired / self.numBullets) * self.cooldown;
+		// In case we lost our target, we make sure to cool ourselves down for the shots we fired already
+		else if ( shotsFired > 0 )
+		{
+			wait ( shotsFired / self.numBullets ) * self.cooldown;
 			shotsFired = 0;
 		}
-		wait .1;
-		resettimeout();
+		
+		wait 0.1;
+		resetTimeout();
 	}
 }
 
-playSoundOnSpot(sound, origin){
-
-	spot = spawn( "script_origin", origin);
+/**
+*	Plays a sound 'sound' at 'origin' rather than on an existing entity
+*	Helpful when placing sounds in 3D space
+*/
+playSoundOnSpot( sound, origin )
+{
+	// Spawns an entity at the 'origin' position
+	spot = spawn( "script_origin", origin );
+	
+	// Wait until properly initialized
 	wait 0.05;
-	spot playsound(sound);
+	
+	// Play a sound at the location and remove the entity
+	spot playsound( sound );
 	spot delete();
 
 }
 
-CheckForPlayers()
+/**
+*	Algorithm of all turrets to look for zombies to target
+*	TODO: Rename self.targetPlayer to self.targetEntity or something similar
+*/
+targetAcquisition()
 {
-	self endon("joined_spectators");
-	self endon("disconnect");
-	self endon("death");
-	self endon("kill_turret");
+	// Shut down this algorithm if the turret gets removed or the owner stops playing
+	self.owner endon( "joined_spectators" );
+	self.owner endon( "disconnect" );
+	self endon( "death" );
+	self endon( "kill_turret" );
 
 	self.targetPlayer = undefined;
-	while(1)
-	{  
-		if(level.turretsDisabled){
+	
+	while( 1 )
+	{
+		// In case all turrets are off, prevent any locks and slowly keep the loop running
+		if( level.turretsDisabled )
+		{
 			self.targetPlayer = undefined;
 			wait 1;
 			continue;
 		}
+		
 		closestDist = undefined;
 		closestPlayer = undefined;
-                  
-
-		for(i = 0; i < level.bots.size; i++)
+        
+		// Loop through all zombies
+		for( i = 0; i < level.bots.size; i++ )
 		{
 			bot = level.bots[i];
-
-			if( bot.sessionstate == "playing" && (bot.type != "boss" || level.bossPhase == 2) && !level.turretsDisabled)
+			
+			// Check whether the zombie we target is alive and can be damaged with turrets
+			if( bot.sessionstate == "playing" && ( bot.type != "boss" || level.bossPhase == 2 ) && !level.turretsDisabled )
 			{
-				res = self IsInView(bot);
-				if(res >= 0)
+				// Get distance of the currently selected bot
+				checkingDistance = self isInView( bot );
+				
+				// We have a valid distance
+				if( checkingDistance >= 0 )
 				{	
-		
-					if(!isDefined(closestDist) || (res < closestDist && res > 40))
+					// If this is the first bot or this bot is closer than any other, save it
+					if( !isDefined( closestDist ) || ( checkingDistance < closestDist && checkingDistance > 40 ) )
 					{
-			 
-						closestDist = res;
+						closestDist = checkingDistance;
 						closestPlayer = bot;
 					}	
 				}
 			}
 		}
-
-		if(isDefined(closestPlayer))
-			self.targetPlayer = closestPlayer;
-         
-		while(isDefined(closestPlayer) && isAlive(closestPlayer) && (closestPlayer.type != "boss" || level.bossPhase == 2 ) && closestPlayer.sessionstate == "playing" && self IsInView(closestPlayer) >= 0 && !level.turretsDisabled)
-		{
 		
+		// In case our loop found a target that is valid, make it our target
+		if( isDefined( closestPlayer ) )
+			self.targetPlayer = closestPlayer;
+        
+		// Keep ourselves locked on that target until any critical conditions fail
+		while( isDefined( closestPlayer ) && isAlive( closestPlayer ) && ( closestPlayer.type != "boss" || level.bossPhase == 2 ) && closestPlayer.sessionstate == "playing" && self isInView( closestPlayer ) >= 0 && !level.turretsDisabled )
+		{
 			self.targetPlayer = closestPlayer;
 			wait 0.05;
 		}
-
+		
+		// Once one of the conditions above fail, we look for the next target in the next loop
 		self.targetPlayer = undefined;
-             
 		wait 0.5;
 	}
 }
 
+/**
+*	Function to rotate a turret's head towards its target
+*/
 rotate()
 {
-	self endon("joined_spectators");
-	self endon("disconnect");
-	self endon("death");
-	self endon("kill_turret");
+	// This function has to be killed once the turrets or the owner is gone
+	self.owner endon( "joined_spectators" );
+	self.owner endon( "disconnect" );
+	self endon( "death" );
+	self endon( "kill_turret" );
 
-	while(1)
+	while( 1 )
 	{
-		while( isDefined(self.targetPlayer) && !self.targetPlayer.untargetable )
+		while( isDefined( self.targetPlayer ) && !self.targetPlayer.untargetable )
 		{
+			// The default rotation time takes 0.4 seconds, hower depending on the distance we de- or increase it slightly
 			time = 0.4;
-			dist = distance( self.origin, self.targetPlayer.origin + (0,0,36) );
+			
+			dist = distance( self.origin, self.targetPlayer.origin + ( 0, 0, 36 ) );
 			if( dist <= 200 )
 				time = 0.35;
 			else if( dist <= 70 )
 				time = 0.45;
-			else if(dist > 7000){
+			// The target is too far away, so we delay the rotation by 0.1 seconds
+			else if( dist > 7000 )
+			{
 				wait 0.1;
 				continue;
 			}
-
-			aim = vectortoangles( self.targetPlayer.origin - self.origin );
-			// self rotateto( (aim[0], aim[1]+50, 0), time );
-			self rotateto( (aim[0], aim[1], 0), time );
-			self thread notifyRotation(time);
+			
+			// Finally make the turret rotate and prepare to notify it being rotated
+			aim = vectorToAngles( self.targetPlayer.origin - self.origin );
+			self rotateTo( ( aim[0], aim[1], 0 ), time );
+			self thread notifyRotation( time );
+			
 			wait 0.05;
 		}
+		
 		wait 0.5;
 	}
 }
 
-
-notifyRotation(delay){
+/**
+*	We prevent turrets from shooting when not being aligned towards the target
+*	This function manually notifies the turret of being rotated once rotateTo has finished
+*/
+notifyRotation( delay ){
+	self.owner endon("disconnect");
 	self endon("kill_turret");
 	self endon("death");
-	self endon("disconnect");
 	self endon("rotation_done");
 	
 	wait delay;
 	self notify("rotation_done");
 }
 
-IsInView(target)
+/**
+*	Checks whether 'target' can be seen
+*/
+isInView( target )
 {
 	dist = distanceSquared( self.origin, target.origin );
-	if(dist < 400000)
+	if( dist < 400000 )
 	{
-		trace = bullettrace( self getTagOrigin(self.fireTag) , target getEye() , false, self );
+		trace = bulletTrace( self getTagOrigin( self.fireTag ), target getEye() , false, self );
 		vector = self.origin - target.origin;
-		vector = vectorToAngles(vector);
-   		if( distance( self.origin, target.origin ) < 800 && trace["fraction"] == 1 && aSin(anglesToUp(vector)[2]) > (90 - self.maxUpAngle) )
+		vector = vectorToAngles( vector );
+		// We don't only check for the distance, but also for the angle the zombie is at relative to the muzzle to prevent
+		// turrets from shooting straight up or down and to control their firing area
+   		if( distance( self.origin, target.origin ) < 800 && trace["fraction"] == 1 && aSin( anglesToUp(vector)[2] ) > ( 90 - self.maxUpAngle ) )
 			return dist;
 	}
+	// If all fails, we return -1 which is basically 'false'
 	return -1;
 }
 
