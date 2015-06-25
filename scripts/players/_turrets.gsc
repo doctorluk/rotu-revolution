@@ -90,7 +90,7 @@ turretData(){
 *	Gives the calling player a turret
 *	'augmented' keeps persistency for turrets that have been augmented by the Engineer's special and will be re-placed
 */
-giveTurret(turret_type, time, augmented)
+giveTurret( turret_type, time, augmented )
 {
 	// Prevent missing arguments, set default values
 	if ( !isDefined( time ) )
@@ -158,7 +158,8 @@ placeTurret( turret_type, augmented )
 	while( 1 )
 	{
 		// In case we go down while holding a turret, try to place it at our current position before actually removing it from the player
-		if( self.isDown ){
+		if( self.isDown )
+		{
 			if( self deploy( turret_type, augmented ) )
 			{
 				self.carryObj unlink();
@@ -171,7 +172,8 @@ placeTurret( turret_type, augmented )
 			}
 			// If there is no valid position, we have to remove it from the player
 			// TO-DO: Return upgradepoints to this player equal to the remaining time of the turret times the cost of it to compensate for the loss
-			else{
+			else
+			{
 				self.carryObj unlink();
 				wait 0.2;
 				self.carryObj delete();
@@ -198,6 +200,7 @@ placeTurret( turret_type, augmented )
 				wait 1;
 			}
 		}
+		
 		wait .05;
 	}
 	
@@ -223,9 +226,9 @@ deploy( turret_type, augmented )
 	back = vectorScale( anglesToForward( angles ), -6 );
 
 	// Multiple checks are being run if we have a clean area in front of us and to the sides
-	canPlantThere1 = BulletTracePassed( start, end, true, self );
-	canPlantThere2 = BulletTracePassed( start + ( 0, 0, -7 ) + left, end + left + back, true, self );
-	canPlantThere3 = BulletTracePassed( start + ( 0, 0, -7 ) + right , end + right + back, true, self );
+	canPlantThere1 = bulletTracePassed( start, end, true, self );
+	canPlantThere2 = bulletTracePassed( start + ( 0, 0, -7 ) + left, end + left + back, true, self );
+	canPlantThere3 = bulletTracePassed( start + ( 0, 0, -7 ) + right , end + right + back, true, self );
 	
 	// If any of these checks fail, we report that it's not working and start over
 	if( !canPlantThere1 || !canPlantThere2 || !canPlantThere3 )
@@ -359,9 +362,9 @@ defenceTurret( turret_type, pos, angles, augmented )
 */
 hideUpperParts()
 {
-	self hidePart("tag_aim");
-	self hidePart("tag_aim_pitch");
-	self hidePart("tag_spin");
+	self hidePart( "tag_aim" );
+	self hidePart( "tag_aim_pitch" );
+	self hidePart( "tag_spin" );
 }
 
 /**
@@ -371,9 +374,9 @@ hideLowerParts()
 {
 	// Since we need to wait for the FX to spawn,
 	// we make sure that this entity doesn't suddenly despawn within 0.05 secs (how high is the chance though?)
-	self endon("death");
+	self endon( "death" );
 	
-	self hidePart("bi_base");
+	self hidePart( "bi_base" );
 	wait 0.05;
 	playFXonTag( level.sentry_laser, self, "tag_flash" );
 }
@@ -591,7 +594,7 @@ glDamage( targetSpot, range, damage, attacker )
 
 /**
 *	Approximately calculates the time it takes for a GL-bullet to travel to its target's destination
-	Increases feel of realism
+*	Increases feel of realism
 */
 travelDistance( distance )
 {
