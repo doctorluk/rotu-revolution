@@ -64,8 +64,8 @@ init()
 	thread updateActiveAliveCounts();
 }
 
-/*
-	Precache Icons, Shellshocks and Shaders
+/**
+*	Precache Icons, Shellshocks and Shaders
 */
 precache()
 {
@@ -89,8 +89,8 @@ precache()
 	precacheShader( "overlay_armored" );
 }
 
-/*
-	Callback when a player goes down, updating his persistency stat
+/**
+*	Callback when a player goes down, updating his persistency stat
 */
 setDown( isDown )
 {
@@ -101,16 +101,16 @@ setDown( isDown )
 		self.downOrigin = self.origin;
 }
 
-/*
-	Debugging-Loop started onPlayerSpawn
+/**
+*	Debugging-Loop started onPlayerSpawn
 */
 testloop()
 {
 	self endon( "disconnect" );
 }
 
-/*
-	Handling of players going down when gaining fatal damage
+/**
+*	Handling of players going down when gaining fatal damage
 */
 Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
 {
@@ -174,8 +174,8 @@ Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon,
 }
 
 
-/*
-	Makes the playersymbol blink in "!" signs to signalize that this player is currently down
+/**
+*	Makes the playersymbol blink in "!" signs to signalize that this player is currently down
 */
 compassBlinkMe()
 {
@@ -190,8 +190,8 @@ compassBlinkMe()
 	}
 }
 
-/*
-	Fully restores a player's ammo for all weapons, except for weapons that do not allow being refilled
+/**
+*	Fully restores a player's ammo for all weapons, except for weapons that do not allow being refilled
 */
 restoreAmmo()
 {
@@ -207,9 +207,9 @@ restoreAmmo()
 	}
 }
 
-/*
-	Returns whether a player has any weapon in his inventory that is missing ammo, 
-	except for weapons that do not allow being refilled
+/**
+*	Returns whether a player has any weapon in his inventory that is missing ammo, 
+*	except for weapons that do not allow being refilled
 */
 hasFullAmmo()
 {
@@ -228,16 +228,16 @@ hasFullAmmo()
 	return true;
 }
 
-/*
-	Callback being called when a player disconnectes, used to save persistency data
+/**
+*	Callback being called when a player disconnectes, used to save persistency data
 */
 onPlayerDisconnect(){
 	self.stats["name"] = self.name;
 	self.persData.stats = self.stats;
 }
 
-/*
-	Callback being called when a player connects
+/**
+*	Callback being called when a player connects
 */
 onPlayerConnect()
 {
@@ -272,9 +272,9 @@ onPlayerConnect()
 	self joinSpectator();
 }
 
-/*
-	Handling of Players being killed, this is ONLY called when a player has turned into
-	a zombie and is killed by other players
+/**
+*	Handling of Players being killed, this is ONLY called when a player has turned into
+*	a zombie and is killed by other players
 */
 onPlayerKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
 {
@@ -314,8 +314,8 @@ onPlayerKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHi
 	thread delayStartRagdoll( body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath );
 }
 
-/*
-	Callback when a player takes damage (Warning: Huge ._.)
+/**
+*	Callback when a player takes damage (Warning: Huge ._.)
 */
 onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime )
 {
@@ -400,8 +400,8 @@ onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon,
 	}
 }
 
-/*
-	Returns whether a player's current weapon has less or equal to 30% of its maximum capacity
+/**
+*	Returns whether a player's current weapon has less or equal to 30% of its maximum capacity
 */
 hasLowAmmo()
 {
@@ -415,9 +415,9 @@ hasLowAmmo()
 	return false;
 }
 
-/*
-	Returns the best player, based on a minimum or maximum threshold for certain stats
-	TODO: Put this into the _gamemodes.gsc since the ending is handled there, too?
+/**
+*	Returns the best player, based on a minimum or maximum threshold for certain stats
+*	TODO: Put this into the _gamemodes.gsc since the ending is handled there, too?
 */
 getBestPlayer( type, returns )
 {
@@ -637,8 +637,8 @@ getBestPlayer( type, returns )
 	return undefined;
 }
 
-/*
-	Loop that regularly updates a player's headicon to notify other players of him having low health and/or low ammo
+/**
+*	Loop that regularly updates a player's headicon to notify other players of him having low health and/or low ammo
 */
 watchHPandAmmo()
 {
@@ -711,9 +711,9 @@ watchHPandAmmo()
 	}
 }
 
-/*
-	Area damage function against bots, used by Explosive Barrels
-	TODO: Move to _barricade.gsc (?) where Explosive Barrels are located, too
+/**
+*	Area damage function against bots, used by Explosive Barrels
+*	TODO: Move to _barricade.gsc (?) where Explosive Barrels are located, too
 */
 doAreaDamage( range, damage, attacker )
 {
@@ -737,8 +737,8 @@ doAreaDamage( range, damage, attacker )
 	}
 }
 
-/*
-	General Player cleanup, used whenever a player is being revived or returns to a normal player when being zombified etc. etc.
+/**
+*	General Player cleanup, used whenever a player is being revived or returns to a normal player when being zombified etc. etc.
 */
 cleanup()
 {
@@ -814,8 +814,8 @@ cleanup()
 		level.cantPayLC = removeFromArray( level.cantPayLC, self );
 }
 
-/*
-	Adds the player to the join queue
+/**
+*	Adds the player to the join queue
 */
 addToJoinQueue()
 {
@@ -827,8 +827,8 @@ addToJoinQueue()
 	self setclientdvar("ui_spawnqueue", "@QUEUE_AWAITING_SPAWN_" + allToUpper(self.class));
 }
 
-/*
-	Spawn all players placed inside the spawn queue
+/**
+*	Spawn all players placed inside the spawn queue
 */
 spawnJoinQueue()
 {
@@ -880,8 +880,8 @@ spawnJoinQueue()
 	}
 }
 
-/* 
-	Spawn the players in certain situations and in certain states of the waves
+/** 
+*	Spawn the players in certain situations and in certain states of the waves
 */
 spawnJoinQueueLoop()
 {
@@ -920,8 +920,8 @@ spawnJoinQueueLoop()
 	}
 }
 
-/*
-	Removes the calling player from the Spawnqueue
+/**
+*	Removes the calling player from the Spawnqueue
 */
 removeFromQueue()
 {
@@ -939,8 +939,8 @@ removeFromQueue()
 	}
 }
 
-/*
-	Function to spawn a player
+/**
+*	Function to spawn a player
 */
 spawnPlayer( forceSpawn )
 {
@@ -1124,8 +1124,8 @@ spawnPlayer( forceSpawn )
 	level notify( "update_classcounts" );
 }
 
-/*
-	Give all playing players the flashlight for the scary wave
+/**
+*	Give all playing players the flashlight for the scary wave
 */
 flashlightForAll( on )
 {
@@ -1146,8 +1146,8 @@ flashlightForAll( on )
 	}
 }
 
-/*
-	Called when the scary wave initializes
+/**
+*	Called when the scary wave initializes
 */
 flashlightOn( noWait )
 {
@@ -1175,8 +1175,8 @@ flashlightOn( noWait )
 	self thread removeLightOnDeath();
 }
 
-/*
-	Removes the flashlight effect if defined
+/**
+*	Removes the flashlight effect if defined
 */
 flashlightOff()
 {
@@ -1186,8 +1186,8 @@ flashlightOff()
 	self.flashlight delete();
 }
 
-/*
-	Removes the flashlight on death
+/**
+*	Removes the flashlight on death
 */
 removeLightOnDeath()
 {
@@ -1202,8 +1202,8 @@ removeLightOnDeath()
 		self.flashlight delete();
 }
 
-/*
-	Done for debugging purposes. Shows the player the current mapname and his location and angles
+/**
+*	Done for debugging purposes. Shows the player the current mapname and his location and angles
 */
 reportMyCoordinates(){
 
@@ -1218,8 +1218,8 @@ reportMyCoordinates(){
 	self iprintlnbold("Map: " + mapname);
 }
 
-/*
-	Resets all weapon progress to 0
+/**
+*	Resets all weapon progress to 0
 */
 resetUnlocks(){
 	// Reset current and persistency unlocks
@@ -1270,16 +1270,16 @@ resetUnlocks(){
 	self.persData.extraAmmoStock = 0;	
 }
 
-/*
-	Simple function to set the player's status icon
+/**
+*	Simple function to set the player's status icon
 */
 setStatusIcon( icon )
 {
 	self.statusicon = icon;
 }
 
-/*
-	Propells the player towards 'direction'
+/**
+*	Propells the player towards 'direction'
 */
 bounce( direction )
 {
@@ -1295,9 +1295,9 @@ bounce( direction )
 	}
 }
 
-/*
-	A timed loop that restores all HP for a player
-	speed = amount of HP healed per step
+/**
+*	A timed loop that restores all HP for a player
+*	speed = amount of HP healed per step
 */
 fullHeal(speed)
 {
@@ -1322,8 +1322,8 @@ fullHeal(speed)
 	}
 }
 
-/*
-	Heals the calling player with 'amount'
+/**
+*	Heals the calling player with 'amount'
 */
 healPlayer( amount )
 {
@@ -1340,8 +1340,8 @@ healPlayer( amount )
 	updateHealthHud( self.health / self.maxhealth );
 }
 
-/*
-	Increases/decreases the calling player's upgradepoints by 'inc' amount
+/**
+*	Increases/decreases the calling player's upgradepoints by 'inc' amount
 */
 incUpgradePoints( inc )
 {
@@ -1365,8 +1365,8 @@ incUpgradePoints( inc )
 	thread upgradeHud(inc);
 }
 
-/* 
-	For each wave missed, we give the players more upgradepoints (if enabled) 
+/** 
+*	For each wave missed, we give the players more upgradepoints (if enabled) 
 */
 giveDelayedUpgradepoints()
 {
@@ -1379,8 +1379,8 @@ giveDelayedUpgradepoints()
 		self incUpgradePoints( ( ( level.currentWave - self.lastPlayedWave - 1 ) * level.dvar["game_delayed_upgradepoints_amount"] ) );
 }
 
-/*
-	Returns the total amount of upgradepoints all players ever(!) have earned
+/**
+*	Returns the total amount of upgradepoints all players ever(!) have earned
 */
 getTotalUpgradePoints()
 {
@@ -1397,8 +1397,8 @@ getTotalUpgradePoints()
 	return totalpoints;
 }
 
-/*
-	Returns the (basic) average amount of upgradepoints per player
+/**
+*	Returns the (basic) average amount of upgradepoints per player
 */
 getAverageUpgradePoints()
 {
@@ -1419,8 +1419,8 @@ getAverageUpgradePoints()
 	return int( total / playercount );
 }
 
-/*
-	Returns the total amount of upgradepoints all players have in total
+/**
+*	Returns the total amount of upgradepoints all players have in total
 */
 getRemainingUpgradePoints()
 {
@@ -1437,8 +1437,8 @@ getRemainingUpgradePoints()
 	return totalpoints;
 }
 
-/*
-	Called by a player joining the Survivors
+/**
+*	Called by a player joining the Survivors
 */
 joinAllies()
 {
@@ -1455,8 +1455,8 @@ joinAllies()
 	}
 }
 
-/*
-	Called when a player is being set to Spectator
+/**
+*	Called when a player is being set to Spectator
 */
 joinSpectator()
 {
@@ -1522,8 +1522,8 @@ joinSpectator()
 	self thread giveCoordinatesToSpec();
 }
 
-/*
-	Debug function that shows a spectator' coordinates when holding F for 3 Seconds
+/**
+*	Debug function that shows a spectator' coordinates when holding F for 3 Seconds
 */
 giveCoordinatesToSpec()
 {
@@ -1553,8 +1553,8 @@ giveCoordinatesToSpec()
 	}
 }
 
-/*
-	Default Spawn function for a Spectator
+/**
+*	Default Spawn function for a Spectator
 */
 spawnSpectator(origin, angles)
 {
@@ -1575,9 +1575,9 @@ spawnSpectator(origin, angles)
 	self spawn( origin, angles );
 }
 
-/*
-	This is being called when a player successfully held USE to revive a player, or when the endgame-revive kicks in
-	'by' optionally refers to the player that has revived the calling player
+/**
+*	This is being called when a player successfully held USE to revive a player, or when the endgame-revive kicks in
+*	'by' optionally refers to the player that has revived the calling player
 */
 revive( by )
 {
@@ -1687,9 +1687,9 @@ revive( by )
 	self switchToWeapon( self.lastStandWeapon );
 }
 
-/*
-	When a scary wave is being started, make the hud of all players flicker (turn on and off) randomly
-	'duration' defines the time in milliseconds the flickering will occur
+/**
+*	When a scary wave is being started, make the hud of all players flicker (turn on and off) randomly
+*	'duration' defines the time in milliseconds the flickering will occur
 */
 flickeringHud( duration )
 {
@@ -1717,9 +1717,9 @@ flickeringHud( duration )
 	self setclientdvar("cg_draw2d", 1);
 }
 
-/* 
-	Counts through all players, checking whether they are active and/or alive and updates the game's vars accordingly
-	TODO: Implement callbacks to update these on-Spawn/-Connect/-Death or -Disconnect
+/** 
+*	Counts through all players, checking whether they are active and/or alive and updates the game's vars accordingly
+*	TODO: Implement callbacks to update these on-Spawn/-Connect/-Death or -Disconnect
 */
 updateActiveAliveCounts()
 {
