@@ -61,7 +61,8 @@ init()
 *	We save static stats of both types of turrets to refer to them later and to make it easier to
 *	modify them via config vars and difficulty settings
 */
-turretData(){
+turretData()
+{
 	level.turretData = [];
 	
 	// Data should be self-explanatory
@@ -109,7 +110,8 @@ giveTurret( turret_type, time, augmented )
 	self.turret_time = time;
 	
 	// Debug print for checking whether spawning of the script_model object has failed
-	if( !isDefined( self.carryObj ) ){
+	if( !isDefined( self.carryObj ) )
+	{
 		iprintln( "^1ERROR: ^7" + self.name + "'s Turret is ^1UNDEFINED^7!" );
 		return;
 	}
@@ -274,7 +276,8 @@ defenceTurret( turret_type, pos, angles, augmented )
 	self.turret_gun setModel( level.sentry_turret_model[turret_type] );
 	self.turret_bipod setModel( level.sentry_base_model[turret_type] );
 	
-	if( turret_type == "minigun" ){
+	if( turret_type == "minigun" )
+	{
 		self.turret_gun thread hideLowerParts();
 		self.turret_bipod hideUpperParts();
 	}
@@ -388,7 +391,8 @@ goAugmented()
 {
 	type = self.turret_type;
 	
-	switch( type ){
+	switch( type )
+	{
 		case "gl":
 			self.fireSpeed = level.turretData[type].firespeed / 2;
 			self.numBullets = level.turretData[type].numbullets + 2;
@@ -647,10 +651,11 @@ shootGL()
 				
 				// Calculate the travel distance from the gun to the target and wait some time
 				targetSpot = self.targetPlayer.origin;
-				wait travelDistance(dist);
+				wait travelDistance( dist );
 				
 				// Since we wait some frames, the target can be disappeared in the mean time. We catch that here and wait one frame
-				if( !isDefined( self.targetPlayer ) ){
+				if( !isDefined( self.targetPlayer ) )
+				{
 					wait 0.05;
 					continue;
 				}
@@ -883,14 +888,15 @@ rotate()
 *	We prevent turrets from shooting when not being aligned towards the target
 *	This function manually notifies the turret of being rotated once rotateTo has finished
 */
-notifyRotation( delay ){
-	self.owner endon("disconnect");
-	self endon("kill_turret");
-	self endon("death");
-	self endon("rotation_done");
+notifyRotation( delay )
+{
+	self.owner endon( "disconnect" );
+	self endon( "kill_turret" );
+	self endon( "death" );
+	self endon( "rotation_done" );
 	
 	wait delay;
-	self notify("rotation_done");
+	self notify( "rotation_done" );
 }
 
 /**
