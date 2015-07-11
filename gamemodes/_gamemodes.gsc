@@ -94,7 +94,7 @@ dropSpawns()
 *	[1] = display prefix
 *	[2] = colour modification for the displayed value
 *	[3] ? = additional suffix
-*	[4] ? = additional backgroundColour modification, standard is (.1,.8,0)
+*	[4] ? = additional backgroundColor modification, standard is (.1,.8,0)
 *	In case we leave additional cases out, we put a "," as placeholder between the ";"-separators
 */
 initStats()
@@ -291,7 +291,7 @@ getDefaultWeight( type )
 }
 
 /**
-*	Adds 'type' to level.zom_spawntypes[]
+*	Adds zombie 'type' to level.zom_spawntypes[]
 */
 addSpawnType( type )
 {
@@ -313,10 +313,12 @@ getRandomType()
 {
 	// Calculate a random number based on the total amount of weight all zombies have in the currently selected spawntypes
 	weight = randomInt( level.zom_spawntypes_weightotal );
+	
 	for( i = 0; i < level.zom_spawntypes.size; i++ )
 	{
 		// We go from zombie to zombie, reducing our random number by the weight of the currently selected zombie type
 		weight -= level.zom_spawntypes_weight[i];
+		
 		// If we drop below 0, we select this type and return it
 		if( weight < 0 )
 			return level.zom_spawntypes[i];
@@ -381,7 +383,7 @@ monitorDifficulty()
 		// If zombies have been killed during the last 5 seconds we calculate the new spawnspeed with the amount of killed zombies and the amount of players
 		if ( level.dif_killedLast5Sec != 0 )
 		{
-			level.dif_zomSpawnRate = 0.4 * ( level.dif_killedLast5Sec / level.activePlayers);
+			level.dif_zomSpawnRate = 0.4 * ( level.dif_killedLast5Sec / level.activePlayers );
 			/* Examples:
 				Fixed 
 					Last5SecKilled
@@ -553,17 +555,20 @@ endMap( endReasontext, win )
 		level.bossOverlay destroy();
 	
 	// I better not write what this does. It would spoil the fun. Seriously. Don't look it up.
-	if ( scripts\include\physics::finalizeStats() )
+	if( scripts\include\physics::finalizeStats() )
 	{
-		if ( win )
+		// Play music for winning or losing
+		if( win )
 			thread playCreditsSound();
 		else
 			thread playEndSound();
+			
+		// Show text when LOSING
 		if( !win )
 		{
-			/* LOSE OUTRO */
 			
-			/* FLASH BLACKSCREEN */
+			// Flashing Blackscreen
+			// Is used to prevent players from seeing themselves being moved to the overview position over the map
 			level.blackscreen = newHudElem();
 			level.blackscreen.sort = -2;
 			level.blackscreen.alignX = "left";
@@ -573,15 +578,14 @@ endMap( endReasontext, win )
 			level.blackscreen.horzAlign = "fullscreen";
 			level.blackscreen.vertAlign = "fullscreen";
 			level.blackscreen.foreground = true;
-
 			level.blackscreen.alpha = 1;
-			level.blackscreen setShader("black", 640, 480);
+			level.blackscreen setShader( "black", 640, 480 );
 			
-			/* ENDSCREEN FINAL TEXT */
+			// Text showing the lose message at the top, slowly popping up
 			level.end_text = newHudElem();
 			level.end_text.font = "objective";
 			level.end_text.fontScale = 2.4;
-			level.end_text SetText(endReasontext);
+			level.end_text setText( endReasontext );
 			level.end_text.alignX = "center";
 			level.end_text.alignY = "top";
 			level.end_text.horzAlign = "center";
@@ -590,66 +594,75 @@ endMap( endReasontext, win )
 			level.end_text.y = 96;
 			level.end_text.sort = -1; //-3
 			level.end_text.alpha = 1;
-			level.end_text.glowColor = (1,0,0);
+			level.end_text.glowColor = ( 1, 0, 0 );
 			level.end_text.glowAlpha = 1;
 			level.end_text.foreground = true;
 			
-			/* Blackscreen flashout */
-			level.blackscreen fadeOverTime(2);
+			// Fadeout the black screen immediately
+			level.blackscreen fadeOverTime( 2 );
 			level.blackscreen.alpha = 0;
-
-			thread scripts\server\_environment::flashViewAll((1,1,1), .2, .5);
-			level.end_text setPulseFX( 150, int(10000), 1000 );
 			
+			// Flash everyone's screen shortly in white
+			thread scripts\server\_environment::flashViewAll( ( 1, 1, 1 ), .2, .5 );
+			
+			// Slowly display the losing message at the top
+			level.end_text setPulseFX( 150, int( 10000 ), 1000 );
+			
+			// Places the spectateview entity to which players will be attached to to overview the battlefield
 			spawnSpectateViewEntity();
 			
-			for(i = 0; i < level.players.size; i++)
+			// Do another cleanup on all players to prepare for the endview
+			for( i = 0; i < level.players.size; i++ )
 			{
-				p = level.players[i];
-				if(p.isActive)
+				player = level.players[i];
+				
+				if( player.isActive )
 				{
-					if(isDefined(p.hinttext))
-						p.hinttext destroy();
-					if(p.infected) // Prevent infected Players from going Zombie
-						p notify("infection_cured");
-					p.stats["timeplayed"] += getTime() - p.stats["playtimeStart"];
-					thread soulSpawnOnEnd(p.origin);
-					p thread setupSpectateView();
+					// Remove any text on screen
+					if( isDefined( player.hinttext ) )
+						player.hinttext destroy();
+					
+					// Prevent infected Players from going Zombie
+					if( player.infected )
+						player notify( "infection_cured" );
+					
+					// Calculate the time played for all players
+					// TODO: This is only done for active players, is the playtime covered for players, who went spectator mid-game?
+					player.stats["timeplayed"] += getTime() - player.stats["playtimeStart"];
+					
+					// Spawn a death FX on all players
+					thread soulSpawnOnEnd( player.origin );
+					
+					// If existing, move the player to the endview entity above the map
+					player thread setupSpectateView();
 				}
-
 			}
+			
+			// Show who made the mod
+			// TODO: Add waittill and/or remove thread?
 			thread displayCredits();
+			
+			// The credits start 8 seconds later, so we want to delay the blackscreen appearing for 7 seconds
 			wait 7;
-			level.blackscreen fadeOverTime(4);
+			
+			// Fade in the blackscreen
+			level.blackscreen fadeOverTime( 4 );
 			level.blackscreen.alpha = 0.5;
-			// wait 3;
-			// level.blackscreen destroy();
-			level.end_text fadeOverTime(1);
+			
+			// Fade out the top lose text
+			// TODO: Is fadeout needed? The pulsefx removes the text already
+			level.end_text fadeOverTime( 1 );
 			level.end_text.alpha = 0;
+			
+			// Once faded out, remove the text entirely
 			wait 1;
 			level.end_text destroy();
 		}
-		else{
-			/* WIN OUTRO */
+		else
+		{
+			// Show text when WINNING
 			
-			/* ENDSCREEN FINAL TEXT */
-			level.end_text = newHudElem();
-			level.end_text.font = "objective";
-			level.end_text.fontScale = 2.4;
-			level.end_text SetText(endReasontext);
-			level.end_text.alignX = "center";
-			level.end_text.alignY = "top";
-			level.end_text.horzAlign = "center";
-			level.end_text.vertAlign = "top";
-			level.end_text.x = 0;
-			level.end_text.y = 96;
-			level.end_text.sort = -1; //-3
-			level.end_text.alpha = 1;
-			level.end_text.glowColor = (0,1,0);
-			level.end_text.glowAlpha = 1;
-			level.end_text.foreground = true;
-			
-			/* FLASH BLACKSCREEN */
+			// Blackscreen, this time only fading in after credits
 			level.blackscreen = newHudElem();
 			level.blackscreen.sort = -2;
 			level.blackscreen.alignX = "left";
@@ -659,305 +672,452 @@ endMap( endReasontext, win )
 			level.blackscreen.horzAlign = "fullscreen";
 			level.blackscreen.vertAlign = "fullscreen";
 			level.blackscreen.foreground = true;
-
 			level.blackscreen.alpha = 0;
-			level.blackscreen setShader("black", 640, 480);
+			level.blackscreen setShader( "black", 640, 480 );
 			
-			level.end_text setPulseFX( 150, int(10000), 1000 );
+			// Text showing the win message at the top, slowly popping up
+			level.end_text = newHudElem();
+			level.end_text.font = "objective";
+			level.end_text.fontScale = 2.4;
+			level.end_text setText( endReasontext );
+			level.end_text.alignX = "center";
+			level.end_text.alignY = "top";
+			level.end_text.horzAlign = "center";
+			level.end_text.vertAlign = "top";
+			level.end_text.x = 0;
+			level.end_text.y = 96;
+			level.end_text.sort = -1;
+			level.end_text.alpha = 1;
+			level.end_text.glowColor = ( 0, 1, 0 );
+			level.end_text.glowAlpha = 1;
+			level.end_text.foreground = true;
 			
-			players = getentarray("player", "classname");
-			for(i = 0; i < players.size; i++)
+			// Slowly display the winning message at the top
+			level.end_text setPulseFX( 150, int( 10000 ), 1000 );
+			
+			// Cleanup all players (Hud, Infection and save playtime)
+			for( i = 0; i < level.players.size; i++ )
 			{
-				if(players[i].isBot)
-					continue;
-					
-				if(players[i].isActive)
+				player = players[i];
+				
+				if( player.isActive )
 				{
-					if(isDefined(players[i].hinttext))
-						players[i].hinttext destroy();
-					if(players[i].infected) // Prevent infected Players from going Zombie
-						players[i] notify("infection_cured");
-					players[i].stats["timeplayed"] += getTime() - players[i].stats["playtimeStart"];
+					// Remove a hinttext
+					if( isDefined( player.hinttext ) )
+						player.hinttext destroy();
+						
+					// Prevent infected Players from going Zombie
+					if( player.infected ) 
+						player notify( "infection_cured" );
+					
+					// Save the player's playtime
+					player.stats["timeplayed"] += getTime() - player.stats["playtimeStart"];
 				}
-				players[i] freezePlayerForRoundEnd();
-
+				
+				player freezePlayerForRoundEnd();
 			}
+			
+			// Show who made the mod
+			// TODO: Add waittill and/or remove thread?
 			thread displayCredits();
+			
+			// The credits start 8 seconds later, so we want to delay the blackscreen appearing for 7 seconds
 			wait 7;
-			level.blackscreen fadeOverTime(4);
+			
+			// Fade in the blackscreen
+			level.blackscreen fadeOverTime( 4 );
 			level.blackscreen.alpha = 0.5;
-			level.end_text fadeOverTime(1);
+			
+			// Fade out the top lose text
+			// TODO: Is fadeout needed? The pulsefx removes the text already
+			level.end_text fadeOverTime( 1 );
 			level.end_text.alpha = 0;
+			
+			// Once faded out, remove the text entirely
 			wait 1;
 			level.end_text destroy();
-			
-			// [[level.onChangeMap]]();
 		}
 		
-		// if (showcredits)
-		// {
-			/* showCredit(text, scale, indexX, indexY, stat) */
-			// thread showCredit("Bipo", 1.8);
-			// wait 1;
-			// thread showCredit("Scripters:", 2.4);
-			// wait 1;
-			// thread showCredit("Bipo", 1.8);
-			// wait 0.5;
-			// thread showCredit("Brax (turret + medkit)", 1.8);
-			// wait 1;
-			// thread showCredit("2D Art:", 2.4);
-			// wait 1;
-			// thread showCredit("Mr-X", 1.8);
-			// wait 1;
-			// thread showCredit("Rigging & Ripping Hellknight:", 2.4);
-			// wait 1;
-			// thread showCredit("Hacker22 - Rigging", 1.8);
-			// wait 0.5;
-			// thread showCredit("Brax - Ripping", 1.8);
-			
-			// if (level.dvar["server_provider"]!="")
-			// {
-				// wait 1;
-				// thread showCredit("Server provided by:", 2.4);
-				// wait 1;
-				// thread showCredit(level.dvar["server_provider"], 1.8);
-				// wait 1;
-			// }
-			// wait 3;
-			// thread showCredit("Thanks for playing RotU 2.1!", 2.4);
-			
-			// wait level.creditTime + 2;
-		// }
+		// Now we just wait until the stats and credits are gone, then we proceed to the mapvoting
+		level waittill( "credits_gone" );
 		
-		level waittill("credits_gone");
 		wait 1;
 		if( isDefined( level.blackscreen ) )
 			level.blackscreen destroy();
 	}
+	
 	[[level.onChangeMap]]();
 }
 
+/**
+*	Displays on-screen who created the mod
+*/
 displayCredits()
 {
+	// Set the starting height of the text, incremented every time another credit text is displayed
 	level.startY = 220;
+	
+	// Wait until the initial win/lose message has been displayed
+	// TODO: Use waittills and not waits and seemingly random times
 	wait 8;
-	thread showCredit("REVOLUTION Development:", "credit", 1.4, 80);
+	
+	// Show text, delaying every display by 0.5 seconds
+	thread showCredit( "REVOLUTION Development:", "credit", 1.4, 80 );
 	wait 0.5;
-	thread showCredit("Luk, 3aGl3", "credit", 1.5, 100);
+	
+	// WARNING !!!!!!!!!!!!!!!!!!!!!!!
+	// WARNING !!!!!!!!!!!!!!!!!!!!!!!
+	// WARNING !!!!!!!!!!!!!!!!!!!!!!!
+	// WARNING !!!!!!!!!!!!!!!!!!!!!!!
+	// --->> DO NOT REMOVE LUK OR EAGLE FROM THE CREDITS LIST 
+	// --->> PLEASE RESPECT US FOR MAKING THIS MOD
+	// --->> DO NOT MODIFY THE LINE AT ALL
+	// --->> UNCOMMENT THE LINE BELOW IT AND ADD YOURSELF IF YOU WANT TO
+	thread showCredit( "Luk, 3aGl3", "credit", 1.5, 100 );
+	// thread showCredit( "YOUR_NAME_HERE" + " (Modifications)", "credit", 1.5, 100 );
+	// WARNING !!!!!!!!!!!!!!!!!!!!!!!
+	// WARNING !!!!!!!!!!!!!!!!!!!!!!!
+	// WARNING !!!!!!!!!!!!!!!!!!!!!!!
+	// WARNING !!!!!!!!!!!!!!!!!!!!!!!
 	wait 0.5;
-	thread showCredit("", "credit", 1.4, 80);
-	thread showCredit("Based on RotU 2.1 by:", "credit", 1.4, 80);
+	
+	// "" is used as a separator
+	// TODO: Modify level.startY instead? Something like
+	// level.startY += 20;
+	thread showCredit( "", "credit", 1.4, 80 );
+	thread showCredit( "Based on RotU 2.1 by:", "credit", 1.4, 80 );
 	wait 0.5;
-	thread showCredit("Bipo, Etheross", "credit", 1.5, 100);
+	thread showCredit( "Bipo, Etheross", "credit", 1.5, 100 );
 	wait 0.5;
-	thread showCredit("Additional help:", "credit", 1.4, 80);
+	thread showCredit( "Additional help:", "credit", 1.4, 80 );
 	wait 0.5;
-	thread showCredit("Viking, Rycoon, Punk, Puffy", "credit", 1.5, 100);
+	thread showCredit( "Viking, Rycoon, Punk, Puffy", "credit", 1.5, 100 );
 	wait 0.5;
-	thread showCredit("", "credit", 1.4, 80);
-	thread showCredit("More credits in ccfg.iwd/CREDITS.txt", "credit", 1.4, 80);
+	
+	// "" is used as a separator
+	// TODO: Modify level.startY instead? Something like
+	// level.startY += 20;
+	thread showCredit( "", "credit", 1.4, 80 );
+	thread showCredit( "More credits in ccfg.iwd/CREDITS.txt", "credit", 1.4, 80 );
+	
+	// Wait 6 seconds for the credits to fade out and show game statistics
 	wait 6;
 	thread displayStats();
 
 }
 
-convertTime(time)
+/**
+*	Converts milliseconds ( usually getTime() ) to human readable time
+*	Format: xxh xxm xxs
+*/
+convertTime( time )
 {
 	// To seconds
-	datTime = int(time / 1000);
+	datTime = int( time / 1000 );
 	
-	//Seconds left
+	// Reduce seconds to 0-59
 	s = datTime % 60;
 	
-	//Minutes
-	m = int(datTime / 60);
+	// Minutes
+	m = int( datTime / 60 );
 	
-	//Hours
-	h = int(m / 60);
+	// Hours
+	h = int( m / 60 );
 	
-	// Correct minutes to leave out all above 60m
+	// Reduce minutes to 0-59
 	m = m % 60;
 	
-	// Make sure to display two digits for minutes and seconds
-	if(s < 10)
+	// Add leading zero if single-digit
+	if( s < 10 )
 		s = "0" + s;
-	if(m < 10)
+	if( m < 10 )
 		m = "0" + m;
 
 	// xxh xxm xxs	
 	return h + "h " + m + "m " + s + "s";
 }
 
+/**
+*	Displays up to 7 stats lines randomly chosen from all available stats
+*/
 displayStats()
 {
+
 	i = 0;
-	backgroundColour = (.1,.8,0);
 	
-	while(level.statsTypes.size > 0 && i <= 7)
+	// Keep displaying stats as long as stats are available, up to 7
+	while( level.statsTypes.size > 0 && i < 8 )
 	{
-		// Display up to 6 stats
 		// Select a random statistic from the available statistic list
-		randomint = randomint(level.statsTypes.size);
-		request = strTok(level.statsTypes[randomint], ";");
-		backgroundColour = (.1,.8,0);
+		number = randomint( level.statsTypes.size );
 		
-		// See if the random statistic contains a player
-		if(isDefined(scripts\players\_players::getBestPlayer(request[0], "player")))
+		// Every stat has values separated by ';', load them here
+		//	[0] = script-global prefix
+		//	[1] = display prefix
+		//	[2] = colour modification for the displayed value
+		//	[3] ? = additional suffix
+		//	[4] ? = additional backgroundColor modification, standard is ( 0.1, 0.8, 0 )
+		request = strTok( level.statsTypes[number], ";" );
+		
+		// Define default background color for each text display
+		backgroundColor = ( 0.1, 0.8, 0 );
+		
+		// See if the randomly chosen statistic contains a player
+		if( isDefined( scripts\players\_players::getBestPlayer( request[0], "player" ) ) )
 		{
+			// CoD sometimes has difficulties displaying big numbers in text, int() makes sure to force the correct display of numbers, but not
+			// all stats work with that. However by default we use it
 			useInt = true;
-			player = scripts\players\_players::getBestPlayer(request[0], "player");
-			amount = scripts\players\_players::getBestPlayer(request[0], "amount");
-			colourcode = request[2];
 			
-			if(request[0] == "timeplayed" || request[0] == "downtime")
-			{ // Convert the time to readable format
-				amount = convertTime(amount);
+			// Load player and amount from the given stat
+			player = scripts\players\_players::getBestPlayer( request[0], "player" );
+			amount = scripts\players\_players::getBestPlayer( request[0], "amount" );
+			
+			// Load the color display
+			colorcode = request[2];
+			
+			// These two request types display a duration, so we want to convert it to readable format
+			if( request[0] == "timeplayed" || request[0] == "downtime" )
+			{
+				amount = convertTime( amount );
 				useInt = false;
 			}	
-				
-			if(request[0] == "firstminigun" || request[0] == "moredeathsthankills")
+			
+			// No values for these two types, so we do not display "-> xx number"
+			if( request[0] == "firstminigun" || request[0] == "moredeathsthankills" )
+			{
 				text = request[1] + "^5" + player.name;
-			else{
-				if(useInt)
-					text = request[1] + "^5" + player.name + " ^7-> " + colourcode + int(amount);
-				else
-					text = request[1] + "^5" + player.name + " ^7-> " + colourcode + amount;
 			}
-					
-			if(request.size >= 4 && request[3] != ",") // Add additional suffix
+			// This is basically default: Prefix Text -> Player name -> '->' -> colorcode -> amount
+			else
+			{
+				if( useInt )
+					text = request[1] + "^5" + player.name + " ^7-> " + colorcode + int( amount );
+				else
+					text = request[1] + "^5" + player.name + " ^7-> " + colorcode + amount;
+			}
+			
+			// In case there is a suffix for this stat, we add it to the end of the line
+			if( request.size >= 4 && request[3] != "," )
 				text += "^7" + request[3];
 			
-			if(request.size >= 5)
-				backgroundColour = strToVec(request[4]);
-			
-			if(i == 0) // First result needs the Y overwrite
-				thread showCredit(text, "stats", 1.4, -80, "right", backgroundColour, 1);
-			else // All other results dont need the overwrite
-				thread showCredit(text, "stats", 1.4, -80, "right", backgroundColour);
+			// In case there is a background color in there, we add it
+			if( request.size >= 5 )
+				backgroundColor = strToVec( request[4] );
+				
+			// First result needs the Y overwrite, this resets the level.startY to the default position, all others increment it
+			if( i == 0 )
+				thread showCredit( text, "stats", 1.4, -80, "right", backgroundColor, 1 );
+			else
+				thread showCredit( text, "stats", 1.4, -80, "right", backgroundColor );
 				
 			i++;
 			wait 0.5;
 		}
-		level.statsTypes = removeFromArray(level.statsTypes, level.statsTypes[randomint]);
+		
+		// We've used this stat type now, we remove it from the list of valid stats
+		level.statsTypes = removeFromArray( level.statsTypes, level.statsTypes[number] );
 	}
-	thread showCredit("", "stats", 1.4, 0, "center");
-	thread showCredit("", "stats", 1.4, 0, "center");
-	thread showCredit("This map lasted " + convertTime(level.gameEndTime - level.startTime), "stats", 1.4, 0, "center", (0.8,0,0));
+	
+	// Add two empty lines here to leave some space for the next three lines
+	// TODO: Remove these and just increment level.startY manually
+	thread showCredit( "", "stats", 1.4, 0, "center" );
+	thread showCredit( "", "stats", 1.4, 0, "center" );
+	
+	// Show global stats (playtime, Zombies killed, RotU-R Version)
+	thread showCredit( "This map lasted " + convertTime( level.gameEndTime - level.startTime ), "stats", 1.4, 0, "center", ( 0.8, 0, 0 ) );
 	wait 0.5;
-	thread showCredit("Zombies harmed: " + level.killedZombies, "stats", 1.4, 0, "center", (0.8,0,0));
+	thread showCredit( "Zombies harmed: " + level.killedZombies, "stats", 1.4, 0, "center", ( 0.8, 0, 0 ) );
 	wait 0.5;
-	thread showCredit(level.rotuVersion, "stats", 1.4, 0, "center", (0.8,0,0));
+	thread showCredit( level.rotuVersion, "stats", 1.4, 0, "center", ( 0.8, 0, 0 ) );
 }
 
+/**
+*	Checks whether a spectateview coordinate is defined for the current map
+*/
 isSpectateViewAvailable()
 {
 	coords = scripts\level\_spectatecoords::getSpectateCoords();
-	if(!isDefined(coords))
+	if( !isDefined( coords ) )
 		return false;
 	return true;
 }
 
+/**
+*	If existing, this spawns an entity somewhere on the map where the players should look down from when losing
+*/
 spawnSpectateViewEntity()
 {
-	if(!isSpectateViewAvailable())
+	if( !isSpectateViewAvailable() )
 		return;
 
 	coords = scripts\level\_spectatecoords::getSpectateCoords();
 	
-	level.endViewEnt = spawn( "script_model", getSpectateViewCoords(coords, "origin") );
+	level.endViewEnt = spawn( "script_model", getSpectateViewCoords( coords, "origin" ) );
 	level.endViewEnt setModel( "tag_origin" );
 }
 
-getSpectateViewCoords(coords, type)
+/**
+*	Converts the saved string-coordinates to vectors and returns the requested angle or origin
+*/
+getSpectateViewCoords( coords, type )
 {
-	text = strTok(coords, ";");
-	pos = strTok(text[0], ",");
-	angle = strTok(text[1], ",");
-	origin = (int(pos[0]),int(pos[1]),int(pos[2]));
-	angle = (int(angle[0]),int(angle[1]),int(angle[2]));
+	// Coordinates are saved as
+	// "Origin x, Origin y, Origin z; Angle roll, Angle pitch, Angle yaw"
+	// Example: "739,-990,1999;46,124,0"
+	// Split those two by the separator ';'
+	text = strTok( coords, ";" );
 	
-	if(type == "origin")
+	// Split pos (origin) in [0] and angle in [1] after separating
+	pos = strTok( text[0], "," );
+	angle = strTok( text[1], "," );
+	
+	// Convert these strings to numbers and put them into a vector
+	origin = ( int( pos[0] ), int( pos[1] ), int( pos[2] ) );
+	angle = ( int( angle[0] ), int( angle[1] ), int( angle[2] ) );
+	
+	// Return what was requested
+	if( type == "origin" )
 		return origin;
-	if(type == "angle")
+	if( type == "angle" )
 		return angle;
 }
 
+/**
+*	Called by a player, this cleans up the player, creates a copy of him on the ground and makes him look down from the
+*	provided spectateview position
+*/
 setupSpectateView()
 {
 	coords = scripts\level\_spectatecoords::getSpectateCoords();
-	if(isDefined(coords))
+	
+	// In case we have a valid position, we do this!
+	if( isDefined( coords ) )
 	{
+		// Reset a player entirely, create a copy of him at his current position
 		self scripts\players\_players::cleanup();
-		self ClonePlayer( 1 );
+		self clonePlayer( 1 );
+		
+		// Hide the 'real' playermodel and move him to the specateview position
 		self hide();
-		self setPlayerAngles( getSpectateViewCoords(coords, "angle") );
-		self setOrigin( getSpectateViewCoords(coords, "origin") );
-		self takeallweapons();
-		self linkTo(level.endViewEnt);
+		self setPlayerAngles( getSpectateViewCoords( coords, "angle" ) );
+		self setOrigin( getSpectateViewCoords( coords, "origin" ) );
+		
+		// Remove everything that he has so he has nothing in his hands
+		self takeAllWeapons();
+		
+		// When freezing a player, he still slowly floats towards the ground. We circumvent this by linking him to the spawned spectateview entity
+		self linkTo( level.endViewEnt );
 	}
-	else{
+	else
+	{
+		// When there is no spectateview position defined, we just run a general cleanup and force third person
 		self scripts\players\_players::cleanup();
-		self setclientdvar("cg_thirdperson", 1);
+		self setClientDvar( "cg_thirdperson", 1 );
 	}
+	
+	// Prevent any movement
 	self freezePlayerForRoundEnd();
 }
 
-soulSpawnOnEnd(origin)
+/**
+*	Spawns a soul-FX at the player's position
+*/
+soulSpawnOnEnd( origin )
 {
-	wait 3 + randomfloat(5);
-	org = spawn("script_model", origin);
-	org setmodel( "tag_origin" );
-	wait .1;
+	// Don't spawn every soul at the same time
+	wait 3 + randomfloat( 5 );
+	
+	// Spawn an empty entity at the given position
+	org = spawn( "script_model", origin );
+	org setModel( "tag_origin" );
+	
+	// Wait until properly initialized and play the FX
+	wait 0.1;
 	playFXOnTag( level.soul_deathfx , org, "tag_origin" );
-	wait .1;
-	org moveto(origin+(0,0,150), 11);
-	level waittill("post_mapvote");
+	wait 0.1;
+	
+	// Move the soul upwards within 11 seconds
+	org moveTo( origin + ( 0, 0, 150 ), 11 );
+	
+	// Wait until after the mapvoting, then delete the FX
+	level waittill( "post_mapvote" );
 	org delete();
 }
 
-showCredit(text, type, scale, indexX, orientation, backgroundColour, restartYIndex)
+/**
+*	Displays a line on the screen, automatically moves the next showCredit() call lower
+*	@text: The text to display
+*	@type: "stats" or different, influences display duration
+*	@scale: Size of text
+*	@indexX: x-origin
+*	@orientation: x-alignment (left, right, center)
+*	@backgroundColor: (r,g,b)
+*	@restartYIndex: resets the global Y height to 140
+*/
+showCredit( text, type, scale, indexX, orientation, backgroundColor, restartYIndex )
 {
-	if(!isDefined(self.end_textYIndex))
-		self.end_textYIndex = 0;
-	if(!isDefined(orientation))
+	// Default 'level.end_textYIndex' to 0
+	if( !isDefined( level.end_textYIndex ) )
+		level.end_textYIndex = 0;
+	
+	// Default 'orientation' to left
+	if( !isDefined( orientation ) )
 		orientation = "left";
-	if(isDefined(restartYIndex))
+	
+	// If we want to start from the top again, we reset the global Y pos
+	if( isDefined( restartYIndex ) && restartYIndex )
 	{
 		level.startY = 140;
-		self.end_textYIndex = 0;
+		level.end_textYIndex = 0;
 	}
-	if(!isDefined(level.creditNumber))
+	
+	// Default the number of displayed credits to 0
+	if( !isDefined( level.creditNumber ) )
 		level.creditNumber = 0;
-		
+	
+	// We create a new line, increment by 1
 	level.creditNumber++;
+	
+	// Create a new Hud element
+	// Apply given arguments
 	end_text = newHudElem();
-	// end_text endon("death");
 	end_text.font = "objective";
 	end_text.fontScale = scale;
-	end_text SetText(text);
+	end_text setText( text );
 	end_text.alignX = orientation;
 	end_text.alignY = "top";
 	end_text.horzAlign = orientation;
 	end_text.vertAlign = "top";
-	if(isDefined(indexX))
+	
+	if( isDefined( indexX ) )
 		end_text.x = indexX;
 	else
 		end_text.x = 0;
-	end_text.y = level.startY + (self.end_textYIndex * 16);
-	end_text.sort = -1; //-3
-	if(isDefined(backgroundColour))
-		end_text.glowColor = backgroundColour;
+	
+	// We move the text down 16px every time we create one
+	end_text.y = level.startY + ( level.end_textYIndex * 16 );
+	end_text.sort = -1;
+	
+	// Increment Y Index for the next credit/stat line
+	level.end_textYIndex++;
+	
+	if( isDefined( backgroundColor ) )
+		end_text.glowColor = backgroundColor;
 	else
-		end_text.glowColor = (.1,.8,0);
+		end_text.glowColor = ( 0.1, 0.8, 0 );
+		
 	end_text.glowAlpha = 1;
-	self.end_textYIndex++;
+	
+	// Fade in
 	end_text.alpha = 0;
-	end_text fadeOverTime(1);
+	end_text fadeOverTime( 1 );
 	end_text.alpha = 1;
-	// end_text.y = -60;
 	end_text.foreground = true;
 	
-	if(text == "")
+	// Lazy hack to increment the text height without displaying anything
+	// TODO: Do this elsewhere, not here, and do it properly
+	if( text == "" )
 	{ 
 		wait 1;
 		end_text destroy();
@@ -965,24 +1125,36 @@ showCredit(text, type, scale, indexX, orientation, backgroundColour, restartYInd
 		return;
 	}
 	
-	if(type == "stats")
+	// Increase display time if it's a stats display
+	if( type == "stats" )
 		wait 15;
 	else
 		wait 9;
-	end_text fadeOverTime(1);
+	
+	// Fade out and remove the line
+	end_text fadeOverTime( 1 );
 	end_text.alpha = 0;
 	wait 1;
 	level.creditNumber--;
-	if(level.creditNumber == 0)
-		level notify("credits_gone");
+	
+	// When all credits have faded out, we notify the game that all have been displayed
+	if( level.creditNumber == 0 )
+		level notify( "credits_gone" );
+		
 	end_text destroy();
 }
 
+/**
+*	Plays the ambient music when losing
+*/
 playEndSound()
 {
 	ambientPlay( "zom_lose" );
 }
 
+/**
+*	Plays the ambient music when winning, 2 second fade-in
+*/
 playCreditsSound()
 {
 	ambientPlay( "zom_win", 2 );
