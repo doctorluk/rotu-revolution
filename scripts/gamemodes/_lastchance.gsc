@@ -18,204 +18,303 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
+/***
+*
+* 	_lastchance.gsc
+*	Dedicated file to handle the Phoenix, the last chance when all players are down first time and get a chance to pay the death fee
+*
+*/
+
 #include scripts\include\data;
 #include scripts\include\hud;
 #include scripts\include\useful;
 #include common_scripts\utility;
 
-lastChanceMain(){
-	/* Do not start Last Chance if we had it already */
+/**
+*	Main Logic for the last chance, is called by ::endGame in _gamemodes.gsc before actually ending the game
+*	@return Boolean, returns false when the Last Chance can not be started (used already, conditions not met), returns true when it succeeded
+*/
+lastChanceMain()
+{
+	// Do not start Last Chance if we had it already
 	if( isDefined( level.lastChance ) )
 		return false;
-	/* See if we can start Last Chance */
+		
+	// See if we can start Last Chance, if not we cancel it and proceed to end the game
 	buildLastChanceRequirement();
 	if( !level.lastChance )
 		return false;
 
+	// Freezes gameplay, modifies the vision and freezes all players
 	prepareLastChance();
-	/* Building the HUD display for each player */
-	/* START LAST CHANCE INPUT HERE */
+	
+	// Building the HUD display for each player
 	startLastChancePlayers();
 	
-	/* Start ambient sound */
-	scripts\server\_environment::setAmbient("ambient_last_stand", 0, 0);
+	// Start ambient sound
+	scripts\server\_environment::setAmbient( "ambient_last_stand", 0, 0 );
 	level.silenceZombies = true;
-	// thread test();
-	/* Add timer display, WAIT 10 SECONDS */
-	scripts\gamemodes\_hud::timer(10, &"LAST_CHANCE_TIMER", (1,0,0), undefined, 120);
+
+	// Add timer display and wait 10 seconds
+	scripts\gamemodes\_hud::timer( 10, &"LAST_CHANCE_TIMER", ( 1, 0, 0 ), undefined, 120 );
 	
-	/* After resurrection etc. */
+	// Post Last Chance
 	level.silenceZombies = false;
-	if( level.resurrectPeople.size > 0 ){
+	
+	// If at least one has payed, the Last Chance commences and resurrects him, then we clean it up
+	if( level.resurrectPeople.size > 0 )
+	{
 		postLastChance();
-		level notify("delete_last_chance_hud");
-		level notify("last_chance_end");
+		level notify( "delete_last_chance_hud" );
+		level notify( "last_chance_end" );
 		
-		// wait 0.05;
 		return true;
 	}
-	else{
-		ambientStop(0);
+	// If there is nobody who payed, the game is over
+	else
+	{
+		ambientStop( 0 );
 		// iprintlnbold("Not enough upgradepoints available, no resurrection by erection! (lol)");
-		level notify("delete_last_chance_hud");
+		level notify( "delete_last_chance_hud" );
 		wait 3;
-		level notify("last_chance_failed");
-		level notify("last_chance_end");
+		level notify( "last_chance_failed" );
+		level notify( "last_chance_end" );
+		
 		return false;
 	}
 }
 
-buildLastChanceRequirement(){
+/*
+*	Checks whether all conditions are met to start the Last Chance
+*/
+buildLastChanceRequirement()
+{
+	// We firstly assume that all conditions are met
 	level.lastChance = true;
 	
-	if( level.currentWave < level.dvar["surv_phoenix_minwave"] || level.activePlayers < level.dvar["surv_phoenix_minplayers"] ){
-	// if(level.currentWave <= 0 || level.activePlayers <= 0){
+	// Wave checks, whether the minimum progress was made or the minimum amount of players is playing
+	if( level.currentWave < level.dvar["surv_phoenix_minwave"] || level.activePlayers < level.dvar["surv_phoenix_minplayers"] )
+	{
 		level.lastChance = false;
 		return;
 	}
 	
-	/* Increase the percentage of required points by 3% each 2 waves passed */
-	waves = int(level.currentWave / level.dvar["surv_phoenix_wave_stepsize"]);
-	requirement = level.dvar["surv_phoenix_base_percentage"] + (waves * level.dvar["surv_phoenix_wave_percentage"]);
+	// Increase the percentage of required points by surv_phoenix_base_percentage for each surv_phoenix_wave_stepsize
+	waves = int( level.currentWave / level.dvar["surv_phoenix_wave_stepsize"] );
+	requirement = level.dvar["surv_phoenix_base_percentage"] + ( waves * level.dvar["surv_phoenix_wave_percentage"] );
 	
-	/* We should not get over 80% of points earned */
-	if(requirement > 0.8)
+	// We should not get over 80% of points earned
+	if( requirement > 0.8 )
 		requirement = 0.8;
 		
-	/*  */
-	level.lastChance_toPay = int(requirement * scripts\players\_players::getAverageUpgradePoints());
-	iprintln("Required points for every person: " + level.lastChance_toPay);
+	// Calculate the amount of upgradepoints to pay and further proceed to build the logic
+	level.lastChance_toPay = int( requirement * scripts\players\_players::getAverageUpgradePoints() );
+	iprintln( "Required points for every person: " + level.lastChance_toPay );
+	
 	createLCArrays();
 	level.resurrectPeople = [];
 }
 
-/* We have two arrays which are filled with players who can or can't pay the Death Fee */
-/* The players with enough points to resurrect himself AND another player is being put in level.canPayMultipleLC */
-/* The players with not enough points are put into level.cantPayLC */
-createLCArrays(){
-	// doWait = false;
+/**
+*	We have two arrays which are filled with players who can or can't pay the Death Fee
+*	The player with enough points to resurrect himself AND another player is being put in level.canPayMultipleLC
+*	The player with not enough points is put into level.cantPayLC
+*/
+createLCArrays()
+{
+	// Create empty arrays
 	level.canPayMultipleLC = [];
 	level.cantPayLC = [];
 	
-	for(i = 0; i < level.players.size; i++){
+	// Loop through all players
+	for( i = 0; i < level.players.size; i++ )
+	{
 		p = level.players[i];
-		if( !isReallyPlaying(p) ) // If player is not actually playing, we don't look if he has enough points etc.
+		
+		// If the selected player is not actually playing, we don't look if he has enough points etc.
+		if( !isReallyPlaying( p ) )
 			continue;
-			
-		if( p.infected ) p scripts\players\_infection::cureInfection();
-		// if( p.isZombie ){ p suicide(); doWait = true;}
+		
+		// Prevent infected players from going Zombie during this
+		if( p.infected )
+			p scripts\players\_infection::cureInfection();
 
-		if( p.points < level.lastChance_toPay ) // Put into according arrays
+		// Put the players into the arrays, meaning that people without enough points will join the level.cantPayLC array
+		// And players with at least double the price will be put into the level.canPayMultipleLC array
+		if( p.points < level.lastChance_toPay )
 			level.cantPayLC[level.cantPayLC.size] = p;
 		else if( p.points >= 2 * level.lastChance_toPay )
-			level.canPayMultipleLC[level.cantPayLC.size] = p;
+			level.canPayMultipleLC[level.canPayMultipleLC.size] = p;
 	}
-	// if(doWait) wait 1;
 }
 
-prepareLastChance(){
-	/* Start gameplay-specific tasks..... stop ambient, stop turrets etc. */
-	scripts\server\_environment::stopAmbient(1);
+/**
+*	Prepares the running gameplay for the last chance, removes HUD elements, disables the ambient, plays the Phoenix vision 
+*/
+prepareLastChance()
+{
+	// Remove music, freeze gameplay
+	// Zombies don't need to be frozen, there are no living players, so they don't have a target and don't move
+	scripts\server\_environment::stopAmbient( 1 );
 	level.turretsDisabled = 1;
 	level.spawningDisabled = 1;
-	if( isDefined( level.bossOverlay ) ){
-		level.bossOverlay fadeOverTime(2);
+	
+	// Fade out the boss overlay, if all players went down during a boss wave
+	if( isDefined( level.bossOverlay ) )
+	{
+		level.bossOverlay fadeOverTime( 2 );
 		level.bossOverlay.alpha = 0;
 	}
-	level notify("last_chance_start");
 	
-	/* Freezing players and removing HUD elements, start greyout vision */
-	for(i = 0; i < level.players.size; i++){
+	// At this point we basically commited to starting the Last Chance, so we notify the game about that
+	level notify( "last_chance_start" );
+	
+	// Freezing players and removing HUD elements, start greyout vision
+	for( i = 0; i < level.players.size; i++ )
+	{
 		player = level.players[i];
-		if( !isReallyPlaying(player) || player.isZombie )
+		
+		// Ignore spectators and zombified players
+		if( !isReallyPlaying( player ) || player.isZombie )
 			continue;
 		player closeMenu();
 		player closeInGameMenu();
+		
+		// Freeze and remove HUD
 		player freezePlayerForRoundEnd();
-		player setclientdvar("ui_hud_hardcore", 1);
+		player setclientdvar( "ui_hud_hardcore", 1 );
 	}
-	thread scripts\server\_environment::setBlur(5, 4);
-	VisionSetNaked("greyvision", 4);
+	
+	// Setup vision
+	thread scripts\server\_environment::setBlur( 5, 4 );
+	VisionSetNaked( "greyvision", 4 );
+	
 	wait 4;
 }
 
-startLastChancePlayers(){
-	for(i = 0; i < level.players.size; i++){
+/**
+*	Initiates the Last Chance Hud for active players
+*/
+startLastChancePlayers()
+{
+	for( i = 0; i < level.players.size; i++ )
+	{
 		player = level.players[i];
+		
 		if( !isReallyPlaying( player ) || player.isZombie )
 			continue;
+			
 		player thread lcHud();
 	}
 }
 
-postLastChance(){
-	ambientStop(0);
-	scripts\server\_environment::setAmbient(level.ambient, 0, 1);
-	iprintln("The players have managed to get enough points to resurrect!");
+/**
+*	Called when a Last Chance has resulted in at least one player that has payed the fee
+*/
+postLastChance()
+{
+	// Clean up the phoenix ambient, re-initiate the vision and ambient of the running wave
+	ambientStop( 0 );
+	scripts\server\_environment::setAmbient( level.ambient, 0, 1 );
+	scripts\server\_environment::setVision( level.vision, 3 );
 	
-	scripts\server\_environment::setVision(level.vision, 3);
-	/* Kill all zombies before reviving them */
-	for( i = 0; i < level.bots.size; i++ ){
+	iprintln( "The players have managed to get enough points to resurrect!" );
+	
+	// Kill all zombies before reviving the players, but don't kill a boss
+	for( i = 0; i < level.bots.size; i++ )
+	{
 		bot = level.bots[i];
+		
 		if( bot.sessionstate == "playing" && bot.type != "boss" )
 			bot suicide();
 	}
-	playSoundOnAllPlayers("phoenix");
+	
+	// Since it is called Phoenix, we need an epic scream of a bird
+	playSoundOnAllPlayers( "phoenix" );
+	
 	wait 1;
-	for ( i = 0; i < level.players.size; i++ ) {
+	
+	thread scripts\server\_environment::setBlur( scripts\bots\_types::getBlurForType( level.currentType ), 3 );
+	
+	// Start resurrecting the players that have payed the fee (themselves or for them) and infect players who have not
+	for( i = 0; i < level.players.size; i++ )
+	{
 		player = level.players[i];
 		
-		if( arrayContains(level.resurrectPeople, player) ){
-			level.resurrectPeople = removeFromArray(level.resurrectPeople, player);
-			if( !isReallyPlaying(player) )
+		// Check whether the currently selected player should be revived
+		if( arrayContains( level.resurrectPeople, player ) )
+		{
+			// Remove this player from the revive array before further processing him
+			level.resurrectPeople = removeFromArray( level.resurrectPeople, player );
+			
+			// In case he went spectator in the mean time, we don't do anything with him
+			if( !isReallyPlaying( player ) )
 				continue;
-			if ( player.isDown && !player.isBot && !player.isZombie ){
+			
+			// Last check if he should be revived
+			if( player.isDown && !player.isBot && !player.isZombie )
+			{
 				player thread reviveEffects();
 				player thread scripts\players\_players::revive();
 			}
 		}
-		else if( isReallyPlaying(player) && !player.isZombie )
+		// Players who have not payed are being infected
+		else if( isReallyPlaying( player ) && !player.isZombie )
 			player thread scripts\players\_infection::goInfected();
 	}
 	
-	for(i = 0; i < level.players.size; i++){
+	// Re-initialize gameplay for the players, unfreeze them and return the hud
+	for( i = 0; i < level.players.size; i++ )
+	{
 		player = level.players[i];
 		player closeMenu();
 		player closeInGameMenu();
 		player unfreezePlayerForRoundEnd();
-		player setclientdvar("ui_hud_hardcore", 0);
+		player setclientdvar( "ui_hud_hardcore", 0 );
 	}
 	
-	thread scripts\server\_environment::setBlur(scripts\bots\_types::getBlurForType(level.currentType), 3);
+	// Initiate gameplay again
 	level.resurrectPeople = undefined;
 	level.lastChance = false;
 	
+	// If there was a boss, show the overlay again
 	if( isDefined( level.bossOverlay ) )
-		level.bossOverlay thread fadein(1);
-		
+		level.bossOverlay thread fadein( 1 );
+	
+	// Start gameplay related threads
 	thread scripts\gamemodes\_survival::watchEnd();
 	thread scripts\players\_players::updateActiveAliveCounts();
-	if(level.currentType != "scary")
+	
+	if( level.currentType != "scary" )
 		level.turretsDisabled = 0;
 	level.spawningDisabled = 0;
 }
 
-reviveEffects(){
-	self endon("death");
-	self endon("disconnect");
-	visionSetNaked("last_chance_revive", 0.2);
+/**
+*	Plays vision effects on a player
+*/
+reviveEffects()
+{
+	self endon( "death" );
+	self endon( "disconnect" );
+	visionSetNaked( "last_chance_revive", 0.2 );
 	wait 0.8;
-	scripts\server\_environment::setVision(level.vision, 4);
+	scripts\server\_environment::setVision( level.vision, 4 );
 }
 
-lcHud(){
-	if(self.points >= level.lastChance_toPay)
+/**
+*	Starts the HUD depending on the player's amount of points (can or can't pay)
+*/
+lcHud()
+{
+	if( self.points >= level.lastChance_toPay )
 		self thread buildLCHud_canPay();
 	else
 		self thread buildLCHud_cantPay();
 }
 
-buildLCHud_cantPay(){
+buildLCHud_cantPay()
+{
 		/* BOT CANT PAY &&1 */
 	self.lastChance_cantpay1 = newClientHudElem(self);
 	self.lastChance_cantpay1.archived = true;
@@ -237,7 +336,8 @@ buildLCHud_cantPay(){
 	self.lastChance_cantpay1 thread destroyOnPaid();	
 }
 
-buildLCHud_canpay(){
+buildLCHud_canpay()
+{
 	if(isDefined(self.hinttext) && self.hinttext.alpha != 0)
 		self.hinttext.alpha = 0;
 	
@@ -285,7 +385,8 @@ buildLCHud_canpay(){
 	self thread updateSpentPoints();
 }
 
-reportRevive(){
+reportRevive()
+{
 	if( !isDefined(self) || !isDefined(self.lastChanceTarget) )
 		return;
 		
@@ -295,7 +396,8 @@ reportRevive(){
 		iprintln(self.name + " has payed the death fee for " + self.lastChanceTarget.name);
 }
 
-isLegitLCTarget(player){
+isLegitLCTarget(player)
+{
 	if(!isDefined(player)){
 		logPrint("ERROR: The player " + self.name + " tried to revive a person that is not defined!\n");
 		iprintlnbold("^1ERROR: ^7Report to Luk:\n^1ERROR IN isLegitLCTarget!");
@@ -306,7 +408,8 @@ isLegitLCTarget(player){
 	return true;
 }
 
-updateSpentPoints(){
+updateSpentPoints()
+{
 	self endon("disconnect");
 	self endon("death");
 	level endon("last_chance_end");
@@ -365,7 +468,8 @@ updateSpentPoints(){
 	}
 }
 
-destroyOn(){
+destroyOn()
+{
 	self endon("disconnect");
 	self endon("death");
 	self.owner waittill("stop_lctext");
@@ -378,7 +482,8 @@ destroyOn(){
 		self destroy();
 }
 
-destroyOnLCEnd(){
+destroyOnLCEnd()
+{
 	self endon("disconnect");
 	self endon("death");
 	level waittill_any("last_chance_end", "delete_last_chance_hud");
@@ -391,7 +496,8 @@ destroyOnLCEnd(){
 		self destroy();
 }
 
-destroyOnPaid(){
+destroyOnPaid()
+{
 	self endon("disconnect");
 	self endon("death");
 	self.owner waittill("saved_lc");
