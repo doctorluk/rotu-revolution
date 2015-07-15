@@ -140,6 +140,7 @@ initGameMode()
 
 /**
 *	Loads the given 'mode' as gamemode
+*	@mode String, either 'special' or 'endless'
 */
 loadGameMode( mode )
 {
@@ -186,6 +187,7 @@ loadOnslaughtMode()
 /**
 *	If Survival mode was chosen, it loads "special" or "endless"
 *	"special" is currently the only fully scripted mode
+*	@mode String, loads the given mode
 */
 loadSurvivalMode( mode )
 {
@@ -198,6 +200,7 @@ loadSurvivalMode( mode )
 /**
 *	This function is used to mix up random zombies in a 'normal' wave
 *	Priorities of certain types are calculated using 'weight', like 'priority'
+*	@preset String, loads a zombie-collection, can be 'regular', 'dogs', 'basic' or 'all'
 */
 buildZomTypes( preset )
 {
@@ -263,7 +266,9 @@ buildZomTypes( preset )
 }
 
 /**
-*	The default weight (read: priority) for certain zombie types
+*	Returns the default weight (read: priority) for certain zombie types
+*	@type String, name of zombie type
+	@return Int, weight of given @type
 */
 getDefaultWeight( type )
 {
@@ -292,6 +297,7 @@ getDefaultWeight( type )
 
 /**
 *	Adds zombie 'type' to level.zom_spawntypes[]
+*	@type String, type of zombie
 */
 addSpawnType( type )
 {
@@ -307,7 +313,7 @@ addSpawnType( type )
 }
 
 /**
-*	Returns a random zombie type, taking the weight of each type into consideration
+*	@return a random zombie type, taking the weight of each type into consideration
 */
 getRandomType()
 {
@@ -329,6 +335,7 @@ getRandomType()
 *	Loads the specified difficulty for the currently running game
 *	This modifies the zombies' HP-scaling, the amount of zombies alive per player and the boss phases before he's dead
 *	TODO: Fine tune and add more?
+*	@difficulty Int, defines difficulty to load, can be 1, 2, 3 or 4
 */
 loadDifficulty( difficulty )
 {
@@ -443,7 +450,8 @@ resumeMonitoring()
 }
 
 /**
-*	Returns whether a wave set in the rotu.cfg is actually a wave or not (e.g. difficulty changes)
+*	@waveNumber String, a number
+*	@return whether a wave set in the rotu.cfg is actually a wave or not (e.g. difficulty changes)
 */
 isWave( waveNumber )
 {
@@ -468,6 +476,8 @@ stopDownTimer()
 *	This function controls the outro sequence
 * 	endReasontext: Text to show the players
 *	win: True/False if the players won. Will choose font color and music accordingly
+*	@endReasontext String, text to display at the top of the screen
+*	@win Boolean, whether the map was won or lost
 */
 endMap( endReasontext, win )
 {
@@ -808,7 +818,8 @@ displayCredits()
 
 /**
 *	Converts milliseconds ( usually getTime() ) to human readable time
-*	Format: xxh xxm xxs
+*	@time Int, a time in milliseconds
+*	@return String, formatted milliseconds into xxh xxm xxs
 */
 convertTime( time )
 {
@@ -934,6 +945,7 @@ displayStats()
 
 /**
 *	Checks whether a spectateview coordinate is defined for the current map
+*	@return Boolean, whether there is a spectateview for the map or not
 */
 isSpectateViewAvailable()
 {
@@ -959,6 +971,9 @@ spawnSpectateViewEntity()
 
 /**
 *	Converts the saved string-coordinates to vectors and returns the requested angle or origin
+*	@coords String, saved coordinates and angles for this map, Format: "Origin x,Origin y,Origin z;Angle roll,Angle pitch,Angle yaw"
+*	@type String, can be 'origin' or 'angle', defines what will be returned
+*	@return Vector, depending on @type it returns either a 3D position or angle
 */
 getSpectateViewCoords( coords, type )
 {
@@ -1021,7 +1036,8 @@ setupSpectateView()
 }
 
 /**
-*	Spawns a soul-FX at the player's position
+*	Spawns a soul-FX at the given position
+*	@origin Vector, defines the position the FX will be spawned at
 */
 soulSpawnOnEnd( origin )
 {
@@ -1047,13 +1063,13 @@ soulSpawnOnEnd( origin )
 
 /**
 *	Displays a line on the screen, automatically moves the next showCredit() call lower
-*	@text: The text to display
-*	@type: "stats" or different, influences display duration
-*	@scale: Size of text
-*	@indexX: x-origin
-*	@orientation: x-alignment (left, right, center)
-*	@backgroundColor: (r,g,b)
-*	@restartYIndex: resets the global Y height to 140
+*	@text String, the text to display
+*	@type String, 'stats' or different, influences display duration
+*	@scale Float, size of text
+*	@indexX Vector, x-origin
+*	@orientation String, x-alignment (left, right, center)
+*	@backgroundColor Vector, (r,g,b)
+*	@restartYIndex Boolean, resets the global Y height to 140
 */
 showCredit( text, type, scale, indexX, orientation, backgroundColor, restartYIndex )
 {
