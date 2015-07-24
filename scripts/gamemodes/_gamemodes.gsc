@@ -708,7 +708,7 @@ endMap( endReasontext, win )
 			// Cleanup all players (Hud, Infection and save playtime)
 			for( i = 0; i < level.players.size; i++ )
 			{
-				player = players[i];
+				player = level.players[i];
 				
 				if( player.isActive )
 				{

@@ -24,8 +24,8 @@ init()
 		return;
 		
 	// addDvar( "game_chan", "plugin_hostname_updatetime", 10, 2, 60, "int" );
-	// if( getDvar( "sv_newhostname" ) == "" )
-		// setDvar( "sv_newhostname", "^1DeathRun ^2V1.2 ^7- Round: PIHN_ROUND/PIHN_MAXROUNDS - Players: PIHN_PLAYERS/PIHN_MAXPLAYERS - Activator: PIHN_ACTIVATOR" );
+//	if( getDvar( "sv_newhostname" ) == "" )
+//		setDvar( "sv_newhostname", "^1DeathRun ^2V1.2 ^7- Round: PIHN_ROUND/PIHN_MAXROUNDS - Players: PIHN_PLAYERS/PIHN_MAXPLAYERS - Activator: PIHN_ACTIVATOR" );
 	
 	wait 1;
 	
@@ -142,7 +142,7 @@ CheckString( search, string )
 		break;
 	}
 	//iPrintln( GetSubStr( string, 0, mark[0] ) + "TO_BE_REPLACED" + GetSubStr( string, mark[1], string.size ) );
-	return /*newstring =*/ GetSubStr( string, 0, mark[0] ) + ReplaceString( search ) + GetSubStr( string, mark[1], string.size );
+	return getSubStr( string, 0, mark[0] ) + ReplaceString( search ) + GetSubStr( string, mark[1], string.size );
 }
 
 ReplaceString( replace )

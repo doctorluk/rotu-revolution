@@ -286,7 +286,7 @@ joinSpectator()
 	if( level.gameEnded )
 		return;
 	
-	// Process the player if he's not spectator alreay
+	// Process the player if he's not spectator already
 	if( self.pers["team"] != "spectator" )
 	{
 		// In case he was living, save his stats in the persistency area and kill him
