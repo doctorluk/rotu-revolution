@@ -3,6 +3,7 @@
 /screenshots
 /*.cfg
 /testserver
+/scripts
 *.bat
 *.iwd
 /*.ff
