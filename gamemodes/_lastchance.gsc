@@ -33,7 +33,7 @@
 
 /**
 *	Main Logic for the last chance, is called by ::endGame in _gamemodes.gsc before actually ending the game
-*	@return Boolean, returns false when the Last Chance can not be started (used already, conditions not met), returns true when it succeeded
+*	@return Boolean, Returns false when the Last Chance can not be started (used already, conditions not met), returns true when it succeeded
 */
 lastChanceMain()
 {
@@ -314,65 +314,70 @@ lcHud()
 		self thread buildLCHud_cantPay();
 }
 
+/**
+*	Bottom Hud text for players who can't pay their fees
+*/
 buildLCHud_cantPay()
 {
-		/* BOT CANT PAY &&1 */
-	self.lastChance_cantpay1 = newClientHudElem(self);
+	self.lastChance_cantpay1 = newClientHudElem( self );
 	self.lastChance_cantpay1.archived = true;
 	self.lastChance_cantpay1.x = 0;
 	self.lastChance_cantpay1.alignX = "center";
 	self.lastChance_cantpay1.alignY = "middle";
 	self.lastChance_cantpay1.horzAlign = "center_safearea";
 	self.lastChance_cantpay1.vertAlign = "top";
-	self.lastChance_cantpay1.sort = 1; // force to draw after the bars
+	self.lastChance_cantpay1.sort = 1;
 	self.lastChance_cantpay1.font = "objective";
 	self.lastChance_cantpay1.foreground = true;
 	self.lastChance_cantpay1.y = 290;
 	self.lastChance_cantpay1.fontscale = 1.4;
 	self.lastChance_cantpay1.alpha = 1;
 	self.lastChance_cantpay1.label = &"LAST_CHANCE_SPEND_AMOUNT_CANT_PAY";
-	self.lastChance_cantpay1 setText( int(level.lastChance_toPay) );
+	self.lastChance_cantpay1 setText( int( level.lastChance_toPay ) );
 	self.lastChance_cantpay1.owner = self;
 	self.lastChance_cantpay1 thread destroyOnLCEnd();	
 	self.lastChance_cantpay1 thread destroyOnPaid();	
 }
 
+/**
+*	Bottom Hud text for players who CAN pay their fees
+*/
 buildLCHud_canpay()
 {
-	if(isDefined(self.hinttext) && self.hinttext.alpha != 0)
+	if( isDefined( self.hinttext ) && self.hinttext.alpha != 0 )
 		self.hinttext.alpha = 0;
 	
 	self.lastChanceTarget = self;
 	
-	/* TOP TOTAL REQUIRED */
-	self.lastChance_top = newClientHudElem(self);
+	// TOP TOTAL REQUIRED
+	self.lastChance_top = newClientHudElem( self );
 	self.lastChance_top.archived = true;
 	self.lastChance_top.x = 0;
 	self.lastChance_top.alignX = "center";
 	self.lastChance_top.alignY = "middle";
 	self.lastChance_top.horzAlign = "center_safearea";
 	self.lastChance_top.vertAlign = "top";
-	self.lastChance_top.sort = 1; // force to draw after the bars
+	self.lastChance_top.sort = 1;
 	self.lastChance_top.font = "objective";
 	self.lastChance_top.foreground = true;
 	self.lastChance_top.y = 190;
 	self.lastChance_top.fontscale = 1.4;
 	self.lastChance_top.alpha = 1;
 	self.lastChance_top.label = &"LAST_CHANCE_SPEND_AMOUNT";
-	self.lastChance_top setText( int(level.lastChance_toPay) );
+	self.lastChance_top setText( int( level.lastChance_toPay ) );
 	self.lastChance_top.owner = self;
 	self.lastChance_top thread destroyOn();
 	self.lastChance_top thread destroyOnLCEnd();
 	
-	/* HINT TEXT HOW TO SPEND "FIRE" */
-	self.lastChance_botFire = newClientHudElem(self);
+	// Hint text how to spend (button 'Fire')
+	self.lastChance_botFire = newClientHudElem( self );
 	self.lastChance_botFire.archived = true;
 	self.lastChance_botFire.x = 0;
 	self.lastChance_botFire.alignX = "center";
 	self.lastChance_botFire.alignY = "middle";
 	self.lastChance_botFire.horzAlign = "center_safearea";
 	self.lastChance_botFire.vertAlign = "top";
-	self.lastChance_botFire.sort = 1; // force to draw after the bars
+	self.lastChance_botFire.sort = 1;
 	self.lastChance_botFire.font = "objective";
 	self.lastChance_botFire.foreground = true;
 	self.lastChance_botFire.y = 290;
@@ -386,124 +391,177 @@ buildLCHud_canpay()
 	self thread updateSpentPoints();
 }
 
+/**
+*	Reports the fact that a player has been payed for (or has payed for themselves) to the iprintln area
+*/
 reportRevive()
 {
-	if( !isDefined(self) || !isDefined(self.lastChanceTarget) )
+	if( !isDefined( self ) || !isDefined( self.lastChanceTarget ) )
 		return;
 		
-	if(self == self.lastChanceTarget)
-		iprintln(self.name + " has payed for himself!");
+	if( self == self.lastChanceTarget )
+		iprintln( self.name + " has payed for himself!" );
 	else
-		iprintln(self.name + " has payed the death fee for " + self.lastChanceTarget.name);
+		iprintln( self.name + " has payed the death fee for " + self.lastChanceTarget.name );
 }
 
-isLegitLCTarget(player)
+/**
+*	Checks whether the given player can be payed for
+*	@player Entity, Player to check for validity
+*/
+isLegitLCTarget( player )
 {
-	if(!isDefined(player)){
-		logPrint("ERROR: The player " + self.name + " tried to revive a person that is not defined!\n");
-		iprintlnbold("^1ERROR: ^7Report to Luk:\n^1ERROR IN isLegitLCTarget!");
+	if( !isDefined( player ) )
+	{
+		logPrint( "ERROR: The player " + self.name + " tried to revive a person that is not defined!\n" );
+		iprintlnbold( "^1ERROR: ^7Report to Luk:\n^1ERROR IN isLegitLCTarget!" );
+		
 		return false;
 	}
-	if(!player.isActive || player.sessionstate != "playing" || player.isZombie)
+	
+	if( !player.isActive || player.sessionstate != "playing" || player.isZombie )
 		return false;
+		
 	return true;
 }
 
+/**
+*	Loops during the pay-phase of the Last Chance
+*	Checks for the player himself and optionally displays other targets who can't pay for themselves if
+*	the player has enough points to save them, too
+*/
 updateSpentPoints()
 {
-	self endon("disconnect");
-	self endon("death");
-	level endon("last_chance_end");
+	self endon( "disconnect" );
+	self endon( "death" );
+	level endon( "last_chance_end" );
 	
 	haspressedAttack = false;
-	while(level.lastChance && isDefined(self.lastChanceTarget) ){
-		if(self attackButtonPressed() && !haspressedAttack && self.points >= level.lastChance_toPay){
+	
+	while( level.lastChance && isDefined( self.lastChanceTarget ) )
+	{
+		// Check whether the player is doing an action to pay
+		if( self attackButtonPressed() && !haspressedAttack && self.points >= level.lastChance_toPay )
+		{
 			haspressedAttack = true;
-			/* See if the selected player is on the Server and can be legitimately added to the revives */
-			if( self isLegitLCTarget(self.lastChanceTarget) ){
-				self iprintln("We had a legit target! -> " + self.lastChanceTarget.name);
-				level.resurrectPeople[level.resurrectPeople.size] = self.lastChanceTarget; // You have saved the selected person
-				self reportRevive(); // Show revive in bottom left
+			
+			// See if the selected player is on the Server and can be legitimately added to the revives
+			if( self isLegitLCTarget( self.lastChanceTarget ) )
+			{
+				// DEBUG: 
+				// self iprintln( "We had a legit target! -> " + self.lastChanceTarget.name );
+				
+				// The given player is legit and can be revived
+				level.resurrectPeople[level.resurrectPeople.size] = self.lastChanceTarget;
 				self.lastChanceTarget.savior = self;
-				self.lastChanceTarget notify("saved_lc");
-				self scripts\players\_players::incUpgradePoints(-1 * level.lastChance_toPay);
+				self.lastChanceTarget notify( "saved_lc" );
+				self scripts\players\_players::incUpgradePoints( -1 * level.lastChance_toPay );
+				self reportRevive();
+				
 				self.lastChanceTarget = undefined;
 			}
-			/* In case we can revive someone else (enough money, enough revivable players left), let's pick someone and set him as target */
-			if(self.points >= level.lastChance_toPay && level.cantPayLC.size > 0){
-				// It can happen that people leave during the last chance....
-				// while(!isDefined(self.lastChanceTarget) && self.points >= level.lastChance_toPay && level.cantPayLC.size > 0){
-					// ran = randomint(level.cantPayLC.size);
-					// self.lastChanceTarget = level.cantPayLC[ran];
-				// }
-				if( level.cantPayLC.size > 0 && !isDefined(self.lastChanceTarget)){
-					ran = randomint(level.cantPayLC.size);
+			
+			// In case we can revive someone else (enough money, enough revivable players left), let's pick someone and set him as target
+			if( self.points >= level.lastChance_toPay && level.cantPayLC.size > 0 )
+			{
+				// Select a new player from the list
+				if( level.cantPayLC.size > 0 && !isDefined( self.lastChanceTarget ) ){
+					ran = randomInt( level.cantPayLC.size );
 					self.lastChanceTarget = level.cantPayLC[ran];
-					level.cantPayLC = removeFromArray(level.cantPayLC, self.lastChanceTarget);
+					level.cantPayLC = removeFromArray( level.cantPayLC, self.lastChanceTarget );
 				}
 				
-				if( !isDefined(self.lastChanceTarget) ){
-					self iprintln("There is nobody left to revive!");
-					self notify("stop_lctext");
+				// Fail-safe check
+				if( !isDefined( self.lastChanceTarget ) )
+				{
+					// DEBUG:
+					// self iprintln( "There is nobody left to revive!" );
+					self notify( "stop_lctext" );
 					break;
 				}
-				else{
-					level.cantPayLC = removeFromArray(level.cantPayLC, self.lastChanceTarget);
-					self iprintln("You have another target: " + self.lastChanceTarget.name);
-					self.lastChance_botFire setText(self.lastChanceTarget.name);
+				else
+				{
+					level.cantPayLC = removeFromArray( level.cantPayLC, self.lastChanceTarget );
+					// DEBUG:
+					// self iprintln( "You have another target: " + self.lastChanceTarget.name );
 					self.lastChance_botFire.label = &"LAST_CHANCE_SPEND_FIRE";
-					self.lastChance_botFire setText(self.lastChanceTarget.name);
+					self.lastChance_botFire setText( self.lastChanceTarget.name );
 				}
 				
 				
 			}
-			else{
-				self iprintln("You either don't have enough points to revive someone else or there is nobody left");
-				self notify("stop_lctext");
+			else
+			{
+				// DEBUG:
+				// self iprintln("You either don't have enough points to revive someone else or there is nobody left");
+				self notify( "stop_lctext" );
 				break;
 			}
 		}
-		else if(!self attackButtonPressed() && haspressedAttack)
+		else if( !self attackButtonPressed() && haspressedAttack )
 			haspressedAttack = false;
 		wait 0.05;
 	}
 }
 
+/**
+*	Removes the Hud Element on 'stop_lctext'
+*/
 destroyOn()
 {
-	self endon("disconnect");
-	self endon("death");
-	self.owner waittill("stop_lctext");
-	if(!isDefined(self))
+	self endon( "disconnect" );
+	self endon( "death" );
+	
+	self.owner waittill( "stop_lctext" );
+	
+	if( !isDefined( self ) )
 		return;
-	self fadeOverTime(1);
+		
+	self fadeOverTime( 1 );
 	self.alpha = 0;
+	
 	wait 1;
-	if(isDefined(self))
+	
+	if( isDefined( self ) )
 		self destroy();
 }
 
+/**
+*	Removes the Hud Element at the end of the Last Chance
+*/
 destroyOnLCEnd()
 {
-	self endon("disconnect");
-	self endon("death");
-	level waittill_any("last_chance_end", "delete_last_chance_hud");
-	if(!isDefined(self))
+	self endon( "disconnect" );
+	self endon( "death" );
+	
+	level waittill_any( "last_chance_end", "delete_last_chance_hud" );
+	
+	if( !isDefined( self ) )
 		return;
-	self fadeovertime(1);
+		
+	self fadeovertime( 1 );
 	self.alpha = 0;
+	
 	wait 1;
-	if(isDefined(self))
+	
+	if( isDefined( self ) )
 		self destroy();
 }
 
+/**
+*	Last, but not least, we CHANGE the Hud to display the saviours name if
+*	someone else paid for us
+*/
 destroyOnPaid()
 {
-	self endon("disconnect");
-	self endon("death");
-	self.owner waittill("saved_lc");
-	if(!isDefined(self))
+	self endon( "disconnect" );
+	self endon( "death" );
+	
+	self.owner waittill( "saved_lc" );
+	
+	if( !isDefined( self ) )
 		return;
+		
 	self.label = &"LAST_CHANCE_YOU_GOT_SAVED_BY";
 	self setText( self.owner.savior.name );
 }
