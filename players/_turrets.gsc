@@ -89,8 +89,29 @@ turretData()
 }
 
 /**
+*	Loads the default turret stats
+*	@turret_type String, either 'gl' or 'minigun'
+*/
+loadTurretData( turret_type )
+{
+	if( !isDefined( turret_type ) )
+		return;
+
+	self.firespeed = level.turretData[turret_type].firespeed;
+	self.numbullets = level.turretData[turret_type].numbullets;
+	self.mindamage = level.turretData[turret_type].mindamage;
+	self.maxdamageadd = level.turretData[turret_type].maxdamageadd;
+	self.range = level.turretData[turret_type].range
+	self.maxupangle = level.turretData[turret_type].maxupangle
+	self.cooldown = level.turretData[turret_type].cooldown
+	self.firetag = level.turretData[turret_type].firetag
+}
+
+/**
 *	Gives the calling player a turret
-*	'augmented' keeps persistency for turrets that have been augmented by the Engineer's special and will be re-placed
+*	@turret_type String, either 'gl' or 'minigun'
+*	@time Int, Time the turret was placed on the field, defaults to 0
+*	@augmented Boolean, Whether the picked up turret was previously augmented, defaults to false
 */
 giveTurret( turret_type, time, augmented )
 {
@@ -148,6 +169,8 @@ onDeath()
 /**
 *	The actual placement loop that monitors the desire of a player to place
 *	the turret and to check the surroundings for a valid placement position
+*	@turret_type String, Either 'gl' or 'minigun'
+*	@augmented Boolean, Whether the turret is augmented or not
 */
 placeTurret( turret_type, augmented )
 {
@@ -211,6 +234,9 @@ placeTurret( turret_type, augmented )
 
 /**
 *	Returns whether a turret is placeable at the current position and places it, if a valid position has been found
+*	@turret_type String, Either 'gl' or 'minigun'
+*	@augmented Boolean, Whether the turret is augmented or not
+*	@return Boolean, Whether the turret can be deployed at the current position or not
 */
 deploy( turret_type, augmented )
 {
@@ -255,6 +281,10 @@ deploy( turret_type, augmented )
 
 /**
 *	Here we spawn the actual turret at the given permission and assign the turret_type's values
+*	@turret_type String, Either 'gl' or 'minigun'
+*	@pos Vector, Origin of the turret
+*	@angles Vector, Orientation of the turret
+*	@augmented Boolean, Whether the turret is augmented or not
 */
 defenceTurret( turret_type, pos, angles, augmented )
 {
@@ -292,31 +322,9 @@ defenceTurret( turret_type, pos, angles, augmented )
 
 	self.turret_gun.owner = self;
 	self.turret_gun.turret_type = turret_type;
-
-	// Give these turrets the previously defined static stats
-	if( self.turret_gun.turret_type == "gl" )
-	{
-		self.turret_gun.fireSpeed = level.turretData["gl"].firespeed;
-		self.turret_gun.numBullets = level.turretData["gl"].numbullets;
-		self.turret_gun.minDamage = level.turretData["gl"].mindamage;
-		self.turret_gun.maxDamageAdd = level.turretData["gl"].maxdamageadd;
-		self.turret_gun.range = level.turretData["gl"].range;
-		self.turret_gun.maxUpAngle = level.turretData["gl"].maxupangle;
-		self.turret_gun.cooldown = level.turretData["gl"].cooldown;
-		self.turret_gun.fireTag = level.turretData["gl"].firetag;
-	}
-
-	if( self.turret_gun.turret_type == "minigun" )
-	{
-		self.turret_gun.fireSpeed = level.turretData["minigun"].firespeed;
-		self.turret_gun.numBullets = level.turretData["minigun"].numbullets;
-		self.turret_gun.minDamage = level.turretData["minigun"].mindamage;
-		self.turret_gun.maxDamageAdd = level.turretData["minigun"].maxdamageadd;
-		self.turret_gun.range = level.turretData["minigun"].range;
-		self.turret_gun.maxUpAngle = level.turretData["minigun"].maxupangle;
-		self.turret_gun.cooldown = level.turretData["minigun"].cooldown;
-		self.turret_gun.fireTag = level.turretData["minigun"].firetag;
-	}
+	
+	// Loads the default stats for the turret
+	self.turret_gun loadTurretData( self.turret_gun.turret_type );
 	
 	if( !isDefined( augmented ) )
 		augmented = false;
@@ -358,7 +366,7 @@ defenceTurret( turret_type, pos, angles, augmented )
 	
 	// Thread to remove the turrets after a certain time, or when the player has left the active game
 	level thread deleteTurretInTime( self.turret_gun, self.turret_bipod, duration - self.turret_gun.timePassed, self.turret_gun.turret_type, self );
-	level thread deleteTurretOnDC( self.turret_gun, self.turret_bipod, duration - self.turret_gun.timePassed );
+	level thread deleteTurretOnDC( self.turret_gun, self.turret_bipod );
 }
 
 /**
@@ -422,6 +430,10 @@ goAugmented()
 
 /**
 *	Delete the turret after it has reached the max. duration on the field
+*	@gun Entity, The upper part of the turret
+*	@bipod Entity, The lower part of the turret
+*	@time Int, The duration it will take for deletion to happen
+*	@owner Entity, The player that owns this turret
 */
 deleteTurretInTime( gun, bipod, time, type, owner )
 {
@@ -439,8 +451,10 @@ deleteTurretInTime( gun, bipod, time, type, owner )
 
 /**
 *	Delete the turret when the player disconnects or switches to spectator
+*	@gun Entity, The upper part of the turret
+*	@bipod Entity, The lower part of the turret
 */
-deleteTurretOnDC( gun, bipod, time )
+deleteTurretOnDC( gun, bipod )
 {
 	// Prevent this from executing if any of the turret is removed
 	gun endon( "death" );
@@ -515,6 +529,9 @@ enableAgain()
 
 /**
 *	Creates an augmentation or broken effect at the given position
+*	@effect String, The effect's name to be played
+*	@origin Vector, The position the effect is about to be played
+*	@type String, Distinguishes between the types 'augmented' and 'broken' to prevent double-casting the same effect
 */
 createEffectEntity( effect, origin, type )
 {
@@ -547,6 +564,8 @@ createEffectEntity( effect, origin, type )
 
 /**
 *	Removes a turret from the field
+*	@gun Entity, The upper part of the turret
+*	@bipod Entity, The lower part of the turret
 */
 deleteTurret( gun, bipod )
 {
@@ -573,6 +592,10 @@ deleteTurret( gun, bipod )
 
 /**
 *	Bullet impact function for GL-Turret shots
+*	@targetSpot Vector, Center position of the areal damage
+*	@range Int, Range of the explosion
+*	@damage Int, Amount of damage dealt max.
+*	@attacker Entity, The damage inflicting entity
 */
 glDamage( targetSpot, range, damage, attacker )
 {
@@ -600,6 +623,8 @@ glDamage( targetSpot, range, damage, attacker )
 /**
 *	Approximately calculates the time it takes for a GL-bullet to travel to its target's destination
 *	Increases feel of realism
+*	@distance Int, The distance the bullet will travel
+*	@return Float, The time it will approx. take for the bullet to travel @distance
 */
 travelDistance( distance )
 {
@@ -760,6 +785,8 @@ shootMinigun()
 /**
 *	Plays a sound 'sound' at 'origin' rather than on an existing entity
 *	Helpful when placing sounds in 3D space
+*	@sound String, Sound name
+*	@origin Vector, Position the sound should be played at
 */
 playSoundOnSpot( sound, origin )
 {
@@ -888,6 +915,7 @@ rotate()
 /**
 *	We prevent turrets from shooting when not being aligned towards the target
 *	This function manually notifies the turret of being rotated once rotateTo has finished
+*	@delay Float, Time the rotation will take
 */
 notifyRotation( delay )
 {
@@ -901,7 +929,8 @@ notifyRotation( delay )
 }
 
 /**
-*	Checks whether 'target' can be seen
+*	@target Entity, Visibility check towards the target
+*	@return Float, Returns a distance if target can be seen, otherwise it returns -1
 */
 isInView( target )
 {
