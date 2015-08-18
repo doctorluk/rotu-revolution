@@ -19,6 +19,15 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
+
+/***
+*
+* 	_players.gsc
+*	This is the big script file that handles the general player behaviour like spawning and damage dealing
+*	as well as the spawning behaviour, the spawn queue, player-game-effects and more 
+*
+*/
+
 #include scripts\include\physics;
 #include scripts\include\entities;
 #include scripts\include\hud;
