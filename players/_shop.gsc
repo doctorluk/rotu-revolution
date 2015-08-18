@@ -19,6 +19,14 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
+/***
+*
+* 	_shop.gsc
+*	Deals with updating the player's shop costs dvars and handles the menu's responses when players use the ingame shop
+*	to get upgrades
+*
+*/
+
 #include scripts\include\hud;
 #include scripts\include\useful;
 #include scripts\include\weapons;
