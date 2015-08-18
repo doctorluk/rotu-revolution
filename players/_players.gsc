@@ -349,6 +349,8 @@ joinSpectator()
 
 /**
 *	Default Spawn function for a Spectator
+*	@origin Vector, The position the player is being spawned at
+*	@angles Vector, The orientation the player is having when spawned
 */
 spawnSpectator(origin, angles)
 {
@@ -371,6 +373,7 @@ spawnSpectator(origin, angles)
 
 /**
 *	Function to spawn a player
+*	@forceSpawn Boolean, Whether the player is spawned no matter what
 */
 spawnPlayer( forceSpawn )
 {
@@ -565,6 +568,7 @@ testloop()
 
 /**
 *	Callback when a player takes damage (Warning: Huge ._.)
+*	@args Default Args for damage hooks
 */
 onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime )
 {
@@ -653,6 +657,7 @@ onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon,
 /**
 *	Handling of Players being killed, this is ONLY called when a player has turned into
 *	a zombie and is killed by other players
+*	@args Default Args for damage hooks
 */
 onPlayerKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
 {
@@ -694,6 +699,7 @@ onPlayerKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHi
 
 /**
 *	Handling of players going down when gaining fatal damage
+*	@args Default Args for damage hooks
 */
 Callback_PlayerLastStand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
 {
@@ -835,6 +841,7 @@ cleanup()
 
 /**
 *	Callback when a player goes down, updating his persistency stat
+*	@isDown Boolean, Whether the player is down or not
 */
 setDown( isDown )
 {
@@ -880,7 +887,8 @@ restoreAmmo()
 }
 
 /**
-*	Returns whether a player has any weapon in his inventory that is missing ammo, 
+*	Checks whether the player's inventory contains an item that can be refilled with new ammo
+*	@return Boolean, Whether a player has any weapon in his inventory that is missing ammo, 
 *	except for weapons that do not allow being refilled
 */
 hasFullAmmo()
@@ -901,7 +909,7 @@ hasFullAmmo()
 }
 
 /**
-*	Returns whether a player's current weapon has less or equal to 30% of its maximum capacity
+*	@return Boolean, whether a player's current weapon has less or equal to 30% of its maximum capacity
 */
 hasLowAmmo()
 {
@@ -916,8 +924,12 @@ hasLowAmmo()
 }
 
 /**
-*	Returns the best player, based on a minimum or maximum threshold for certain stats
+*	Loops through all players and finds a player with the highest/lowest stat, depending on what it is looking for
 *	TODO: Put this into the _gamemodes.gsc since the ending is handled there, too?
+*	@type String, the type of stat that is being looked for
+*	@returns String, either 'player' or 'amount'
+*	@return [?] Entity if @returns is 'player', The best player based on a minimum or maximum threshold for certain stats
+*	@return [?] Int if @returns is 'amount', the value of a stat of the best player that is found
 */
 getBestPlayer( type, returns )
 {
@@ -1215,6 +1227,9 @@ watchHPandAmmo()
 /**
 *	Area damage function against bots, used by Explosive Barrels
 *	TODO: Move to _barricade.gsc (?) where Explosive Barrels are located, too
+*	@range Float, Range the area damage has
+*	@damage Int, The amount of damage that is dealt
+*	@attacker Entity, The entity that is dealing the damage
 */
 doAreaDamage( range, damage, attacker )
 {
@@ -1240,6 +1255,7 @@ doAreaDamage( range, damage, attacker )
 
 /**
 *	Give all playing players the flashlight for the scary wave
+*	@on Boolean, Whether the flashlight is turned on or off
 */
 flashlightForAll( on )
 {
@@ -1262,6 +1278,7 @@ flashlightForAll( on )
 
 /**
 *	Called when the scary wave initializes
+*	@noWait Boolean, Is defined when there should be close to no delay, otherwise a random delay will be sued
 */
 flashlightOn( noWait )
 {
@@ -1388,6 +1405,7 @@ resetUnlocks()
 
 /**
 *	Simple function to set the player's status icon
+*	@icon String, The material name of the icon
 */
 setStatusIcon( icon )
 {
@@ -1395,7 +1413,7 @@ setStatusIcon( icon )
 }
 
 /**
-*	Propells the player towards 'direction'
+*	@direction Vector, Propells the player towards the given Vector
 */
 bounce( direction )
 {
@@ -1413,7 +1431,7 @@ bounce( direction )
 
 /**
 *	A timed loop that restores all HP for a player
-*	speed = amount of HP healed per step
+*	@speed Int, amount of HP healed per step
 */
 fullHeal( speed )
 {
@@ -1439,7 +1457,7 @@ fullHeal( speed )
 }
 
 /**
-*	Heals the calling player with 'amount'
+*	@amount Int, Heals the calling player by the given amount
 */
 healPlayer( amount )
 {
@@ -1457,7 +1475,7 @@ healPlayer( amount )
 }
 
 /**
-*	Increases/decreases the calling player's upgradepoints by 'inc' amount
+*	@inc Int, Increases/decreases the calling player's upgradepoints by the given amount
 */
 incUpgradePoints( inc )
 {
@@ -1495,8 +1513,8 @@ giveDelayedUpgradepoints()
 		self incUpgradePoints( ( ( level.currentWave - self.lastPlayedWave - 1 ) * level.dvar["game_delayed_upgradepoints_amount"] ) );
 }
 
-/**
-*	Returns the total amount of upgradepoints all players ever(!) have earned
+/** 
+*	@return Int, The total amount of upgradepoints all players ever(!) have earned
 */
 getTotalUpgradePoints()
 {
@@ -1514,7 +1532,7 @@ getTotalUpgradePoints()
 }
 
 /**
-*	Returns the (basic) average amount of upgradepoints per player
+*	@return Int, The (basic) average amount of upgradepoints per player
 */
 getAverageUpgradePoints()
 {
@@ -1536,7 +1554,7 @@ getAverageUpgradePoints()
 }
 
 /**
-*	Returns the total amount of upgradepoints all players have in total
+*	@return Int, The total amount of upgradepoints all players have in total
 */
 getRemainingUpgradePoints()
 {
@@ -1587,7 +1605,7 @@ giveCoordinatesToSpec()
 
 /**
 *	This is being called when a player successfully held USE to revive a player, or when the endgame-revive kicks in
-*	'by' optionally refers to the player that has revived the calling player
+*	@by Entity, Optionally refers to the player that has revived the calling player
 */
 revive( by )
 {
@@ -1700,7 +1718,7 @@ revive( by )
 
 /**
 *	When a scary wave is being started, make the hud of all players flicker (turn on and off) randomly
-*	'duration' defines the time in milliseconds the flickering will occur
+*	@duration Int, defines the time in milliseconds the flickering will occur
 */
 flickeringHud( duration )
 {
