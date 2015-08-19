@@ -101,10 +101,10 @@ loadTurretData( turret_type )
 	self.numbullets = level.turretData[turret_type].numbullets;
 	self.mindamage = level.turretData[turret_type].mindamage;
 	self.maxdamageadd = level.turretData[turret_type].maxdamageadd;
-	self.range = level.turretData[turret_type].range
-	self.maxupangle = level.turretData[turret_type].maxupangle
-	self.cooldown = level.turretData[turret_type].cooldown
-	self.firetag = level.turretData[turret_type].firetag
+	self.range = level.turretData[turret_type].range;
+	self.maxupangle = level.turretData[turret_type].maxupangle;
+	self.cooldown = level.turretData[turret_type].cooldown;
+	self.firetag = level.turretData[turret_type].firetag;
 }
 
 /**
