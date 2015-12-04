@@ -92,7 +92,7 @@ WatchClaymore()
 		if( player.pers["team"] == self.owner.pers["team"] )
 			continue;
 			
-		if( player.type == "boss" && level.bossPhase == 1 )
+		if( player.isBot && player.type == "boss" && level.bossPhase == 1 )
 			continue;
 			
 		if( !level.claymoresEnabled )
