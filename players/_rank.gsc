@@ -19,10 +19,6 @@
 // Based on Reign of the Undead 2.1 created by Bipo and Etheross
 //
 
-#include common_scripts\utility;
-#include maps\mp\gametypes\_hud_util;
-#include scripts\include\hud;
-
 init()
 {
 	level.scoreInfo = [];
@@ -189,6 +185,8 @@ onPlayerConnect()
 	//for(;;)
 	//{
 	//	level waittill( "connected", player );
+	
+		self endon("disconnect");
 
 		self.pers["rankxp"] = self scripts\players\_persistence::statGet( "rankxp" );
 		rankId = self getRankForXp( self getRankXP() );
@@ -562,8 +560,10 @@ resetRank(delay) {
 
 updateRank( useWait )
 {
-	if (self.rankHacker)
-	return;
+	if (self.rankHacker || isdefined(self.updatingrank))
+		return false;
+	
+	self.updatingrank = true;
 	
 	if( !isDefined( useWait ) )
 		useWait = false;
@@ -573,7 +573,10 @@ updateRank( useWait )
 	
 	newRankId = self getRank();
 	if ( newRankId == self.pers["rank"] )
+	{
+		self.updatingrank = undefined;
 		return false;
+	}
 
 	oldRank = self.pers["rank"];
 	rankId = self.pers["rank"];
@@ -597,6 +600,7 @@ updateRank( useWait )
 	
 	self setRank( newRankId, self.pers["prestige"] );
 	self scripts\players\_classes::getSkillpoints(newRankId);
+	self.updatingrank = undefined;
 	return true;
 }
 
@@ -642,11 +646,7 @@ updateRankAnnounceHUD()
 	
 	if (subRank == 1)
 	{
-		for ( i = 0; i < level.players.size; i++ )
-		{
-			player = level.players[i];
-			player iprintln( &"RANK_PLAYER_WAS_PROMOTED", self, newRankName);
-		}
+		iprintln( &"RANK_PLAYER_WAS_PROMOTED", self.name, newRankName);
 	}
 }
 
