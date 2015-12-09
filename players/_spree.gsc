@@ -48,7 +48,7 @@ checkSpree()
 	self.spree++;
 	if ( self.spree > 1 ) 
 	{
-		if ( self.hud_streak.alpha==0 ) 
+		if ( self.hud_streak.alpha == 0 ) 
 		{
 			self.hud_streak.alpha = 1;
 		}
