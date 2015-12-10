@@ -193,7 +193,7 @@ onPlayerConnect()
 	//{
 	//	level waittill( "connected", player );
 	
-		self endon("disconnect"); //A user can lose connection exactly after connecting
+		self endon( "disconnect" ); //A user can lose connection exactly after connecting
 
 		self.pers["rankxp"] = self scripts\players\_persistence::statGet( "rankxp" );
 		rankId = self getRankForXp( self getRankXP() );
@@ -572,7 +572,7 @@ resetRank(delay) {
 
 updateRank( useWait )
 {
-	if (self.rankHacker || isdefined(self.updatingrank))
+	if ( self.rankHacker || isdefined( self.updatingrank ) )
 		return false;
 	
 	self.updatingrank = true;
