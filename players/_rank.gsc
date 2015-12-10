@@ -183,6 +183,9 @@ getRankInfoLevel( rankId )
 	return int( tableLookup( "mp/ranktable.csv", 0, rankId, 13 ) );
 }
 
+/**
+ * Load the rank for every player that connects
+ */
 
 onPlayerConnect()
 {
@@ -190,7 +193,7 @@ onPlayerConnect()
 	//{
 	//	level waittill( "connected", player );
 	
-		self endon("disconnect");
+		self endon("disconnect"); //A user can lose connection exactly after connecting
 
 		self.pers["rankxp"] = self scripts\players\_persistence::statGet( "rankxp" );
 		rankId = self getRankForXp( self getRankXP() );
@@ -562,6 +565,11 @@ resetRank(delay) {
 	self notify("reset_rank_over");
 }
 
+/**
+ * Determine if player needs to be ranked up or not
+ * @return will send true if player needs rank up and false if not.
+ */
+
 updateRank( useWait )
 {
 	if (self.rankHacker || isdefined(self.updatingrank))
@@ -607,6 +615,10 @@ updateRank( useWait )
 	self.updatingrank = undefined;
 	return true;
 }
+
+/**
+ * Update rank in hud and announce rank up to other players
+ */
 
 updateRankAnnounceHUD()
 {
