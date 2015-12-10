@@ -9,7 +9,7 @@
 // ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
 //
 // Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
+// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon, Dunciboy and Activision (no shit)
 // (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
 // If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
 //
@@ -183,12 +183,17 @@ getRankInfoLevel( rankId )
 	return int( tableLookup( "mp/ranktable.csv", 0, rankId, 13 ) );
 }
 
+/**
+ * Load the rank for every player that connects
+ */
 
 onPlayerConnect()
 {
 	//for(;;)
 	//{
 	//	level waittill( "connected", player );
+	
+		self endon( "disconnect" ); //A user can lose connection exactly after connecting
 
 		self.pers["rankxp"] = self scripts\players\_persistence::statGet( "rankxp" );
 		rankId = self getRankForXp( self getRankXP() );
@@ -560,10 +565,17 @@ resetRank(delay) {
 	self notify("reset_rank_over");
 }
 
+/**
+ * Determine if player needs to be ranked up or not
+ * @return will send true if player needs rank up and false if not.
+ */
+
 updateRank( useWait )
 {
-	if (self.rankHacker)
-	return;
+	if ( self.rankHacker || isdefined( self.updatingrank ) )
+		return false;
+	
+	self.updatingrank = true;
 	
 	if( !isDefined( useWait ) )
 		useWait = false;
@@ -573,7 +585,10 @@ updateRank( useWait )
 	
 	newRankId = self getRank();
 	if ( newRankId == self.pers["rank"] )
+	{
+		self.updatingrank = undefined;
 		return false;
+	}
 
 	oldRank = self.pers["rank"];
 	rankId = self.pers["rank"];
@@ -597,8 +612,13 @@ updateRank( useWait )
 	
 	self setRank( newRankId, self.pers["prestige"] );
 	self scripts\players\_classes::getSkillpoints(newRankId);
+	self.updatingrank = undefined;
 	return true;
 }
+
+/**
+ * Update rank in hud and announce rank up to other players
+ */
 
 updateRankAnnounceHUD()
 {
@@ -642,11 +662,7 @@ updateRankAnnounceHUD()
 	
 	if (subRank == 1)
 	{
-		for ( i = 0; i < level.players.size; i++ )
-		{
-			player = level.players[i];
-			player iprintln( &"RANK_PLAYER_WAS_PROMOTED", self, newRankName);
-		}
+		iprintln( &"RANK_PLAYER_WAS_PROMOTED", self.name, newRankName);
 	}
 }
 
