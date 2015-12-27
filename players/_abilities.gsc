@@ -232,11 +232,11 @@ getDamageModifier( weapon, means, target, damage )
 	// weapon upgrade damage modifiers
 	wpnlvl = 1;
 	if( weapon == self.primary )
-		wpnlvl = self.unlock["primary"]++;
+		wpnlvl = self.unlock["primary"] + 1;
 	else if( weapon == self.secondary )
-		wpnlvl = self.unlock["secondary"]++;
+		wpnlvl = self.unlock["secondary"] + 1;
 	else if( weapon == self.extra )
-		wpnlvl = self.unlock["extra"]++;
+		wpnlvl = self.unlock["extra"] + 1;
 
 	if( isDefined( level.dvar["surv_unlock" + wpnlvl + "_multiplier"] ) )
 		MP += ( level.dvar["surv_unlock" + wpnlvl + "_multiplier"] / 100 );
