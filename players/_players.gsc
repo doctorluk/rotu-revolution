@@ -664,6 +664,7 @@ onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon,
 				if( ( playerPos[2] + 15 ) >= domePos[2] && distance( domePos, playerEye ) <= level.special["armoredshield"]["radius"] )
 				{
 					iDamage = int( 1 - level.special["armoredshield"]["damagereduction"] * iDamage );
+					break;
 				}
 			}
 		}
