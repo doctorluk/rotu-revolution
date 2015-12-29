@@ -31,6 +31,7 @@ init()
 	precache();
 	loadAbilityStats();
 	level.weapons["flash"] = "usp_silencer_mp"; // We change the actual Flash Grenade to the Monkey Bomb, so we can use it as "Special Grenade" with instant-throw
+	level.armoredDomes = [];
 }
 
 precache()
@@ -58,7 +59,8 @@ loadAbilityStats()
 	level.special["aura"]["recharge_time"] = 60;
 	level.special["aura"]["duration"] = 20;
 	
-	level.special["armoredshield"]["recharge_time"] = 60;
+	level.special["armoredshield"]["radius"] = 500 / 2.54; // 500cm in Maya to inches
+	level.special["armoredshield"]["recharge_time"] = 25;
 	level.special["armoredshield"]["duration"] = 60;
 	level.special["armoredshield"]["damagereduction"] = 0.6;
 	
@@ -390,27 +392,27 @@ loadAbility( class, type, ability )
 	switch ( class )
 	{
 		case "soldier":
-			loadSoldierAbility( type,ability );
+			loadSoldierAbility( type, ability );
 		break;
 		
 		case "stealth":
-			loadStealthAbility( type,ability );
+			loadStealthAbility( type, ability );
 		break;
 		
 		case "medic":
-			loadMedicAbility( type,ability);
+			loadMedicAbility( type, ability);
 		break;
 		
 		case "armored":
-			loadArmoredAbility( type,ability );
+			loadArmoredAbility( type, ability );
 		break;
 		
 		case "engineer":
-			loadEngineerAbility( type,ability );
+			loadEngineerAbility( type, ability );
 		break;
 		
 		case "scout":
-			loadScoutAbility( type,ability );
+			loadScoutAbility( type, ability );
 		break;
 	}
 
@@ -850,7 +852,7 @@ watchArmoredDome()
 		if( weaponName == "c4_mp" ) /* TODO: INSERT PROPER WEAPON */ 
 		{
 			shield.owner = self;
-			shield thread beArmoredDome( level.special["armoredshield"]["duration"], level.special["armoredshield"]["damagereduction"] );
+			shield thread beArmoredDome( level.special["armoredshield"]["duration"] );
 			self thread restoreArmoredDome( level.special["armoredshield"]["recharge_time"] );
 			// self playsound("take_medkit"); /* TODO: INSERT PROPER "DEPLOYING SHIELD" SOUND */
 		}
@@ -1093,33 +1095,38 @@ beMedkit( time, heal )
 	self delete();
 }
 
-/* TODO: THIS IS FOR DEBUGGING */
-beArmoredDome( duration, damagereduction )
+/* TODO: MODIFY TO BE USED WITHOUT A THROWABLE OBJECT */
+beArmoredDome( duration )
 {	
 	self waitTillNotMoving();
 	
 	if( !isDefined( self ) )
 		return;
+		
+	if( !isDefined( self.owner ) || !isReallyPlaying( self.owner ) )
+	{
+		self delete();
+		return;
+	}
 	
 	targetDestination = self.origin;
 	
 	self hide();
-	self.dome = spawn( "script_model", targetDestination );
+	dome = spawn( "script_model", targetDestination );
+	dome.owner = self.owner;
 	wait 0.05;
-	self.dome setModel( "armored_dome" );
-	self.dome notSolid();
+	dome setModel( "armored_dome" );
+	dome notSolid();
 	
-	wait 5;
+	if( isDefined( self ) )
+		self delete();
 	
-	for( i = 0; i < duration; i++ ){
-		if( !isDefined( self.owner ) || !isReallyPlaying( self.owner ) )
-			break;
-		wait 1;
-	}
+	level.armoredDomes[level.armoredDomes.size] = dome;
 	
-	self.dome delete();
-	self delete();
-
+	wait duration;
+	
+	level.armoredDomes = removeFromArray( level.armoredDomes, dome );
+	dome delete();
 }
 
 //For assassin = makes ur screen 24/7 green, zombies can't see u

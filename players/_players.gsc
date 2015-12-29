@@ -614,7 +614,7 @@ onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon,
 		return;
 
 	// ??
-	if( !isDefined(vDir) )
+	if( !isDefined( vDir ) )
 		iDFlags |= level.iDFLAGS_NO_KNOCKBACK;
 	// ??
 	if( !(iDFlags & level.iDFLAGS_NO_PROTECTION) )
@@ -649,6 +649,23 @@ onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon,
 		{
 			self playsound( "self_hurt" );
 			self.lastHurtTime = getTime();
+		}
+		
+		// Reduce damage dealt to players within the dome
+		if( level.armoredDomes.size )
+		{
+			for( i = 0; i < level.armoredDomes.size; i++ )
+			{
+				dome = level.armoredDomes[i];
+				domePos = dome.origin;
+				playerEye = self getEye();
+				playerPos = self getOrigin();
+				
+				if( ( playerPos[2] + 15 ) >= domePos[2] && distance( domePos, playerEye ) <= level.special["armoredshield"]["radius"] )
+				{
+					iDamage = int( 1 - level.special["armoredshield"]["damagereduction"] * iDamage );
+				}
+			}
 		}
 		
 		// Medics take half damage while reviving
