@@ -198,7 +198,7 @@ removePart()
 barrelDeath()
 {
 	level.barrels[self.type] -= 1;
-	level.dynamic_barricades = removeFromArray( level.dynamic_barricades, self );
+	removeFromArray( level.dynamic_barricades, self );
 
 	if( self.type == 1 )
 	{

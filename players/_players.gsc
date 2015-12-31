@@ -190,7 +190,7 @@ spawnJoinQueue()
 	for( i = 0; i < level.joinQueue.size; i++ )
 	{
 		player = level.joinQueue[i];
-		level.joinQueue = removeFromArray( level.joinQueue, player );
+		removeFromArray( level.joinQueue, player );
 		
 		// Better double-check if a player inside the queue has already spawned
 		// TODO: THIS SHOULD NEVER HAPPEN!
@@ -279,7 +279,7 @@ removeFromQueue()
 	// Remove the player from the queue-list in case he's in there
 	if( arrayContains( level.joinQueue, self ) )
 	{
-		level.joinQueue = removeFromArray( level.joinQueue, self );
+		removeFromArray( level.joinQueue, self );
 		self iprintlnbold( "You have been removed from the queue!" );
 		
 		// A player that is removed from the queue is automatically considered a Spectator, thus moved there
@@ -863,7 +863,7 @@ cleanup()
 	
 	// If the last chance is running, remove the player from the potential list of money-recipients
 	if( isDefined( level.cantPayLC ) && arrayContains( level.cantPayLC, self ) )
-		level.cantPayLC = removeFromArray( level.cantPayLC, self );
+		removeFromArray( level.cantPayLC, self );
 }
 
 /**

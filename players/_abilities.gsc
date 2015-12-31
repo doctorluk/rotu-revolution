@@ -1125,7 +1125,7 @@ beArmoredDome( duration )
 	
 	wait duration;
 	
-	level.armoredDomes = removeFromArray( level.armoredDomes, dome );
+	removeFromArray( level.armoredDomes, dome );
 	dome delete();
 }
 

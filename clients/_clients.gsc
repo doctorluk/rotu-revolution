@@ -163,8 +163,8 @@ Callback_PlayerDisconnect()
 	lpGuid = self getGuid();
 	logPrint("Q;" + lpGuid + ";" + lpselfnum + ";" + self.name + "\n");
 	
-	level.players = removeFromArray(level.players, self);
-	level.joinQueue = removeFromArray(level.joinQueue, self);
+	removeFromArray(level.players, self);
+	removeFromArray(level.joinQueue, self);
 	
 	self notify( "disconnect" );
 	level notify("update_classcounts");

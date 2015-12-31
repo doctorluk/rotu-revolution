@@ -87,7 +87,7 @@ removeUsable( ent )
 		}
 	}
 	
-	self.useObjects = removeFromArray( self.useObjects, ent );
+	removeFromArray( self.useObjects, ent );
 }
 
 /**

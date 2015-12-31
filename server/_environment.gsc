@@ -95,7 +95,7 @@ normalWaveEffects()
 		poses = level.waypoints;
 		posent = poses[randomint( poses.size )];
 		pos = posent.origin;
-		poses = removeFromArray( poses, posent );
+		removeFromArray( poses, posent );
 		
 		// The first effect is not as strong as the second, so we look for 80% Effect #1 and 20% Effect #2
 		ran = randomfloat( 1 );

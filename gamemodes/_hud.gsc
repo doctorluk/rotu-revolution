@@ -438,7 +438,7 @@ removeTimer( timer )
 	if( isDefined(timer.hud_timertext) )
 		timer.hud_timertext destroy();
 
-	self.hud_timers = removefromarray( self.hud_timers, timer );
+	removefromarray( self.hud_timers, timer );
 	for( i=0; i<self.hud_timers.size; i++ )
 	{
 		self.hud_timers[i].id = i;

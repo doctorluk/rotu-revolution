@@ -242,13 +242,13 @@ rotateActionSlotWeapons( weapon )
 	if( isActionslotWeapon(weapon) && self.actionslotweapons.size > 1 ){
 		for( i = 0; i < self.actionslotweapons.size; i++ ){
 			if( !self hasWeap(self.actionslotweapons[i]) ){
-				self.actionslotweapons = removeFromArray(self.actionslotweapons, self.actionslotweapons[i]);
+				removeFromArray(self.actionslotweapons, self.actionslotweapons[i]);
 				i = 0;
 			}
 		}
 		
 		if( self.actionslotweapons.size > 1 )
-			self.actionslotweapons = removeFromArray(self.actionslotweapons, weapon);
+			removeFromArray(self.actionslotweapons, weapon);
 		
 		self setActionSlot( 4, "weapon", level.weaponKeyS2C[self.actionslotweapons[0]] );
 		self.actionslotweapons[self.actionslotweapons.size] = weapon;
@@ -393,7 +393,7 @@ watchThrowable()
 			if( self.c4array.size >= level.dvar["game_max_c4"] ){
 				for(i = 0; i < self.c4array.size; i++)
 					if( !isDefined( self.c4array[i] ) )
-						self.c4array = removeFromArray( self.c4array, self.c4array[i] );
+						removeFromArray( self.c4array, self.c4array[i] );
 			}
 			if( self.c4array.size >= level.dvar["game_max_c4"] ){
 				c4 delete();
@@ -457,7 +457,7 @@ ExplodeTime()
 	PlayFx(level.monkeyEffect, self.origin, (0,0,90));
 
 	wait 3.5;
-	level.monkeyEntities = removeFromArray(level.monkeyEntities, self);
+	removeFromArray(level.monkeyEntities, self);
 	self.isTargetable = false;
 	self detonate();
 	level notify("monkey_bomb_exploded");
@@ -576,7 +576,7 @@ c4Damage()
 	}
 	/* Make sure to remove the c4 from the owner's array to fix faildetection of already exploded c4 */
 	if( isDefined( self.owner ) ){
-		self.owner.c4array = removeFromArray( self.owner.c4array, self );
+		removeFromArray( self.owner.c4array, self );
 	}
 	self detonate( attacker );
 	// won't get here; got death notify.

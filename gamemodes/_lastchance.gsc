@@ -246,7 +246,7 @@ postLastChance()
 		if( arrayContains( level.resurrectPeople, player ) )
 		{
 			// Remove this player from the revive array before further processing him
-			level.resurrectPeople = removeFromArray( level.resurrectPeople, player );
+			removeFromArray( level.resurrectPeople, player );
 			
 			// In case he went spectator in the mean time, we don't do anything with him
 			if( !isReallyPlaying( player ) )
@@ -468,7 +468,7 @@ updateSpentPoints()
 				if( level.cantPayLC.size > 0 && !isDefined( self.lastChanceTarget ) ){
 					ran = randomInt( level.cantPayLC.size );
 					self.lastChanceTarget = level.cantPayLC[ran];
-					level.cantPayLC = removeFromArray( level.cantPayLC, self.lastChanceTarget );
+					removeFromArray( level.cantPayLC, self.lastChanceTarget );
 				}
 				
 				// Fail-safe check
@@ -481,7 +481,7 @@ updateSpentPoints()
 				}
 				else
 				{
-					level.cantPayLC = removeFromArray( level.cantPayLC, self.lastChanceTarget );
+					removeFromArray( level.cantPayLC, self.lastChanceTarget );
 					// DEBUG:
 					// self iprintln( "You have another target: " + self.lastChanceTarget.name );
 					self.lastChance_botFire.label = &"LAST_CHANCE_SPEND_FIRE";
