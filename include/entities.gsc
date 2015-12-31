@@ -1,169 +1,201 @@
-//
-// vim: set ft=cpp:
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: scripts\include\entities.gsc
+*
+* author: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
 
-damageEnt(eInflictor, eAttacker, iDamage, sMeansOfDeath, sWeapon, damagepos, damagedir)
+/**
+* Inflicts damage to an entity.
+*
+*	@eInflictor: Entity that causes the damage (e.g. a turret)
+*	@eAttacker:  The entity that is attacking (e.g. a player)
+*	@iDamage: Integer specifying the amount of damage done
+*	@sMeansOfDeath: String specifying the method of death
+*	@sWeapon: String, name of the weapon used to inflict the damage
+*	@vPoint: Vector3, Origin the damage is from
+*	@vDir: Vector3, Direction the damage is from
+*/ 
+damageEnt( eInflictor, eAttacker, iDamage, sMeansOfDeath, sWeapon, vPoint, vDir )
 {
-	if (self.isPlayer)
-	{
-		self.damageOrigin = damagepos;
-		if(!isDefined(self.entity))
-			self.entity = self;
-		self.entity thread [[level.callbackPlayerDamage]](
-			eInflictor, // eInflictor The entity that causes the damage.(e.g. a turret)
-			eAttacker, // eAttacker The entity that is attacking.
-			iDamage, // iDamage Integer specifying the amount of damage done
-			0, // iDFlags Integer specifying flags that are to be applied to the damage
-			sMeansOfDeath, // sMeansOfDeath Integer specifying the method of death
-			sWeapon, // sWeapon The weapon number of the weapon used to inflict the damage
-			damagepos, // vPoint The point the damage is from?
-			damagedir, // vDir The direction of the damage
-			"none", // sHitLoc The location of the hit
-			0 // psOffsetTime The time offset for the damage
-		);
+	if( self.isPlayer )		// if the entity is a player
+	{						// call the script callback to take note of abilities and such
+		// save the point of damage
+		self.damageOrigin = vPoint;
+		
+		// execute the playerDamage callback
+		self thread [[level.callbackPlayerDamage]]( eInflictor, eAttacker, iDamage, 0, sMeansOfDeath, sWeapon, vPoint, vDir, "none", 0 );
 	}
 	else
 	{
 		// destructable walls and such can only be damaged in certain ways.
-		if (self.isADestructable && (sWeapon == "artillery_mp" || sWeapon == "claymore_mp"))
+		if( self.isADestructable && (sWeapon == "artillery_mp" || sWeapon == "claymore_mp") )
 			return;
 		
-		self.entity notify("damage", iDamage, eAttacker, (0,0,0), (0,0,0), "mod_explosive", "", "" );
+		// notify the damage to the entity
+		self.entity notify( "damage", iDamage, eAttacker, (0,0,0), (0,0,0), "mod_explosive", "", "" );
 	}
 }
 
-getClosestEntity(targetname, type)
+/**
+* Returns the closest entity with the given key value pair or targetname.
+*
+*	@value: String, value to look for
+*	@key: String, key to look in
+*/
+getClosestEntity( value, key )
 {
-	if (!isdefined(type))
-	type = "targetname";
+	// make sure the key is defined
+	if( !isDefined(key) )
+		key = "targetname";
+
+	// get an array with all entities of the given type
+	ents = getEntArray( value, key );
+
+	closestEntity = undefined;
+	closestDistance = undefined;
 	
-	ents = getentarray(targetname, type);
-	nearestEnt = undefined;
-	nearestDistance = 9999999999;
-	for (i=0; i<ents.size; i++)
+	for( i=0; i<ents.size; i++ )
 	{
+		// define a var for ease of access
 		ent = ents[i];
-		distance = Distance(self.origin, ent.origin);
 		
-		if(distance < nearestDistance)
-		{
-			nearestDistance = distance;
-			nearestEnt = ent;
+		// get the distance to the ent
+		dist = distance( self.origin, ent.origin );
+		
+		if( !isDefined(closestDistance) || dist < closestDistance )		// if the distance of the current entity is below the distance of the last
+		{																// make the current entity the closest entity
+			// save the distance and the current entity
+			closestDistance = dist;
+			closestEntity = ent;
 		}
-  }
-  
-  return nearestEnt;
+	}
+
+	return closestEntity;
 }
 
+/**
+* Returns the player closest to the entity.
+*/
 getClosestPlayer()
 {
-	ents = level.players;
-	nearestEnt = undefined;
-	nearestDistance = 9999999999;
-	for (i=0; i<ents.size; i++)
+	closestPlayer = undefined;
+	closestDistance = undefined;
+
+	for( i=0; i<level.players.size; i++ )
 	{
-		ent = ents[i];
-		distance = Distance(self.origin, ent.origin);
+		// define a var for ease of access
+		player = level.players[i];
 		
-		if(distance < nearestDistance)
-		{
-			nearestDistance = distance;
-			nearestEnt = ent;
+		// get the distance to the player
+		dist = Distance( self.origin, player.origin );
+		
+		if( !isDefined(closestDistance) || dist < closestDistance )		// if the distance of the current player is below the distance of the last
+		{																// make the current player the closest player
+			// save the distance and the current player
+			closestDistance = dist;
+			closestPlayer = player;
 		}
   }
   
-  return nearestEnt;
+  return closestPlayer;
 
 }
 
+/**
+* Returns an array of players who are alive and targetable, sorted by distance.
+*/
 getClosestPlayerArray()
 {
-	playerCount = level.players.size;
-	
-	nearPlayers = [];
-	nearDistance = [];
-	for (i=0; i<playerCount; i++)
-	nearDistance[i] = 999999999;
-	
-	for (i=0; i<playerCount; i++)
+	// create an array with alive and targetable players
+	players = [];
+	for( i=0; i<level.players.size; i++ )
 	{
+		// create a var for ease of access
 		player = level.players[i];
-		if (player.isAlive)
-		if (player.isTargetable)
+		
+		// add the player only if he is indeed alive and targetable
+		if( player.isAlive && player.isTargetable )
 		{
-			distance = distanceSquared(self.origin, player.origin);
-			for (ii=0; ii<playerCount; ii++)
+			players[players.size] = player;
+		}
+	}
+
+	// do a bubblesort on the players
+	n = players.size;
+	while( n > 1 )
+	{
+		newn = 1;
+		
+		// loop through the players
+		for( i=0; i<players; i++ )
+		{
+			// create a var for ease of access
+			player = players[i];
+			
+			// if this player is further away then the next one in the array
+			if( isDefined(players[i+1]) && distance( self.origin, player.origin ) > distance( self.origin, players[i+1].origin ) )
 			{
-				if(distance < nearDistance[ii])
-				{
-					for (iii=i; iii>=ii; iii--)
-					{
-						nearDistance[iii+1] = nearDistance[iii];
-						nearPlayers[iii+1] = nearPlayers[iii];
-					}
-					nearDistance[ii] = distance;
-					nearPlayers[ii] = player;
-				}
+				// put the next player into the spot of the current player
+				players[i] = players[i+1];
+				
+				// put the current player into the spot of the next player
+				players[i+1] = player;
+				
+				// next time the sort will only have to go this far
+				newn = i + 1;
 			}
 		}
-  }
-  
-  return nearPlayers;
+		n = newn;
+	}
 
+	return players;
 }
 
+/**
+* Returns the closest target for the zombie.
+*	NOTE: Alias of function getClosestPlayer.
+*/
 getClosestTarget()
 {
-	ents = level.players;
-	nearestEnt = undefined;
-	nearestDistance = 9999999999;
-	for (i=0; i<ents.size; i++)
-	{
-		ent = ents[i];
-		distance = Distance(self.origin, ent.origin);
-		if (ent.isAlive)
-		{
-			if (!ent.isTargetable )
-			continue;
-			if(distance < nearestDistance)
-			{
-				nearestDistance = distance;
-				nearestEnt = ent;
-			}
-		}
-  }
-  
-  return nearestEnt;
+	// return the closest player
+	return self getClosestPlayer();
 }
 
-getRandomEntity(targetname)
+/**
+* Returns a random entity with the given targetname.
+*
+*	@targetname: String, value of the entities targetname
+*/
+getRandomEntity( targetname )
 {
-	ents = getentarray(targetname,"targetname");
-	if (ents.size > 0)
-	{
-		return ents[randomint(ents.size)];
+	// get an array with all the entities with the targetname
+	ents = getentarray( targetname, "targetname" );
+
+	if( ents.size > 0 )		// if any entities were found
+	{						// return a random entity from the array
+		return ents[randomInt(ents.size)];
 	}
 }
 
+/**
+* Returns a random entity of the classname "mp_tdm_spawn".
+*/
 getRandomTdmSpawn()
 {
-	currentSpawns = getentarray("mp_tdm_spawn", "classname");
-	return currentSpawns[randomint(currentSpawns.size)];
+	// get an array with spawnpoints
+	spawns = getEntArray( "mp_tdm_spawn", "classname" );
+	
+	if( spawns.size > 0 )		// if any spawnpoints were found
+	{							// return a random spawnpoint form the array
+		return spawns[randomint(spawns.size)];
+	}
 }

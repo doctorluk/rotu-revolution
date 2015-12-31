@@ -1,84 +1,100 @@
-//
-// vim: set ft=cpp:
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: scripts\include\data.gsc
+*
+* author: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
 
-atof(string)
+/**
+* Converts the string to float.
+*
+*	@string: string to be converted
+*/
+atof( string )
 {
-	setdvar("2float", string);
-	return getdvarfloat("2float");
+	// set a helper dvar
+	setDvar( "2float", string );
+	
+	// return the float value retrieved from the dvar
+	return getDvarFloat( "2float" );
 }
 
-atoi(string)
+/**
+* Converts the string to integer.
+*	NOTE: This is obsolete as int( string ) does the exeac same thing without a dvar
+*
+*	@string: string to be converted
+*/
+atoi( string )
 {
-	setdvar("2int", string);
-	return getdvarint("2int");
+	// forward to int( ... )
+	return int( string );
 }
 
-removeFromArray(array, item)
+/**
+* Removes the item from the array.
+*
+*	@array: Array of items
+*	@item: Item to be removed from the array
+*/
+removeFromArray( array, item )
 {
-	for (i = 0; i<array.size; i++)
+	// loop through the array and try to find the item
+	for( i=0; i<array.size; i++ )
 	{
-		if (array[i] == item)
-		{
-			for (; i<array.size - 1; i++)
+		if( array[i] == item )		// if the item is found
+		{							// move all following items up by one
+			for( ; i<array.size-1; i++ )
 			{
+				// move the next item into the spot of the current item
 				array[i] = array[i+1];
 			}
-			array[array.size-1] = undefined;
-			return array;
+			
+			break;
 		}
 	}
+
 	return array;
 }
 
-arrayContains(array, item){
-	for(i = 0; i < array.size; i++){
-		if(array[i] == item)
+/**
+* Returns true if the item is found in the array, false otherwise.
+*
+*	@array: Array of items
+*	@item: Item to be searched
+*/
+arrayContains( array, item )
+{
+	// loop through the array and try to find the item
+	for( i=0; i<array.size; i++ )
+	{
+		if( array[i] == item )		// if the item is found
+		{							// return true
 			return true;
+		}
 	}
+
+	// if the item wasn't found
 	return false;
 }
 
-dissect(string)
+/**
+* Seperates the string by spaces.
+*	NOTE: This function is obsolete as strTok( string, " " ) will do exectly the same
+*	ToDo: Remove this function and replace it in the code
+*
+*	@string: String to be seperated
+*/
+dissect( string )
 {
-	ret = [];
-	index = -1;
-	skip = 1;
-	for (i = 0; i<string.size; i++)
-	{
-		if (string[i]==" ")
-		{
-			skip = 1;
-			continue;
-		}
-		else
-		{
-			if (skip)
-			{
-				index ++;
-				skip = 0;
-				ret[index] = "";
-			}
-			ret[index] += string[i];
-		}
-		
-	}
-	return ret;
+	// forward to the strTok function
+	return strTok( string, " " );
 }
