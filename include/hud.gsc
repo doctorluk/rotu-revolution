@@ -1,45 +1,50 @@
-//
-// vim: set ft=cpp:
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: scripts\include\hud.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
 
 #include scripts\include\useful;
 
-updateWaveHud(killed,total)
+/**
+*	Updates the counters at the bottom left hand corner of a player's screen with the current wave progress
+*	of zombies killed vs. total
+*
+*	@killed: Integer amount of zombies killed in the current wave
+*	@total: Integer amount of total zombies in the current wave
+*/
+updateWaveHud( killed, total )
 {
 	level.waveHUD = 1;
 	level.waveHUD_Killed = killed;
 	level.waveHUD_Total = total;
-	for (i=0; i<level.players.size; i++)
+	
+	// Sets zombie progress numbers for every player in the bottom left hand corner display
+	for ( i = 0; i < level.players.size; i++ )
 	{
-		// if(level.players[i].sessionstate == "playing"){
-			if(level.intermission == 1)
-				level.players[i] setclientdvars("ui_wavetext", "?/?", "ui_waveprogress", 0);
-			else if(level.intermission == 0)
-				level.players[i] setclientdvars("ui_wavetext", level.waveHUD_Killed + "/" +  level.waveHUD_Total, "ui_waveprogress", level.waveHUD_Killed / level.waveHUD_Total);
-		// }
+		if( level.intermission ) // Do not show any progress if there is no wave ongoing
+			level.players[i] setClientDvars( "ui_wavetext", "?/?", "ui_waveprogress", 0 );
+		else
+			level.players[i] setClientDvars( "ui_wavetext", level.waveHUD_Killed + "/" +  level.waveHUD_Total, "ui_waveprogress", level.waveHUD_Killed / level.waveHUD_Total );
 	}
 }
 
-createTeamObjpoint( origin, shader, alpha)
+/**
+*	These are quick function pointers to the associated functions within the specific script file
+*	For documentation, have a look at the functions they point to
+*/
+createTeamObjpoint( origin, shader, alpha )
 {
-	scripts\gamemodes\_hud::createTeamObjpoint( origin, shader, alpha);
+	scripts\gamemodes\_hud::createTeamObjpoint( origin, shader, alpha );
 }
 
 specialRechargeFeedback()
@@ -52,9 +57,9 @@ healthFeedback()
 	self thread scripts\gamemodes\_hud::healthFeedback();
 }
 
-addTimer(label, string, time)
+addTimer( label, string, time )
 {
-	return self scripts\gamemodes\_hud::addTimer(label, string, time);
+	return self scripts\gamemodes\_hud::addTimer( label, string, time );
 }
 
 removeTimer( timer )
@@ -67,66 +72,87 @@ removeTimers()
 	thread scripts\gamemodes\_hud::removeTimers();
 }
 
-announceMessage(label, text, glowcolor, duration, speed, size, height)
+announceMessage( label, text, glowcolor, duration, speed, size, height )
 {
-	for (i=0; i<level.players.size; i++)
-		level.players[i] thread scripts\gamemodes\_hud::glowMessage(label, text, glowcolor, duration, speed, size, undefined, height);
+	for ( i = 0; i < level.players.size; i++ )
+		level.players[i] thread scripts\gamemodes\_hud::glowMessage( label, text, glowcolor, duration, speed, size, undefined, height );
 }
 
-overlayMessage(label, text, glowcolor, size)
+overlayMessage( label, text, glowcolor, size )
 {
-	return self thread scripts\gamemodes\_hud::overlayMessage(label, text, glowcolor, size);
+	// TODO: Why is there "return" here?
+	return self thread scripts\gamemodes\_hud::overlayMessage( label, text, glowcolor, size );
 }
 
-glowMessage(label, text, glowcolor, duration, speed, size, sound, height)
+glowMessage( label, text, glowcolor, duration, speed, size, sound, height )
 {
-	self thread scripts\gamemodes\_hud::glowMessage(label, text, glowcolor, duration, speed, size, sound, height);
+	self thread scripts\gamemodes\_hud::glowMessage( label, text, glowcolor, duration, speed, size, sound, height );
 }
 
-finaleMessage(label, text, glowcolor, duration, speed, size)
+finaleMessage( label, text, glowcolor, duration, speed, size )
 {
-	self thread scripts\gamemodes\_hud::showFinaleMessage(label, text, glowcolor, duration, speed, size);
+	self thread scripts\gamemodes\_hud::showFinaleMessage( label, text, glowcolor, duration, speed, size );
 }
 
-finaleMessageAll(label, text, glowcolor, duration, speed, size, all){
+// TODO: Move all of this into scripts\gamemodes\_hud
+finaleMessageAll( label, text, glowcolor, duration, speed, size, all )
+{
 	if( !isDefined( all ) )
 		all = false;
 		
-	for( i = 0; i < level.players.size; i++ ){
+	for( i = 0; i < level.players.size; i++ )
+	{
 		p = level.players[i];
 		
 		if( !all && !isReallyPlaying( p ) )
 			continue;
 			
-		p thread scripts\gamemodes\_hud::showFinaleMessage(label, text, glowcolor, duration, speed, size);
+		p thread scripts\gamemodes\_hud::showFinaleMessage( label, text, glowcolor, duration, speed, size );
 	}
 	
 }
 
-timer(time, label, glowcolor, text, value)
+timer( time, label, glowcolor, text, value )
 {
-	thread scripts\gamemodes\_hud::timer(time, label, glowcolor, text, undefined, value);
+	thread scripts\gamemodes\_hud::timer( time, label, glowcolor, text, undefined, value );
 }
 
+/**
+*	Fades a HUD element out
+*
+*	@time: Float in seconds for the duration of the fadeout
+*/
 fadeout(time)
 {
 	self fadeOverTime( time );
 	self.alpha = 0;
+	
 	wait time;
-	if(isDefined(self))
+	
+	if( isDefined( self ) )
 		self destroy();
 }
 
-fadein(time, alpha)
+/**
+*	Fades a HUD element in
+*
+*	@time: Float in seconds for the duration of the fadein
+*	@alpha: Float between 0 and 1 corresponding to 0%-100% alpha that the element should have and the end of the fadein
+*/
+fadein( time, alpha )
 {
 	self.alpha = 0;
 	self fadeOverTime( time );
-	if (!isdefined(alpha))
+	
+	if ( !isDefined( alpha ) )
 		self.alpha = 1;
 	else
 		self.alpha = alpha;
 }
 
+/**
+*	Loads the animation properties for the HUD Streak messages
+*/
 fontPulseInit()
 {
 	self.baseFontScale = self.fontScale;
@@ -135,64 +161,94 @@ fontPulseInit()
 	self.outFrames = 5;
 }
 
-fontPulse(player)
+/**
+*	Animates a HUD element
+*/
+fontPulse( player )
 {
-	self notify ( "fontPulse" );
-	self endon ( "fontPulse" );
-	player endon("disconnect");
-	player endon("joined_team");
-	player endon("joined_spectators");
+	self notify( "fontPulse" );
+	self endon( "fontPulse" );
+	player endon( "disconnect" );
+	player endon( "joined_team" );
+	player endon( "joined_spectators" );
 	
 	scaleRange = self.maxFontScale - self.baseFontScale;
 	
-	while ( self.fontScale < self.maxFontScale )
+	// Increases font size until self.maxFontScale is reached
+	while( self.fontScale < self.maxFontScale )
 	{
-		self.fontScale = min( self.maxFontScale, self.fontScale + (scaleRange / self.inFrames) );
+		self.fontScale = min( self.maxFontScale, self.fontScale + ( scaleRange / self.inFrames ) );
 		wait 0.05;
 	}
-		
-	while ( self.fontScale > self.baseFontScale )
+	
+	// Decreases font size until self.baseFontScale is reached
+	while( self.fontScale > self.baseFontScale )
 	{
-		self.fontScale = max( self.baseFontScale, self.fontScale - (scaleRange / self.outFrames) );
+		self.fontScale = max( self.baseFontScale, self.fontScale - ( scaleRange / self.outFrames ) );
 		wait 0.05;
 	}
 }
 
-progressBar(time)
+/**
+*	Creates a progress bar that fills up in @time
+*
+*	@time: Float, duration length of the bar filling up
+*/
+progressBar( time )
 {
 	self destroyProgressBar();
-	self thread scripts\gamemodes\_hud::progressBar(time);
+	self thread scripts\gamemodes\_hud::progressBar( time );
 }
 
-
-bar(color, initial, y)
+/**
+*	Creates a colored bar on the player's screen
+*
+*	@color: Color the foreground bar should have
+*	@initial: Float, amount in 0-1 how much the bar should be filled when calling
+*	@y: Integer y-position of the bar on the player's screen
+*/
+bar( color, initial, y ) // TODO: THIS FUNCTION IS NEVER USED
 {
 	self destroyProgressBar();
-	self scripts\gamemodes\_hud::bar(color, initial, y);
+	self scripts\gamemodes\_hud::bar( color, initial, y );
 }
 
-bar_setscale(scale, color)
+/**
+*	Scales a bar to @scale size with @color coloring
+*
+*	@scale: Float amount of scaling
+*	@color: Color of the bar
+*/
+bar_setscale( scale, color ) // TODO: THIS FUNCTION IS NEVER USED
 {
-	self thread scripts\gamemodes\_hud::bar_setscale(scale, color);
+	self thread scripts\gamemodes\_hud::bar_setscale( scale, color );
 }
 
+/**
+*	Destroys the progress bar on the player's screen
+*/
 destroyProgressBar()
 {
-	if (isdefined(self.bar_bg))
-	self.bar_bg destroy();
-	if (isdefined(self.bar_fg))
-	self.bar_fg destroy();
+	if ( isDefined( self.bar_bg ) )
+		self.bar_bg destroy();
+	
+	if ( isDefined( self.bar_fg ) )
+		self.bar_fg destroy();
 }
 
-streakHud() {
-	self.hud_streak = NewClientHudElem(self);
+/**
+*	Initializes the player's Killing-Streak number display
+*/
+streakHud()
+{
+	self.hud_streak = newClientHudElem( self );
 	self.hud_streak.alpha = 0;
 	self.hud_streak.font = "objective";
 	self.hud_streak.label = &"ZOMBIE_STREAK";
 	self.hud_streak.fontscale = 2;
 	self.hud_streak.x = 0;
 	self.hud_streak.y = 0;
-	self.hud_streak.glowAlpha = .7;
+	self.hud_streak.glowAlpha = 0.7;
 	self.hud_streak.hideWhenInMenu = false;
 	self.hud_streak.archived = true;
 	self.hud_streak.alignX = "center";
@@ -200,29 +256,53 @@ streakHud() {
 	self.hud_streak.horzAlign = "center";
 	self.hud_streak.vertAlign = "middle";
 	self.hud_streak.color = rgb(224, 178, 27);
-	self.hud_streak.glowColor = (.7,0,0);
+	self.hud_streak.glowColor = (0.7, 0, 0);
 	self.hud_streak fontPulseInit();
 }
 
-rgb(r,g,b){
-	return (r/255,g/255,b/255);
+/**
+*	Converts RGB range to float range between 0 and 1
+*
+*	@r: Integer between 0 and 255, amount of RED
+*	@g: Integer between 0 and 255, amount of GREEN
+*	@b: Integer between 0 and 255, amount of BLUE
+*	@return: Returns script compatible color vector
+*/
+rgb( r, g, b )
+{
+	return (r / 255, g / 255, b / 255);
 }
 
-upgradeHud(points)
+/**
+*	Displays the upgradepoint gain/loss on the player's screen around the crosshair
+*
+*	@points: Integer amount of upgradepoints a player has gained/lost
+*/
+upgradeHud( points )
 {
-	self endon("disconnect");
-	self.upgradeHudPoints += points; // Makes the points not show before all point sources have been added together for only one display
+	self endon( "disconnect" );
+	
+	// START: Collection of upgradepoints
+	
+	// We collect all upgradepoints we gain during two server frames, so we don't display
+	// too many upgradepoint increases/decreases on the player's screen, resulting in some of them not being displayed
+	self.upgradeHudPoints += points;
 	old = self.upgradeHudPoints;
 	wait 0.05;
 	
-	if(self.upgradeHudPoints != old)
+	if( self.upgradeHudPoints != old )
 		return;
-		
+	
+	// END: Collection of upgradepoints
+	
 	points = self.upgradeHudPoints;
 	self.upgradeHudPoints = 0;
 	
-	self setclientdvar("ui_upgradetext", "Upgrade Points: " + int(self.points) );
-	hud_score = NewClientHudElem(self);
+	// Update total "Upgradepoints:" display on player's screen
+	self setClientDvar( "ui_upgradetext", "Upgrade Points: " + int( self.points ) );
+	
+	// Create hud element showing the gain/loss of upgradepoints
+	hud_score = newClientHudElem( self );
 	hud_score.alpha = 0;
 	hud_score.font = "objective";
 	hud_score.fontscale = 1.6;
@@ -235,42 +315,57 @@ upgradeHud(points)
 	hud_score.alignY = "middle";
 	hud_score.horzAlign = "center";
 	hud_score.vertAlign = "middle";
-	if (points > 0)
+	
+	// Distinguish between gaining and losing points, use apropriate coloring
+	if ( points > 0 )
 	{
-		hud_score.glowColor = (.1, .9, .2);
-		hud_score.label = (&"+&&1");
-		hud_score setvalue( int(points) );
+		hud_score.glowColor = ( 0.1, 0.9, 0.2 );
+		hud_score.label = ( &"+&&1" ); // TODO: MAKE LABEL IN LANGUAGE FILE
+		hud_score setValue( int( points ) );
 	}
 	else
 	{
-		hud_score.glowColor = (.9, .1, .2);
-		hud_score.label = (&"&&1");
-		hud_score setvalue( int(points) );
+		hud_score.glowColor = ( 0.9, 0.1, 0.2 );
+		hud_score.label = ( &"&&1" );
+		hud_score setValue( int( points ) );
 	}
-	direction = randomint(360);
 	
-	hud_score FadeOverTime(.5);
+	hud_score fadeOverTime( 0.5 );
 	hud_score.alpha = 1;
 	
-	hud_score MoveOverTime(1.5);
-	hud_score.x = cos(direction)*64;
-	hud_score.y = sin(direction)*64;
+	// Make it move a random direction outward from the player's crosshair
+	direction = randomint( 360 );
+	hud_score moveOverTime( 1.5 ); // TODO: The wait amount adds to 1.6 seconds, we move for 1.5 seconds. Reduce wait or extend moving duration?
+	hud_score.x = cos( direction ) * 64;
+	hud_score.y = sin( direction ) * 64;
+	
+	// Wait for the animation to progress, then smoothly fade it out and remove
 	wait 1.3;
-	hud_score FadeOverTime(.3);
+	
+	hud_score fadeOverTime( 0.3 );
 	hud_score.alpha = 0;
-	wait .3;
+	
+	wait 0.3;
+	
 	hud_score destroy();
 }
 
-bulletModFeedback(type)//No message appears
+/**
+*	Similar to the upgradepoint gaining display, we show a text indicating we're hurting zombies using poison or fire
+*	@type: String type of the damage
+*/
+bulletModFeedback( type )
 {
-	if(type != "fire" && type != "poison")
+	self endon( "disconnect" );
+	
+	
+	if( type != "fire" && type != "poison" )
 		return;
-	self endon("disconnect");
-	hud_score = NewClientHudElem(self);
+	
+	hud_score = newClientHudElem( self );
 	hud_score.alpha = 0;
 	hud_score.font = "objective";
-	hud_score.fontscale = 1.4;//1.4 is minimum
+	hud_score.fontscale = 1.4;
 	hud_score.x = 0;
 	hud_score.y = 0;
 	hud_score.glowAlpha = 1;
@@ -280,91 +375,141 @@ bulletModFeedback(type)//No message appears
 	hud_score.alignY = "middle";
 	hud_score.horzAlign = "center";
 	hud_score.vertAlign = "middle";
-	if(type == "poison"){
-		hud_score.glowColor = (.1, .9, .4);
-		hud_score settext("^2Poison");
-	}
-	else if(type == "fire"){
-		hud_score.glowColor = (.8, .4, .4);
-		hud_score settext("^9Fire");
-	}
-	direction = randomint(360);
 	
-	hud_score FadeOverTime(.5);
-	hud_score.alpha = 0.5;
+	if( type == "poison" )
+	{
+		hud_score.glowColor = ( 0.1, 0.9, 0.4 );
+		hud_score setText( "^2Poison" ); // TODO: USE LABEL TO AVOID DEFINING TOO MANY TEXT VARS
+	}
+	else if( type == "fire" )
+	{
+		hud_score.glowColor = ( 0.8, 0.4, 0.4 );
+		hud_score setText( "^9Fire" ); // TODO: USE LABEL TO AVOID DEFINING TOO MANY TEXT VARS
+	}
 	
-	hud_score MoveOverTime(1.6);
-	hud_score.x = cos(direction)*64;
-	hud_score.y = sin(direction)*64;
+	hud_score fadeOverTime( 0.5 );
+	hud_score.alpha = 1;
+	
+	// Make it move a random direction outward from the player's crosshair
+	direction = randomint( 360 );
+	hud_score moveOverTime( 1.5 ); // TODO: The wait amount adds to 1.6 seconds, we move for 1.5 seconds. Reduce wait or extend moving duration?
+	hud_score.x = cos( direction ) * 64;
+	hud_score.y = sin( direction ) * 64;
+	
+	// Wait for the animation to progress, then smoothly fade it out and remove
 	wait 1.3;
-	hud_score FadeOverTime(.3);
+	
+	hud_score fadeOverTime( 0.3 );
 	hud_score.alpha = 0;
-	wait .3;
+	
+	wait 0.3;
+	
 	hud_score destroy();
 	
 }
 
-updateHealthHud(delta)
+/**
+*	Adjusts the player's health bar width to @deltas amount -1 or 0-1
+*
+*	@delta: Float, can be -1 to disable health hud, can be 0-1 for empty or up to full health bar
+*/
+updateHealthHud( delta )
 {
-	self setclientdvar("ui_healthbar", delta);
-	if(isDefined(self.armored_hud) && self.heavyArmor && !self.god && !self.immune)
+	self setClientDvar( "ui_healthbar", delta );
+	
+	// In case we're using the armored hud display, we also have to adjust its alpha accordingly
+	if( isDefined( self.armored_hud ) && self.heavyArmor && !self.god && !self.immune )
 		self updateArmorHud();
 }
 
-updateArmorHud(){
-
-	if (self.health / self.maxhealth >= .65 && !self.isZombie)
+/**
+*	Updates the alpha of the armored mesh HUD element of the armored class
+*/
+updateArmorHud()
+{
+	if ( self.health / self.maxhealth >= 0.65 && !self.isZombie )
 	{
-		alpha = (self.health - self.maxhealth * 0.65) / (0.35 * self.maxhealth); // Alpha = 0 when Health is < 65%, else it raises linearly from alpha 0 at 65% to alpha 0.7 at 100%
+		// Alpha = 0 when Health is < 65%, else it raises linearly from alpha 0 at 65% to alpha 0.7 at 100%
+		alpha = ( self.health - self.maxhealth * 0.65 ) / ( 0.35 * self.maxhealth ); 
 	}
 	else
 		alpha = 0;
+	
+	// Limit alpha to 0.7
 	alpha *= 0.7;
 
-	if(self.armored_hud.alpha != alpha)
+	if( self.armored_hud.alpha != alpha )
 		self.armored_hud.alpha = alpha;
-	if(self.armored_hud.color != (1,1,1))
-		self.armored_hud.color = (1,1,1);
+		
+	if( self.armored_hud.color != ( 1, 1, 1 ) )
+		self.armored_hud.color = ( 1, 1, 1 );
 }
 
-screenFlash(color, time, alpha)
+/**
+*	Flashes the player's screen shortly with a fullsize color image
+*
+*	@color: Color of the flash
+*	@time: Float time duration of the flash
+*	@alpha: Float 0-1 initial alpha value
+*/
+screenFlash( color, time, alpha )
 {
-	self endon("disconnect");
-	whitescreen = newclientHudElem(self);
-	whitescreen.sort = -2;
-	whitescreen.alignX = "left";
-	whitescreen.alignY = "top";
-	whitescreen.x = 0;
-	whitescreen.y = 0;
-	whitescreen.horzAlign = "fullscreen";
-	whitescreen.vertAlign = "fullscreen";
-	whitescreen.foreground = true;
-	whitescreen.color = color;
+	self endon( "disconnect" );
 	
-	whitescreen.alpha = alpha;
-	whitescreen setShader("white", 640, 480);
-	whitescreen fadeOverTime( time );
-	whitescreen.alpha = 0;
+	screenFlash = newClientHudElem( self );
+	screenFlash.sort = -2;
+	screenFlash.alignX = "left";
+	screenFlash.alignY = "top";
+	screenFlash.x = 0;
+	screenFlash.y = 0;
+	screenFlash.horzAlign = "fullscreen";
+	screenFlash.vertAlign = "fullscreen";
+	screenFlash.foreground = true;
+	screenFlash.color = color;
+	screenFlash.alpha = alpha;
+	screenFlash setShader( "white", 640, 480 );
+	
+	screenFlash fadeOverTime( time );
+	screenFlash.alpha = 0;
+	
 	wait time;
-	whitescreen destroy();
+	
+	screenFlash destroy();
 }
 
-screenFlashAll(color, time, alpha, all){
+/**
+*	Function that flashes the screen for all playersif @all is true, not only for the calling player
+
+*	@color: Color of the flash
+*	@time: Float time duration of the flash
+*	@alpha: Float 0-1 initial alpha value
+*	@all: Boolean whether all playing players should be flashed, or only the one who is calling
+*
+*	TODO: Why do we use the all boolean if we could only use screenFlash instead?
+*/
+screenFlashAll( color, time, alpha, all )
+{
 	if( !isDefined( all ) )
 		all = false;
 	
-	for( i = 0; i < level.players.size; i++ ){
+	for( i = 0; i < level.players.size; i++ )
+	{
 		p = level.players[i];
 		
 		if( !all && !isReallyPlaying( p ) )
 			continue;
 			
-		p thread screenFlash(color, time, alpha);
+		p thread screenFlash( color, time, alpha );
 	}
 
 }
 
-blackScreen(){
+/**
+*	Creates a black screen for all players
+*	Used in the finale announcement
+*/
+blackScreen()
+{
 	level.blackscreen = newHudElem();
 	level.blackscreen.sort = -2;
 	level.blackscreen.alignX = "left";
@@ -375,49 +520,85 @@ blackScreen(){
 	level.blackscreen.vertAlign = "fullscreen";
 	level.blackscreen.foreground = true;
 	level.blackscreen.alpha = 1;
-	level.blackscreen setShader("black", 640, 480);
-	thread scripts\server\_environment::updateBlur(8);
+	level.blackscreen setShader( "black", 640, 480 );
+	thread scripts\server\_environment::updateBlur( 8 );
 }
 
-killBlackscreen(){
-	if( isDefined(level.blackscreen) )
+/**
+*	Removes the black screen for all players
+*/
+killBlackscreen()
+{
+	if( isDefined( level.blackscreen ) )
 		level.blackscreen destroy();
 }
 
+/**
+*	Creates the infection HUD image overlaying the player's vision
+*
+*	@color: Color of the overlay
+*	@return: HUD element that is being created
+*/
 createHealthOverlay(color)
 {
-	whitescreen = newclientHudElem(self);
-	whitescreen.sort = -2;
-	whitescreen.alignX = "left";
-	whitescreen.alignY = "top";
-	whitescreen.x = 0;
-	whitescreen.y = 0;
-	whitescreen.horzAlign = "fullscreen";
-	whitescreen.vertAlign = "fullscreen";
-	whitescreen.foreground = true;
-	whitescreen.color = color;
-	whitescreen.alpha = 1;
-	whitescreen setShader("overlay_low_health", 640, 480);
+	healthOverlay = newclientHudElem( self );
+	healthOverlay.sort = -2;
+	healthOverlay.alignX = "left";
+	healthOverlay.alignY = "top";
+	healthOverlay.x = 0;
+	healthOverlay.y = 0;
+	healthOverlay.horzAlign = "fullscreen";
+	healthOverlay.vertAlign = "fullscreen";
+	healthOverlay.foreground = true;
+	healthOverlay.color = color;
+	healthOverlay.alpha = 1;
+	healthOverlay setShader( "overlay_low_health", 640, 480 );
 
-	return whitescreen;
+	return healthOverlay;
 }
 
-playerFilmTweaks(enable, invert, desaturation, darktint,  lighttint, brightness, contrast, fovscale)
+/**
+*	Sets FilmTweaks for a player
+*
+*	@enable: Boolean whether it should be enabled or not
+*	@invert: Boolean whether the display should be inverted
+*	@desaturation: Float 0-1 How much saturation should be removed
+*	@darktint: Color(0-2,0-2,0-2) of dark parts of the image
+*	@lighttint: Color(0-2,0-2,0-2) of bright parts of the image
+*	@brightness: Float -1-1 Brightness amount
+*	@contrast: Float 0-4 Contrast amount
+*	@fovscale: Float 0.2-2 Scaling the field of view
+*/
+playerFilmTweaks( enable, invert, desaturation, darktint, lighttint, brightness, contrast, fovscale )
 {
 	self.tweaksOverride = 1;
-	self setClientDvars( "r_filmusetweaks", 1, "r_filmtweaks", 1 , "r_filmtweakenable", enable , "r_filmtweakinvert", invert , "r_filmtweakdesaturation", desaturation , "r_filmtweakdarktint", 
-	darktint , "r_filmtweaklighttint", lighttint , "r_filmtweakbrightness", brightness ,"r_filmtweakcontrast", contrast, "cg_fovscale", fovscale );
+	self setClientDvars( "r_filmusetweaks", 1, "r_filmtweaks", 1, "r_filmtweakenable", enable, "r_filmtweakinvert", invert, "r_filmtweakdesaturation", desaturation, "r_filmtweakdarktint",	darktint, "r_filmtweaklighttint", lighttint, "r_filmtweakbrightness", brightness,"r_filmtweakcontrast", contrast, "cg_fovscale", fovscale );
 }
 
+/**
+*	Disables Film Tweaks and resets them to the default set film tweaks if there are any
+*/
 playerFilmTweaksOff()
 {
 	self setClientDvars( "r_filmusetweaks", 0, "cg_fovscale", 1 );
 	self.tweaksOverride = 0;
-	if (self.tweaksPermanent)
-	doPermanentTweaks();
+	
+	if ( self.tweaksPermanent )
+		doPermanentTweaks();
 }
 
-playerSetPermanentTweaks(invert, desaturation, darktint,  lighttint, brightness, contrast, fovscale)
+/**
+*	Sets filmtweaks a player should always have
+*
+*	@invert: Boolean whether the display should be inverted
+*	@desaturation: Float 0-1 How much saturation should be removed
+*	@darktint: Color(0-2,0-2,0-2) of dark parts of the image
+*	@lighttint: Color(0-2,0-2,0-2) of bright parts of the image
+*	@brightness: Float -1-1 Brightness amount
+*	@contrast: Float 0-4 Contrast amount
+*	@fovscale: Float 0.2-2 Scaling the field of view
+*/
+playerSetPermanentTweaks( invert, desaturation, darktint,  lighttint, brightness, contrast, fovscale )
 {
 	self.tweakBrightness = brightness;
 	self.tweakContrast = desaturation;
@@ -428,12 +609,16 @@ playerSetPermanentTweaks(invert, desaturation, darktint,  lighttint, brightness,
 	self.tweakFovScale = fovscale;
 	self.tweakContrast = contrast;
 	self.tweaksPermanent = 1;
+	
 	doPermanentTweaks();
 }
 
+/**
+*	Sets the permanent tweaks
+*/
 doPermanentTweaks()
 {
-	self setClientDvars("r_filmusetweaks", 1,
+	self setClientDvars( "r_filmusetweaks", 1,
 						"r_filmtweaks", 1 ,
 						"r_filmtweakenable", 1,
 						"r_filmtweakinvert", self.tweakInvert,
@@ -445,6 +630,9 @@ doPermanentTweaks()
 						"cg_fovscale", self.tweakFovScale );
 }
 
+/**
+*	Disables the current and permanent tweaks
+*/
 permanentTweaksOff()
 {
 	self setClientDvars( "r_filmusetweaks", 0, "cg_fovscale", 1 );

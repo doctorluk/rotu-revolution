@@ -2,7 +2,7 @@
 * vim: set ft=cpp:
 * file: scripts\include\entities.gsc
 *
-* author: Luk, 3aGl3, Bipo, Etheross
+* authors: Luk, 3aGl3, Bipo, Etheross
 * team: SOG Modding
 *
 * project: RotU - Revolution
@@ -37,11 +37,11 @@ damageEnt( eInflictor, eAttacker, iDamage, sMeansOfDeath, sWeapon, vPoint, vDir 
 	else
 	{
 		// destructable walls and such can only be damaged in certain ways.
-		if( self.isADestructable && (sWeapon == "artillery_mp" || sWeapon == "claymore_mp") )
+		if( self.isADestructable && ( sWeapon == "artillery_mp" || sWeapon == "claymore_mp" ) )
 			return;
 		
 		// notify the damage to the entity
-		self.entity notify( "damage", iDamage, eAttacker, (0,0,0), (0,0,0), "mod_explosive", "", "" );
+		self.entity notify( "damage", iDamage, eAttacker, (0, 0, 0), (0, 0, 0), "mod_explosive", "", "" );
 	}
 }
 
@@ -54,7 +54,7 @@ damageEnt( eInflictor, eAttacker, iDamage, sMeansOfDeath, sWeapon, vPoint, vDir 
 getClosestEntity( value, key )
 {
 	// make sure the key is defined
-	if( !isDefined(key) )
+	if( !isDefined( key ) )
 		key = "targetname";
 
 	// get an array with all entities of the given type
@@ -63,7 +63,7 @@ getClosestEntity( value, key )
 	closestEntity = undefined;
 	closestDistance = undefined;
 	
-	for( i=0; i<ents.size; i++ )
+	for( i = 0; i < ents.size; i++ )
 	{
 		// define a var for ease of access
 		ent = ents[i];
@@ -71,7 +71,7 @@ getClosestEntity( value, key )
 		// get the distance to the ent
 		dist = distance( self.origin, ent.origin );
 		
-		if( !isDefined(closestDistance) || dist < closestDistance )		// if the distance of the current entity is below the distance of the last
+		if( !isDefined( closestDistance ) || dist < closestDistance )		// if the distance of the current entity is below the distance of the last
 		{																// make the current entity the closest entity
 			// save the distance and the current entity
 			closestDistance = dist;
@@ -90,7 +90,7 @@ getClosestPlayer()
 	closestPlayer = undefined;
 	closestDistance = undefined;
 
-	for( i=0; i<level.players.size; i++ )
+	for( i = 0; i < level.players.size; i++ )
 	{
 		// define a var for ease of access
 		player = level.players[i];
@@ -98,7 +98,7 @@ getClosestPlayer()
 		// get the distance to the player
 		dist = Distance( self.origin, player.origin );
 		
-		if( !isDefined(closestDistance) || dist < closestDistance )		// if the distance of the current player is below the distance of the last
+		if( !isDefined( closestDistance ) || dist < closestDistance )		// if the distance of the current player is below the distance of the last
 		{																// make the current player the closest player
 			// save the distance and the current player
 			closestDistance = dist;
@@ -117,7 +117,7 @@ getClosestPlayerArray()
 {
 	// create an array with alive and targetable players
 	players = [];
-	for( i=0; i<level.players.size; i++ )
+	for( i = 0; i < level.players.size; i++ )
 	{
 		// create a var for ease of access
 		player = level.players[i];
@@ -136,19 +136,19 @@ getClosestPlayerArray()
 		newn = 1;
 		
 		// loop through the players
-		for( i=0; i<players; i++ )
+		for( i = 0; i < players; i++ )
 		{
 			// create a var for ease of access
 			player = players[i];
 			
 			// if this player is further away then the next one in the array
-			if( isDefined(players[i+1]) && distance( self.origin, player.origin ) > distance( self.origin, players[i+1].origin ) )
+			if( isDefined( players[i + 1] ) && distance( self.origin, player.origin ) > distance( self.origin, players[i + 1].origin ) )
 			{
 				// put the next player into the spot of the current player
-				players[i] = players[i+1];
+				players[i] = players[i + 1];
 				
 				// put the current player into the spot of the next player
-				players[i+1] = player;
+				players[i + 1] = player;
 				
 				// next time the sort will only have to go this far
 				newn = i + 1;
@@ -178,11 +178,11 @@ getClosestTarget()
 getRandomEntity( targetname )
 {
 	// get an array with all the entities with the targetname
-	ents = getentarray( targetname, "targetname" );
+	ents = getEntArray( targetname, "targetname" );
 
 	if( ents.size > 0 )		// if any entities were found
 	{						// return a random entity from the array
-		return ents[randomInt(ents.size)];
+		return ents[randomInt( ents.size )];
 	}
 }
 
@@ -196,6 +196,6 @@ getRandomTdmSpawn()
 	
 	if( spawns.size > 0 )		// if any spawnpoints were found
 	{							// return a random spawnpoint form the array
-		return spawns[randomint(spawns.size)];
+		return spawns[randomint( spawns.size )];
 	}
 }

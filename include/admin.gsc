@@ -2,7 +2,7 @@
 * vim: set ft=cpp:
 * file: scripts\include\admin.gsc
 *
-* author: Luk, 3aGl3, Bipo, Etheross
+* authors: Luk, 3aGl3, Bipo, Etheross
 * team: SOG Modding
 *
 * project: RotU - Revolution

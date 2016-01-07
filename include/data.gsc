@@ -2,7 +2,7 @@
 * vim: set ft=cpp:
 * file: scripts\include\data.gsc
 *
-* author: Luk, 3aGl3, Bipo, Etheross
+* authors: Luk, 3aGl3, Bipo, Etheross
 * team: SOG Modding
 *
 * project: RotU - Revolution
@@ -48,14 +48,14 @@ atoi( string )
 removeFromArray( array, item )
 {
 	// loop through the array and try to find the item
-	for( i=0; i<array.size; i++ )
+	for( i = 0; i < array.size; i++ )
 	{
 		if( array[i] == item )		// if the item is found
 		{							// move all following items up by one
-			for( ; i<array.size-1; i++ )
+			for( ; i < array.size - 1; i++ )
 			{
 				// move the next item into the spot of the current item
-				array[i] = array[i+1];
+				array[i] = array[i + 1];
 			}
 			
 			break;
@@ -74,7 +74,7 @@ removeFromArray( array, item )
 arrayContains( array, item )
 {
 	// loop through the array and try to find the item
-	for( i=0; i<array.size; i++ )
+	for( i = 0; i < array.size; i++ )
 	{
 		if( array[i] == item )		// if the item is found
 		{							// return true
