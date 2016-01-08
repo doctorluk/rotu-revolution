@@ -1,34 +1,6 @@
-// =========================================================================================
-// File Name = 'mp_oukhta_waypoints.gsc'
-// Map Name  = 'mp_oukhta'
-// =========================================================================================
-// 
-// This is an auto generated script file created by the PeZBOT Mod - DO NOT MODIFY!
-// 
-// =========================================================================================
-// 
-// This file contains the waypoints for the map 'mp_oukhta'.
-// 
-// You now need to save this file as the file name at the top of this file.
-// in the 'waypoint.iwd' file in a folder called the same as the map name.
-// Delete the first two lines of this file and the 'Dvar set logfile 0' at the end of the file.
-// Create the new folder if you havent already done so and rename it to the map name.
-// So - new_waypoints.iwd/mp_oukhta_waypoints.gsc
-// 
-// you now need to edit the file 'select_map.gsc' in the btd_waypoints folder if you havent already.
-// just follow the instructions at the top of the file. you will need to add the following code.
-// I couldnt output double quotes to file so replace the single quotes with double quotes.
-// Also i couldnt output back slashs to file so replace the forward slashs with back slashs.
-/*
- 
-    else if(mapname == 'mp_oukhta')
-    {
-        thread Waypoints/mp_oukhta_waypoints::load_waypoints();
-    }
- 
-*/ 
-// =========================================================================================
- 
+
+// vim: set ft=cpp:
+
 load_waypoints()
 {
     level.waypoints[0] = spawnstruct();

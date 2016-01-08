@@ -1,3 +1,5 @@
+
+// vim: set ft=cpp:
 main()
 {
 

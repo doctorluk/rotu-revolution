@@ -1,4 +1,5 @@
 //IZaRTaX
+//vim: set ft=cpp:
 #include maps\mp\_zombiescript;
 main()
 {
