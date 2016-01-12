@@ -1,3 +1,9 @@
+##DO NOT USE THESE FILES ON A PRODUCTIVE SERVER
+The files are intended to be used by experienced developers ONLY! There are currently many errors and problems in the code!
+
+If you are looking for **STABLE RELEASES** of RotU-Revolution, have a look here instead:
+https://rotu-revolution.com/download.php
+
 # Reign of the Undead - REVOLUTION - Script files
 These are the script files used in the popular Zombie Survival Mod RotU-Revolution, the successor of the famous Reign of the Undead Mod.
 
