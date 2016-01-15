@@ -926,7 +926,7 @@ displayStats()
 		}
 		
 		// We've used this stat type now, we remove it from the list of valid stats
-		removeFromArray( level.statsTypes, level.statsTypes[number] );
+		level.statsTypes = removeFromArray( level.statsTypes, level.statsTypes[number] );
 	}
 	
 	// Add two empty lines here to leave some space for the next three lines

@@ -133,8 +133,8 @@ removeSpawn(targetname){
 	for( i = 0; i < level.survSpawns.size; i++ ){
 		if( level.survSpawns[i] == targetname ){
 			level.survSpawnsTotalPriority = level.survSpawnsTotalPriority - level.survSpawnsPriority[i];
-			removeFromArray( level.survSpawnsPriority, level.survSpawnsPriority[i] );
-			removeFromArray( level.survSpawns, level.survSpawns[i] );
+			level.survSpawnsPriority = removeFromArray( level.survSpawnsPriority, level.survSpawnsPriority[i] );
+			level.survSpawns = removeFromArray( level.survSpawns, level.survSpawns[i] );
 		
 		}
 	}

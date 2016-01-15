@@ -699,7 +699,7 @@ getRandomSpecialWaveType(ignoreLastType){
 	if(ignoreLastType){
 		previousType = level.lastSpecialWave;
 		if(previousType != "" && previousType != "boss")
-			removeFromArray(level.availableSpecialWaves, previousType);
+			level.availableSpecialWaves = removeFromArray(level.availableSpecialWaves, previousType);
 	}
 		
 	type = level.availableSpecialWaves[randomint(level.availableSpecialWaves.size)];
