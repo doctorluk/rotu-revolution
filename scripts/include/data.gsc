@@ -57,7 +57,7 @@ removeFromArray( array, item )
 				// move the next item into the spot of the current item
 				array[i] = array[i + 1];
 			}
-			
+			array[array.size - 1] = undefined;
 			break;
 		}
 	}
