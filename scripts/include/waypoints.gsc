@@ -1,109 +1,137 @@
-//
-// vim: set ft=cpp:
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: scripts\include\waypoints.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
 
 // WAYPOINTS AND PATHFINDING
 #include scripts\include\data;
 
-float(number){
-	return atof(number);
+/**
+* Returns the float value of a string.
+*
+*	@number: string to be converted to float.
+*/
+float( number )
+{
+	// forward to the atof function
+	return atof( number );
 }
 
+/**
+* Loads the levels waypoints from a csv file and convertes them for the gamemode.
+*/
 loadWaypoints()
 {
-	if( isDefined( level.waypoints ) && level.waypoints.size > 0 ){ // In case the map has loaded its own waypoints already
+	// workaround for maps with script waypoints, e.g stock maps
+	if( isDefined( level.waypoints ) && level.waypoints.size > 0 )
+	{
 		return;
 	}
-		
+
 	level.waypoints = [];
 	level.waypointCount = 0;
 	level.waypointLoops = 0;
-	
+
+	// create the full filepath for the waypoint csv file
 	fileName =  "waypoints/"+ toLower(getDvar("mapname")) + "_wp.csv";
 /#	printLn( "Getting waypoints from csv: "+fileName );		#/
 
+	// get the waypoint count, then get all the waypoint data
 	level.waypointCount = int( tableLookup(fileName, 0, 0, 1) );
 	for( i=0; i<level.waypointCount; i++ )
 	{
+		// create a struct for each waypoint
 		waypoint = spawnStruct();
-		origin = TableLookup(fileName, 0, i+1, 1);
+		
+		// get the origin and seperate it into x, y and z values
+		origin = tableLookup( fileName, 0, i+1, 1 );
 		orgToks = strtok( origin, " " );
+		
+		// convert the origin to a vector3
 		waypoint.origin = ( float(orgToks[0]), float(orgToks[1]), float(orgToks[2]));
 		
+		// save the waypoint into the waypoints array
 		level.waypoints[i] = waypoint;
 	}
 
+	// go through all waypoints and link them
 	for( i=0; i<level.waypointCount; i++ )
 	{
 		waypoint = level.waypoints[i]; 
 		
-		strLnk = TableLookup(fileName, 0, i+1, 2);
-		tokens = strtok(strLnk, " ");
+		// get the children waypoint IDs and seperate them
+		strLnk = tableLookup( fileName, 0, i+1, 2 );
+		tokens = strTok(strLnk, " ");
 		
+		// set the waypoints children count
 		waypoint.childCount = tokens.size;
 		
+		// add all the children as integers
 		for( j=0; j<tokens.size; j++ )
 			waypoint.children[j] = int(tokens[j]);
 	}
-	//thread draw_wp();
+
+	//thread drawWP();
 }
 
-draw_wp()
-{
-	while(1)
-	{
-		for( i=0; i<level.waypointCount; i++ )
-		{
-			for( j=0; j<level.waypoints[i].childCount; j++ )
-				line( level.waypoints[i].origin, level.waypoints[level.waypoints[i].children[j]].origin);
-		}
-		wait 0.05;
-	}
-}
-
+/**
+* Returns the ID of the waypoint closest to the given origin, -1 if none is found.
+*
+*	@origin: Origin to find the closest waypoint to
+*/
 getNearestWp( origin )
 {
-  nearestWp = -1;
-  nearestDistance = 9999999999;
-  for(i = 0; i < level.waypointCount; i++)
-  {
-    distance = distancesquared(origin, level.waypoints[i].origin);
+	// set initial values for the waypoint
+	nearestWp = -1;
+	nearestDist = 9999999999;
+
+	// loop through all waypoints
+	for( i = 0; i < level.waypointCount; i++ )
+	{
+		// get the squared distance
+		dist = distanceSquared( origin, level.waypoints[i].origin );
     
-    if(distance < nearestDistance)
-    {
-      nearestDistance = distance;
-      nearestWp = i;
-    }
-  }
-  
-  return nearestWp;
+		// check if the distance is closer than the currently closest
+		if( dist < nearestDist )
+		{
+			// memorize the current waypoint
+			nearestDist = dist;
+			nearestWp = i;
+		}
+	}
+
+	// return the ID of the closest waypoint
+	return nearestWp;
 }
 
-// ASTAR PATHFINDING ALGORITHM: CREDITS GO TO PEZBOTS!
-
+// 
+/**
+* Returns the A-Star path from one waypoint to another.
+*	Note: ASTAR PATHFINDING ALGORITHM: CREDITS GO TO PEZBOTS!
+*
+*	@startWp: ID of the starting waypoint
+*	@goalWp: ID of the target waypoint
+*/
 AStarSearch( startWp, goalWp )
 {
+	// info regarding the A-Star Algorithm can be found here:
+	// https://en.wikipedia.org/wiki/A*_search_algorithm
+
 	pQOpen = [];
 	pQSize = 0;
 	closedList = [];
 	listSize = 0;
+
 	s = spawnStruct();
 	s.g = 0; //start node
 	s.h = distance( level.waypoints[startWp].origin, level.waypoints[goalWp].origin );
@@ -111,16 +139,16 @@ AStarSearch( startWp, goalWp )
 	s.wpIdx = startWp;
 	s.parent = spawnStruct();
 	s.parent.wpIdx = -1;
-  
+
 	//push s on Open
 	pQOpen[pQSize] = spawnStruct();
 	pQOpen[pQSize] = s; //push s on Open
 	pQSize++;
 
-	//while Open is not empty  
+	// while Open is not empty  
 	while( !PQIsEmpty(pQOpen, pQSize) )
 	{
-		//pop node n from Open  // n has the lowest f
+		// pop node n from Open  // n has the lowest f
 		n = pQOpen[0];
 		highestPriority = 9999999999;
 		bestNode = -1;
@@ -131,7 +159,7 @@ AStarSearch( startWp, goalWp )
 				bestNode = i;
 				highestPriority = pQOpen[i].f;
 			}
-		} 
+		}
     
 		if( bestNode != -1 )
 		{
@@ -147,8 +175,8 @@ AStarSearch( startWp, goalWp )
 		{
 			return -1;
 		}
-    
-		//if n is a goal node; construct path, return success
+		
+		// if n is a goal node; construct path, return success
 		if( n.wpIdx == goalWp )
 		{
 			x = n;
@@ -164,8 +192,8 @@ AStarSearch( startWp, goalWp )
 			
 			return -1;      
 		}
-
-		//for each successor nc of n
+		
+		// for each successor nc of n
 		for( i=0; i<level.waypoints[n.wpIdx].childCount; i++ )
 		{
 			//newg = n.g + cost(n,nc)
@@ -238,7 +266,7 @@ AStarSearch( startWp, goalWp )
 				listSize--;
 			}
 			
-			//if nc is not yet in Open, 
+			// if nc is not yet in Open, 
 			if( !PQExists(pQOpen, nc.wpIdx, pQSize) )
 			{
 				//push nc on Open
@@ -247,7 +275,7 @@ AStarSearch( startWp, goalWp )
 			}
 		}
 		
-		//Done with children, push n onto Closed
+		// Done with children, push n onto Closed
 		if( !PQExists(closedList, n.wpIdx, listSize) )
 		{
 			closedList[listSize] = n;
@@ -257,11 +285,13 @@ AStarSearch( startWp, goalWp )
 }
 
 
-
-////////////////////////////////////////////////////////////
-// PQIsEmpty, returns true if empty
-////////////////////////////////////////////////////////////
-PQIsEmpty(Q, QSize)
+/**
+* Returns true if the open list is empty
+*
+*	@Q: Open List
+*	@QSize: Size of Open List
+*/
+PQIsEmpty( Q, QSize )
 {
 	if( QSize <= 0 )
 	{
@@ -272,9 +302,13 @@ PQIsEmpty(Q, QSize)
 }
 
 
-////////////////////////////////////////////////////////////
-// returns true if n exists in the pQ
-////////////////////////////////////////////////////////////
+/**
+* Returns true if n exists in the array Q
+*
+*	@Q: Array of waypoints
+*	@n: Waypoint
+*	@QSize: Size of array Q
+*/
 PQExists( Q, n, QSize )
 {
 	for( i=0; i<QSize; i++ )
@@ -286,24 +320,27 @@ PQExists( Q, n, QSize )
 	return false;
 }
 
-// DEBUG AND TOOLS
+//
+// DEBUG
+//
 
-
+/**
+* Draws all waypoints and connections between waypoints for debugging.
+*/
 drawWP()
 {
-	for (;;)
+	for(;;)
 	{
-		for (i=0; i<level.waypointCount; i++)
+		for( i = 0; i < level.waypointCount; i++ )
 		{
 			wp = level.waypoints[i];
-			lineCol = (0,1,0);
-			line(wp.origin, wp.origin + (0,0,96), lineCol);
-			lineCol = (0,0,1);
-			for(ii=0; ii<wp.childCount; ii++)
-				line(wp.origin, level.waypoints[wp.child[ii]].origin, lineCol);
+			line( wp.origin, wp.origin + (0,0,96), (0,1,0) );
+			
+			for( j = 0; j < wp.childCount; j++ )
+				line( wp.origin, level.waypoints[wp.child[j]].origin, (0,0,1) );
 		}
-
-		wait .01;
+		
+		wait 0.05;
 	}
 }
 
