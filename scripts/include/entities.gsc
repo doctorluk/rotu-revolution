@@ -16,10 +16,10 @@
 /**
 * Inflicts damage to an entity.
 *
-*	@eInflictor: Entity that causes the damage (e.g. a turret)
-*	@eAttacker:  The entity that is attacking (e.g. a player)
-*	@iDamage: Integer specifying the amount of damage done
-*	@sMeansOfDeath: String specifying the method of death
+*	@eInflictor: Entity, that causes the damage (e.g. a turret)
+*	@eAttacker: Entity, that is attacking (e.g. a player)
+*	@iDamage: Integer, specifying the amount of damage done
+*	@sMeansOfDeath: String, specifying the method of death
 *	@sWeapon: String, name of the weapon used to inflict the damage
 *	@vPoint: Vector3, Origin the damage is from
 *	@vDir: Vector3, Direction the damage is from
