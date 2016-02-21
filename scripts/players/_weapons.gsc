@@ -66,13 +66,13 @@ init()
 	precacheShellShock( "default" );
 	precacheShellShock( "concussion_grenade_mp" );
 
-	level.monkeyEffect = loadfx("monkey_grenade/monkey_grenade_onfloor");
+	level.monkeyEffect = loadfx( "monkey_grenade/monkey_grenade_onfloor" );
 	level.monkeyEntities = [];
 
 	claymoreDetectionConeAngle = 70;
 	level.claymoreDetectionDot = cos( claymoreDetectionConeAngle );
 	level.claymoreDetectionMinDist = 20;
-	level.claymoreDetectionGracePeriod = .75;
+	level.claymoreDetectionGracePeriod = 0.75;
 	level.claymoreDetonateRadius = 150;
 
 	level.C4explodeThisFrame = false;
@@ -81,8 +81,10 @@ init()
 	level.claymoreFXid = loadfx( "misc/claymore_laser" );
 }
 
-isSpecialWeap(weap){
-	for( i = 0; i < level.specialWeps.size; i++ ) {
+isSpecialWeap( weap )
+{
+	for( i = 0; i < level.specialWeps.size; i++ )
+	{
 		if( level.specialWeps[i] == weap )
 			return true;
 	}
@@ -95,19 +97,6 @@ initPlayerWeapons()
 	self.primary = "none";
 	self.secondary = "none";
 	self.extra = "none";
-}
-
-// whatever this is used for, it makes no sense, silenced weapons have no flash, some pistols do
-checkWeaponFlash( weapon )
-{
-	if (isPistol(weapon))
-		return false;
-	if (weapon == "none")
-		return false;
-	if (weapon == "c4_mp" || weapon == "claymore_mp" || weapon == "rpg_mp" || weapon == "at4_mp" || weapon == "tnt_mp")
-		return false;
-	
-	return true;
 }
 
 givePlayerWeapons()
@@ -140,9 +129,11 @@ givePlayerWeapons()
 	}
 }
 
-canRestoreAmmo(wep) {
-	if( wep=="helicopter_mp" || scripts\players\_weapons::isSpecialWeap(wep) || wep=="m14_reflex_mp" /* Ammobox */ || wep=="none" || wep == level.weapons["flash"] /* Monkey Bomb */)
+canRestoreAmmo( wep )
+{
+	if( wep == "helicopter_mp" || scripts\players\_weapons::isSpecialWeap( wep ) || wep == "m14_reflex_mp" /* Ammobox */ || wep == "none" || wep == level.weapons["flash"] /* Monkey Bomb */)
 		return false;
+		
 	return true;
 }
 
@@ -155,7 +146,7 @@ watchWeaponUsage()
 	
 	self.firingWeapon = false;
 	
-	for(;;)
+	while( 1 )
 	{
 		self waittill ( "begin_firing" );
 		
@@ -168,17 +159,20 @@ watchWeaponUsage()
 
 		self waittill( "end_firing" );
 		
-		if (weap == self.primary){
-			self.persData.primaryAmmoClip = self getWeapAmmoClip(self.primary);
-			self.persData.primaryAmmoStock = self getWeapAmmoStock(self.primary);
+		if ( weap == self.primary )
+		{
+			self.persData.primaryAmmoClip = self getWeapAmmoClip( self.primary );
+			self.persData.primaryAmmoStock = self getWeapAmmoStock( self.primary );
 		}
-		else if (weap == self.secondary){
-			self.persData.secondaryAmmoClip = self getWeapAmmoClip(self.secondary);
-			self.persData.secondaryAmmoStock = self getWeapAmmoStock(self.secondary);
+		else if ( weap == self.secondary )
+		{
+			self.persData.secondaryAmmoClip = self getWeapAmmoClip( self.secondary );
+			self.persData.secondaryAmmoStock = self getWeapAmmoStock( self.secondary );
 		}
-		else if (weap == self.extra){
-			self.persData.extraAmmoClip = self getWeapAmmoClip(self.extra);
-			self.persData.extraAmmoStock = self getWeapAmmoStock(self.extra);
+		else if ( weap == self.extra )
+		{
+			self.persData.extraAmmoClip = self getWeapAmmoClip( self.extra );
+			self.persData.extraAmmoStock = self getWeapAmmoStock( self.extra );
 		}
 		
 		self.firingWeapon = false;
@@ -191,18 +185,20 @@ alertTillEndFiring()
 	self endon( "disconnect" );
 	self endon( "end_firing" );
 	
-	while (1)
+	while( 1 )
 	{
 		curWeapon = self getCurrentWeapon();
-		if (curWeapon == "none")
-		return;
 		
-		if (weaponIsBoltAction(curWeapon))
-		scripts\bots\_bots::alertZombies(self.origin, 1024, 200, undefined);
-		else if (WeaponIsSemiAuto(curWeapon))
-		scripts\bots\_bots::alertZombies(self.origin, 1024, 100, undefined);
+		if ( curWeapon == "none" )
+			return;
+		
+		if ( weaponIsBoltAction( curWeapon ) )
+			scripts\bots\_bots::alertZombies( self.origin, 1024, 200, undefined );
+		else if ( weaponIsSemiAuto( curWeapon ) )
+			scripts\bots\_bots::alertZombies( self.origin, 1024, 100, undefined );
 		else
-		scripts\bots\_bots::alertZombies(self.origin, 1024, 100, undefined);
+			scripts\bots\_bots::alertZombies( self.origin, 1024, 100, undefined );
+			
 		wait .5;
 		
 	}
@@ -210,11 +206,11 @@ alertTillEndFiring()
 
 watchWeaponSwitching()
 {	
-	self endon("death");
-	self endon("disconnect");
+	self endon( "death" );
+	self endon( "disconnect" );
 
 	lastWeapon = self getCurrentWeap();
-	for(;;)
+	while( 1 )
 	{
 		self waittill( "weapon_change", weapon );
 		
@@ -227,9 +223,9 @@ watchWeaponSwitching()
 		
 		switch( weapon )
 		{
-		default:
-			lastWeapon = weapon;
-			break;
+			default:
+				lastWeapon = weapon;
+				break;
 		}
 	}
 }
@@ -239,23 +235,27 @@ When switching the weapon, the actionslot should be replaced with another action
 to make rotating easier for the player */
 rotateActionSlotWeapons( weapon )
 {
-	if( isActionslotWeapon(weapon) && self.actionslotweapons.size > 1 ){
-		for( i = 0; i < self.actionslotweapons.size; i++ ){
-			if( !self hasWeap(self.actionslotweapons[i]) ){
-				self.actionslotweapons = removeFromArray(self.actionslotweapons, self.actionslotweapons[i]);
+	if( isActionslotWeapon( weapon ) && self.actionslotweapons.size > 1 )
+	{
+		for( i = 0; i < self.actionslotweapons.size; i++ )
+		{
+			if( !self hasWeap( self.actionslotweapons[i] ) )
+			{
+				self.actionslotweapons = removeFromArray( self.actionslotweapons, self.actionslotweapons[i] );
 				i = 0;
 			}
 		}
 		
 		if( self.actionslotweapons.size > 1 )
-			self.actionslotweapons = removeFromArray(self.actionslotweapons, weapon);
+			self.actionslotweapons = removeFromArray( self.actionslotweapons, weapon );
 		
 		self setActionSlot( 4, "weapon", level.weaponKeyS2C[self.actionslotweapons[0]] );
 		self.actionslotweapons[self.actionslotweapons.size] = weapon;
 	}
 }
 
-isActionslotWeapon( weapon ){
+isActionslotWeapon( weapon )
+{
 	for( i = 0; i < self.actionslotweapons.size; i++ )
 	{
 		if( weapon == self.actionslotweapons[i] )
@@ -265,9 +265,9 @@ isActionslotWeapon( weapon ){
 	return false;
 }
 
-swapWeapons(type, weapon)
+swapWeapons( type, weapon )
 {
-	switch (type)
+	switch ( type )
 	{
 	case "primary":
 		if( self.primary != "none" && self.primary != "" )
@@ -279,8 +279,8 @@ swapWeapons(type, weapon)
 		
 		self.primary = weapon;
 		self.persData.primary = self.primary;
-		self.persData.primaryAmmoClip = self getWeapAmmoClip(self.primary);
-		self.persData.primaryAmmoStock = self GetWeapAmmoStock(self.primary);
+		self.persData.primaryAmmoClip = self getWeapAmmoClip( self.primary );
+		self.persData.primaryAmmoStock = self getWeapAmmoStock( self.primary );
 		break;
 	case "secondary":
 		if( self.secondary != "none" && self.secondary != "" )
@@ -292,8 +292,8 @@ swapWeapons(type, weapon)
 		
 		self.secondary = weapon;
 		self.persData.secondary = self.secondary;
-		self.persData.secondaryAmmoClip = self getWeapAmmoClip(self.secondary);
-		self.persData.secondaryAmmoStock = self GetWeapAmmoStock(self.secondary);
+		self.persData.secondaryAmmoClip = self getWeapAmmoClip( self.secondary );
+		self.persData.secondaryAmmoStock = self getWeapAmmoStock( self.secondary );
 		break;
 	case "extra":
 		if( self.extra != "none" && self.extra != "" )
@@ -305,8 +305,8 @@ swapWeapons(type, weapon)
 		
 		self.extra = weapon;
 		self.persData.extra = self.extra;
-		self.persData.extraAmmoClip = self getWeapAmmoClip(self.extra);
-		self.persData.extraAmmoStock = self GetWeapAmmoStock(self.extra);
+		self.persData.extraAmmoClip = self getWeapAmmoClip( self.extra );
+		self.persData.extraAmmoStock = self getWeapAmmoStock( self.extra );
 		break;
 	case "grenade":
 		self giveWeap( weapon ); 
@@ -378,9 +378,9 @@ isSilenced( weapon )
 
 watchThrowable()
 {
-	self endon("death");
-	self endon("disconnect");
-	self endon("zombify");
+	self endon( "death" );
+	self endon( "disconnect" );
+	self endon( "zombify" );
 	self thread triggerThrowable();
 	
 	while(1)
@@ -390,17 +390,20 @@ watchThrowable()
 		{
 			//if ( !self.c4array.size )
 			//	self thread watchC4AltDetonate();
-			if( self.c4array.size >= level.dvar["game_max_c4"] ){
-				for(i = 0; i < self.c4array.size; i++)
+			if( self.c4array.size >= level.dvar["game_max_c4"] )
+			{
+				for( i = 0; i < self.c4array.size; i++ )
 					if( !isDefined( self.c4array[i] ) )
 						self.c4array = removeFromArray( self.c4array, self.c4array[i] );
 			}
-			if( self.c4array.size >= level.dvar["game_max_c4"] ){
+			if( self.c4array.size >= level.dvar["game_max_c4"] )
+			{
 				c4 delete();
-				self iprintlnbold("You can only put down " + level.dvar["game_max_c4"] + " C4 max.!");
-				self setWeaponAmmoClip( self getCurrentWeapon(), self getWeaponAmmoClip(self getCurrentWeapon()) + 1 );
+				self iprintlnbold( "You can only put down " + level.dvar["game_max_c4"] + " C4 max.!" );
+				self setWeaponAmmoClip( self getCurrentWeapon(), self getWeaponAmmoClip( self getCurrentWeapon() ) + 1 );
 				continue;
 			}
+			
 			self.c4array[self.c4array.size] = c4;
 			c4.owner = self;
 			c4.activated = false;
@@ -410,16 +413,17 @@ watchThrowable()
 			c4 thread c4Damage();
 			c4 thread playC4Effects();
 		}
-		else if(weapname == "frag_grenade_mp")
-			self playsound("throw_grenade");
+		else if( weapname == "frag_grenade_mp" )
+			self playsound( "throw_grenade" );
 	}
 }
 
 watchMonkey()
 {
-	self endon("death");
-	self endon("disconnect");	
-	while(1)
+	self endon( "death" );
+	self endon( "disconnect" );	
+	
+	while( 1 )
 	{
 		self waittill( "grenade_fire", monkey, weapname );
 		weapname = level.weaponKeyS2C[weapname];
@@ -427,50 +431,55 @@ watchMonkey()
 		if( weapname == "monkey_mp" )	// monkey bomb
 		{
 			level.monkeyEntities[level.monkeyEntities.size] = monkey;
+			
 			monkey.index = level.monkeyEntitiesIndex;
 			monkey.isMonkey = true;
 			monkey.isTargetable = true;
-			if(!self.isDown)
-				self thread scripts\players\_abilities::restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);
+			
+			if( !self.isDown )
+				self thread scripts\players\_abilities::restoreMonkey( level.special["monkey_bomb"]["recharge_time"] );
+				
 			monkey waitTillNotMoving();
-			monkey thread ExplodeTime();
+			
+			monkey thread explodeTime();
+			
 			level.monkeyEntitiesIndex++;
-			level notify("monkey_bomb");
+			level notify( "monkey_bomb" );
 		}
 	}
 }
 
 waitTillNotMoving()
 {
-	self endon("death");
+	self endon( "death" );
 
 	prevorigin = self.origin;
-	while(1)
+	while( 1 )
 	{
-		wait .1;
+		wait 0.1;
 		if( self.origin == prevorigin )
 			break;
 		prevorigin = self.origin;
 	}
 }
 
-ExplodeTime()
+explodeTime()
 {
-	PlayFx(level.monkeyEffect, self.origin, (0,0,90));
+	PlayFx( level.monkeyEffect, self.origin, ( 0, 0, 90 ) );
 
 	wait 3.5;
-	level.monkeyEntities = removeFromArray(level.monkeyEntities, self);
+	level.monkeyEntities = removeFromArray( level.monkeyEntities, self );
 	self.isTargetable = false;
 	self detonate();
-	level notify("monkey_bomb_exploded");
+	level notify( "monkey_bomb_exploded" );
 }
 
 triggerThrowable()
 {
-	self endon("death");
-	self endon("disconnect");
-	self endon("zombify");
-	while (1)
+	self endon( "death");
+	self endon( "disconnect" );
+	self endon( "zombify" );
+	while( 1 )
 	{
 		self waittill( "detonate" );
 		weap = self getCurrentWeap();
@@ -480,7 +489,7 @@ triggerThrowable()
 			for( i=0; i<self.c4Array.size; i++ )
 			{
 				c4 = self.c4Array[i];
-				if( isdefined(c4) )
+				if( isdefined( c4 ) )
 					c4 thread waitAndDetonate( 0.1 );
 			}
 			self.c4array = [];
@@ -499,10 +508,10 @@ waitAndDetonate( delay )
 
 playC4Effects()
 {
-	self endon("death");
-	self waittill("activated");
+	self endon( "death" );
+	self waittill( "activated" );
 	
-	while(1)
+	while( 1 )
 	{
 		org = self getTagOrigin( "tag_fx" );
 		ang = self getTagAngles( "tag_fx" );
@@ -514,10 +523,10 @@ playC4Effects()
 		
 		originalOrigin = self.origin;
 		
-		while(1)
+		while( 1 )
 		{
-			wait .25;
-			if ( self.origin != originalOrigin )
+			wait 0.25;
+			if( self.origin != originalOrigin )
 				break;
 		}
 		
@@ -529,16 +538,16 @@ playC4Effects()
 c4Damage()
 {
 	self endon( "death" );
-	self setcandamage(true);
+	self setCanDamage( true );
 	self.maxhealth = 100000;
 	self.health = self.maxhealth;
 	
 	attacker = undefined;
 	
-	while(1)
+	while( 1 )
 	{
 		self waittill ( "damage", damage, attacker, direction_vec, point, type, modelName, tagName, partName, iDFlags );
-		if ( !isplayer(attacker) )
+		if ( !isPlayer( attacker ) )
 			continue;
 		
 		// don't allow people to destroy C4 on their team if FF is off
@@ -551,34 +560,35 @@ c4Damage()
 		break;
 	}
 	
-	if ( level.c4explodethisframe )
-		wait .1 + randomfloat(.4);
+	if( level.c4explodethisframe )
+		wait 0.1 + randomFloat( 0.4 );
 	else
-		wait .05;
+		wait 0.05;
 	
-	if (!isdefined(self))
+	if( !isDefined( self ) )
 		return;
 	
 	level.c4explodethisframe = true;
 	
 	thread resetC4ExplodeThisFrame();
 	
-	if ( isDefined( type ) && (isSubStr( type, "MOD_GRENADE" ) || isSubStr( type, "MOD_EXPLOSIVE" )) )
+	if( isDefined( type ) && ( isSubStr( type, "MOD_GRENADE" ) || isSubStr( type, "MOD_EXPLOSIVE" ) ) )
 		self.wasChained = true;
 	
-	if ( isDefined( iDFlags ) && (iDFlags & level.iDFLAGS_PENETRATION) )
+	if( isDefined( iDFlags ) && ( iDFlags & level.iDFLAGS_PENETRATION ) )
 		self.wasDamagedFromBulletPenetration = true;
 	
 	self.wasDamaged = true;
 	
 	// "destroyed_explosive" notify, for challenges
-	if ( isdefined( attacker ) && isdefined( attacker.pers["team"] ) && isdefined( self.owner ) && isdefined( self.owner.pers["team"] ) )
+	if( isdefined( attacker ) && isdefined( attacker.pers["team"] ) && isdefined( self.owner ) && isdefined( self.owner.pers["team"] ) )
 	{
 		if ( attacker.pers["team"] != self.owner.pers["team"] )
-			attacker notify("destroyed_explosive");
+			attacker notify( "destroyed_explosive" );
 	}
 	/* Make sure to remove the c4 from the owner's array to fix faildetection of already exploded c4 */
-	if( isDefined( self.owner ) ){
+	if( isDefined( self.owner ) )
+	{
 		self.owner.c4array = removeFromArray( self.owner.c4array, self );
 	}
 	self detonate( attacker );
@@ -593,7 +603,7 @@ resetC4ExplodeThisFrame()
 
 clearFXOnDeath( fx )
 {
-	fx endon("death");
-	self waittill("death");
+	fx endon( "death" );
+	self waittill( "death" );
 	fx delete();
 }
