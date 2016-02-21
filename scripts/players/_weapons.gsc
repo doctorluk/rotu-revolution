@@ -60,7 +60,7 @@ init()
 		level.weaponList[weapon_name]["class"] = tableLookup( "mp/weaponTable.csv", 0, i, 1 );
 		
 		precacheItem( console_name );
-		print( "Precached weapon: " + weapon_name + "; " + console_name + "\n" );	
+		print( "Precached weapon: " + weapon_name + " (" + console_name + ")\n" );	
 	}
 
 	precacheShellShock( "default" );
@@ -422,8 +422,10 @@ watchMonkey()
 	while(1)
 	{
 		self waittill( "grenade_fire", monkey, weapname );
-		if ( weapname == "usp_silencer_mp")//monkey bomb
-		{		
+		weapname = level.weaponKeyS2C[weapname];
+		
+		if( weapname == "monkey_mp" )	// monkey bomb
+		{
 			level.monkeyEntities[level.monkeyEntities.size] = monkey;
 			monkey.index = level.monkeyEntitiesIndex;
 			monkey.isMonkey = true;
@@ -446,7 +448,7 @@ waitTillNotMoving()
 	while(1)
 	{
 		wait .1;
-		if ( self.origin == prevorigin )
+		if( self.origin == prevorigin )
 			break;
 		prevorigin = self.origin;
 	}
@@ -471,10 +473,11 @@ triggerThrowable()
 	while (1)
 	{
 		self waittill( "detonate" );
-		weap = self getCurrentWeapon();
+		weap = self getCurrentWeap();
+		
 		if( weap == "c4_mp" )
 		{
-			for( i = 0; i < self.c4Array.size; i++ )
+			for( i=0; i<self.c4Array.size; i++ )
 			{
 				c4 = self.c4Array[i];
 				if( isdefined(c4) )

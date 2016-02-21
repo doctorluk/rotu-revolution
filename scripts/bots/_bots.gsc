@@ -499,46 +499,72 @@ followTarget(target, arealDifference){
 
 
 // BOTS MAIN
-
-Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime)
+/**
+* Calculates and applies the damage done to bots.
+*
+*	@eInflictor: Entity that dealth the damage
+*	@eAttacker: Player entity that is responsible for the damage
+*	@iDamage: Integer, base amount of damage dealth
+*	@iDFlags: Integer, damage flags applied describing the type of damage
+*	@sMeansOfDeath: String, type of damage
+*	@sWeapon: String, name of the weapon
+*	@vPoint: Vector, point of impact
+*	@vDir: Vector, irection of impact
+*	@sHitLoc: String, name of the hit location
+*	@psOffsetTime: Float, time to wait before the damage is done???
+*/
+Callback_BotDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime )
 {
-	if(!isAlive(self) || isDefined(self.damageoff) )
+	// don't damage clients that are imune or dead
+	if( !isAlive(self) || isDefined(self.damageoff) )
 		return;
 	
+	// don't damage spectator clients
+	if( self.sessionteam == "spectator" )
+		return;
+	
+	// convert the weapon name to the script name
 	sWeapon = level.weaponKeyC2S[sWeapon];
+	
+	// don't damage clients that are imune to this type of damage
 	if( !self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker) )
 		return;
 
+	// increase the alert level of the bot
 	if( isDefined(self.alertLevel) )
 		self.alertLevel += 200;
 
+	// Apply the player related damage claculations
 	if( isDefined(eAttacker) && isPlayer(eAttacker) )
 	{
 		// Check for insta-explosive grenades		TODO: Remove this and come up with a more useful function
-		if( eAttacker.chargedGrenades ){
-			if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp" ){
+		if( eAttacker.chargedGrenades )
+		{
+			if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp" )
+			{
 				eInflictor detonate();
 				return;
 			}
 		}
 		
 		// Explosive Crossbow sticking to the zombie
-		if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp" ){
+		if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp" )
+		{
 			eInflictor followTarget( self, ( eInflictor.origin - self.origin ) );
 			return;
 		}
 		
 		// Special Recharge Armored -> KNIFE
-		if ( eAttacker.curClass == "armored" && !eAttacker.isDown ) {
-			if ( sMeansOfDeath == "MOD_MELEE" ) {
-				if (iDamage>self.health)
-					eAttacker scripts\players\_abilities::rechargeSpecial(self.health/25);
-				else
-					eAttacker scripts\players\_abilities::rechargeSpecial(iDamage/25);
-			}
+		if ( eAttacker.curClass == "armored" && !eAttacker.isDown && sMeansOfDeath == "MOD_MELEE" )
+		{
+			if( iDamage > self.health )
+				eAttacker scripts\players\_abilities::rechargeSpecial( self.health/25 );
+			else
+				eAttacker scripts\players\_abilities::rechargeSpecial( iDamage/25 );
 		}
 		
-		if( !isDefined( iDamage ) || !isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) || !isDefined( self.incdammod ) ){
+		if( !isDefined( iDamage ) || !isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) || !isDefined( self.incdammod ) )
+		{
 			logPrint( "LUK_DEBUG; Definition: iDamage: " + isDefined(iDamage) + ", getDamageModifier: " + isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) + ", self.incdammod: " + isDefined(self.incdammod) + ", weapon: " + sWeapon + "\n" );
 			return;
 		}
@@ -551,48 +577,44 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 			eAttacker scripts\players\_damagefeedback::updateTurretDamageFeedback();
 		else
 			eAttacker scripts\players\_damagefeedback::updateDamageFeedback();
-			
+		
 		if( self.isBot )
 			self addToAssist(eAttacker, iDamage);
 	}
 
-	if( self.sessionteam == "spectator" )
-		return;
-
-	//Check for Incendiary/Poisonous Ammo
-	// TODO: Reduce the amount of if clauses here
-	if( isDefined(eAttacker.bulletMod) && randomfloat(1) <= 0.05){
-		if( self.type != "burning" && self.type != "napalm" && self.type != "hellhound" && self.type != "boss" && self.type != "halfboss" )
-				if( eAttacker.bulletMod == "incendiary" )
-					if( isDefined(self.isOnFire) && isDefined(self.isPoisoned) )
-						if( !self.isPoisoned && !self.isOnFire )
-							if( !self.isZombie )
-								if( (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) )
-									if( !scripts\players\_weapons::isExplosive(sWeapon) ){
-											self igniteBot(eAttacker);
-											eAttacker.stats["ignitions"]++;
-										}
-		if( self.type != "toxic" && self.type != "boss" && self.type != "halfboss" )
-				if( eAttacker.bulletMod == "poison" )
-					if( isDefined(self.isOnFire) && isDefined(self.isPoisoned) )
-						if( !self.isPoisoned && !self.isOnFire )
-							if( !self.isZombie )
-								if( (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) )
-									if( !scripts\players\_weapons::isExplosive(sWeapon) ){
-											self poisonBot(eAttacker);
-											eAttacker.stats["poisons"]++;
-										}
+	// check for Incendiary/Poisonous Ammo
+	if( isDefined(eAttacker.bulletMod) && randomFloat(1) <= 0.05		// apply fire or poison only if the attacker has it and with a 5% chance
+	&& self.type != "boss" && self.type != "halfboss"					// don't apply it to boss or halfboss zombies
+	&& !self.isPoisoned && !self.isOnFire								// don't apply it twice or both
+	&& !self.isZombie													// don't apply it to infected players
+	&& (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) && !scripts\players\_weapons::isExplosive(sWeapon) )		// only apply it with the primary or secondary, non explosive weapon
+	{
+		// apply incendiary ammo
+		if( eAttacker.bulletMod == "incendiary" && self.type != "burning" && self.type != "napalm" && self.type != "hellhound" )
+		{
+			self igniteBot(eAttacker);
+			eAttacker.stats["ignitions"]++;
+		}
+		
+		// apply poisonous ammo
+		if( eAttacker.bulletMod == "poison" && self.type != "toxic" )
+		{
+			self poisonBot(eAttacker);
+			eAttacker.stats["poisons"]++;
+		}
 	}
 
-	if(!isDefined(vDir))
+	// disable knockback without a damage direction
+	if( !isDefined(vDir) )
 		iDFlags |= level.iDFLAGS_NO_KNOCKBACK;
 
-	if(!(iDFlags & level.iDFLAGS_NO_PROTECTION))
+	// apply the damage if the protection flag is not set
+	if( !(iDFlags & level.iDFLAGS_NO_PROTECTION) )
 	{
 		if(iDamage < 1)
 			iDamage = 1;
 		
-		// Total Damage Stats
+		// total damage stats
 		if( isDefined( eAttacker.stats["damageDealt"] ) )
 			eAttacker.stats["damageDealt"] += iDamage;
 			

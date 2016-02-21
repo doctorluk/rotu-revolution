@@ -170,18 +170,8 @@ loadSettings()
 	dvarBool(	"shop",			"multiply_costs",			1);
 	dvarInt(	"shop", 		"multiply_costs_amount",	 	40,		0,		100);
 	
-	dvarString(	"surv",			"playedmaps",	"");
-	dvarString(	"surv",			"recentmaps",	"");
-
-	// I guess I could also just add them to the level.dvar array...
-	i = 1;
-	val = getDvar( "surv_unlock1_multiplier" );
-	while( isDefined(val) && val != "" )
-	{
-		dvarInt(	"surv",			"unlock"+i+"_multiplier",	i-1,			0,		1000 );
-		i++;
-		val = getDvar( "surv_unlock"+i+"_multiplier" );
-	}
+	dvarString(	"surv",			"playedmaps",	"" );
+	dvarString(	"surv",			"recentmaps",	"" );
 
 	setdvar("g_teamname_axis", "^9Zombies");
 	setdvar("g_teamname_allies", "Survivors");
