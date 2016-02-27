@@ -959,7 +959,7 @@
 
 
 ////////// Added by BraX ////////////////////
-		itemDef 
+	/*	itemDef
 		{
  			name "ammo_text"
 			rect -85 7 70 40
@@ -969,8 +969,35 @@
 			ownerdraw CG_PLAYER_AMMO_VALUE
 			visible MENU_TRUE
 			decoration
-		}
+		}*/
 /////////////////////////////////////////////
+
+		itemDef		// ammo clip
+		{
+			style			WINDOW_STYLE_EMPTY
+			rect			-150 -15 60 20 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_BOTTOM
+			textFont		UI_FONT_OBJECTIVE
+			textScale		TEXTSIZE_SMALL
+			textAlign		ITEM_ALIGN_TOP_LEFT
+			textAlignX		1
+			exp				text( dvarInt(ui_ammo_clip) )
+			forecolor		1 1 1 1
+			visible 		when( dvarInt(ui_ammo_stock) < 0 )
+			decoration
+		}
+		itemDef		// ammo stock
+		{
+			style			WINDOW_STYLE_EMPTY
+			rect			-150 -15 60 20 HORIZONTAL_ALIGN_RIGHT VERTICAL_ALIGN_BOTTOM
+			textFont		UI_FONT_OBJECTIVE
+			textScale		TEXTSIZE_SMALL
+			textAlign		ITEM_ALIGN_TOP_LEFT
+			textAlignX		-1
+			exp				text( dvarInt(ui_ammo_clip) + "|" + dvarInt(ui_ammo_stock) )
+			forecolor		1 1 1 1
+			visible 		when( dvarInt(ui_ammo_stock) >= 0 )
+			decoration
+		}
 
 		itemDef
 		{
