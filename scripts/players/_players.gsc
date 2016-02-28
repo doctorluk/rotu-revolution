@@ -123,7 +123,7 @@ onPlayerConnect()
 	
 	// Wait a frame to send default ui-dvars and other clientdvars
 	waittillframeend;
-	self setclientdvars( "g_scriptMainMenu", game["menu_class"], "cg_thirdperson", 0, "r_filmusetweaks", 0, "ui_class_ranks", ( 1 - level.dvar["game_class_ranks"] ), "ui_specialrecharge", 0 );
+	self setclientdvars( "g_scriptMainMenu", game["menu_class"], "cg_thirdperson", 0, "r_filmusetweaks", 0, "ui_class_ranks", ( 1 - level.dvar["game_class_ranks"] ), "ui_specialrecharge", 0, "ui_ammo_show", 0 );
 	
 	// Every new players automatically joins Spectator onConnect
 	self joinSpectator();
@@ -329,7 +329,8 @@ joinSpectator()
 			angles = spawn.angles;
 		}
 		// Make sure to give coordinates even if the mapper forgot to add spectator-spawn entities
-		else{
+		else
+		{
 			origin = ( 0, 50, 50 );
 			angles = ( 0, 0, 0 );
 		}
@@ -672,7 +673,7 @@ onPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon,
 			iDamage = int( iDamage * 0.5 );
 		
 		// Make sure that damage cannot be less than 1
-		iDamage = max( iDamage, 1 );
+		iDamage = int( max( iDamage, 1 ) );
 		
 		// Calculation is done, make the actual damage happen
 		self finishPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime );
@@ -843,7 +844,7 @@ cleanup()
 	self.isTargetable = false;
 	
 	// Replace all clientdvars with default values
-	self setclientdvars("r_filmusetweaks", 0, "ui_upgradetext", "", "ui_specialtext", "", "cg_draw2d", 1, "g_compassShowEnemies", 0, "ui_uav_client", 0, "ui_wavetext", "", "ui_waveprogress", 0, "ui_spawnqueue", "");
+	self setclientdvars("r_filmusetweaks", 0, "ui_upgradetext", "", "ui_specialtext", "", "cg_draw2d", 1, "g_compassShowEnemies", 0, "ui_uav_client", 0, "ui_wavetext", "", "ui_waveprogress", 0, "ui_spawnqueue", "", "ui_ammo_show", 0);
 	
 	// Remove the player from the activity list and mark him as dead, also save all of his equipment via persistency
 	if ( self.isActive )

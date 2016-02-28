@@ -222,21 +222,21 @@ watchWeaponUsageSingle()
 	weap = self getCurrentWeap();
 	if( weap == self.primary )
 	{
-		self setClientDvars( "ui_ammo_clip", self.persData.primaryAmmoClip, "ui_ammo_stock", self.persData.primaryAmmoStock );
+		self setClientDvars( "ui_ammo_clip", self.persData.primaryAmmoClip, "ui_ammo_stock", self.persData.primaryAmmoStock, "ui_ammo_show", 1);
 	}
 	else if( weap == self.secondary )
 	{
-		self setClientDvars( "ui_ammo_clip", self.persData.secondaryAmmoClip, "ui_ammo_stock", self.persData.secondaryAmmoStock );
+		self setClientDvars( "ui_ammo_clip", self.persData.secondaryAmmoClip, "ui_ammo_stock", self.persData.secondaryAmmoStock, "ui_ammo_show", 1 );
 	}
 	else if( weap == self.extra )
 	{
-		self setClientDvars( "ui_ammo_clip", self.persData.extraAmmoClip, "ui_ammo_stock", self.persData.extraAmmoStock );
+		self setClientDvars( "ui_ammo_clip", self.persData.extraAmmoClip, "ui_ammo_stock", self.persData.extraAmmoStock, "ui_ammo_show", 1 );
 	}
 	else
 	{
 		ammoClip = self getWeapAmmoClip( weap );
 		ammoStock = self getWeapAmmoStock( weap );
-		self setClientDvars( "ui_ammo_clip", ammoClip, "ui_ammo_stock", ammoStock );
+		self setClientDvars( "ui_ammo_clip", ammoClip, "ui_ammo_stock", ammoStock, "ui_ammo_show", 1 );
 	}
 
 	for(;;)
