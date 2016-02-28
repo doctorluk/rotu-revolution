@@ -34,6 +34,7 @@ import b3
 import b3.storage
 from b3.plugin import Plugin
 from b3.events import eventManager, Event
+from b3.functions import splitDSN
 from b3.parsers.cod4 import Cod4Parser
 from datetime import datetime
 
@@ -120,7 +121,7 @@ class RotustatsPlugin(Plugin):
     self.readConfig()
 
     if self._logToDB:
-      self._storage = b3.storage.getStorage('database', self._dsn, self.console)
+      self._storage = b3.storage.getStorage(self._dsn, splitDSN(self._dsn), self.console)
       self.debug('succesfully connected to database: %s' % self._storage.status())
       self.checkTablesExist()
 
