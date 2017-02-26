@@ -131,8 +131,10 @@ givePlayerWeapons()
 
 canRestoreAmmo( wep )
 {
-	if( wep == "helicopter_mp" || scripts\players\_weapons::isSpecialWeap( wep ) || wep == "m14_reflex_mp" /* Ammobox */ || wep == "none" || wep == level.weapons["flash"] /* Monkey Bomb */)
+	if( wep == "helicopter_mp" || wep == "airstrike_mp" || scripts\players\_weapons::isSpecialWeap( wep ) || wep == "m14_reflex_mp" /* Ammobox */ || wep == "none" || wep == level.weapons["flash"] /* Monkey Bomb */)
+	{
 		return false;
+	}
 		
 	return true;
 }
