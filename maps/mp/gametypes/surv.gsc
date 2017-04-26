@@ -25,7 +25,18 @@ main()
 
 	level.script = toLower( getDvar( "mapname" ) );
 	level.gametype = toLower( getDvar( "g_gametype" ) );
-	level.modversion = "RotU-Revolution v0.4.1";
+	
+	// Monitor the game's version
+	level.gameversion = getDvar("shortversion");
+	if(level.gameversion == "1.7a")
+		level.gameversion = 1.71;
+	else
+		level.gameversion = getDvarFloat("shortversion");
+		
+	// In case the version has jumped above 1.8 (e.g. 1.8a) we just assume newer
+	if(level.gameversion == 0)
+		level.gameversion = 1.81;
+		
 }
 
 Callback_StartGameType()

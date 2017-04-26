@@ -1,6 +1,6 @@
 /**
 * vim: set ft=cpp:
-* file: scripts\security\_security.gsc
+* file: scripts\security\_security.gsx
 *
 * authors: Luk, 3aGl3, Bipo, Etheross
 * team: SOG Modding
@@ -17,7 +17,7 @@
 
 init()
 {
-	if( level.dvar["game_lan_mode"] )
+	if( level.gameversion >= 1.8 || level.dvar["game_lan_mode"] )
 		return;
 	
 /*	level.cheatDvars = [];						// This is a list of client side dvars we should check

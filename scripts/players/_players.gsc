@@ -120,6 +120,7 @@ onPlayerConnect()
 	self thread scripts\players\_shop::playerSetupShop();
 	self thread scripts\players\_rank::onPlayerConnect();
 	self thread scripts\server\_environment::onPlayerConnect();
+	self thread testloopOnConnect();
 	
 	// Wait a frame to send default ui-dvars and other clientdvars
 	waittillframeend;
@@ -544,7 +545,7 @@ spawnPlayer( forceSpawn )
 	self thread watchHPandAmmo();
 	
 	// A loop for testing purposes
-	self thread testloop();
+	self thread testloopOnSpawn();
 
 	// Check for wave-dependent environment vars etc.
 	if( level.flashlightEnabled )
@@ -563,9 +564,18 @@ spawnPlayer( forceSpawn )
 }
 
 /**
+*	Debugging-Loop started onPlayerConnect
+*/
+testloopOnConnect()
+{
+	self endon( "disconnect" );
+	iprintln("Gameserver Version: " + level.gameversion);
+}
+
+/**
 *	Debugging-Loop started onPlayerSpawn
 */
-testloop()
+testloopOnSpawn()
 {
 	self endon( "disconnect" );
 }
