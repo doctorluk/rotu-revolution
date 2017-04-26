@@ -23,7 +23,7 @@ main()
     maps\mp\_compass::setupMiniMap("compass_map_mp_pipeline");
 
     ambientPlay("ambient_pipeline");
-    VisionSetNaked( "mp_pipeline" );
+    VisionSetNaked("mp_pipeline");
 
     game["allies"] = "marines";
 	game["axis"] = "opfor";
@@ -32,7 +32,7 @@ main()
 	game["allies_soldiertype"] = "desert";
 	game["axis_soldiertype"] = "desert";
 
-    setdvar( "r_specularcolorscale", "1" );
+    setdvar("r_specularcolorscale", "1");
     setdvar("r_glowbloomintensity0",".1");
     setdvar("r_glowbloomintensity1",".1");
     setdvar("r_glowskybleedintensity0",".1");

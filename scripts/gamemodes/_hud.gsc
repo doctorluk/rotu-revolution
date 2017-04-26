@@ -185,17 +185,17 @@ lableArrays(){
 	level.finaleLables[3][7] = &"FINALE_3_7";
 }
 
-createRadarIcon( shader ){
+createRadarIcon(shader){
 	// id = level.objectID;
 	if(level.objects.size >= 16) return;
 	for(i = 0; i < level.objects.size; i++)
-		if( !isDefined(level.objects[i]) )
+		if(!isDefined(level.objects[i]))
 			break;
 			
 	self.id = i;
 	level.objects[i] = self;
 	
-	Objective_Add( self.id, "active", self.origin, shader );
+	Objective_Add(self.id, "active", self.origin, shader);
 	// Objective_OnEntity(self.id, level.players[0]);
 	
 	self thread removeRadarIconOnDeath();
@@ -209,7 +209,7 @@ removeRadarIconOnDeath(){
 	objective_delete(self.id);
 }
 
-createTeamObjpoint( origin, shader, alpha )
+createTeamObjpoint(origin, shader, alpha)
 {
 	objPoint = newHudElem();
 	
@@ -219,10 +219,10 @@ createTeamObjpoint( origin, shader, alpha )
 	objPoint.isFlashing = false;
 	objPoint.isShown = true;
 	
-	objPoint setShader( shader, 8, 8 );
-	objPoint setWaypoint( true );
+	objPoint setShader(shader, 8, 8);
+	objPoint setWaypoint(true);
 	
-	if ( isDefined( alpha ) )
+	if (isDefined(alpha))
 		objPoint.alpha = alpha;
 	else
 		objPoint.alpha = 1;
@@ -232,7 +232,7 @@ createTeamObjpoint( origin, shader, alpha )
 	return objPoint;
 }
 
-createHeadiconKits( origin, shader, alpha )
+createHeadiconKits(origin, shader, alpha)
 {
 	objPoint = newHudElem();
 	
@@ -243,10 +243,10 @@ createHeadiconKits( origin, shader, alpha )
 	objPoint.isFlashing = false;
 	objPoint.isShown = true;
 	
-	objPoint setShader( shader, 8, 8 );
-	objPoint setWaypoint( true );
+	objPoint setShader(shader, 8, 8);
+	objPoint setWaypoint(true);
 	
-	if ( isDefined( alpha ) )
+	if (isDefined(alpha))
 		objPoint.alpha = alpha;
 	else
 		objPoint.alpha = 1;
@@ -263,7 +263,7 @@ onPlayerConnect()
 	self.announceHUD = 0;
 	self.announceIndex = 0;
 	self.announceTotal = 0;
-	if ( level.waveHUD ){
+	if (level.waveHUD){
 		self setclientdvars("ui_wavetext", level.waveHUD_Killed + "/" +  level.waveHUD_Total, "ui_waveprogress", level.waveHUD_Killed / level.waveHUD_Total);
 	}
 	else
@@ -296,9 +296,9 @@ healthFeedback(){
 
 	self endon("disconnect");
 	
-	if( !isDefined( self.lastHealthFeedback ) ) // Don't add too many client hudelements or display will get bugged
+	if(!isDefined(self.lastHealthFeedback)) // Don't add too many client hudelements or display will get bugged
 		self.lastHealthFeedback = getTime();
-	else if( self.lastHealthFeedback + 300 > getTime() )
+	else if(self.lastHealthFeedback + 300 > getTime())
 		return;
 	else
 		self.lastHealthFeedback = getTime();
@@ -336,9 +336,9 @@ specialRechargeFeedback(){
 
 	self endon("disconnect");
 	
-	if( !isDefined( self.lastSpecialRechargeFeedback ) )  // Don't add too many client hudelements or display will get bugged
+	if(!isDefined(self.lastSpecialRechargeFeedback))  // Don't add too many client hudelements or display will get bugged
 		self.lastSpecialRechargeFeedback = getTime();
-	else if( self.lastSpecialRechargeFeedback + 300 > getTime() )
+	else if(self.lastSpecialRechargeFeedback + 300 > getTime())
 		return;
 	else
 		self.lastSpecialRechargeFeedback = getTime();
@@ -372,9 +372,9 @@ specialRechargeFeedback(){
 }
 
 
-addTimer( label, string, time )
+addTimer(label, string, time)
 {
-	if( !isDefined( time ) || time < 1 )
+	if(!isDefined(time) || time < 1)
 		return;
 
 	self endon("death");
@@ -398,7 +398,7 @@ addTimer( label, string, time )
 	timer.hud_timer.alpha = 1;
 	timer.hud_timer.glowAlpha = 0;
 	timer.hud_timer.glowColor = (1,1,0);
-	timer.hud_timer SetTimer( time );
+	timer.hud_timer SetTimer(time);
 
 	timer.hud_timertext = newClientHudElem(self);
 	timer.hud_timertext.elemType = "font";
@@ -417,29 +417,29 @@ addTimer( label, string, time )
 	timer.hud_timertext.glowAlpha = 0;
 	timer.hud_timertext.glowColor = (1,1,0);
 	timer.hud_timertext.label = label;
-	timer.hud_timertext setText( string );
+	timer.hud_timertext setText(string);
 
-	self thread removeTimerAfterTime( timer, time );
+	self thread removeTimerAfterTime(timer, time);
 	return timer;
 }
 
-removeTimerAfterTime( timer, time )
+removeTimerAfterTime(timer, time)
 {
 	wait time;
 
-	self removeTimer( timer );
+	self removeTimer(timer);
 }
 
-removeTimer( timer )
+removeTimer(timer)
 {
-	if( isDefined(timer.hud_timer) )
+	if(isDefined(timer.hud_timer))
 		timer.hud_timer destroy();
 
-	if( isDefined(timer.hud_timertext) )
+	if(isDefined(timer.hud_timertext))
 		timer.hud_timertext destroy();
 
-	self.hud_timers = removefromarray( self.hud_timers, timer );
-	for( i=0; i<self.hud_timers.size; i++ )
+	self.hud_timers = removefromarray(self.hud_timers, timer);
+	for(i=0; i<self.hud_timers.size; i++)
 	{
 		self.hud_timers[i].id = i;
 		self.hud_timers[i].hud_timer.y = -48-i*32;
@@ -451,9 +451,9 @@ removeTimers()
 {
 	for (i=0; i<self.hud_timers.size; i++)
 	{
-		if ( isDefined( self.hud_timers[i].hud_timer ) )
+		if (isDefined(self.hud_timers[i].hud_timer))
 			self.hud_timers[i].hud_timer destroy();
-		if ( isDefined( self.hud_timers[i].hud_timertext ) )
+		if (isDefined(self.hud_timers[i].hud_timertext))
 			self.hud_timers[i].hud_timertext destroy();
 	}
 	self.hud_timers = [];
@@ -463,8 +463,8 @@ bar(color, initial, y)
 {
 	self endon("disconnect");
 		
-	self.bar_bg = newClientHudElem( self );
-	self.bar_fg = newClientHudElem( self );
+	self.bar_bg = newClientHudElem(self);
+	self.bar_fg = newClientHudElem(self);
 	
 	self.bar_bg endon("death");
 	
@@ -480,7 +480,7 @@ bar(color, initial, y)
 	self.bar_bg.width = width;
 	self.bar_bg.height = height;
 	self.bar_bg.shader = "black";
-	self.bar_bg setShader( "black", width + 4, height + 4 );
+	self.bar_bg setShader("black", width + 4, height + 4);
 	self.bar_bg.alignX = "left";
 	self.bar_bg.alignY = "middle";
 	self.bar_bg.horzAlign = "center";
@@ -495,7 +495,7 @@ bar(color, initial, y)
 	self.bar_fg.width = width;
 	self.bar_fg.height = height;
 	self.bar_fg.shader = "white";
-	self.bar_fg setShader( "white", initial * width, height );
+	self.bar_fg setShader("white", initial * width, height);
 	self.bar_fg.alignX = "left";
 	self.bar_fg.alignY = "middle";
 	self.bar_fg.horzAlign = "center";
@@ -521,8 +521,8 @@ progressBar(time)
 {
 	self endon("disconnect");
 		
-	self.bar_bg = newClientHudElem( self );
-	self.bar_fg = newClientHudElem( self );
+	self.bar_bg = newClientHudElem(self);
+	self.bar_fg = newClientHudElem(self);
 	
 	self.bar_bg endon("death");
 	
@@ -535,7 +535,7 @@ progressBar(time)
 	self.bar_bg.width = width;
 	self.bar_bg.height = height;
 	self.bar_bg.shader = "black";
-	self.bar_bg setShader( "black", width + 4, height + 4 );
+	self.bar_bg setShader("black", width + 4, height + 4);
 	self.bar_bg.alignX = "left";
 	self.bar_bg.alignY = "middle";
 	self.bar_bg.horzAlign = "center";
@@ -550,7 +550,7 @@ progressBar(time)
 	self.bar_fg.width = width;
 	self.bar_fg.height = height;
 	self.bar_fg.shader = "white";
-	self.bar_fg setShader( "white", 0, height );
+	self.bar_fg setShader("white", 0, height);
 	self.bar_fg.alignX = "left";
 	self.bar_fg.alignY = "middle";
 	self.bar_fg.horzAlign = "center";
@@ -573,7 +573,7 @@ timer(time, label, glowcolor, text, height, value)
 	level.globalHUD = 1;
 	if (time < 2)
 	time = 2;
-	if( !isDefined(height) )
+	if(!isDefined(height))
 		height = 84;
 	
 	hud_timer = newHudElem();
@@ -625,8 +625,8 @@ timer(time, label, glowcolor, text, height, value)
 	
 	wait time -.5 ;
 	
-	hud_timer setPulseFX( 0, 0, 1000 );
-	hud_timertext setPulseFX( 0, 0, 1000 );
+	hud_timer setPulseFX(0, 0, 1000);
+	hud_timertext setPulseFX(0, 0, 1000);
 	
 	wait .5;
 	
@@ -650,10 +650,10 @@ destroyTimerOnGameEnd(){
 lastManStanding(){
 	self endon("disconnect");
 	
-	if( self.isDown )
+	if(self.isDown)
 		return;
 	
-	self thread scripts\include\hud::screenFlash( (1, 0, 0), 1, 0.4);
+	self thread scripts\include\hud::screenFlash((1, 0, 0), 1, 0.4);
 	
 	self.lastManStanding_message = NewClientHudElem(self);
 	self.lastManStanding_message.elemType = "font";
@@ -687,13 +687,13 @@ lastManStanding(){
 increaseFontSize(start, end, stepsize){
 	self endon("death");
 	
-	if( start < 1.4 )
+	if(start < 1.4)
 		start = 1.4;
 		
-	if( end > 4.8 )
+	if(end > 4.8)
 		end = 4.8;
 	
-	for( i = start; i < end; i += stepsize ){
+	for(i = start; i < end; i += stepsize){
 		self.fontscale = i;
 		wait 0.05;
 	}
@@ -773,7 +773,7 @@ overlayMessage(label, text, glowcolor, size)
 	hud_message.glowColor = glowcolor;
 	hud_message.label = label;
 	if (isdefined(text))
-	hud_message setText( text );
+	hud_message setText(text);
 	
 	return hud_message;
 }
@@ -803,9 +803,9 @@ showGlowMessage(label, text, glowcolor, duration, speed, size, height)
 	self.hud_message.glowColor = glowcolor;
 	self.hud_message.label = label;
 	if (isdefined(text))
-	self.hud_message setText( text );
+	self.hud_message setText(text);
 
-	self.hud_message setPulseFX( speed, int((duration)*1000), 1000 );
+	self.hud_message setPulseFX(speed, int((duration)*1000), 1000);
 	
 }
 
@@ -834,9 +834,9 @@ showFinaleMessage(label, text, glowcolor, duration, speed, size)
 	self.hud_message.glowColor = glowcolor;
 	self.hud_message.label = label;
 	if (isdefined(text))
-	self.hud_message setText( text );
+	self.hud_message setText(text);
 
-	self.hud_message setPulseFX( speed, int((duration)*1000), 1000 );
+	self.hud_message setPulseFX(speed, int((duration)*1000), 1000);
 	
 }
 
@@ -865,8 +865,8 @@ showWelcomeMessage(label, text, glowcolor, duration, speed, size, height)
 	self.welcome_message.glowColor = glowcolor;
 	self.welcome_message.label = label;
 	if (isdefined(text))
-	self.welcome_message setText( text );
+	self.welcome_message setText(text);
 
-	self.welcome_message setPulseFX( speed, int((duration)*1000), 1000 );
+	self.welcome_message setPulseFX(speed, int((duration)*1000), 1000);
 	
 }

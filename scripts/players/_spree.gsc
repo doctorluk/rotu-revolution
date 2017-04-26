@@ -28,7 +28,7 @@
 onPlayerSpawn()
 {
 	self.spree = 0;
-	if ( !isdefined( self.hud_streak ) ) //Check if hud is already loaded for the spree's
+	if (!isdefined(self.hud_streak)) //Check if hud is already loaded for the spree's
 		streakHud();
 }
 
@@ -41,14 +41,14 @@ onPlayerSpawn()
 
 checkSpree() 
 {
-	self endon( "disconnect" );
-	self endon( "death" );
+	self endon("disconnect");
+	self endon("death");
 	self notify("end_spree");
 	
 	self.spree++;
-	if ( self.spree > 1 ) 
+	if (self.spree > 1) 
 	{
-		if ( self.hud_streak.alpha == 0 ) 
+		if (self.hud_streak.alpha == 0) 
 		{
 			self.hud_streak.alpha = 1;
 		}
@@ -61,58 +61,58 @@ checkSpree()
 				break; 
 			// The above is just in case somthing goes wrong with the if
 			case 2:
-				self playlocalsound( "double_kill" );
+				self playlocalsound("double_kill");
 			break;
 			case 3:
 				self.laststreak = "Triple kill! ";
-				self stoplocalsound( "double_kill" );
-				self playlocalsound( "triple_kill" );
+				self stoplocalsound("double_kill");
+				self playlocalsound("triple_kill");
 				break;
 			case 4:
 			case 5:
 			case 6:
-				if( self.laststreak != "Multi kill! " )
+				if(self.laststreak != "Multi kill! ")
 				{
 					self.laststreak = "Multi kill! ";
-					self stoplocalsound( "triple_kill" );
-					self playlocalsound( "multikill" );
+					self stoplocalsound("triple_kill");
+					self playlocalsound("multikill");
 				}
 				break;
 			case 7:
 			case 8:
-				if( self.laststreak != "Killing Spree! " )
+				if(self.laststreak != "Killing Spree! ")
 				{
 					self.laststreak = "Killing Spree! ";
-					self stoplocalsound( "multikill" );
-					self playlocalsound( "killing_spree" );
+					self stoplocalsound("multikill");
+					self playlocalsound("killing_spree");
 				}
 				break;
 			case 9:
 			case 10:
-				if( self.laststreak != "Ultra kill! " )
+				if(self.laststreak != "Ultra kill! ")
 				{
 					self.laststreak = "Ultra kill! ";
-					self stoplocalsound( "killing_spree" );
-					self playlocalsound( "ultrakill" );
+					self stoplocalsound("killing_spree");
+					self playlocalsound("ultrakill");
 
 				}
 				break;
 			case 11:
 			case 12:
-				if( self.laststreak != "Mega kill! " )
+				if(self.laststreak != "Mega kill! ")
 				{
 					self.laststreak = "Mega kill! ";
-					self stoplocalsound( "ultrakill" );
-					self playlocalsound( "megakill" );
+					self stoplocalsound("ultrakill");
+					self playlocalsound("megakill");
 				}
 				break;
 			case 13:
 			case 14:
-				if( self.laststreak != "Ludicrous kill! " )
+				if(self.laststreak != "Ludicrous kill! ")
 				{
 					self.laststreak = "Ludicrous kill! ";
-					self stoplocalsound( "megakill" );
-					self playlocalsound( "ludicrouskill" );
+					self stoplocalsound("megakill");
+					self playlocalsound("ludicrouskill");
 				}
 				break;
 			case 15:
@@ -120,7 +120,7 @@ checkSpree()
 			case 17:
 			case 18:
 			case 19:
-				if( self.laststreak != "Holy Shit!!! " )
+				if(self.laststreak != "Holy Shit!!! ")
 				{
 					self.laststreak = "Holy Shit!!! ";
 					self stoplocalsound("ludicrouskill");
@@ -128,7 +128,7 @@ checkSpree()
 				}
 				break;
 			default:
-				if( self.laststreak != "Wicked Sick!!! " )
+				if(self.laststreak != "Wicked Sick!!! ")
 				{
 					self.laststreak = "Wicked Sick!!! ";
 					self stoplocalsound("holyshit");
@@ -151,10 +151,10 @@ checkSpree()
 
 spreetimer()
 {
-	self endon( "disconnect" );
-	self endon( "death" );
-	self notify( "end_spree" );
-	self endon( "end_spree" );
+	self endon("disconnect");
+	self endon("death");
+	self notify("end_spree");
+	self endon("end_spree");
 	
 	wait 1.25;
 	self thread processspree(self.laststreak, self.spree);
@@ -166,75 +166,75 @@ spreetimer()
  * @param spree We send in the current intger amount of the spree so it's data won't get lost when it gets reset during the procesing
  */
 
-processspree( streak, spree )
+processspree(streak, spree)
 {
-	self endon( "disconnect" );
-	self endon( "death" );
+	self endon("disconnect");
+	self endon("death");
 	
-	if( !isdefined( streak ) || !isdefined( spree ) )
+	if(!isdefined(streak) || !isdefined(spree))
 		return;
 	
 	self.spree = 0;
 	self.laststreak = "";
 	self.hud_streak fadeovertime(.5);
 	self.hud_streak.alpha = 0;
-	if ( streak != "" && spree != 0 ) 
+	if (streak != "" && spree != 0) 
 	{
-		iprintln( streak + self.name + "^7 killed " + spree + " enemies in a spree!" );
+		iprintln(streak + self.name + "^7 killed " + spree + " enemies in a spree!");
 	}
 	
-	if( spree == 2 )
+	if(spree == 2)
 	{
-		self scripts\players\_rank::giveRankXP( "spree", 5 );
-		if ( self.curClass == "soldier" )
-			self scripts\players\_abilities::rechargeSpecial( 5 );
-	}
-	else if( streak == "Triple kill! " )
-	{
-		self scripts\players\_rank::giveRankXP( "spree", 15);
-		if ( self.curClass == "soldier" )
-			self scripts\players\_abilities::rechargeSpecial( 15 );
-	}
-	else if( streak == "Multi kill! " )
-	{
-		self scripts\players\_rank::giveRankXP( "spree", 40 );
+		self scripts\players\_rank::giveRankXP("spree", 5);
 		if (self.curClass == "soldier")
-			self scripts\players\_abilities::rechargeSpecial( 30 );
+			self scripts\players\_abilities::rechargeSpecial(5);
 	}
-	else if( streak == "Killing Spree! " )
+	else if(streak == "Triple kill! ")
 	{
-		self scripts\players\_rank::giveRankXP( "spree", 90 );
+		self scripts\players\_rank::giveRankXP("spree", 15);
 		if (self.curClass == "soldier")
-			self scripts\players\_abilities::rechargeSpecial( 70 );
+			self scripts\players\_abilities::rechargeSpecial(15);
 	}
-	else if( streak == "Ultra kill! " )
+	else if(streak == "Multi kill! ")
 	{
-		self scripts\players\_rank::giveRankXP( "spree", 190 );
+		self scripts\players\_rank::giveRankXP("spree", 40);
 		if (self.curClass == "soldier")
-			self scripts\players\_abilities::rechargeSpecial( 95 );
+			self scripts\players\_abilities::rechargeSpecial(30);
 	}
-	else if( streak == "Mega kill! " )
+	else if(streak == "Killing Spree! ")
 	{
-		self scripts\players\_rank::giveRankXP( "spree", 440 );
+		self scripts\players\_rank::giveRankXP("spree", 90);
 		if (self.curClass == "soldier")
-			self scripts\players\_abilities::rechargeSpecial( 125 );
+			self scripts\players\_abilities::rechargeSpecial(70);
 	}
-	else if( streak == "Ludicrous kill! " )
+	else if(streak == "Ultra kill! ")
 	{
-		self scripts\players\_rank::giveRankXP( "spree", 940 );
+		self scripts\players\_rank::giveRankXP("spree", 190);
 		if (self.curClass == "soldier")
-			self scripts\players\_abilities::rechargeSpecial( 160 );
+			self scripts\players\_abilities::rechargeSpecial(95);
 	}
-	else if( streak == "Holy Shit!!! " )
+	else if(streak == "Mega kill! ")
 	{
-		self scripts\players\_rank::giveRankXP( "spree", 1940 );
-		if ( self.curClass == "soldier" )
-			self scripts\players\_abilities::rechargeSpecial( 200 );
+		self scripts\players\_rank::giveRankXP("spree", 440);
+		if (self.curClass == "soldier")
+			self scripts\players\_abilities::rechargeSpecial(125);
 	}
-	else if( streak == "Wicked Sick!!! " )
+	else if(streak == "Ludicrous kill! ")
 	{
-		self scripts\players\_rank::giveRankXP( "spree", 3940 );
-		if ( self.curClass == "soldier" )
-			self scripts\players\_abilities::rechargeSpecial( 300 );
+		self scripts\players\_rank::giveRankXP("spree", 940);
+		if (self.curClass == "soldier")
+			self scripts\players\_abilities::rechargeSpecial(160);
+	}
+	else if(streak == "Holy Shit!!! ")
+	{
+		self scripts\players\_rank::giveRankXP("spree", 1940);
+		if (self.curClass == "soldier")
+			self scripts\players\_abilities::rechargeSpecial(200);
+	}
+	else if(streak == "Wicked Sick!!! ")
+	{
+		self scripts\players\_rank::giveRankXP("spree", 3940);
+		if (self.curClass == "soldier")
+			self scripts\players\_abilities::rechargeSpecial(300);
 	}
 }

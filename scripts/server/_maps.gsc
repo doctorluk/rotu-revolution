@@ -34,7 +34,7 @@ init()
 	}
 }
 
-blank( arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10 )
+blank(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)
 {
 }
 
@@ -105,7 +105,7 @@ getNextMap()
 
 changeMap(mapname)
 {
-	if ( level.players.size < 1 )
+	if (level.players.size < 1)
 	{
 		map_restart(false);
 		return;
@@ -141,7 +141,7 @@ changeMap(mapname)
 		setdvar("rcon_password", oldpassword);
 		tries ++;
 		if (tries>5)
-		map_restart( false );
+		map_restart(false);
 	}
 }
 

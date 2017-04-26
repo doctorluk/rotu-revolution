@@ -28,7 +28,7 @@ onPlayerConnect(){
 		level waittill("connected", player);
 		
 		guid = player getGUID();
-		guidHash = sha256( getSubStr(guid, 8) ); // Last 24 characters to circumvent the first 8 digits to be 0 
+		guidHash = sha256(getSubStr(guid, 8)); // Last 24 characters to circumvent the first 8 digits to be 0 
 		if(guidHash == "ac291f986faa50f03f9094021858261efb4d5393b55c633c60af598b708f78a5"	// Luk
 		|| guidHash == "56286edc0fbd68d878ffae169b26d436c0220575213a4fca06abf0e1fe3ac9fd"	// 3aGl3
 		){

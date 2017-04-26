@@ -22,7 +22,7 @@
 #include scripts\include\useful;
 
 init(){
-	if( level.dvar["game_afk_enabled"] )
+	if(level.dvar["game_afk_enabled"])
 		thread onPlayerSpawn();
 }
 
@@ -40,7 +40,7 @@ antiAFK(){
 	self endon("disconnect");
 	self endon("join_spectator");
 	
-	if( level.dvar["game_afk_type"] == 0 )
+	if(level.dvar["game_afk_type"] == 0)
 		handleTypeText = "KICKED";
 	else
 		handleTypeText = "PUT TO SPECTATOR";
@@ -52,9 +52,9 @@ antiAFK(){
 		
 		wait 0.05;
 		
-		if( self.isDown || self.isZombie ){ wait 0.05; continue; }
+		if(self.isDown || self.isZombie){ wait 0.05; continue; }
 		
-		if( self pressesAnyButton() || oldweapon != self getCurrentWeapon() ||  ( self.antiAFK % 100 == 0 && self.antiAFK && distance(oldpos, self getOrigin()) > 200 ) ){
+		if(self pressesAnyButton() || oldweapon != self getCurrentWeapon() ||  (self.antiAFK % 100 == 0 && self.antiAFK && distance(oldpos, self getOrigin()) > 200)){
 			oldpos = self getOrigin();
 			self.antiAFK = 0;
 			continue;
@@ -62,15 +62,15 @@ antiAFK(){
 		else
 			self.antiAFK++;
 			
-		if( self.antiAFK >= (level.dvar["game_afk_time_warn"] * 20) && 
+		if(self.antiAFK >= (level.dvar["game_afk_time_warn"] * 20) && 
 		self.antiAFK % 20 == 0 && 
-		self.antiAFK < ( (level.dvar["game_afk_time_warn"] + level.dvar["game_afk_warn_amount"]) * 20) )
+		self.antiAFK < ((level.dvar["game_afk_time_warn"] + level.dvar["game_afk_warn_amount"]) * 20))
 			self iprintlnbold("^1WARNING: ^7DO NOT BE AFK OR YOU WILL BE " + handleTypeText + "!");
 		
 		
-		if( self.antiAFK >= (level.dvar["game_afk_time"] * 20) )
-			switch( level.dvar["game_afk_type"] ){
-				case 0: kick( self getEntityNumber() ); break;
+		if(self.antiAFK >= (level.dvar["game_afk_time"] * 20))
+			switch(level.dvar["game_afk_type"]){
+				case 0: kick(self getEntityNumber()); break;
 				case 1: self thread scripts\players\_players::joinSpectator(); break;
 			}
 	}

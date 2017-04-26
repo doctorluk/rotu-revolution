@@ -64,7 +64,7 @@ watchCmd()
 			val = getdvar(cmd.dvar);
 			if (val!="") {
 				
-				setdvar(cmd.dvar, "" );
+				setdvar(cmd.dvar, "");
 				[[cmd.script]](StrTok(val, "&"));
 			}
 		}
@@ -73,10 +73,10 @@ watchCmd()
 }
 
 restoreRank(args){
-	if( args.size > 4 || args.size < 3 )
+	if(args.size > 4 || args.size < 3)
 		return;
 		
-	if( args.size == 3 )
+	if(args.size == 3)
 		args[3] = 0;
 	
 	// 0 = ID
@@ -102,16 +102,16 @@ restoreRank(args){
 	Syntax: rcon saybold <text>
  */
 saybold(args){
-	if( !isDefined( args[0] ) || args[0] == "" )
+	if(!isDefined(args[0]) || args[0] == "")
 		return;
 	
-	iprintlnbold( args[0] );
+	iprintlnbold(args[0]);
 }
 /* 	Prints READCONFIG; to the games_mp.log . It is used in coorporation with a manu admin mod plugin to read the configs
 	Syntax: rcon readconfig 1
  */
 readconfig(args){
-	logPrint( "READCONFIG;\n" );
+	logPrint("READCONFIG;\n");
 }
 /* 	Renames a player
 	Syntax: rcon rename <player_id>&<new_name>
@@ -123,7 +123,7 @@ rename(args)
 	{
 		if (players[i] getEntityNumber() == int(args[0]) && args.size > 1)
 		{
-			iprintln("Player ^3" + players[i].name + "^7 has been renamed to ^3" + args[1] + " ^7by an admin." );
+			iprintln("Player ^3" + players[i].name + "^7 has been renamed to ^3" + args[1] + " ^7by an admin.");
 			players[i] setClientDvar("name", args[1]);
 		}
 	}
@@ -138,7 +138,7 @@ setSpec(args)
 	{
 		if (players[i] getEntityNumber() == int(args[0]))
 		{
-			iprintln("Player ^3" + players[i].name + "^7 has been moved to Spectators." );
+			iprintln("Player ^3" + players[i].name + "^7 has been moved to Spectators.");
 			players[i] thread scripts\players\_players::joinSpectator();
 		}
 	}
@@ -153,7 +153,7 @@ getPrestige(args)
 	{
 		if (players[i] getEntityNumber() == int(args[0]))
 		{
-			iprintln("^3" + players[i].name + "'s^7 Prestige level is " + players[i].pers["prestige"] );
+			iprintln("^3" + players[i].name + "'s^7 Prestige level is " + players[i].pers["prestige"]);
 		}
 	}
 }
@@ -164,13 +164,13 @@ getPrestige(args)
 slap(args)
 {
 	players = getentarray("player", "classname");
-	if( args.size < 2 )
+	if(args.size < 2)
 		return;
 	for (i = 0; i < players.size; i++)
 	{
 		if (players[i] getEntityNumber() == int(args[0]))
 		{
-			iprintln("Player ^3" + players[i].name + "^7 has been slapped with " + int(args[1]) + " damage!" );
+			iprintln("Player ^3" + players[i].name + "^7 has been slapped with " + int(args[1]) + " damage!");
 			players[i] finishPlayerDamage(players[i], players[i], int(args[1]), 0, "MOD_PROJECTILE", "slap_mp", (0,0,0), (0,0,0), "none", 0);
 		}
 	}
@@ -243,7 +243,7 @@ revivecommand(args)
 	players = level.players;
 	for (i = 0; i<players.size; i++)
 	{
-		if ( players[i] getEntityNumber() == int(args[0]) )
+		if (players[i] getEntityNumber() == int(args[0]))
 		{
 			if(!players[i].isAlive && !players[i].isZombie && players[i].isActive)
 			{
@@ -263,7 +263,7 @@ reset(args)
 	players = level.players;
 	for (i = 0; i<players.size; i++)
 	{
-		if (players[i] getEntityNumber() == int(args[0]) )
+		if (players[i] getEntityNumber() == int(args[0]))
 		{
 			if(!players[i].isZombie && players[i].isActive)
 			{
@@ -289,7 +289,7 @@ killZombies(args)
 	if (max == 0)
 		max = level.bots.size;
 		
-	for ( i = 0; i < max; i++)
+	for (i = 0; i < max; i++)
 	{
 		//if (isalive(level.bots[i]))
 		level.bots[i] suicide();

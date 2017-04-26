@@ -33,6 +33,6 @@ init()
 
 	setdvar("g_ScoresColor_Spectator", ".25 .25 .25");
 	setdvar("g_ScoresColor_Free", ".76 .78 .10");
-	setdvar("g_teamColor_MyTeam", ".6 .8 .6" );
-	setdvar("g_teamColor_EnemyTeam", "1 .45 .5" );	
+	setdvar("g_teamColor_MyTeam", ".6 .8 .6");
+	setdvar("g_teamColor_EnemyTeam", "1 .45 .5");	
 }

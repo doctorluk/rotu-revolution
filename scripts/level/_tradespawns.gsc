@@ -36,24 +36,24 @@ precache(){
 // We want to exclude the stock maps from using the tradespawns, but we still load them to make a unified map opening script
 
 buildTradespawns(){
-	if( !isDefined( level.tradespawns ) )
+	if(!isDefined(level.tradespawns))
 		return;
 		
 	cleanupMap();
 	
-	for( i = 0; i < level.tradespawns.size; i++ ){
+	for(i = 0; i < level.tradespawns.size; i++){
 	
 		level.tradespawns[i].model = spawn("script_model", level.tradespawns[i].origin);
 		level.tradespawns[i].model.angles = level.tradespawns[i].angles;
 		
-		if( i % 2 == 0 )
+		if(i % 2 == 0)
 			level.tradespawns[i].model setModel(level.tradespawnModels["upgrade"]);
 		else
 			level.tradespawns[i].model setModel(level.tradespawnModels["equipment"]);
 	}
 	
-	for( i = 0; i < level.tradespawns.size; i++ ){
-		if( i % 2 == 0 )
+	for(i = 0; i < level.tradespawns.size; i++){
+		if(i % 2 == 0)
 			thread buildUsableShop(level.tradespawns[i].model, "upgrade", level.tradespawns[i].origin, level.tradespawns[i].angles);
 		else
 			thread buildUsableShop(level.tradespawns[i].model, "equipment", level.tradespawns[i].origin, level.tradespawns[i].angles);
@@ -66,18 +66,18 @@ buildTradespawns(){
 */
 buildUsableShop(ent, type, origin, angles){
 
-	switch( type ){
+	switch(type){
 		case "upgrade":
 			wait 0.05;
 			level scripts\players\_usables::addUsable(ent, "ammobox", &"USE_UPGRADEWEAPON", 96);
-			createTeamObjpoint( ent.origin + (0, 0, 80), "hud_weapons", 1);
+			createTeamObjpoint(ent.origin + (0, 0, 80), "hud_weapons", 1);
 			ent spawnCollider();
 			break;
 			
 		case "equipment":
 			wait 0.05;
 			level scripts\players\_usables::addUsable(ent, "extras", &"USE_BUYUPGRADES", 96);
-			createTeamObjpoint( ent.origin + (0, 0, 80), "hud_ammo", 1);
+			createTeamObjpoint(ent.origin + (0, 0, 80), "hud_ammo", 1);
 			ent spawnCollider();
 			ent correctPosition();
 			break;
@@ -87,7 +87,7 @@ buildUsableShop(ent, type, origin, angles){
 
 cleanupMap(){
 	ent = getEntArray("oldschool_pickup", "targetname");
-	for( i = 0; i < ent.size; i++ ){
+	for(i = 0; i < ent.size; i++){
 		ent[i] delete();
 	}
 	
@@ -104,7 +104,7 @@ correctPosition(){
 	angle =		self.angles;
 	
 	forwardVector = anglesToForward(self.angles);
-	self.origin = ( forwardVector[0] * -20 + position[0], position[1], position[2] );
+	self.origin = (forwardVector[0] * -20 + position[0], position[1], position[2]);
 }
 
 /*
@@ -112,6 +112,6 @@ correctPosition(){
 */
 
 spawnCollider(){
-	self.collider = spawn( "trigger_radius", self.origin, 0, 40, 80 );
+	self.collider = spawn("trigger_radius", self.origin, 0, 40, 80);
 	self.collider setContents(1);
 }

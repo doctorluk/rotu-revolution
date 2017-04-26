@@ -80,18 +80,18 @@ toUpper(char){
 	}
 }
 
-isHexadecimal( char )
+isHexadecimal(char)
 {
-	return isSubStr( "0123456789abcdef", toLower(char) );
+	return isSubStr("0123456789abcdef", toLower(char));
 }
 
 /* Makes all letters capital in a sentence */
 allToUpper(string){
-	if( !isDefined(string) || string == "" )
+	if(!isDefined(string) || string == "")
 		return;
 	returns = "";
-	for( i = 0; i < string.size; i++ )
-		returns += toUpper( getSubStr(string, i, i + 1) );
+	for(i = 0; i < string.size; i++)
+		returns += toUpper(getSubStr(string, i, i + 1));
 	return returns;
 }
 
@@ -100,18 +100,18 @@ Strings come either as (x,y,z) or (xx,yy,zz) etc., we have to take care of this.
 strToVec(string){
 
 	vector = (0,0,0);
-	stringArr = strTok( string, "," ); // Split string by ","-characters, results in (x(xx)? | y(yy)? | z(zz?))
-	x = atof(GetSubStr( stringArr[0], 1, stringArr[0].size) ); // we have (x or (xx or (xxx now, so we need to cut from 0 (this is "(" ) until the end...
+	stringArr = strTok(string, ","); // Split string by ","-characters, results in (x(xx)? | y(yy)? | z(zz?))
+	x = atof(GetSubStr(stringArr[0], 1, stringArr[0].size)); // we have (x or (xx or (xxx now, so we need to cut from 0 (this is "(") until the end...
 	y = atof(stringArr[1]);
-	z = atof(GetSubStr( stringArr[2], 0, stringArr[2].size - 1 ) ); // we have z) or zz) or zzz), so we need to cut from end-1 to end which cuts out ")"
+	z = atof(GetSubStr(stringArr[2], 0, stringArr[2].size - 1)); // we have z) or zz) or zzz), so we need to cut from end-1 to end which cuts out ")"
 	
 	vector = (x,y,z);
 	
 	return vector;
 }
 
-appendToDvar( dvar, string ){
-	setDvar( dvar, getDvar( dvar ) + string );
+appendToDvar(dvar, string){
+	setDvar(dvar, getDvar(dvar) + string);
 }
 
 getFullClassName(){

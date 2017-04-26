@@ -100,7 +100,7 @@ getRandomSelection(mapList, no, illegal) { //returns random selection of # eleme
 	Builds a recognizable dvar that transfers an array of last played maps beyond mapchanges, resulting in the possibility to exclude recently played maps from being voted
 */
 constructRecentMaps(){
-	game["recentmaps"] = strTok( level.dvar["surv_recentmaps"], ";" );
+	game["recentmaps"] = strTok(level.dvar["surv_recentmaps"], ";");
 
 	mapstring = "";
 	for(i = 0; i < level.dvar["surv_dontplaylastmaps"]; i++){
@@ -120,8 +120,8 @@ constructRecentMaps(){
 		
 	}
 	setDvar("surv_recentmaps", mapstring);
-	level.dvar["surv_recentmaps"] = getDvar( "surv_recentmaps" );
-	game["recentmaps"] = strTok( level.dvar["surv_recentmaps"], ";" );
+	level.dvar["surv_recentmaps"] = getDvar("surv_recentmaps");
+	game["recentmaps"] = strTok(level.dvar["surv_recentmaps"], ";");
 }
 
 getRecentMapsList(){
@@ -155,16 +155,16 @@ isLegal(name, illegal) { //check if map is specified in illegal list or string
 getDvarMaprotation(){
 	maprotation = [];
 	
-	if( getDvar("sv_maprotation") != "" 
+	if(getDvar("sv_maprotation") != "" 
 	&& getDvar("sv_maprotation") != "map mp_backlot map mp_bloc map mp_bog map mp_cargoship map mp_citystreets map mp_convoy map mp_countdown map mp_crash map mp_crossfire map mp_farm map mp_overgrown map mp_pipeline map mp_showdown map mp_strike map mp_vacant"){
-		maprotation = dissect( getDvar("sv_maprotation") );
+		maprotation = dissect(getDvar("sv_maprotation"));
 	}
 	
 	i = 1;
 	
-	while( getDvar("sv_maprotation_"+i) != "" && i <= 20 ){
-		temp = dissect( getDvar("sv_maprotation_"+i) );
-		for( ii = 0; ii < temp.size; ii++ ){
+	while(getDvar("sv_maprotation_"+i) != "" && i <= 20){
+		temp = dissect(getDvar("sv_maprotation_"+i));
+		for(ii = 0; ii < temp.size; ii++){
 			maprotation[maprotation.size] = temp[ii];
 		}
 		i++;
@@ -300,18 +300,18 @@ playerVote() {
 	}
 }
 
-getMapNameString( mapName ) 
+getMapNameString(mapName) 
 {
-	tokens = strTok( toLower( mapName ), "_" ); // mp 0, deathrun/dr 1, name 2, (optional)version 3
+	tokens = strTok(toLower(mapName), "_"); // mp 0, deathrun/dr 1, name 2, (optional)version 3
 	
 
-	//if( tokens.size < 2  || !tokens.size )
+	//if(tokens.size < 2  || !tokens.size)
 		//return mapName;
 		
-	if( tokens[1] == "fnrp" || tokens[1] == "surv" || tokens[1] == "bsf" || tokens[1] == "madhouse" ){
+	if(tokens[1] == "fnrp" || tokens[1] == "surv" || tokens[1] == "bsf" || tokens[1] == "madhouse"){
 		newMapname = "";
 		for(i = 2; i < tokens.size; i++){
-			if( i < tokens.size - 1)
+			if(i < tokens.size - 1)
 				newMapname = newMapname + tokens[i] + " ";
 			else
 				newMapname = newMapname + tokens[i];
@@ -322,7 +322,7 @@ getMapNameString( mapName )
 	else{
 		newMapname = "";
 		for(i = 1; i < tokens.size; i++){
-			if( i < tokens.size - 1)
+			if(i < tokens.size - 1)
 			newMapname = newMapname + tokens[i] + " ";
 			else
 			newMapname = newMapname + tokens[i];
@@ -375,14 +375,14 @@ playerVisuals() {
 	self setclientdvar("ui_hud_hardcore", 1);
 	
 		
-	self allowSpectateTeam( "allies", false );
-	self allowSpectateTeam( "axis", false );
-	self allowSpectateTeam( "freelook", false );
-	self allowSpectateTeam( "none", true );
+	self allowSpectateTeam("allies", false);
+	self allowSpectateTeam("axis", false);
+	self allowSpectateTeam("freelook", false);
+	self allowSpectateTeam("none", true);
 	
 	self scripts\players\_players::joinSpectator();
 
-	for (i=0; i<=level.mapitems; i++ ) {
+	for (i=0; i<=level.mapitems; i++) {
 		self.voteitem[i] = newClientHudElem(self);
 		self.voteitem[i].index = i;
 		voteindex = getIndex((i-level.voteavg));
@@ -425,7 +425,7 @@ playerVisuals() {
 
 playerDelVisuals() {
 	self endon("disconnect");
-	for (i=0; i<=level.mapitems; i++ ) {
+	for (i=0; i<=level.mapitems; i++) {
 		self.voteitem[i] FadeOverTime(1);
 		self.voteitem[i].alpha = 0;
 		
@@ -437,7 +437,7 @@ playerDelVisuals() {
 	self.startvote destroy();
 	
 	wait 1;
-	for (i=0; i<=level.mapitems; i++ ) {
+	for (i=0; i<=level.mapitems; i++) {
 		self.voteitem[i].votes destroy();
 		self.voteitem[i] destroy();
 	}
@@ -456,7 +456,7 @@ getIndex(i) {
 }
 
 updateVotes() {
-	for (i=0; i<=level.mapitems; i++ ) {
+	for (i=0; i<=level.mapitems; i++) {
 		val = level.maps[self.voteitem[i].voteindex].votes;
 		if (val != self.voteitem[i].votes.value) {
 			self.voteitem[i].votes.value = val;
@@ -477,7 +477,7 @@ incVote() {
 	
 	updateVotes();
 	
-	for (i=0; i<=level.mapitems; i++ ) {
+	for (i=0; i<=level.mapitems; i++) {
 	self.voteitem[i] nextIndex();
 	}
 }
@@ -495,7 +495,7 @@ decVote() {
 	
 	updateVotes();
 	
-	for (i=0; i<=level.mapitems; i++ ) {
+	for (i=0; i<=level.mapitems; i++) {
 	self.voteitem[i] prevIndex();
 	}
 }
@@ -530,8 +530,8 @@ nextIndex() {
 	}
 	self.index-=1;
 
-	self MoveOverTime( level.voteswitchtime );
-	self.votes MoveOverTime( level.voteswitchtime );
+	self MoveOverTime(level.voteswitchtime);
+	self.votes MoveOverTime(level.voteswitchtime);
 	
 	self FadeOverTime(level.voteswitchtime);
 	self.votes FadeOverTime(level.voteswitchtime);
@@ -572,8 +572,8 @@ prevIndex() {
 
 	self.index+=1;
 
-	self MoveOverTime( level.voteswitchtime );
-	self.votes MoveOverTime( level.voteswitchtime );
+	self MoveOverTime(level.voteswitchtime);
+	self.votes MoveOverTime(level.voteswitchtime);
 	
 	self FadeOverTime(level.voteswitchtime);
 	self.votes FadeOverTime(level.voteswitchtime);
@@ -635,7 +635,7 @@ createVisuals() {
 	level.blackbg.alpha = .7;
 	level.blackbg.sort = -2;
 	level.blackbg.foreground = false;
-	level.blackbg setShader( "white", level.blackbg.width, level.blackbg.height );
+	level.blackbg setShader("white", level.blackbg.width, level.blackbg.height);
 	
 	level.blackbgtop = newHudElem();
 	level.blackbgtop.x = 0;
@@ -650,7 +650,7 @@ createVisuals() {
 	level.blackbgtop.alpha = .7;
 	level.blackbgtop.sort = -2;
 	level.blackbgtop.foreground = false;
-	level.blackbgtop setShader( "white", level.blackbgtop.width, level.blackbgtop.height );
+	level.blackbgtop setShader("white", level.blackbgtop.width, level.blackbgtop.height);
 	
 	
 	level.blackbar = newHudElem();
@@ -666,7 +666,7 @@ createVisuals() {
 	level.blackbar.alpha = 1;
 	level.blackbar.sort = -2;
 	level.blackbar.foreground = false;
-	level.blackbar setShader( "white", level.blackbar.width, level.blackbar.height );
+	level.blackbar setShader("white", level.blackbar.width, level.blackbar.height);
 	
 	
 	level.blackbartop = newHudElem();
@@ -682,7 +682,7 @@ createVisuals() {
 	level.blackbartop.alpha = 1;
 	level.blackbartop.sort = -2;
 	level.blackbartop.foreground = false;
-	level.blackbartop setShader( "white", level.blackbartop.width, level.blackbartop.height );
+	level.blackbartop setShader("white", level.blackbartop.width, level.blackbartop.height);
 	
 	
 	level.winningtxt = newHudElem();

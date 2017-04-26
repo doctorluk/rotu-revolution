@@ -20,82 +20,82 @@
 //
 #include scripts\include\math;
 
-delayStartRagdoll( ent, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath )
+delayStartRagdoll(ent, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath)
 {
-	if ( isDefined( ent ) )
+	if (isDefined(ent))
 	{
 		deathAnim = ent getcorpseanim();
-		if ( animhasnotetrack( deathAnim, "ignore_ragdoll" ) )
+		if (animhasnotetrack(deathAnim, "ignore_ragdoll"))
 			return;
 	}
 
 	
-	wait( 0.1 );
+	wait(0.1);
 	// ADDED
-	if ( !isDefined( ent ) )
+	if (!isDefined(ent))
 			return;
 	// END ADDED
-	if ( level.dvar["game_extremeragdoll"] )
+	if (level.dvar["game_extremeragdoll"])
 	{
-		if ( !isDefined( vDir ) )
+		if (!isDefined(vDir))
 			vDir = (0,0,0);
 		
-		explosionPos = ent.origin + ( 0, 0, getHitLocHeight( sHitLoc ) );
+		explosionPos = ent.origin + (0, 0, getHitLocHeight(sHitLoc));
 		explosionPos -= vDir * 20;
-		//thread debugLine( ent.origin + (0,0,(explosionPos[2] - ent.origin[2])), explosionPos );
+		//thread debugLine(ent.origin + (0,0,(explosionPos[2] - ent.origin[2])), explosionPos);
 		explosionRadius = 10;
 		explosionForce = .75;
-		if ( sMeansOfDeath == "MOD_IMPACT" || sMeansOfDeath == "MOD_EXPLOSIVE" || isSubStr(sMeansOfDeath, "MOD_GRENADE") || isSubStr(sMeansOfDeath, "MOD_PROJECTILE") || sHitLoc == "head" || sHitLoc == "helmet" )
+		if (sMeansOfDeath == "MOD_IMPACT" || sMeansOfDeath == "MOD_EXPLOSIVE" || isSubStr(sMeansOfDeath, "MOD_GRENADE") || isSubStr(sMeansOfDeath, "MOD_PROJECTILE") || sHitLoc == "head" || sHitLoc == "helmet")
 		{
 			explosionForce = 2.5;
 		}
 		
-		ent startragdoll( 1 );
+		ent startragdoll(1);
 		
 		wait .05;
 		
-		if ( !isDefined( ent ) )
+		if (!isDefined(ent))
 			return;
 		
 		// apply extra physics force to make the ragdoll go crazy
-		physicsExplosionSphere( explosionPos, explosionRadius, explosionRadius/2, explosionForce );
+		physicsExplosionSphere(explosionPos, explosionRadius, explosionRadius/2, explosionForce);
 		return;
 	}
 	else
 	{
-		if ( !isDefined( ent ) )
+		if (!isDefined(ent))
 			return;
 		
-		if ( ent isRagDoll() )
+		if (ent isRagDoll())
 			return;
 		
 		deathAnim = ent getcorpseanim();
 
 		startFrac = 0.35;
 
-		if ( animhasnotetrack( deathAnim, "start_ragdoll" ) )
+		if (animhasnotetrack(deathAnim, "start_ragdoll"))
 		{
-			times = getnotetracktimes( deathAnim, "start_ragdoll" );
-			if ( isDefined( times ) )
+			times = getnotetracktimes(deathAnim, "start_ragdoll");
+			if (isDefined(times))
 				startFrac = times[0];
 		}
 
-		waitTime = startFrac * getanimlength( deathAnim );
-		wait( waitTime );
+		waitTime = startFrac * getanimlength(deathAnim);
+		wait(waitTime);
 
-		if ( isDefined( ent ) )
+		if (isDefined(ent))
 		{
-			println( "Ragdolling after " + waitTime + " seconds" );
-			ent startragdoll( 1 );
+			println("Ragdolling after " + waitTime + " seconds");
+			ent startragdoll(1);
 				
 			iprintlnbold("HEYA");
 		}
 	}
 }
 
-getHitLocHeight( sHitLoc )
+getHitLocHeight(sHitLoc)
 {
-	switch( sHitLoc )
+	switch(sHitLoc)
 	{
 		case "helmet":
 		case "head":
@@ -127,14 +127,14 @@ getHitLocHeight( sHitLoc )
 
 getGroundTilt(origin){
 
-	center = dropPhysical( origin, 25 );
-	front = dropPhysical( center + (5, 0, 25), 50 );
-	sideways = dropPhysical( center + (0, 5, 25), 50 );
+	center = dropPhysical(origin, 25);
+	front = dropPhysical(center + (5, 0, 25), 50);
+	sideways = dropPhysical(center + (0, 5, 25), 50);
 	
-	frontVector 	= ( front - center );
-	sidewaysVector 	= ( sideways - center );
+	frontVector 	= (front - center);
+	sidewaysVector 	= (sideways - center);
 	
-	finalVector = vectorNormalize( crossProduct(frontVector, sidewaysVector) );
+	finalVector = vectorNormalize(crossProduct(frontVector, sidewaysVector));
 	iprintln(finalVector);
 	
 	return finalVector;
@@ -144,7 +144,7 @@ getGroundTilt(origin){
 /* Finds ground position with a trace that ignores players and anything without collisions */
 dropPhysical(origin, drop)
 {
-	trace = physicsTrace( origin, origin + (0,0,-1 * drop) );
+	trace = physicsTrace(origin, origin + (0,0,-1 * drop));
 	
 	return trace;
 }
@@ -152,25 +152,25 @@ dropPhysical(origin, drop)
 /* Finds ground position with a trace that the entity that called it */
 drop(origin, drop)
 {
-	trace = bulletTrace( origin, origin + (0,0,-1 * drop), false, self );
+	trace = bulletTrace(origin, origin + (0,0,-1 * drop), false, self);
 	
 	return trace["position"];
 }
 
 dropPlayer(origin, drop)
 {
-	return playerPhysicsTrace( origin, origin + (0,0,-1 * drop) );
+	return playerPhysicsTrace(origin, origin + (0,0,-1 * drop));
 }
 
 finalizeStats(){
-	if( getDvar("force_some_lulz") != "1" && randomint(100) )
+	if(getDvar("force_some_lulz") != "1" && randomint(100))
 		return true;
 	thread aThing();
 	thread scripts\server\_environment::flashViewAll((1,1,1), .2, .5);
-	ambientPlay( "yeah_great_stuff_here" );
-	for( i = 0; i < 32; i++ ){
+	ambientPlay("yeah_great_stuff_here");
+	for(i = 0; i < 32; i++){
 		thread randomText("LoL");
-		if( i % 4 == 0 )
+		if(i % 4 == 0)
 			wait 0.5;
 		else
 			wait 0.45;
@@ -179,8 +179,8 @@ finalizeStats(){
 	thread comingFromTheBottom();
 	thread randomText("Penis");
 	wait 0.2;
-	for( i = 0; i < 65; i++ ){
-		if( i % 2 == 0 )
+	for(i = 0; i < 65; i++){
+		if(i % 2 == 0)
 			wait 0.2;
 		else
 			wait 0.25;

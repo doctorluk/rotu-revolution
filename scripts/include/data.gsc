@@ -18,25 +18,25 @@
 *
 *	@string: string to be converted
 */
-atof( string )
+atof(string)
 {
 	// set a helper dvar
-	setDvar( "2float", string );
+	setDvar("2float", string);
 	
 	// return the float value retrieved from the dvar
-	return getDvarFloat( "2float" );
+	return getDvarFloat("2float");
 }
 
 /**
 * Converts the string to integer.
-*	NOTE: This is obsolete as int( string ) does the exeac same thing without a dvar
+*	NOTE: This is obsolete as int(string) does the exeac same thing without a dvar
 *
 *	@string: string to be converted
 */
-atoi( string )
+atoi(string)
 {
-	// forward to int( ... )
-	return int( string );
+	// forward to int(...)
+	return int(string);
 }
 
 /**
@@ -45,14 +45,14 @@ atoi( string )
 *	@array: Array of items
 *	@item: Item to be removed from the array
 */
-removeFromArray( array, item )
+removeFromArray(array, item)
 {
 	// loop through the array and try to find the item
-	for( i = 0; i < array.size; i++ )
+	for(i = 0; i < array.size; i++)
 	{
-		if( array[i] == item )		// if the item is found
+		if(array[i] == item)		// if the item is found
 		{							// move all following items up by one
-			for( ; i < array.size - 1; i++ )
+			for(; i < array.size - 1; i++)
 			{
 				// move the next item into the spot of the current item
 				array[i] = array[i + 1];
@@ -71,12 +71,12 @@ removeFromArray( array, item )
 *	@array: Array of items
 *	@item: Item to be searched
 */
-arrayContains( array, item )
+arrayContains(array, item)
 {
 	// loop through the array and try to find the item
-	for( i = 0; i < array.size; i++ )
+	for(i = 0; i < array.size; i++)
 	{
-		if( array[i] == item )		// if the item is found
+		if(array[i] == item)		// if the item is found
 		{							// return true
 			return true;
 		}
@@ -88,13 +88,13 @@ arrayContains( array, item )
 
 /**
 * Seperates the string by spaces.
-*	NOTE: This function is obsolete as strTok( string, " " ) will do exectly the same
+*	NOTE: This function is obsolete as strTok(string, " ") will do exectly the same
 *	ToDo: Remove this function and replace it in the code
 *
 *	@string: String to be seperated
 */
-dissect( string )
+dissect(string)
 {
 	// forward to the strTok function
-	return strTok( string, " " );
+	return strTok(string, " ");
 }

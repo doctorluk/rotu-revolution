@@ -55,15 +55,15 @@ onPlayerConnect()
 
 updateDamageFeedbackSound()
 {
-		if ( !isPlayer( self ) )
+		if (!isPlayer(self))
 		return;
 		
 		self playlocalsound("MP_hit_alert");
 } 
 
-updateDamageFeedback( )
+updateDamageFeedback()
 {
-	if ( !isPlayer( self ) )
+	if (!isPlayer(self))
 		return;
 		
 	self.hud_damagefeedback_normal setShader("damage_feedback", 24, 48);
@@ -74,9 +74,9 @@ updateDamageFeedback( )
 	self.hud_damagefeedback_normal.alpha = 0;
 }
 
-updateTurretDamageFeedback( )
+updateTurretDamageFeedback()
 {
-	if ( !isPlayer( self ) )
+	if (!isPlayer(self))
 		return;
 		
 	self.hud_damagefeedback_turret setShader("icon_turret_hit", 47, 20);

@@ -68,26 +68,26 @@ main()
 	startSurvWaves();
 
 	level.barricadefx = LoadFX("dust/dust_trail_IR");
-	buildBarricade( "staticbarricade", 6, 300, level.barricadefx, level.barricadefx );
+	buildBarricade("staticbarricade", 6, 300, level.barricadefx, level.barricadefx);
 }
 
 WatchDoor1()
 {
-    door = getEnt( "purchase_door1", "targetname" );
-    trigger = getEnt( "purchase_door1_trigger", "targetname" );
+    door = getEnt("purchase_door1", "targetname");
+    trigger = getEnt("purchase_door1_trigger", "targetname");
     needpoints = 3000;        //EDIT ME
     
     while(1)
     {
-        trigger waittill( "trigger", player );
-        if( player.points < needpoints )
+        trigger waittill("trigger", player);
+        if(player.points < needpoints)
         {
-            player iPrintlnBold( "You do not have enough points to open the door!" );
+            player iPrintlnBold("You do not have enough points to open the door!");
             continue;
         }
         player.points -= needpoints;
 		player scripts\players\_players::incUpgradePoints(-1 * needpoints);
-        door Movez( -180, 3 );        //here you have to try which values are best; there also is MoveY and MoveZ
+        door Movez(-180, 3);        //here you have to try which values are best; there also is MoveY and MoveZ
 trigger playsound("door");
  fx = loadFX("props/powerTower_leg");
  PlayFX (fx ,(trigger.origin));
@@ -99,21 +99,21 @@ trigger playsound("door");
 }
 WatchDoor2()
 {
-    door = getEnt( "purchase_door2", "targetname" );
-    trigger = getEnt( "purchase_door2_trigger", "targetname" );
+    door = getEnt("purchase_door2", "targetname");
+    trigger = getEnt("purchase_door2_trigger", "targetname");
     needpoints = 5000;        //EDIT ME
     
     while(1)
     {
-        trigger waittill( "trigger", player );
-        if( player.points < needpoints )
+        trigger waittill("trigger", player);
+        if(player.points < needpoints)
         {
-            player iPrintlnBold( "You do not have enough points to open the door!" );
+            player iPrintlnBold("You do not have enough points to open the door!");
             continue;
         }
         player.points -= needpoints;
 		player scripts\players\_players::incUpgradePoints(-1 * needpoints);
-        door Movez( -180, 3 );
+        door Movez(-180, 3);
 trigger playsound("door2");
  fx = loadFX("props/powerTower_leg");
  PlayFX (fx ,(trigger.origin));
@@ -124,21 +124,21 @@ trigger playsound("door2");
 }
 WatchDoor3()
 {
-    door = getEnt( "purchase_door3", "targetname" );
-    trigger = getEnt( "purchase_door3_trigger", "targetname" );
+    door = getEnt("purchase_door3", "targetname");
+    trigger = getEnt("purchase_door3_trigger", "targetname");
     needpoints = 8000;        //EDIT ME
     
     while(1)
     {
-        trigger waittill( "trigger", player );
-        if( player.points < needpoints )
+        trigger waittill("trigger", player);
+        if(player.points < needpoints)
         {
-            player iPrintlnBold( "You do not have enough points to open the door!" );
+            player iPrintlnBold("You do not have enough points to open the door!");
             continue;
         }
         player.points -= needpoints;
 		player scripts\players\_players::incUpgradePoints(-1 * needpoints);
-        door Movez( -180, 3 );
+        door Movez(-180, 3);
         trigger playsound("door");
  fx = loadFX("props/powerTower_leg");
  PlayFX (fx ,(trigger.origin));
@@ -150,21 +150,21 @@ WatchDoor3()
 WatchDoor4()
 
 {
-    door = getEnt( "purchase_door4", "targetname" );
-    trigger = getEnt( "purchase_door4_trigger", "targetname" );
+    door = getEnt("purchase_door4", "targetname");
+    trigger = getEnt("purchase_door4_trigger", "targetname");
     needpoints = 10000;        //EDIT ME
     
     while(1)
     {
-        trigger waittill( "trigger", player );
-        if( player.points < needpoints )
+        trigger waittill("trigger", player);
+        if(player.points < needpoints)
         {
-            player iPrintlnBold( "You do not have enough points to open the door!" );
+            player iPrintlnBold("You do not have enough points to open the door!");
             continue;
         }
         player.points -= needpoints;
 		player scripts\players\_players::incUpgradePoints(-1 * needpoints);
-        door Movex( 180, 3 );        
+        door Movex(180, 3);        
         trigger playsound("door2");
  fx = loadFX("props/powerTower_leg");
  PlayFX (fx ,(trigger.origin));
@@ -392,7 +392,7 @@ wait 2;
 rado1()
 {
 fx = loadfx("custom/rado");
-while ( 1 )
+while (1)
 
 {
 trigger = getent("rado1","targetname");
@@ -406,7 +406,7 @@ wait 5;
 rado2()
 {
 fx = loadfx("custom/rado");
-while ( 1 )
+while (1)
 
 {
 trigger = getent("rado2","targetname");
@@ -420,7 +420,7 @@ wait 5;
 rado3()
 {
 fx = loadfx("custom/rado");
-while ( 1 )
+while (1)
 
 {
 trigger = getent("rado3","targetname");
@@ -434,7 +434,7 @@ wait 5;
 rado4()
 {
 fx = loadfx("custom/rado");
-while ( 1 )
+while (1)
 
 {
 trigger = getent("rado4","targetname");
@@ -448,7 +448,7 @@ wait 5;
 rado5()
 {
 fx = loadfx("custom/rado");
-while ( 1 )
+while (1)
 
 {
 trigger = getent("rado5","targetname");

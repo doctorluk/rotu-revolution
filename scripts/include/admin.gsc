@@ -19,8 +19,8 @@
 *	@name: String, name of the command
 *	@script: Function pointer, script to be executed with the command
 */
-addCmd( name, script )
+addCmd(name, script)
 {
 	// forward to the function in the _admin.gsc
-	scripts\server\_admin::addCmd( name, script );
+	scripts\server\_admin::addCmd(name, script);
 }

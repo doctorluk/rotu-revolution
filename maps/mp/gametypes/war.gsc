@@ -15,6 +15,6 @@
 
 main()
 {
-	setDvar( "g_gametype", "surv" );
+	setDvar("g_gametype", "surv");
 	maps\mp\gametypes\surv::main();
 }

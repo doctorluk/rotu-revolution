@@ -46,7 +46,7 @@ waypointPerformance(){
 }
 
 reportUndefined(var, varstring){
-	if( !isDefined( var ) )
+	if(!isDefined(var))
 		iprintlnbold("Var " + varstring + " is undefined!");
 }
 
@@ -58,7 +58,7 @@ debugBots()
     {
         bot = addtestclient();
 
-        if ( !isdefined(bot) )
+        if (!isdefined(bot))
         {
             println("Could not add test client");
             wait 1;
@@ -73,7 +73,7 @@ debugBots()
 
 TestClient(team)
 {
-    self endon( "disconnect" );
+    self endon("disconnect");
     while(!isdefined(self.pers["team"]))
         wait .05;
         

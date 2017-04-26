@@ -31,7 +31,7 @@ main()
 	game["allies_soldiertype"] = "desert";
 	game["axis_soldiertype"] = "desert";
 
-    setdvar( "r_specularcolorscale", "5" );
+    setdvar("r_specularcolorscale", "5");
     setdvar("compassmaxrange","2000");
 
     thread maps\mp\mp_farm_waypoints::load_waypoints();

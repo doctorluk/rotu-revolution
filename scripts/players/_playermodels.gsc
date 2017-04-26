@@ -59,7 +59,7 @@ setPlayerClassModel(class)
 	
 
 	
-	switch ( class ) // Models for class
+	switch (class) // Models for class
 	{
 		case "soldier":
 			rI = randomint(2);

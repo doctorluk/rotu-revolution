@@ -21,16 +21,16 @@
 
 init()
 {
-	if( !level.dvar["game_changing_hostname"] || getDvar( "sv_newhostname" ) == "" )
+	if(!level.dvar["game_changing_hostname"] || getDvar("sv_newhostname") == "")
 		return;
 		
-	// addDvar( "game_chan", "plugin_hostname_updatetime", 10, 2, 60, "int" );
-//	if( getDvar( "sv_newhostname" ) == "" )
-//		setDvar( "sv_newhostname", "^1DeathRun ^2V1.2 ^7- Round: PIHN_ROUND/PIHN_MAXROUNDS - Players: PIHN_PLAYERS/PIHN_MAXPLAYERS - Activator: PIHN_ACTIVATOR" );
+	// addDvar("game_chan", "plugin_hostname_updatetime", 10, 2, 60, "int");
+//	if(getDvar("sv_newhostname") == "")
+//		setDvar("sv_newhostname", "^1DeathRun ^2V1.2 ^7- Round: PIHN_ROUND/PIHN_MAXROUNDS - Players: PIHN_PLAYERS/PIHN_MAXPLAYERS - Activator: PIHN_ACTIVATOR");
 	
 	wait 1;
 	
-	level.pihostname = getDvar( "sv_newhostname" );
+	level.pihostname = getDvar("sv_newhostname");
 	
 	thread WatchHostname();
 }
@@ -69,13 +69,13 @@ WatchHostname()
 	while(1)
 	{
 		newhostname = GetNewHostname();
-		if( isDefined( newhostname ) ){
-			if( getDvar("sv_hostname") == newhostname ){
+		if(isDefined(newhostname)){
+			if(getDvar("sv_hostname") == newhostname){
 				wait 0.1;
 				continue;
 			}
 
-			setDvar( "sv_hostname", newhostname );
+			setDvar("sv_hostname", newhostname);
 		}
 		wait level.dvar["game_changing_hostname_time"];
 	}
@@ -84,37 +84,37 @@ WatchHostname()
 GetNewHostname()
 {
 	string = level.pihostname;
-	//iPrintln( "Getting new hostname: " + string );
-	string = CheckString( "PIHN_VERSIONFULL", string );
-	string = CheckString( "PIHN_VERSIONSHORT", string );
-	string = CheckString( "PIHN_PLAYERS", string );
-	string = CheckString( "PIHN_SOLDIERS", string );
-	string = CheckString( "PIHN_ASSASSINS", string );
-	string = CheckString( "PIHN_ARMOREDS", string );
-	string = CheckString( "PIHN_ENGINEERS", string );
-	string = CheckString( "PIHN_SCOUTS", string );
-	string = CheckString( "PIHN_MEDICS", string );
-	string = CheckString( "PIHN_MAXPLAYERS", string );
-	string = CheckString( "PIHN_ALIVEPLAYERS", string );
-	string = CheckString( "PIHN_DOWNEDPLAYERS", string );
-	string = CheckString( "PIHN_ZOMBIESALIVE", string );
-	string = CheckString( "PIHN_WAVENUMBER", string );
-	string = CheckString( "PIHN_WAVENAME", string );
-	string = CheckString( "PIHN_WAVESIZE", string );
-	string = CheckString( "PIHN_WAVEKILLED", string );
-	string = CheckString( "PIHN_WAVELEFT", string );
-	string = CheckString( "PIHN_BESTPLAYER", string );
-	string = CheckString( "PIHN_MOSTKILLSPLAYER", string );
+	//iPrintln("Getting new hostname: " + string);
+	string = CheckString("PIHN_VERSIONFULL", string);
+	string = CheckString("PIHN_VERSIONSHORT", string);
+	string = CheckString("PIHN_PLAYERS", string);
+	string = CheckString("PIHN_SOLDIERS", string);
+	string = CheckString("PIHN_ASSASSINS", string);
+	string = CheckString("PIHN_ARMOREDS", string);
+	string = CheckString("PIHN_ENGINEERS", string);
+	string = CheckString("PIHN_SCOUTS", string);
+	string = CheckString("PIHN_MEDICS", string);
+	string = CheckString("PIHN_MAXPLAYERS", string);
+	string = CheckString("PIHN_ALIVEPLAYERS", string);
+	string = CheckString("PIHN_DOWNEDPLAYERS", string);
+	string = CheckString("PIHN_ZOMBIESALIVE", string);
+	string = CheckString("PIHN_WAVENUMBER", string);
+	string = CheckString("PIHN_WAVENAME", string);
+	string = CheckString("PIHN_WAVESIZE", string);
+	string = CheckString("PIHN_WAVEKILLED", string);
+	string = CheckString("PIHN_WAVELEFT", string);
+	string = CheckString("PIHN_BESTPLAYER", string);
+	string = CheckString("PIHN_MOSTKILLSPLAYER", string);
 	
 	return string;
 }
 
-CheckString( search, string )
+CheckString(search, string)
 {
-	if( !isDefined( search ) || !isDefined( string ) )
+	if(!isDefined(search) || !isDefined(string))
 		return;
 	
-	if( !isSubStr( string, search ) )
+	if(!isSubStr(string, search))
 		return string;
 	
 	cont = false;
@@ -122,36 +122,36 @@ CheckString( search, string )
 	
 	for(i=0;i<string.size;i++)
 	{
-		if( string[i] != search[0] )
+		if(string[i] != search[0])
 			continue;
 		
 		mark[0] = i;
 		for(ii=0;ii<search.size;ii++)
 		{
-			if( search[ii] != string[i+ii] )
+			if(search[ii] != string[i+ii])
 			{
 				cont = true;
 				break;
 			}
 			mark[1] = int(i+ii)+1;
 		}
-		if( cont )		//we are not done yet
+		if(cont)		//we are not done yet
 		{
 			cont = false;
 			continue;
 		}
 		break;
 	}
-	//iPrintln( GetSubStr( string, 0, mark[0] ) + "TO_BE_REPLACED" + GetSubStr( string, mark[1], string.size ) );
-	return getSubStr( string, 0, mark[0] ) + ReplaceString( search ) + GetSubStr( string, mark[1], string.size );
+	//iPrintln(GetSubStr(string, 0, mark[0]) + "TO_BE_REPLACED" + GetSubStr(string, mark[1], string.size));
+	return getSubStr(string, 0, mark[0]) + ReplaceString(search) + GetSubStr(string, mark[1], string.size);
 }
 
-ReplaceString( replace )
+ReplaceString(replace)
 {
-	if( !isDefined( replace ) )
+	if(!isDefined(replace))
 		return;
 	
-	switch( replace )
+	switch(replace)
 	{
 		case "PIHN_VERSIONFULL":
 			return level.rotuVersion_hostname;
@@ -172,7 +172,7 @@ ReplaceString( replace )
 		case "PIHN_MEDICS":
 			return level.classcount["medic"];
 		case "PIHN_MAXPLAYERS":
-			return ( getDvarInt( "bot_count" ) - getDvarInt( "sv_maxClients" ) );
+			return (getDvarInt("bot_count") - getDvarInt("sv_maxClients"));
 		case "PIHN_ALIVEPLAYERS":
 			return level.alivePlayers;
 		case "PIHN_DOWNEDPLAYERS":

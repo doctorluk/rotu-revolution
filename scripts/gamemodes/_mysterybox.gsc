@@ -25,58 +25,58 @@ init()
 {
 	level.mys_wep = [];
 
-	addMysWep( "mp5_mp", "primary" );
-	addMysWep( "skorpion_mp", "primary" );
-	addMysWep( "ak74u_mp", "primary" );
-	addMysWep( "uzi_mp", "secondary" );
-	addMysWep( "p90_mp", "primary" );
-	addMysWep( "mp5k_mp", "secondary" );
-	addMysWep( "mtar_mp", "primary" );
-	addMysWep( "car101_mp", "primary" );
+	addMysWep("mp5_mp", "primary");
+	addMysWep("skorpion_mp", "primary");
+	addMysWep("ak74u_mp", "primary");
+	addMysWep("uzi_mp", "secondary");
+	addMysWep("p90_mp", "primary");
+	addMysWep("mp5k_mp", "secondary");
+	addMysWep("mtar_mp", "primary");
+	addMysWep("car101_mp", "primary");
 
-	addMysWep( "ak47_mp", "primary" );
-	addMysWep( "m14_mp", "primary" );
-	addMysWep( "g3_mp", "primary" );
-	addMysWep( "g36c_mp", "primary" );
-	addMysWep( "m16_mp", "primary" );
-	addMysWep( "m4_mp", "primary" );
-	addMysWep( "f2000_mp", "primary" );
-	addMysWep( "scar_mp", "primary" );
-	addMysWep( "r101_mp", "primary" );
+	addMysWep("ak47_mp", "primary");
+	addMysWep("m14_mp", "primary");
+	addMysWep("g3_mp", "primary");
+	addMysWep("g36c_mp", "primary");
+	addMysWep("m16_mp", "primary");
+	addMysWep("m4_mp", "primary");
+	addMysWep("f2000_mp", "primary");
+	addMysWep("scar_mp", "primary");
+	addMysWep("r101_mp", "primary");
 
-	addMysWep( "dragunov_mp", "primary" );
-	addMysWep( "m40a3_mp", "primary" );
-	addMysWep( "barrett_mp", "primary" );
-	addMysWep( "remington700_mp", "primary" );
-	addMysWep( "m21_mp", "primary" );
-	addMysWep( "m40a5_mp", "primary" );
-	addMysWep( "kraber_mp", "primary" );
+	addMysWep("dragunov_mp", "primary");
+	addMysWep("m40a3_mp", "primary");
+	addMysWep("barrett_mp", "primary");
+	addMysWep("remington700_mp", "primary");
+	addMysWep("m21_mp", "primary");
+	addMysWep("m40a5_mp", "primary");
+	addMysWep("kraber_mp", "primary");
 	
-	addMysWep( "winchester1200_mp", "primary" );
-	addMysWep( "m1014_mp", "primary" );
-	addMysWep( "usas12_mp", "primary" );
-	addMysWep( "eva8_mp", "primary" );
+	addMysWep("winchester1200_mp", "primary");
+	addMysWep("m1014_mp", "primary");
+	addMysWep("usas12_mp", "primary");
+	addMysWep("eva8_mp", "primary");
 	
-	addMysWep( "rpd_mp", "primary" );
-	addMysWep( "saw_mp", "primary" );
-	addMysWep( "m60e4_mp", "primary" );
-	addMysWep( "qbb95_mp", "primary" );
-	addMysWep( "spitfire_mp", "primary" );
+	addMysWep("rpd_mp", "primary");
+	addMysWep("saw_mp", "primary");
+	addMysWep("m60e4_mp", "primary");
+	addMysWep("qbb95_mp", "primary");
+	addMysWep("spitfire_mp", "primary");
 
-	addMysWep( "beretta_mp", "secondary" );
-	addMysWep( "colt45_mp", "secondary" );
-	addMysWep( "usp_mp", "secondary" );
-	addMysWep( "deserteagle_mp", "secondary" );
-	addMysWep( "magnum_mp", "secondary" );
+	addMysWep("beretta_mp", "secondary");
+	addMysWep("colt45_mp", "secondary");
+	addMysWep("usp_mp", "secondary");
+	addMysWep("deserteagle_mp", "secondary");
+	addMysWep("magnum_mp", "secondary");
 
-	addMysWep( "raygun_mp", "extra" );
-	addMysWep( "minigun_mp", "extra" );
-	addMysWep( "thundergun_mp", "extra" );
+	addMysWep("raygun_mp", "extra");
+	addMysWep("minigun_mp", "extra");
+	addMysWep("thundergun_mp", "extra");
 
 	// shuffle the array around, this gives a little more randomness then just the 'randomInt' on pulling a weapon
-	for( i=0; i<level.mys_wep.size; i++ )
+	for(i=0; i<level.mys_wep.size; i++)
 	{
-		rnd = randomInt( level.mys_wep.size );
+		rnd = randomInt(level.mys_wep.size);
 		temp = level.mys_wep[i];
 		level.mys_wep[i] = level.mys_wep[rnd];
 		level.mys_wep[rnd] = temp;	
@@ -84,7 +84,7 @@ init()
 }
 
 
-addMysWep( weaponName, slot )
+addMysWep(weaponName, slot)
 {
 	struct = spawnstruct();
 	level.mys_wep[level.mys_wep.size] = struct;
@@ -94,16 +94,16 @@ addMysWep( weaponName, slot )
 
 mystery_box(box)
 {
-	weapon = spawn( "script_model", box.origin + (0,0,20) );
+	weapon = spawn("script_model", box.origin + (0,0,20));
 	weapon.angles = (0,(box.angles[1] + 90),0);
 	weapon.done = false;
 	weapon hide();
-	weapon showToPlayer( self );
-	weapon moveZ( 32, 2.4 );
+	weapon showToPlayer(self);
+	weapon moveZ(32, 2.4);
 	lastnum = weapon createRandomItem(self);
 	self.box_weapon = weapon;
 	self playlocalsound("zom_mystery");
-	for( i = 0; i < 14; i++ )
+	for(i = 0; i < 14; i++)
 	{
 		wait 0.2;
 		lastnum = weapon createRandomItem(self, lastnum);
@@ -114,31 +114,31 @@ mystery_box(box)
 
 }
 
-createRandomItem( player, lastNum )
+createRandomItem(player, lastNum)
 {
-	if( isDefined(lastNum) )
+	if(isDefined(lastNum))
 	{
-		num = randomInt( level.mys_wep.size-3 );
-		if( num >= lastNum )
+		num = randomInt(level.mys_wep.size-3);
+		if(num >= lastNum)
 			num++;
 	}
 	else
 	{
-		num = randomInt( level.mys_wep.size-2 );
+		num = randomInt(level.mys_wep.size-2);
 		lastNum = -2;
 	}
 	
-	for( i=0; i<level.mys_wep.size; i++ )
+	for(i=0; i<level.mys_wep.size; i++)
 	{
 		wep = level.mys_wep[i];
-		if( wep.weaponName == player.primary || wep.weaponName == player.secondary || i == lastNum )
+		if(wep.weaponName == player.primary || wep.weaponName == player.secondary || i == lastNum)
 		{
 			num++;
 			continue;
 		}
-		if( i == num )
+		if(i == num)
 		{
-			self setModel( getWeapModel(wep.weaponName) );
+			self setModel(getWeapModel(wep.weaponName));
 			self.weaponName = wep.weaponName;
 			self.slot = wep.slot;
 		}

@@ -80,8 +80,8 @@ init()
 	precacheMenu(game["menu_changeclass_offline"]);
 	precacheMenu(game["menu_changeclass_ability"]);
 	precacheMenu(game["menu_quickstatements"]);
-	precacheString( &"MP_HOST_ENDED_GAME" );
-	precacheString( &"MP_HOST_ENDGAME_RESPONSE" );
+	precacheString(&"MP_HOST_ENDED_GAME");
+	precacheString(&"MP_HOST_ENDGAME_RESPONSE");
 	
 	//MY SCRIPTMENUS
 	game["menu_clientcmd"] = "clientcmd";
@@ -100,7 +100,7 @@ onPlayerConnect()
 		
 		player setClientDvar("ui_3dwaypointtext", "1");
 		player.enable3DWaypoints = true;
-		player setClientDvars("ui_deathicontext", "1", "g_scriptMainMenu", game["menu_class"] );
+		player setClientDvars("ui_deathicontext", "1", "g_scriptMainMenu", game["menu_class"]);
 		player.enableDeathIcons = true;
 		player.classType = undefined;
 		player.selectedClass = false;
@@ -117,63 +117,63 @@ onMenuResponse()
 	{
 		self waittill("menuresponse", menu, response);
 		
-		// self iprintlnbold( self.name + " menuresponse: " + menu + " " + response );
+		// self iprintlnbold(self.name + " menuresponse: " + menu + " " + response);
 		
 		if (response == "prestige") {
 			self closeMenu();
 			self closeInGameMenu();
 			self scripts\players\_rank::prestigeUp();
 		}	
-		if ( response == "back" )
+		if (response == "back")
 		{
 			self closeMenu();
 			self closeInGameMenu();
-			if ( menu == game["menu_changeclass_ability"] )
-				self openMenu( game["menu_changeclass_allies"] );
+			if (menu == game["menu_changeclass_ability"])
+				self openMenu(game["menu_changeclass_allies"]);
 				
 			continue;
 		}
 		
-		if( getSubStr( response, 0, 7 ) == "loadout" )
+		if(getSubStr(response, 0, 7) == "loadout")
 		{
-			//self maps\mp\gametypes\_modwarfare::processLoadoutResponse( response );
+			//self maps\mp\gametypes\_modwarfare::processLoadoutResponse(response);
 			continue;
 		}
 		
-		if( response == "join" )
+		if(response == "join")
 		{
 			self closeMenu();
 			self closeInGameMenu();
 			self openMenu(game["menu_changeclass_allies"]);
 		}
 		
-		if( response == "gospec" )
+		if(response == "gospec")
 		{
 			self closeMenu();
 			self closeInGameMenu();
 			self scripts\players\_players::joinSpectator();
 		}
 		
-		if( response == "removefromqueue" )
+		if(response == "removefromqueue")
 		{
 			self closeMenu();
 			self closeInGameMenu();
 			self scripts\players\_players::removeFromQueue();
 		}
 	
-		if( response == "changeclass_marines" )
+		if(response == "changeclass_marines")
 		{
 			self closeMenu();
 			self closeInGameMenu();
-			self openMenu( game["menu_changeclass_allies"] );
+			self openMenu(game["menu_changeclass_allies"]);
 			continue;
 		}
 
-		if( response == "changeclass_opfor" )
+		if(response == "changeclass_opfor")
 		{
 			self closeMenu();
 			self closeInGameMenu();
-			self openMenu( game["menu_changeclass_axis"] );
+			self openMenu(game["menu_changeclass_axis"]);
 			continue;
 		}
 		if (response == "admin")
@@ -185,22 +185,22 @@ onMenuResponse()
 			{
 				self closeMenu();
 				self closeInGameMenu();
-				self openMenu( "bxmod_admin" );
+				self openMenu("bxmod_admin");
 			}
 			else
 			self iprintlnbold("You are not allowed to use this menu");*/
 		}
 				
-		if( response == "endgame" )
+		if(response == "endgame")
 		{
 			continue;
 		}
-		if ( isSubStr(response, "SC_") ) // Process secondary abilities
+		if (isSubStr(response, "SC_")) // Process secondary abilities
 		{
 			ability = GetSubStr(response, 3);
 			self thread  scripts\players\_classes::pickSecondary(ability);
 		}
-		if ( menu == game["menu_changeclass_ability"])
+		if (menu == game["menu_changeclass_ability"])
 		{
 			if (response == "accept")
 			{
@@ -213,7 +213,7 @@ onMenuResponse()
 			self thread scripts\players\_classes::acceptClass();
 			
 		}
-		if ( menu == game["menu_skillpoints"]) {
+		if (menu == game["menu_skillpoints"]) {
 			switch(response)
 			{
 			case "upgr_soldier":
@@ -239,7 +239,7 @@ onMenuResponse()
 			break;
 			}
 		}
-		if ( menu == game["menu_quickstatements"]) {
+		if (menu == game["menu_quickstatements"]) {
 			time = gettime();
 			switch(response)
 			{
@@ -279,7 +279,7 @@ onMenuResponse()
 			scripts\players\_shop::processResponse(response));
 		}
 
-		if( menu == game["menu_team"] )
+		if(menu == game["menu_team"])
 		{
 			switch(response)
 			{
@@ -304,14 +304,14 @@ onMenuResponse()
 				break;
 			}
 		}	// the only responses remain are change class events
-		else if( menu == game["menu_changeclass_allies"]  )
+		else if(menu == game["menu_changeclass_allies"] )
 		{
 			self closeMenu();
 			self closeInGameMenu();
 			thread scripts\players\_classes::pickClass(response);
 			continue;
 		}
-		else if( menu == game["menu_changeclass"] )
+		else if(menu == game["menu_changeclass"])
 		{
 			self closeMenu();
 			self closeInGameMenu();

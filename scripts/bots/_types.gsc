@@ -220,7 +220,7 @@ addZomModel(type, body, head)
 
 clearZomModel(type){
 
-	if ( isDefined( level.zom_models[type] ) ){
+	if (isDefined(level.zom_models[type])){
 	
 		for(i = 0; i < level.zom_models[type].size; i++) // Remove bodies
 			level.zom_models[type][i] = undefined;
@@ -248,7 +248,7 @@ loadZomModel(type)
 
 addSantaHat(type){
 
-	if( type != "boss" && type != "helldog" && type != "dog" )
+	if(type != "boss" && type != "helldog" && type != "dog")
 		self attach("santa_hat");
 }
 
@@ -256,14 +256,14 @@ addSantaHat(type){
 loadAnimTree(type)
 {
 	animTree = level.zom_types[type].animTree;
-	switch( animTree )
+	switch(animTree)
 	{
 		case "zombie":
 			self.animation["stand"] = "bot_zombie_stand_mp";		// bot_zom_stand
 			self.animation["walk"] = "bot_zombie_walk_mp";			// bot_zom_walk
 			self.animation["sprint"] = "bot_zombie_run0_mp";		// bot_zom_run0 and bot_zom_run1
 			
-			if( randomInt(2) )
+			if(randomInt(2))
 				self.animation["melee"] = "bot_zombie_melee0_mp";	// bot_zom_melee0
 			else
 				self.animation["melee"] = "bot_zombie_melee1_mp";	// bot_zom_melee1
@@ -273,7 +273,7 @@ loadAnimTree(type)
 			self.animation["walk"] = "bot_zombie_walk_mp";			// bot_zom_walk
 			self.animation["sprint"] = "bot_zombie_run1_mp";		// bot_zom_runfast
 			
-			if( randomInt(2) )
+			if(randomInt(2))
 				self.animation["melee"] = "bot_zombie_melee0_mp";	// bot_zom_melee0
 			else
 				self.animation["melee"] = "bot_zombie_melee1_mp";	// bot_zom_melee1
@@ -347,10 +347,10 @@ getSpawntypeForType(type){
 getFullyRandomZombieType(){
 	ran = 9;
 	// Only select halfboss when he lives
-	if( level.bossBulletCount < level.bossBulletLimit )
+	if(level.bossBulletCount < level.bossBulletLimit)
 		ran = 10;
 		
-	switch( randomint(ran) ){
+	switch(randomint(ran)){
 		case 0: return "zombie";
 		case 1: return "dog";
 		case 2: return "fast";
@@ -375,28 +375,28 @@ getRandomZombieType(){
 	if(ran < getZombieProbability("zombie"))
 		returns = "zombie";
 		
-	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") ) )
+	else if(ran < (getZombieProbability("zombie") + getZombieProbability("dog")))
 		returns = "dog";
 		
-	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") ) )
+	else if(ran < (getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank")))
 		returns = "tank";
 		
-	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning") ) )
+	else if(ran < (getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")))
 		returns = "burning";
 		
-	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") ) )
+	else if(ran < (getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic")))
 		returns = "toxic";
 		
-	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") ) )
+	else if(ran < (getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm")))
 		returns = "napalm";
 		
-	else if(ran < ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") + getZombieProbability("helldog") ) )
+	else if(ran < (getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") + getZombieProbability("helldog")))
 		returns = "helldog";
 		
-	else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") + getZombieProbability("helldog") + getZombieProbability("halfboss") ) )
+	else if(ran <= (getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("napalm") + getZombieProbability("helldog") + getZombieProbability("halfboss")))
 		returns = "halfboss";
 		
-	// else if(ran <= ( getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") + getZombieProbability("napalm") + getZombieProbability("electric")) )
+	// else if(ran <= (getZombieProbability("zombie") + getZombieProbability("dog") + getZombieProbability("tank") + getZombieProbability("burning")+ getZombieProbability("toxic") + getZombieProbability("halfboss") + getZombieProbability("napalm") + getZombieProbability("electric")))
 		// returns = "electric";
 	// iprintln("ran is " + ran + " and spawns: " + returns);
 	return returns;
@@ -523,39 +523,39 @@ announceFinale(a){ // 8 waits
 	self endon("disconnect");
 	level endon("game_ended");
 	
-	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	screenFlashAll((1,1,1), 0.2, 0.5);
 	// finaleMessageAll(label, text, glowcolor, duration, speed, size)
 	finaleMessageAll(level.finaleLables[a][0], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.4;
 	
-	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	screenFlashAll((1,1,1), 0.2, 0.5);
 	finaleMessageAll(level.finaleLables[a][1], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.4;
 	
-	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	screenFlashAll((1,1,1), 0.2, 0.5);
 	finaleMessageAll(level.finaleLables[a][2], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.35;
 	
-	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	screenFlashAll((1,1,1), 0.2, 0.5);
 	finaleMessageAll(level.finaleLables[a][3], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.35;
 	
-	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	screenFlashAll((1,1,1), 0.2, 0.5);
 	finaleMessageAll(level.finaleLables[a][4], "", (1, 0, 0), 2.4, 5, 2.9);
 	
 	level notify("finale_vision");
 	
 	wait 2.35;
 	
-	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	screenFlashAll((1,1,1), 0.2, 0.5);
 	finaleMessageAll(level.finaleLables[a][5], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.4;
 	
-	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	screenFlashAll((1,1,1), 0.2, 0.5);
 	finaleMessageAll(level.finaleLables[a][6], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.4;
 	
-	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	screenFlashAll((1,1,1), 0.2, 0.5);
 	finaleMessageAll(level.finaleLables[a][7], "", (1, 0, 0), 2.4, 5, 2.6);
 	wait 2.35;
 	
@@ -568,7 +568,7 @@ announceFinaleShort(){
 	self endon("disconnect");
 	level endon("game_ended");
 	
-	screenFlashAll( (1,1,1), 0.2, 0.5 );
+	screenFlashAll((1,1,1), 0.2, 0.5);
 	
 	level notify("finale_vision");
 	level notify("finale_blackscreen");
@@ -589,28 +589,28 @@ dynamicFinale(){
 	toSpawn = 1;
 	delay = 0;
 	
-	if( level.dvar["surv_dynamic_finale_difficulty"] ){
-		while( 1 ){
-			switch( level.dvar["game_difficulty"] ){
+	if(level.dvar["surv_dynamic_finale_difficulty"]){
+		while(1){
+			switch(level.dvar["game_difficulty"]){
 				case 1:
-					toSpawn = int( level.activePlayers ) + randomIntRange(-1, 5);
+					toSpawn = int(level.activePlayers) + randomIntRange(-1, 5);
 					delay = 4;
 					break;
 				case 2:
-					toSpawn = int( level.activePlayers * 3 ) + randomIntRange(-2, 5);
+					toSpawn = int(level.activePlayers * 3) + randomIntRange(-2, 5);
 					delay = 3;
 					break;
 				case 3:
-					toSpawn = int( level.dvar["bot_count"] * 1.4 );
+					toSpawn = int(level.dvar["bot_count"] * 1.4);
 					delay = 2.5;
 					break;
 				case 4:
-					toSpawn = int( level.dvar["bot_count"] * 2.5 );
+					toSpawn = int(level.dvar["bot_count"] * 2.5);
 					delay = 1.5;
 					break;
 			}
 			
-			if( toSpawn < 1 )
+			if(toSpawn < 1)
 				toSpawn = 1;
 		
 			level.finaleToSpawn = toSpawn;
@@ -642,7 +642,7 @@ getZombieType(type){
 		case "burning":
 			ran = randomfloat(1);
 			if(ran < 0.8)
-				if( randomfloat(1) < 0.2 )
+				if(randomfloat(1) < 0.2)
 					return "helldog";
 				else
 					return "burning";
@@ -839,7 +839,7 @@ loadZomStats(type)
 	self.rewardMultiplier = struct.rewardMultiplier;
 	
 	self.walkOnly = false;
-	if ( randomfloat(1) > level.slowBots )
+	if (randomfloat(1) > level.slowBots)
 	{
 		self.walkOnly = true;
 	}
@@ -850,30 +850,30 @@ onSpawn(type)
 	switch (type)
 	{
 		case "burning":
-			self thread createEffectEntity(level.burningFX, "j_spinelower" );
+			self thread createEffectEntity(level.burningFX, "j_spinelower");
 			self playloopsound("fire_wood_medium");
 			break;
 		case "helldog":
-			self thread createEffectEntity(level.burningFX, "tag_origin" );
+			self thread createEffectEntity(level.burningFX, "tag_origin");
 			self playloopsound("fire_wood_medium");
 			break;
 		case "zombie":
-				PlayFXOnTag( level.eye_le_fx, self, "j_eyeball_le" );
-				PlayFXOnTag( level.eye_ri_fx, self, "j_eyeball_ri" );
+				PlayFXOnTag(level.eye_le_fx, self, "j_eyeball_le");
+				PlayFXOnTag(level.eye_ri_fx, self, "j_eyeball_ri");
 			break;
 		case "fat":
-				PlayFXOnTag( level.eye_le_fx, self, "j_eyeball_le" );
-				PlayFXOnTag( level.eye_ri_fx, self, "j_eyeball_ri" );
+				PlayFXOnTag(level.eye_le_fx, self, "j_eyeball_le");
+				PlayFXOnTag(level.eye_ri_fx, self, "j_eyeball_ri");
 			break;
 		case "fast":
-				PlayFXOnTag( level.eye_le_fx, self, "j_eyeball_le" );
-				PlayFXOnTag( level.eye_ri_fx, self, "j_eyeball_ri" );
+				PlayFXOnTag(level.eye_le_fx, self, "j_eyeball_le");
+				PlayFXOnTag(level.eye_ri_fx, self, "j_eyeball_ri");
 			break;
 		case "scary":
-				PlayFXOnTag( level.eye_le_fx, self, "j_eyeball_le" );
-				PlayFXOnTag( level.eye_ri_fx, self, "j_eyeball_ri" );
+				PlayFXOnTag(level.eye_le_fx, self, "j_eyeball_le");
+				PlayFXOnTag(level.eye_ri_fx, self, "j_eyeball_ri");
 		case "dog":
-			// self thread createEffectEntity(level.burningFX, "j_head" );
+			// self thread createEffectEntity(level.burningFX, "j_head");
 			break;
 		case "toxic":
 			//PlayFXOnTag(level.toxicFX, self, "j_head");
@@ -886,7 +886,7 @@ onSpawn(type)
 			level.bossOverlay = overlayMessage(label, "", colour);
 			level.bossOverlay setvalue(0);
 			level.bossOverlay.alpha = 0;
-			level.bossOverlay fadeOverTime( 1 );
+			level.bossOverlay fadeOverTime(1);
 			level.bossOverlay.alpha = 1;
 			level.bossDamageDone[level.bossPhase] = 0;
 			level.bossDamageToDo[level.bossPhase] = calculateBossHP();
@@ -895,7 +895,7 @@ onSpawn(type)
 			self thread spawnHitboxBot();
 		break;
 		case "napalm":
-			PlayFXOnTag( level.napalmTummyGlowFX, self, "j_spineupper" );
+			PlayFXOnTag(level.napalmTummyGlowFX, self, "j_spineupper");
 			break;
 	}
 }
@@ -903,14 +903,14 @@ onSpawn(type)
 spawnHitboxBot(){
 	wait 0.1;
 	bot = scripts\bots\_bots::getAvailableBot();
-	assertEx( isDefined( bot ), "Error: Bot attached to boss is non existant!" );
-	if ( !isDefined( bot ) ){
+	assertEx(isDefined(bot), "Error: Bot attached to boss is non existant!");
+	if (!isDefined(bot)){
 		iprintlnbold("^1ERROR^7: Could not get an available bot for the boss!");
 		return;
 	}
 		
-	self.attachment = spawn( "script_model", self getTagOrigin( "tag_origin" ) + (0,0,80) );
-	self.attachment setModel( "tag_origin" );
+	self.attachment = spawn("script_model", self getTagOrigin("tag_origin") + (0,0,80));
+	self.attachment setModel("tag_origin");
 	wait 0.05;
 	self.attachment linkto(self);
 	
@@ -937,7 +937,7 @@ calculateBossHP(){
 	switch(level.dvar["game_difficulty"]){
 		case 1: return (0.5 * getPhaseMulti() * level.activePlayers);
 		case 2: return (0.8 * getPhaseMulti() * level.activePlayers);
-		case 3: return (  1 * getPhaseMulti() * level.activePlayers);
+		case 3: return ( 1 * getPhaseMulti() * level.activePlayers);
 		case 4:	return (1.5 * getPhaseMulti() * level.activePlayers);
 	}
 }
@@ -995,11 +995,11 @@ createEffectEntity(effect, origin, offset){
 		offset = (0,0,0);
 	self endon("killed");
 	self.effect = undefined;
-	self.effect = spawn( "script_model", self getTagOrigin( origin ) + offset);
-	self.effect setModel( "tag_origin" );
+	self.effect = spawn("script_model", self getTagOrigin(origin) + offset);
+	self.effect setModel("tag_origin");
 	wait 0.05;
-	PlayFXOnTag( effect, self.effect, "tag_origin" );
-	self.effect LinkTo( self );
+	PlayFXOnTag(effect, self.effect, "tag_origin");
+	self.effect LinkTo(self);
 }
 
 bossSpecialAttack()
@@ -1034,9 +1034,9 @@ bossCatchFire(){
 	while(1){
 		for(i = 0; i < level.players.size; i++){
 			p = level.players[i];
-			if( !isReallyPlaying(p) ) continue; // Ignore not-playing players
+			if(!isReallyPlaying(p)) continue; // Ignore not-playing players
 			
-			if(distance(self.origin, p.origin) <= range && (p.fireCatchCount < time * 4) && !p.isDown && !p.isZombie ){
+			if(distance(self.origin, p.origin) <= range && (p.fireCatchCount < time * 4) && !p.isDown && !p.isZombie){
 				p.fireCatchCount++;
 			}
 			else 
@@ -1083,7 +1083,7 @@ bossBurn(target){
 		target damageEnt(
 				self, // eInflictor = the entity that causes the damage (e.g. a claymore)
 				self, // eAttacker = the player that is attacking
-				int( self.damage * level.dif_zomDamMod * ( 0.05 + randomfloat( (level.dvar["game_difficulty"] * 0.05) ) ) ), // iDamage = the amount of damage to do
+				int(self.damage * level.dif_zomDamMod * (0.05 + randomfloat((level.dvar["game_difficulty"] * 0.05)))), // iDamage = the amount of damage to do
 				"MOD_MELEE", // sMeansOfDeath = string specifying the method of death (e.g. "MOD_PROJECTILE_SPLASH")
 				self.pers["weapon"], // sWeapon = string specifying the weapon used (e.g. "claymore_mp")
 				self.origin, // damagepos = the position damage is coming from
@@ -1162,19 +1162,19 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 		case "boss":
 			self.health = 10000;
 			/* EXPLOSIVES */
-			if ( level.bossPhase == 0 )
+			if (level.bossPhase == 0)
 			{
 				if (sMeansOfDeath != "MOD_IMPACT")
 				{
-					if ( ( sWeapon == "c4_mp" || sWeapon == "frag_grenade_mp" || sWeapon == "claymore_mp" || sWeapon == "rpg_mp" || sWeapon == "at4_mp" || sMeansOfDeath == "MOD_MELEE" ) )
+					if ((sWeapon == "c4_mp" || sWeapon == "frag_grenade_mp" || sWeapon == "claymore_mp" || sWeapon == "rpg_mp" || sWeapon == "at4_mp" || sMeansOfDeath == "MOD_MELEE"))
 					{
-						if( isDefined( eAttacker.lastBossHit ) && eAttacker.lastBossHit != self.number ){
+						if(isDefined(eAttacker.lastBossHit) && eAttacker.lastBossHit != self.number){
 							eAttacker thread resetBossHit();
 							return 0;
 						}
 						eAttacker.lastBossHit = self.number;
 						if (sMeansOfDeath == "MOD_MELEE"){
-							if ( isSubStr(eAttacker.knifeMod, "assassin") )
+							if (isSubStr(eAttacker.knifeMod, "assassin"))
 								iDamage *= 2;
 							iDamage = int(iDamage*.5);
 							eAttacker scripts\players\_players::incUpgradePoints(1*level.dvar["game_rewardscale"]);
@@ -1194,11 +1194,11 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 
 			}
 			/* KNIFE */
-			else if ( level.bossPhase == 1 )
+			else if (level.bossPhase == 1)
 			{
 				if (sMeansOfDeath == "MOD_MELEE")
 				{
-					if ( isSubStr(eAttacker.knifeMod, "assassin") )
+					if (isSubStr(eAttacker.knifeMod, "assassin"))
 						iDamage *= 2;
 					eAttacker scripts\players\_players::incUpgradePoints(5*level.dvar["game_rewardscale"]);
 					level.bossDamageDone[level.bossPhase] += iDamage;
@@ -1213,15 +1213,15 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 			/* GENERAL DAMAGE */
 			else if (level.bossPhase == 2)
 			{
-				if( isDefined( eAttacker.lastBossHit ) && eAttacker.lastBossHit != self.number ){
+				if(isDefined(eAttacker.lastBossHit) && eAttacker.lastBossHit != self.number){
 					eAttacker thread resetBossHit();
 					return 0;
 				}
 				if (sMeansOfDeath == "MOD_MELEE")
-					if ( isSubStr(eAttacker.knifeMod, "assassin") )
+					if (isSubStr(eAttacker.knifeMod, "assassin"))
 						iDamage *= 2;
 				eAttacker.lastBossHit = self.number;
-				eAttacker scripts\players\_players::incUpgradePoints( int( level.dvar["game_rewardscale"]/20 * iDamage ) );
+				eAttacker scripts\players\_players::incUpgradePoints(int(level.dvar["game_rewardscale"]/20 * iDamage));
 				level.bossDamageDone[level.bossPhase] += idamage;
 				newval = int(level.bossDamageDone[level.bossPhase]*100/level.bossDamageToDo[level.bossPhase]);
 				if (newval > 100)
@@ -1252,7 +1252,7 @@ nextBossStatus()
 {
 	if (level.bossDamageDone[level.bossPhase] >= level.bossDamageToDo[level.bossPhase])
 		if(level.bossPhases < level.maxBossPhases){
-			if( isDefined( level.bossOverlay ) ) level.bossOverlay destroy();
+			if(isDefined(level.bossOverlay)) level.bossOverlay destroy();
 			
 			level.bossPhase = getRandomBossPhase();
 			label = getLabelForBoss();
@@ -1264,7 +1264,7 @@ nextBossStatus()
 			level.bossOverlay setvalue(0);
 			level.bossPhases++;
 			if(randomfloat(1) < 0.5 && !level.bossIsOnFire){
-				self thread createEffectEntity(level.bossFireFX, "j_spinelower" );
+				self thread createEffectEntity(level.bossFireFX, "j_spinelower");
 				self thread bossCatchFire();
 				level.bossIsOnFire = true;
 				// announceMessage(label, text, glowcolor, duration, speed, size, height)
@@ -1283,10 +1283,10 @@ dieDelay(){
 	self.damageoff = true;
 	self.child.damageoff = true;
 	wait 0.05;
-	if( isDefined( self.child ) ){
+	if(isDefined(self.child)){
 		self.child suicide();
 		self.child.damageoff = undefined;
-		if( isDefined( self.attachment ) )
+		if(isDefined(self.attachment))
 			self.attachment delete();
 	}
 	else
@@ -1297,7 +1297,7 @@ dieDelay(){
 
 /* Find a spawnpoint for the scary wave from which players are far away, but not too far away, to allow zombies to spawn all over the map, but at a distance from the players */
 getScarySpawnpoint(){
-	if( level.waveType == "finale" ){
+	if(level.waveType == "finale"){
 		minDistance = 150;
 		maxDistance = 1000;
 	}
@@ -1313,10 +1313,10 @@ getScarySpawnpoint(){
 		valid = true;
 		for(ii = 0; ii < level.players.size; ii++){
 			p = level.players[ii];
-			if( !isReallyPlaying(p) ) // Ignore not playing players
+			if(!isReallyPlaying(p)) // Ignore not playing players
 				continue;
-			distance = distance2d( p.origin, wp.origin );
-			if( distance <= minDistance || distance > maxDistance ){ // If any of the players is too close, stop here and continue with the next waypoint
+			distance = distance2d(p.origin, wp.origin);
+			if(distance <= minDistance || distance > maxDistance){ // If any of the players is too close, stop here and continue with the next waypoint
 				valid = false;
 				break;
 			}
@@ -1326,7 +1326,7 @@ getScarySpawnpoint(){
 		}
 	}
 	// In case there are no spawnpoints that are not too close + not too far, just consider the minDistance for the next search, so we avoid spawning the zombies too close to the players
-	if( validSpawnpoints.size <= 1 ){
+	if(validSpawnpoints.size <= 1){
 		validSpawnpoints = [];
 		
 		for(i = 0; i < level.waypoints.size; i++){
@@ -1336,11 +1336,11 @@ getScarySpawnpoint(){
 			for(ii = 0; ii < level.players.size; ii++){
 				p = level.players[ii];
 				
-				if( !isReallyPlaying(p) ) // Ignore not playing players
+				if(!isReallyPlaying(p)) // Ignore not playing players
 					continue;
 					
 				distance = distance2d(p.origin, wp.origin);
-				if( distance <= minDistance ){ // If any of the players is too close, stop here and continue with the next waypoint
+				if(distance <= minDistance){ // If any of the players is too close, stop here and continue with the next waypoint
 					valid = false;
 					break;
 				}
@@ -1353,7 +1353,7 @@ getScarySpawnpoint(){
 	}
 	// In case everything fails, we just spawn the zombie somewhere on the map randomly
 	if(validSpawnpoints.size <= 1)
-		if( level.waypoints.size > 2 )
+		if(level.waypoints.size > 2)
 			return level.waypoints[randomint(level.waypoints.size)];
 		else
 			return  scripts\gamemodes\_waves::getRandomSpawn();
@@ -1388,7 +1388,7 @@ onCorpse(type)
 			self scripts\bots\_bots::zomAreaDamage(120);
 		return 0;
 		case "napalm":
-			if( !isDefined( self.suicided ) ){
+			if(!isDefined(self.suicided)){
 				PlayFX(level.explodeFX, self.origin);
 				self PlaySound("explo_metal_rand");
 				self scripts\bots\_bots::zomAreaDamage(60);
@@ -1410,14 +1410,14 @@ toxicCloud(org, time) {
 	playfx(level.toxicFX, org);
 	ent playsound("toxic_gas");
 	self endon("death");
-	for ( t = 0; t < 28; t++ ){
-		for ( i = 0; i < level.players.size; i++) {
+	for (t = 0; t < 28; t++){
+		for (i = 0; i < level.players.size; i++) {
 			p = level.players[i];
 			
-			if( !isReallyPlaying(p) )
+			if(!isReallyPlaying(p))
 				continue;
 				
-			if ( distance(p.origin, org) < 128 && !p.toxicImmunity ) {
+			if (distance(p.origin, org) < 128 && !p.toxicImmunity) {
 				if (!p.entoxicated){
 					p.entoxicated = true;
 					p shellshock("toxic_gas_mp", 5);

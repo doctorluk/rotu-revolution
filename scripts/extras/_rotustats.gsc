@@ -22,10 +22,10 @@
 #include scripts\include\useful;
 
 saveGameStats(win){
-	if( !level.dvar["surv_rotu_stats"] )
+	if(!level.dvar["surv_rotu_stats"])
 		return;
 		
-	if( isDefined( level.rotuStats ) )
+	if(isDefined(level.rotuStats))
 		return;
 		
 	level.rotuStats = true;
@@ -34,7 +34,7 @@ saveGameStats(win){
 	
 	printGameStats(win);
 	
-	for( i = 0; i < level.playersThatPlayed.size; i++ )
+	for(i = 0; i < level.playersThatPlayed.size; i++)
 		printPlayerStats(level.persPlayerData[ level.playersThatPlayed[i] ], level.playersThatPlayed[i]);
 		
 	logPrint("ROTU_STATS_DONE;\n");
@@ -53,10 +53,10 @@ printGameStats(win){
 
 printPlayerStats(struct, guid){
 
-	if( !struct.hasPlayed )
+	if(!struct.hasPlayed)
 		return;
 		
-	if( isOnServer(guid) ){
+	if(isOnServer(guid)){
 		name 			= getNameByGUID(guid);
 		struct = getPlayerEntityByGUID(guid);
 	}

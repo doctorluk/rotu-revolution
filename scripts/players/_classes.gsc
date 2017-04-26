@@ -32,7 +32,7 @@ init()
 
 resetSkillpoints(){
 	self endon("disconnect");
-	if( !level.dvar["game_class_ranks"] )
+	if(!level.dvar["game_class_ranks"])
 	{
 		self.skillpoints = 0;
 		self skillPointsNotify(self.skillpoints);
@@ -61,7 +61,7 @@ getSkillpoints(rank)
 {
 	self endon("disconnect");
 	modRank = rank + 60 * self.pers["prestige"]; // Get 60 additional skillpoints per prestige
-	if ( !level.dvar["game_class_ranks"] )
+	if (!level.dvar["game_class_ranks"])
 	{
 		self.skillpoints = 0;
 		self skillPointsNotify(self.skillpoints);
@@ -86,7 +86,7 @@ getSkillpoints(rank)
 	if (self.rankHacker)
 		self.skillpoints = 0;
 
-	if ( modRank > 174)
+	if (modRank > 174)
 		self.skillpoints = 174 - spent;
 	
 	self skillPointsNotify(self.skillpoints);
@@ -197,13 +197,13 @@ setGlobalClassCounts(){
 
 pickClass(class)
 {
-	if (isValidClass(class) )
+	if (isValidClass(class))
 	{
 		//if (self.class==class)
 		//return;
 		//self setstat(434, 0);
 		//self setstat(444, 1000);
-		if( isDefined( self.class ) && isAlive( self ) )
+		if(isDefined(self.class) && isAlive(self))
 			self.oldclass = self.class;
 		else
 			self.oldclass = "none";
@@ -214,8 +214,8 @@ pickClass(class)
 		self setclientdvars("ui_loadout_class", class,
 							"ui_secondary_ability", "@ZOMBIE_NONE",
 							"ui_secondary_ability_4", 0,
-							"ui_secondary_ability_5", 0 );
-		self openMenu( game["menu_changeclass_ability"]  );
+							"ui_secondary_ability_5", 0);
+		self openMenu(game["menu_changeclass_ability"] );
 		self.secondaryAbility = "none";
 	}
 }
@@ -248,8 +248,8 @@ acceptClass()
 	{
 		self closeMenu();
 		self closeInGameMenu();
-		if ( self.oldClass != self.class ) {
-			if( isAlive( self ) )
+		if (self.oldClass != self.class) {
+			if(isAlive(self))
 				self scripts\players\_players::joinSpectator();
 			self scripts\players\_players::joinAllies();
 			self thread scripts\players\_players::spawnPlayer();

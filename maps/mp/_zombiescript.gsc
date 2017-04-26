@@ -30,7 +30,7 @@ setPlayerSpawns(targetname)
 
 setWorldVision(vision, transitiontime)
 {
-	visionSetNaked( vision, transitiontime );
+	visionSetNaked(vision, transitiontime);
 	level.vision = vision;
 }
 
@@ -113,7 +113,7 @@ removeSurvSpawn(targetname) // Removing spawns for survival mode (incoming waves
 buildSurvSpawnByClassname(classname, priority)
 {
 	ent = getEntArray(classname, "classname");
-	for( i = 0; i < ent.size; i++ ){
+	for(i = 0; i < ent.size; i++){
 		ent[i].targetname = classname;
 	}
 	scripts\gamemodes\_survival::addSpawn(classname, priority);
@@ -121,7 +121,7 @@ buildSurvSpawnByClassname(classname, priority)
 
 prepareMap(){
 	ent = getEntArray("oldschool_pickup", "targetname");
-	for( i = 0; i < ent.size; i++ ){
+	for(i = 0; i < ent.size; i++){
 		ent[i] delete();
 	}
 	
@@ -137,7 +137,7 @@ prepareMap(){
 /*
 prepareMap(){
 	ent = getEntArray("oldschool_pickup", "targetname");
-	for( i = 0; i < ent.size; i++ ){
+	for(i = 0; i < ent.size; i++){
 		ent[i] delete();
 	}
 	
@@ -149,7 +149,7 @@ prepareMap(){
 	maps\mp\gametypes\_gameobjects::main(allowed);
 }
 */
-buildWeaponUpgrade( targetname ) // Weaponshop actually
+buildWeaponUpgrade(targetname) // Weaponshop actually
 {
 	ents = getentarray(targetname, "targetname");
 	for (i=0; i<ents.size; i++)
@@ -174,7 +174,7 @@ waittillStart()
 	scripts\level\_tradespawns::buildTradespawns();
 	scripts\gamemodes\_gamemodes::initGameMode();
 	
-	while( level.activePlayers == 0 )
+	while(level.activePlayers == 0)
 		wait .5;
 }
 

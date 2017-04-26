@@ -20,8 +20,8 @@ main()
 	maps\mp\_character_duke::main();
 	maps\mp\_character_jugg::main();
 	maps\mp\_character_jugg2::main();
-	precacheHeadIcon( "headicon_map" );
-	precacheHeadIcon( "headicon_fnrp" );
+	precacheHeadIcon("headicon_map");
+	precacheHeadIcon("headicon_fnrp");
 
 	maps\mp\_load::main();
 	maps\mp\_playerskins::main();
@@ -41,13 +41,13 @@ main()
 	game["allies_soldiertype"] = "desert";
 	game["axis_soldiertype"] = "desert";
 
-	setdvar( "r_specularcolorscale", "1" );
+	setdvar("r_specularcolorscale", "1");
 	setdvar("compassmaxrange","2000");
 	setdvar("env_fog", "0");
-	setDvar( "bg_fallDamageMaxHeight", "900");
-	setDvar( "bg_fallDamageMinHeight", "850");
-	setDvar( "jump_height", "230");
-	setDvar( "g_gravity", "180");
+	setDvar("bg_fallDamageMaxHeight", "900");
+	setDvar("bg_fallDamageMinHeight", "850");
+	setDvar("jump_height", "230");
+	setDvar("g_gravity", "180");
 
 	waittillStart();
 	buildAmmoStock("ammostock");

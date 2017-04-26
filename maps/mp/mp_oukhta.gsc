@@ -15,9 +15,9 @@ main()
 	targets[targets.size] = "mp_ctf_spawn_axis_start";
 	targets[targets.size] = "mp_dom_spawn";
 	targets[targets.size] = "misc_turret";
-	for( i = 0; i < targets.size; i++ ){
+	for(i = 0; i < targets.size; i++){
 		ent = getEntArray(targets[i], "classname");
-		for( ii = 0; ii < ent.size; ii++ ){
+		for(ii = 0; ii < ent.size; ii++){
 			ent[ii] delete();
 		}
 	}
@@ -45,14 +45,14 @@ main()
      game["attackers"] = "axis";
      game["defenders"] = "allies";
 
-	setdvar( "r_specularcolorscale", "1" );
+	setdvar("r_specularcolorscale", "1");
 	
 	setdvar("r_glowbloomintensity0",".25");
 	setdvar("r_glowbloomintensity1",".25");
 	setdvar("r_glowskybleedintensity0",".3");
 	setdvar("compassmaxrange","1800");
 	
-	precacheShellShock( "radiation_low" );
+	precacheShellShock("radiation_low");
 	
 	
 	 // thread amb_global();
@@ -82,7 +82,7 @@ main()
 	
 {
 
-trigger = getEnt( "bird", "targetname" );
+trigger = getEnt("bird", "targetname");
 fx = loadFX("misc/bird_takeoff");
 
 {
@@ -91,8 +91,8 @@ while (1)
 
 {
 
-trigger waittill( "trigger");
-playFX( fx, trigger.origin );
+trigger waittill("trigger");
+playFX(fx, trigger.origin);
 
 trigger playsound("bird");
 
@@ -106,7 +106,7 @@ bird2()
 	
 {
 
-trigger = getEnt( "bird2", "targetname" );
+trigger = getEnt("bird2", "targetname");
 fx = loadFX("misc/bird_takeoff");
 
 {
@@ -115,8 +115,8 @@ while (1)
 
 {
 
-trigger waittill( "trigger");
-playFX( fx, trigger.origin );
+trigger waittill("trigger");
+playFX(fx, trigger.origin);
 
 trigger playsound("bird");
 
@@ -130,7 +130,7 @@ bird3()
 	
 {
 
-trigger = getEnt( "bird3", "targetname" );
+trigger = getEnt("bird3", "targetname");
 fx = loadFX("misc/bird_takeoff");
 
 {
@@ -139,8 +139,8 @@ while (1)
 
 {
 
-trigger waittill( "trigger");
-playFX( fx, trigger.origin );
+trigger waittill("trigger");
+playFX(fx, trigger.origin);
 
 trigger playsound("bird");
 
@@ -154,7 +154,7 @@ bird4()
 	
 {
 
-trigger = getEnt( "bird4", "targetname" );
+trigger = getEnt("bird4", "targetname");
 fx = loadFX("misc/bird_takeoff");
 
 {
@@ -163,8 +163,8 @@ while (1)
 
 {
 
-trigger waittill( "trigger");
-playFX( fx, trigger.origin );
+trigger waittill("trigger");
+playFX(fx, trigger.origin);
 
 trigger playsound("bird");
 
@@ -223,10 +223,10 @@ missile_launch01()
 		wait 300;
 		trigger playsound("launch");
 		wait 4;
-		playfxontag( fx, air, "tag_nozzle" );
-		air moveTo ( air1.origin, 5 );
+		playfxontag(fx, air, "tag_nozzle");
+		air moveTo (air1.origin, 5);
 		wait 5;
-		air moveto ( air2.origin, 1 );
+		air moveto (air2.origin, 1);
 		wait 1;
 		
 		air delete();
@@ -263,18 +263,18 @@ missile_launch02()
 	wait 304;
 	
 		
-		VisionSetNaked ( "icbm_launch", 4 );	
+		VisionSetNaked ("icbm_launch", 4);	
 	
-		air moveTo ( air1.origin, 5 );
+		air moveTo (air1.origin, 5);
 		wait 5;
-		air RotatePitch( -120, 1, 0, 0 );
+		air RotatePitch(-120, 1, 0, 0);
 		wait 1;
-		air moveTo( air3.origin, 3 );
+		air moveTo(air3.origin, 3);
 		wait 3;
 		
 		
 		
-		playFX( fx, fx_1.origin );
+		playFX(fx, fx_1.origin);
 		fx_1 playsound("explo");
 		
 		air delete();
@@ -290,7 +290,7 @@ missile_launch02()
 		
 		
 		wait 18;
-		VisionSetNaked ( "mp_oukhta" );
+		VisionSetNaked ("mp_oukhta");
 		
 		
 }
@@ -308,8 +308,8 @@ missile_launch03()
 
 		trigger waittill ("trigger");
 		wait 312;
-		playfxontag( fx, air, "tag_nozzle" );
-		air moveTo ( air4.origin, 23 );
+		playfxontag(fx, air, "tag_nozzle");
+		air moveTo (air4.origin, 23);
 		wait 23;
 		
 		air delete();

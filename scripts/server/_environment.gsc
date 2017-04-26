@@ -42,13 +42,13 @@ init()
 	
 	wait 0.25;
 	
-	if ( level.dvar["env_ambient"] )
+	if (level.dvar["env_ambient"])
 	{
-		ambientStop( 0 );
+		ambientStop(0);
 	}
-	if ( level.dvar["env_fog"] )
+	if (level.dvar["env_fog"])
 	{
-		setExpFog( level.dvar["env_fog_start_distance"], level.dvar["env_fog_half_distance"], level.dvar["env_fog_red"] /255 , level.dvar["env_fog_green"] / 255, level.dvar["env_fog_blue"] / 255, 0 );
+		setExpFog(level.dvar["env_fog_start_distance"], level.dvar["env_fog_half_distance"], level.dvar["env_fog_red"] /255 , level.dvar["env_fog_green"] / 255, level.dvar["env_fog_blue"] / 255, 0);
 		level.currentFog = [];
 		level.currentFog[0] = level.dvar["env_fog_start_distance"];
 		level.currentFog[1] = level.dvar["env_fog_half_distance"];
@@ -59,7 +59,7 @@ init()
 	else
 		level.currentFog = [];
 		
-	resetVision( 0 );
+	resetVision(0);
 }
 
 /**
@@ -67,12 +67,12 @@ init()
 */
 precache()
 {
-	level.lighting_fx = loadFx( "weather/lightning" );
-	level.ember_fx = loadFx( "fire/emb_burst_a" );
-	level._effect["fog0"] = loadFx( "zombies/fx_fog_zombie_amb" );
-	level._effect["fog1"] = loadFx( "zombies/fx_zombie_fog_static_xlg" );
+	level.lighting_fx = loadFx("weather/lightning");
+	level.ember_fx = loadFx("fire/emb_burst_a");
+	level._effect["fog0"] = loadFx("zombies/fx_fog_zombie_amb");
+	level._effect["fog1"] = loadFx("zombies/fx_zombie_fog_static_xlg");
 	
-	precacheShader( "compass_waypoint_defend" );
+	precacheShader("compass_waypoint_defend");
 }
 
 /**
@@ -80,33 +80,33 @@ precache()
 */
 normalWaveEffects()
 {
-	level endon( "wave_finished" );
-	level endon( "game_ended" );
+	level endon("wave_finished");
+	level endon("game_ended");
 	
 	// This loop is being run when the wave starts to 'push' several foggy clouds right away
-	for( i = 0; i < 3; i++ )
+	for(i = 0; i < 3; i++)
 	{
 		// The fog effects are reliant on the waypoint positioning on the map
 		// If there are not enough, we shouldn't spam the same points over and over again with fog
-		if( level.waypoints.size <= 3 )
+		if(level.waypoints.size <= 3)
 			break;
 		
 		// Find a random waypoint
 		poses = level.waypoints;
-		posent = poses[randomint( poses.size )];
+		posent = poses[randomint(poses.size)];
 		pos = posent.origin;
-		poses = removeFromArray( poses, posent );
+		poses = removeFromArray(poses, posent);
 		
 		// The first effect is not as strong as the second, so we look for 80% Effect #1 and 20% Effect #2
-		ran = randomfloat( 1 );
+		ran = randomfloat(1);
 		
-		if( ran < 0.8 )
+		if(ran < 0.8)
 			effect = 0;
 		else
 			effect = 1;
 			
 		fxToPlay = "fog" + effect;
-		playfx( level._effect[fxToPlay], pos );
+		playfx(level._effect[fxToPlay], pos);
 	}
 	
 	poses = undefined;
@@ -116,20 +116,20 @@ normalWaveEffects()
 	fxToPlay = undefined;
 	
 	// After the first push we keep spawning more until the wave is over
-	while( level.waypoints.size > 3 )
+	while(level.waypoints.size > 3)
 	{
 	
-		pos = level.waypoints[randomint( level.waypoints.size )].origin;
+		pos = level.waypoints[randomint(level.waypoints.size)].origin;
 		
-		ran = randomfloat( 1 );
+		ran = randomfloat(1);
 		
-		if( ran < 0.8 )
+		if(ran < 0.8)
 			effect = 0;
 		else
 			effect = 1;
 			
 		fxToPlay = "fog" + effect;
-		playfx( level._effect[fxToPlay], pos );
+		playfx(level._effect[fxToPlay], pos);
 		
 		wait 3.5;
 	}
@@ -140,10 +140,10 @@ normalWaveEffects()
 */
 getDefaultVision()
 {
-	if ( level.dvar["env_override_vision"] )
+	if (level.dvar["env_override_vision"])
 		return "rotu";
 	else
-		return getDvar( "mapname" );
+		return getDvar("mapname");
 }
 
 /**
@@ -152,19 +152,19 @@ getDefaultVision()
 */
 onPlayerConnect()
 {
-	self setClientDvar( "r_blur", level.blur );
+	self setClientDvar("r_blur", level.blur);
 }
 
 /**
 *	Sets a blur amount for all players on the server
 *	@blur Float, Amount of blur
 */
-updateBlur( blur )
+updateBlur(blur)
 {
 	level.blur = blur;
-	for ( i = 0; i < level.players.size; i++ )
+	for (i = 0; i < level.players.size; i++)
 	{
-		level.players[i] setClientDvar( "r_blur", level.blur );
+		level.players[i] setClientDvar("r_blur", level.blur);
 	}
 }
 
@@ -173,16 +173,16 @@ updateBlur( blur )
 *	@blur Float, Target amount of blur to change to
 *	@time Float, Duration of the change
 */
-setBlur( blur, time )
+setBlur(blur, time)
 {
-	level notify( "setting_blur" );
-	level endon( "setting_blur" );
-	level endon( "game_ended" );
+	level notify("setting_blur");
+	level endon("setting_blur");
+	level endon("game_ended");
 	
-	change = ( blur - level.blur ) / ( time + 1 ) / 2;
-	while ( blur != level.blur )
+	change = (blur - level.blur) / (time + 1) / 2;
+	while (blur != level.blur)
 	{
-		updateBlur( level.blur + change );
+		updateBlur(level.blur + change);
 		wait 0.5;
 	}
 }
@@ -191,9 +191,9 @@ setBlur( blur, time )
 *	Runs FX Threads depending on the type of FX per wave type
 *	@fxtype String, Type of FX to start globally
 */
-setGlobalFX( fxtype )
+setGlobalFX(fxtype)
 {
-	switch ( fxtype )
+	switch (fxtype)
 	{
 		case "lightning":
 			thread lightningFX();
@@ -215,16 +215,16 @@ setGlobalFX( fxtype )
 */
 emberFX()
 {
-	level endon( "global_fx_end" );
+	level endon("global_fx_end");
 	
-	while( 1 )
+	while(1)
 	{
-		org = level.waypoints[randomInt( level.waypoints.size )].origin;
+		org = level.waypoints[randomInt(level.waypoints.size)].origin;
 		
-		playFx( level.ember_fx, org );
-		earthquake( 0.25, 2, org, 512 );
+		playFx(level.ember_fx, org);
+		earthquake(0.25, 2, org, 512);
 		
-		wait 0.2 + randomFloat( 0.2 );
+		wait 0.2 + randomFloat(0.2);
 	}
 }
 
@@ -235,20 +235,20 @@ finaleFX()
 {
 	level endon("global_fx_end");
 	
-	limit = RandomIntRange( 20, 45 );
+	limit = RandomIntRange(20, 45);
 	
-	for( i = 0; i < limit; i++ )
+	for(i = 0; i < limit; i++)
 	{
-		org = level.waypoints[randomInt( level.waypoints.size )].origin;
-		playFx( level.burningFX, org );
+		org = level.waypoints[randomInt(level.waypoints.size)].origin;
+		playFx(level.burningFX, org);
 	}
 	
-	while( 1 )
+	while(1)
 	{
-		org = level.waypoints[randomInt( level.waypoints.size )].origin;
-		playfx( level.ember_fx, org );
-		Earthquake( 0.25, 2, org, 512 );
-		wait 0.2 + randomfloat( 0.2 );
+		org = level.waypoints[randomInt(level.waypoints.size)].origin;
+		playfx(level.ember_fx, org);
+		Earthquake(0.25, 2, org, 512);
+		wait 0.2 + randomfloat(0.2);
 	}
 }
 
@@ -259,21 +259,21 @@ lightningFX()
 {
 	level endon("global_fx_end");
 	
-	while( 1 )
+	while(1)
 	{
 		if (level.playerspawns == "")
 			spawn = getRandomTdmSpawn();
 		else
-			spawn = getRandomEntity( level.playerspawns );
+			spawn = getRandomEntity(level.playerspawns);
 			
-		playFx( level.lighting_fx, spawn.origin );
+		playFx(level.lighting_fx, spawn.origin);
 		
-		r = randomInt( 2 );
-		if ( r == 0 )
-			for ( i = 0; i < level.players.size; i++ )
+		r = randomInt(2);
+		if (r == 0)
+			for (i = 0; i < level.players.size; i++)
 				level.players[i] playlocalsound("amb_thunder");
 
-		wait 1 + randomfloat( 2 );
+		wait 1 + randomfloat(2);
 	}
 	
 }
@@ -283,37 +283,37 @@ lightningFX()
 */
 lightningBossFX()
 {
-	level endon( "global_fx_end" );
+	level endon("global_fx_end");
 	
 	wait 15;
 	
-	while( 1 )
+	while(1)
 	{
-		if ( level.playerspawns == "" )
+		if (level.playerspawns == "")
 			spawn = getRandomTdmSpawn();
 		else
-			spawn = getRandomEntity( level.playerspawns );
+			spawn = getRandomEntity(level.playerspawns);
 			
-		playfx( level.lighting_fx, spawn.origin );
+		playfx(level.lighting_fx, spawn.origin);
 		
 		wait 0.2;
 		
-		setVision( "thunder", 0.2 );
-		setExpFog( 999999, 9999999, 0, 0, 0, .2);
+		setVision("thunder", 0.2);
+		setExpFog(999999, 9999999, 0, 0, 0, .2);
 		
-		r = randomint( 2 );
-		for ( i = 0; i < level.players.size; i++ )
+		r = randomint(2);
+		for (i = 0; i < level.players.size; i++)
 		{
-			if ( r == 0 )
-				level.players[i] playlocalsound( "amb_thunder" );
+			if (r == 0)
+				level.players[i] playlocalsound("amb_thunder");
 		}
 		
 		wait 0.2;
 		
 		setVision("boss", 0.1);
-		setExpFog( 512, 1024, 0, 0, 0, .1 );
+		setExpFog(512, 1024, 0, 0, 0, .1);
 		
-		wait 2 + randomfloat( 2 );
+		wait 2 + randomfloat(2);
 	}
 }
 
@@ -322,38 +322,38 @@ lightningBossFX()
 *	@name String, Name of the currently running wave
 *	@time Float, Duration of the transition (Note: This is buggy as soon as several players are playing, it is actually ineffective)
 */
-setFog( name, time )
+setFog(name, time)
 {
-	switch ( name )
+	switch (name)
 	{
 		case "toxic":
-			setExpFog( 256, 1024, 0.2, 0.4, 0.2, time );
+			setExpFog(256, 1024, 0.2, 0.4, 0.2, time);
 			break;
 			
 		case "boss":
-			setExpFog( 512, 1024, 0, 0, 0, time );
+			setExpFog(512, 1024, 0, 0, 0, time);
 			break;
 			
 		case "scary":
-			setExpFog( 128, 200, 0, 0, 0, time );
+			setExpFog(128, 200, 0, 0, 0, time);
 			break;
 			
 		case "grouped":
-			setExpFog( 300, 700, .4, 0, 0, time );
+			setExpFog(300, 700, .4, 0, 0, time);
 			break;
 			
 		case "tank":
-			setExpFog( 300, 700, .5, .5, .5, time );
+			setExpFog(300, 700, .5, .5, .5, time);
 			break;
 			
 		case "finale":
-			setExpFog( 128, 2048, .5, .1, .1, time );
+			setExpFog(128, 2048, .5, .1, .1, time);
 			break;
 			
 		default:
-			if ( level.dvar["env_fog"] )
+			if (level.dvar["env_fog"])
 			{
-				setExpFog( 
+				setExpFog(
 					level.dvar["env_fog_start_distance"],
 					level.dvar["env_fog_half_distance"],
 					level.dvar["env_fog_red"] / 255,
@@ -363,7 +363,7 @@ setFog( name, time )
 					);
 			}
 			else
-				setExpFog( 999999, 9999999, 0, 0, 0, time);
+				setExpFog(999999, 9999999, 0, 0, 0, time);
 			break;
 	}
 }
@@ -373,10 +373,10 @@ setFog( name, time )
 *	@name String, Name of the vision effect
 *	@time Float, Duration for the change of vision
 */
-setVision( name, time )
+setVision(name, time)
 {		
 	level.vision = name;
-	visionSetNaked( name, time );
+	visionSetNaked(name, time);
 }
 
 /**
@@ -385,7 +385,7 @@ setVision( name, time )
 resetVision(time)
 {
 	level.vision = getDefaultVision();
-	visionSetNaked( level.vision, time );
+	visionSetNaked(level.vision, time);
 }
 
 /**
@@ -394,17 +394,17 @@ resetVision(time)
 *	@delaystart Float, Time it takes for the new song to fade in
 *	@delaystop Float, Time it takes for the old song to fade out
 */
-setAmbient( ambient, delaystart, delaystop )
+setAmbient(ambient, delaystart, delaystop)
 {
-	if( !isDefined( delaystop) )
+	if(!isDefined(delaystop))
 		delaystop = 0;
-	if( !isDefined( delaystart ) )
+	if(!isDefined(delaystart))
 		delaystart = 7;
 		
-	if ( level.dvar["env_ambient"] )
+	if (level.dvar["env_ambient"])
 	{
-		ambientStop( delaystop );
-		ambientPlay( ambient, delaystart );
+		ambientStop(delaystop);
+		ambientPlay(ambient, delaystart);
 	}
 }
 
@@ -412,12 +412,12 @@ setAmbient( ambient, delaystart, delaystop )
 *	Stops the currently running ambient music with a fadeout
 *	@time Float, Time it takes for the old ambient music to fade out
 */
-stopAmbient( time )
+stopAmbient(time)
 {
-	if ( !isDefined( time ) )
+	if (!isDefined(time))
 		time = 10;
 		
-	ambientStop( time );
+	ambientStop(time);
 }
 
 /**
@@ -427,8 +427,8 @@ stopAmbient( time )
 *	@time Float, Duration of the flash effect on screen
 *	@alpha Float 0-1, The maximum alpha of the flash on screen
 */
-flashViewAll( color, time, alpha )
+flashViewAll(color, time, alpha)
 {
-	for( i = 0; i < level.players.size; i++ )
-		level.players[i] thread scripts\include\hud::screenFlash( color, time, alpha );
+	for(i = 0; i < level.players.size; i++)
+		level.players[i] thread scripts\include\hud::screenFlash(color, time, alpha);
 }

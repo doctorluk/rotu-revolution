@@ -21,10 +21,10 @@
 *
 *	@number: string to be converted to float.
 */
-float( number )
+float(number)
 {
 	// forward to the atof function
-	return atof( number );
+	return atof(number);
 }
 
 /**
@@ -33,7 +33,7 @@ float( number )
 loadWaypoints()
 {
 	// workaround for maps with script waypoints, e.g stock maps
-	if( isDefined( level.waypoints ) && level.waypoints.size > 0 )
+	if(isDefined(level.waypoints) && level.waypoints.size > 0)
 	{
 		return;
 	}
@@ -44,40 +44,40 @@ loadWaypoints()
 
 	// create the full filepath for the waypoint csv file
 	fileName =  "waypoints/"+ toLower(getDvar("mapname")) + "_wp.csv";
-/#	printLn( "Getting waypoints from csv: "+fileName );		#/
+/#	printLn("Getting waypoints from csv: "+fileName);		#/
 
 	// get the waypoint count, then get all the waypoint data
-	level.waypointCount = int( tableLookup(fileName, 0, 0, 1) );
-	for( i=0; i<level.waypointCount; i++ )
+	level.waypointCount = int(tableLookup(fileName, 0, 0, 1));
+	for(i=0; i<level.waypointCount; i++)
 	{
 		// create a struct for each waypoint
 		waypoint = spawnStruct();
 		
 		// get the origin and seperate it into x, y and z values
-		origin = tableLookup( fileName, 0, i+1, 1 );
-		orgToks = strtok( origin, " " );
+		origin = tableLookup(fileName, 0, i+1, 1);
+		orgToks = strtok(origin, " ");
 		
 		// convert the origin to a vector3
-		waypoint.origin = ( float(orgToks[0]), float(orgToks[1]), float(orgToks[2]));
+		waypoint.origin = (float(orgToks[0]), float(orgToks[1]), float(orgToks[2]));
 		
 		// save the waypoint into the waypoints array
 		level.waypoints[i] = waypoint;
 	}
 
 	// go through all waypoints and link them
-	for( i=0; i<level.waypointCount; i++ )
+	for(i=0; i<level.waypointCount; i++)
 	{
 		waypoint = level.waypoints[i]; 
 		
 		// get the children waypoint IDs and seperate them
-		strLnk = tableLookup( fileName, 0, i+1, 2 );
+		strLnk = tableLookup(fileName, 0, i+1, 2);
 		tokens = strTok(strLnk, " ");
 		
 		// set the waypoints children count
 		waypoint.childCount = tokens.size;
 		
 		// add all the children as integers
-		for( j=0; j<tokens.size; j++ )
+		for(j=0; j<tokens.size; j++)
 			waypoint.children[j] = int(tokens[j]);
 	}
 
@@ -89,20 +89,20 @@ loadWaypoints()
 *
 *	@origin: Origin to find the closest waypoint to
 */
-getNearestWp( origin )
+getNearestWp(origin)
 {
 	// set initial values for the waypoint
 	nearestWp = -1;
 	nearestDist = 9999999999;
 
 	// loop through all waypoints
-	for( i = 0; i < level.waypointCount; i++ )
+	for(i = 0; i < level.waypointCount; i++)
 	{
 		// get the squared distance
-		dist = distanceSquared( origin, level.waypoints[i].origin );
+		dist = distanceSquared(origin, level.waypoints[i].origin);
     
 		// check if the distance is closer than the currently closest
-		if( dist < nearestDist )
+		if(dist < nearestDist)
 		{
 			// memorize the current waypoint
 			nearestDist = dist;
@@ -122,7 +122,7 @@ getNearestWp( origin )
 *	@startWp: ID of the starting waypoint
 *	@goalWp: ID of the target waypoint
 */
-AStarSearch( startWp, goalWp )
+AStarSearch(startWp, goalWp)
 {
 	// info regarding the A-Star Algorithm can be found here:
 	// https://en.wikipedia.org/wiki/A*_search_algorithm
@@ -134,7 +134,7 @@ AStarSearch( startWp, goalWp )
 
 	s = spawnStruct();
 	s.g = 0; //start node
-	s.h = distance( level.waypoints[startWp].origin, level.waypoints[goalWp].origin );
+	s.h = distance(level.waypoints[startWp].origin, level.waypoints[goalWp].origin);
 	s.f = s.g + s.h;
 	s.wpIdx = startWp;
 	s.parent = spawnStruct();
@@ -146,26 +146,26 @@ AStarSearch( startWp, goalWp )
 	pQSize++;
 
 	// while Open is not empty  
-	while( !PQIsEmpty(pQOpen, pQSize) )
+	while(!PQIsEmpty(pQOpen, pQSize))
 	{
 		// pop node n from Open  // n has the lowest f
 		n = pQOpen[0];
 		highestPriority = 9999999999;
 		bestNode = -1;
-		for( i=0; i<pQSize; i++ )
+		for(i=0; i<pQSize; i++)
 		{
-			if( pQOpen[i].f < highestPriority )
+			if(pQOpen[i].f < highestPriority)
 			{
 				bestNode = i;
 				highestPriority = pQOpen[i].f;
 			}
 		}
     
-		if( bestNode != -1 )
+		if(bestNode != -1)
 		{
 			n = pQOpen[bestNode];
 			//remove node from queue    
-			for( i=bestNode; i<pQSize-1; i++ )
+			for(i=bestNode; i<pQSize-1; i++)
 			{
 				pQOpen[i] = pQOpen[i+1];
 			}
@@ -177,13 +177,13 @@ AStarSearch( startWp, goalWp )
 		}
 		
 		// if n is a goal node; construct path, return success
-		if( n.wpIdx == goalWp )
+		if(n.wpIdx == goalWp)
 		{
 			x = n;
-			for( z=0; z<1000; z++ )
+			for(z=0; z<1000; z++)
 			{
 				parent = x.parent;
-				if( parent.parent.wpIdx == -1 )
+				if(parent.parent.wpIdx == -1)
 					return x.wpIdx;
 				
 				// line(level.waypoints[x.wpIdx].origin, level.waypoints[parent.wpIdx].origin, (0,1,0));
@@ -194,44 +194,44 @@ AStarSearch( startWp, goalWp )
 		}
 		
 		// for each successor nc of n
-		for( i=0; i<level.waypoints[n.wpIdx].childCount; i++ )
+		for(i=0; i<level.waypoints[n.wpIdx].childCount; i++)
 		{
 			//newg = n.g + cost(n,nc)
-			newg = n.g + distance( level.waypoints[n.wpIdx].origin, level.waypoints[level.waypoints[n.wpIdx].children[i]].origin );
+			newg = n.g + distance(level.waypoints[n.wpIdx].origin, level.waypoints[level.waypoints[n.wpIdx].children[i]].origin);
       
 			//if nc is in Open or Closed, and nc.g <= newg then skip
-			if( PQExists(pQOpen, level.waypoints[n.wpIdx].children[i], pQSize) )
+			if(PQExists(pQOpen, level.waypoints[n.wpIdx].children[i], pQSize))
 			{
 				//find nc in open
 				nc = spawnStruct();
-				for( p=0; p<pQSize; p++ )
+				for(p=0; p<pQSize; p++)
 				{
-					if( pQOpen[p].wpIdx == level.waypoints[n.wpIdx].children[i] )
+					if(pQOpen[p].wpIdx == level.waypoints[n.wpIdx].children[i])
 					{
 						nc = pQOpen[p];
 						break;
 					}
 				}
 				
-				if( nc.g <= newg )
+				if(nc.g <= newg)
 				{
 					continue;
 				}
 			}
-			else if( PQExists(closedList, level.waypoints[n.wpIdx].children[i], listSize) )
+			else if(PQExists(closedList, level.waypoints[n.wpIdx].children[i], listSize))
 			{
 				//find nc in closed list
 				nc = spawnStruct();
-				for( p=0; p<listSize; p++ )
+				for(p=0; p<listSize; p++)
 				{
-					if( closedList[p].wpIdx == level.waypoints[n.wpIdx].children[i] )
+					if(closedList[p].wpIdx == level.waypoints[n.wpIdx].children[i])
 					{
 						nc = closedList[p];
 						break;
 					}
 				}
 				
-				if( nc.g <= newg )
+				if(nc.g <= newg)
 				{
 					continue;
 				}
@@ -240,34 +240,34 @@ AStarSearch( startWp, goalWp )
 			nc = spawnStruct();
 			nc.parent = n;
 			nc.g = newg;
-			nc.h = distance( level.waypoints[level.waypoints[n.wpIdx].children[i]].origin, level.waypoints[goalWp].origin );
+			nc.h = distance(level.waypoints[level.waypoints[n.wpIdx].children[i]].origin, level.waypoints[goalWp].origin);
 			nc.f = nc.g + nc.h;
 			nc.wpIdx = level.waypoints[n.wpIdx].children[i];
 			
 			//if nc is in Closed,
-			if( PQExists(closedList, nc.wpIdx, listSize) )
+			if(PQExists(closedList, nc.wpIdx, listSize))
 			{
 				//remove it from Closed
 				deleted = false;
-				for( p=0; p<listSize; p++ )
+				for(p=0; p<listSize; p++)
 				{
-					if( closedList[p].wpIdx == nc.wpIdx )
+					if(closedList[p].wpIdx == nc.wpIdx)
 					{
-						for( x=p; x<listSize-1; x++ )
+						for(x=p; x<listSize-1; x++)
 							closedList[x] = closedList[x+1];
 						
 						deleted = true;
 						break;
 					}
 					
-					if( deleted )
+					if(deleted)
 						break;
 				}
 				listSize--;
 			}
 			
 			// if nc is not yet in Open, 
-			if( !PQExists(pQOpen, nc.wpIdx, pQSize) )
+			if(!PQExists(pQOpen, nc.wpIdx, pQSize))
 			{
 				//push nc on Open
 				pQOpen[pQSize] = nc;
@@ -276,7 +276,7 @@ AStarSearch( startWp, goalWp )
 		}
 		
 		// Done with children, push n onto Closed
-		if( !PQExists(closedList, n.wpIdx, listSize) )
+		if(!PQExists(closedList, n.wpIdx, listSize))
 		{
 			closedList[listSize] = n;
 			listSize++;
@@ -291,9 +291,9 @@ AStarSearch( startWp, goalWp )
 *	@Q: Open List
 *	@QSize: Size of Open List
 */
-PQIsEmpty( Q, QSize )
+PQIsEmpty(Q, QSize)
 {
-	if( QSize <= 0 )
+	if(QSize <= 0)
 	{
 		return true;
 	}
@@ -309,11 +309,11 @@ PQIsEmpty( Q, QSize )
 *	@n: Waypoint
 *	@QSize: Size of array Q
 */
-PQExists( Q, n, QSize )
+PQExists(Q, n, QSize)
 {
-	for( i=0; i<QSize; i++ )
+	for(i=0; i<QSize; i++)
 	{
-		if( Q[i].wpIdx == n )
+		if(Q[i].wpIdx == n)
 			return true;
 	}
 
@@ -331,13 +331,13 @@ drawWP()
 {
 	for(;;)
 	{
-		for( i = 0; i < level.waypointCount; i++ )
+		for(i = 0; i < level.waypointCount; i++)
 		{
 			wp = level.waypoints[i];
-			line( wp.origin, wp.origin + (0,0,96), (0,1,0) );
+			line(wp.origin, wp.origin + (0,0,96), (0,1,0));
 			
-			for( j = 0; j < wp.childCount; j++ )
-				line( wp.origin, level.waypoints[wp.child[j]].origin, (0,0,1) );
+			for(j = 0; j < wp.childCount; j++)
+				line(wp.origin, level.waypoints[wp.child[j]].origin, (0,0,1));
 		}
 		
 		wait 0.05;

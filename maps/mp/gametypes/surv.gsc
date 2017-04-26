@@ -15,7 +15,7 @@
 
 main()
 {
-	if( getDvar( "mapname" ) == "mp_background" )
+	if(getDvar("mapname") == "mp_background")
 		return; // this isn't required...
 
 	maps\mp\gametypes\_callbacksetup::SetupCallbacks();
@@ -23,8 +23,8 @@ main()
 	level.callbackStartGameType = ::Callback_StartGameType;
 
 
-	level.script = toLower( getDvar( "mapname" ) );
-	level.gametype = toLower( getDvar( "g_gametype" ) );
+	level.script = toLower(getDvar("mapname"));
+	level.gametype = toLower(getDvar("g_gametype"));
 	
 	// Monitor the game's version
 	level.gameversion = getDvar("shortversion");
@@ -41,9 +41,9 @@ main()
 
 Callback_StartGameType()
 {
-	if ( !isDefined( game["allies"] ) )
+	if (!isDefined(game["allies"]))
 		game["allies"] = "marines";
-	if ( !isDefined( game["axis"] ) )
+	if (!isDefined(game["axis"]))
 		game["axis"] = "opfor";
 
 	level.starttime = getTime();

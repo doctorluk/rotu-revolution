@@ -99,8 +99,8 @@ loadConfig()
 
 dvarDefault(dvar, def)
 {
-	if ( getdvar( dvar ) == "" )
-		setdvar( dvar, def );
+	if (getdvar(dvar) == "")
+		setdvar(dvar, def);
 }
 
 addSpawn(targetname, priority)
@@ -130,11 +130,11 @@ removeSpawn(targetname){
 	if (!isdefined(level.survSpawns))
 	return -1;
 	
-	for( i = 0; i < level.survSpawns.size; i++ ){
-		if( level.survSpawns[i] == targetname ){
+	for(i = 0; i < level.survSpawns.size; i++){
+		if(level.survSpawns[i] == targetname){
 			level.survSpawnsTotalPriority = level.survSpawnsTotalPriority - level.survSpawnsPriority[i];
-			level.survSpawnsPriority = removeFromArray( level.survSpawnsPriority, level.survSpawnsPriority[i] );
-			level.survSpawns = removeFromArray( level.survSpawns, level.survSpawns[i] );
+			level.survSpawnsPriority = removeFromArray(level.survSpawnsPriority, level.survSpawnsPriority[i]);
+			level.survSpawns = removeFromArray(level.survSpawns, level.survSpawns[i]);
 		
 		}
 	}
@@ -163,9 +163,9 @@ beginGame()
 
 watchEnd()
 {
-	level endon( "game_ended" );
-	level endon( "wave_finished" );
-	level endon( "last_chance_start" );
+	level endon("game_ended");
+	level endon("wave_finished");
+	level endon("last_chance_start");
 	//wait 5;
 	while (1)
 	{
@@ -185,7 +185,7 @@ watchEnd()
 mainGametype()
 {	
 	level notify("game_started");
-	level endon( "game_ended" );
+	level endon("game_ended");
 	
 	level.startTime = getTime();
 	
@@ -195,9 +195,9 @@ mainGametype()
 	
 	i = 0;
 	level.weStartedAtLeastOneGame = false;
-	while( isDefined( level.waves[i] ) ){
+	while(isDefined(level.waves[i])){
 	
-		if( level.lastSpecialWave == "finale" ) // Whenever we had a finale, we end the game
+		if(level.lastSpecialWave == "finale") // Whenever we had a finale, we end the game
 			break;
 			
 		type = "";
@@ -221,7 +221,7 @@ mainGametype()
 		}
 		
 		/* Add zombie type that wasn't there before to the normal wave.... */
-		if ( scripts\bots\_types::addToSpawnTypes(type) )
+		if (scripts\bots\_types::addToSpawnTypes(type))
 			if(type == "burning"){
 				scripts\gamemodes\_gamemodes::addSpawnType("burning");
 				scripts\gamemodes\_gamemodes::addSpawnType("napalm");
@@ -288,7 +288,7 @@ increaseDifficulty(){
 	// TODO: Add config variable for display settings
 	announceMessage(&"ZOMBIE_DIFFICULTY_INCREASED", "", (1,.3,0), 6, 85, undefined, 80);
 	wait 7;
-	if( level.dvar["shop_multiply_costs"] ){
+	if(level.dvar["shop_multiply_costs"]){
 		thread scripts\players\_shop::updateShopCosts();
 		announceMessage(&"ZOMBIE_SHOP_COSTS_INCREASED", level.dvar["shop_multiply_costs_amount"], (1,.3,0), 6, 85, undefined, 80);
 		wait 7;
@@ -395,7 +395,7 @@ survivorDown()
 
 doWaveHud()
 {
-	level endon( "game_ended" );
+	level endon("game_ended");
 	while(1){
 		updateWaveHud(level.waveProgress, level.waveSize);
 		wait 1;

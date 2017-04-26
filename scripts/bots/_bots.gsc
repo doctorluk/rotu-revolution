@@ -49,13 +49,13 @@ init()
 	
 	level.botsLookingForWaypoints = 0;
 	
-	if( getDvar("max_waypoint_bots") == "" )
-		setDvar( "max_waypoint_bots", 1 );
-	if( getDvar("debug_max_waypoint_bots") == "" )
-		setDvar( "debug_max_waypoint_bots", 0 );
+	if(getDvar("max_waypoint_bots") == "")
+		setDvar("max_waypoint_bots", 1);
+	if(getDvar("debug_max_waypoint_bots") == "")
+		setDvar("debug_max_waypoint_bots", 0);
 
 	wait 1;
-	if( level.loadBots )
+	if(level.loadBots)
 		thread loadBots(level.dvar["bot_count"]);
 	
 	scripts\bots\_types::initZomTypes();
@@ -73,30 +73,30 @@ init()
 
 precache()
 {
-	precacheItem( "bot_zombie_walk_mp" );
-	precacheItem( "bot_zombie_stand_mp" );
-	precacheItem( "bot_zombie_run0_mp" );
-	precacheItem( "bot_zombie_run1_mp" );
-	precacheItem( "bot_zombie_melee0_mp" );
-	precacheItem( "bot_zombie_melee1_mp" );
-	precacheItem( "bot_dog_idle_mp" );
-	precacheItem( "bot_dog_run_mp" );
-	precacheItem( "bot_dog_attack_mp" );
-	precacheItem( "bot_boss_jump_mp" );
-	precacheItem( "flash_grenade_mp" );			// bot_quad_idle_mp
-	precacheItem( "concussion_grenade_mp" );	// bot_quad_crawl_mp
-	precacheItem( "bot_quad_sprint_mp" );
-	precacheItem( "bot_quad_attack_mp" );
+	precacheItem("bot_zombie_walk_mp");
+	precacheItem("bot_zombie_stand_mp");
+	precacheItem("bot_zombie_run0_mp");
+	precacheItem("bot_zombie_run1_mp");
+	precacheItem("bot_zombie_melee0_mp");
+	precacheItem("bot_zombie_melee1_mp");
+	precacheItem("bot_dog_idle_mp");
+	precacheItem("bot_dog_run_mp");
+	precacheItem("bot_dog_attack_mp");
+	precacheItem("bot_boss_jump_mp");
+	precacheItem("flash_grenade_mp");			// bot_quad_idle_mp
+	precacheItem("concussion_grenade_mp");	// bot_quad_crawl_mp
+	precacheItem("bot_quad_sprint_mp");
+	precacheItem("bot_quad_attack_mp");
 
-	precacheModel( "body_sp_russian_loyalist_a_dead" );
-	precacheModel( "body_sp_russian_loyalist_b_dead" );
-	precacheModel( "body_sp_russian_loyalist_c_dead" );
-	precacheModel( "body_sp_russian_loyalist_d_dead" );
+	precacheModel("body_sp_russian_loyalist_a_dead");
+	precacheModel("body_sp_russian_loyalist_b_dead");
+	precacheModel("body_sp_russian_loyalist_c_dead");
+	precacheModel("body_sp_russian_loyalist_d_dead");
 
-	precacheModel( "santa_hat" );
-	precacheModel( "bo_quad" );
+	precacheModel("santa_hat");
+	precacheModel("bo_quad");
 
-	precacheModel( "cyclops" );
+	precacheModel("cyclops");
 
 	precacheModel("head_sp_loyalist_alex_helmet_body_a_dead");
 	precacheModel("head_sp_loyalist_mackey_hat_body_b_dead");
@@ -174,10 +174,10 @@ precache()
 
 loadBots(amount)
 {
-	for( i=0; i<amount; i++ )
+	for(i=0; i<amount; i++)
 	{
 		bot = addTestClient();
-		if( !isDefined(bot) ) {
+		if(!isDefined(bot)) {
 			println("Could not add bot");
 			i = i -1;
 			wait 1;
@@ -219,9 +219,9 @@ botJoinAxis()
 //SPAWNING BOTS
 getAvailableBot()
 {
-	for( i=0; i<level.bots.size; i++ )
+	for(i=0; i<level.bots.size; i++)
 	{
-		if( level.bots[i].hasSpawned == false )
+		if(level.bots[i].hasSpawned == false)
 			return level.bots[i];
 	}
 }
@@ -236,9 +236,9 @@ spawnPartner(spawnpoint, bot){
 	
 	bot.team = bot.pers["team"];
 	
-	assert( isDefined(bot.team) );
+	assert(isDefined(bot.team));
 	
-	if( !isDefined(bot.team) ){
+	if(!isDefined(bot.team)){
 		bot.hasSpawned = false;
 		return undefined;
 	}
@@ -258,7 +258,7 @@ spawnPartner(spawnpoint, bot){
 	bot.damagePerLoc = [];
 	bot scripts\bots\_types::loadZomStats(type);
 	bot.incdammod = 1;
-	bot.maxHealth = int( bot.maxHealth * level.dif_zomHPMod );
+	bot.maxHealth = int(bot.maxHealth * level.dif_zomHPMod);
 	
 	bot.health = bot.maxHealth;
 	
@@ -270,7 +270,7 @@ spawnPartner(spawnpoint, bot){
 	bot.isOnFire = false;
 	bot.isPoisoned = false;
 	bot.playIdleSound = true;
-	if( randomfloat(1) > bot.sprintChance )
+	if(randomfloat(1) > bot.sprintChance)
 		bot.sprinting = false;
 	else
 		bot.sprinting = true;
@@ -286,9 +286,9 @@ spawnPartner(spawnpoint, bot){
 	bot switchtoweapon(bot.pers["weapon"]);
 
 	if (isdefined(spawnpoint.angles))
-		bot spawn( spawnpoint.origin, spawnpoint.angles );
+		bot spawn(spawnpoint.origin, spawnpoint.angles);
 	else
-		bot spawn( spawnpoint.origin, (0,0,0) );
+		bot spawn(spawnpoint.origin, (0,0,0));
 	
 	level.botsAlive++;
 	
@@ -317,7 +317,7 @@ rotateWithParent(){
 	self.parent endon("death");
 	level endon("wave_finished");
 	level endon("game_ended");
-	while( isDefined(self.parent) ){
+	while(isDefined(self.parent)){
 		self setPlayerAngles(self.parent.angles);
 		wait 0.05;
 	}
@@ -325,10 +325,10 @@ rotateWithParent(){
 
 spawnZombie(type, spawnpoint, bot)
 {
-	if( !isDefined(bot) )
+	if(!isDefined(bot))
 	{
 		bot = getAvailableBot();
-		if( !isDefined(bot) )
+		if(!isDefined(bot))
 			return;
 	}
 
@@ -340,8 +340,8 @@ spawnZombie(type, spawnpoint, bot)
 
 	bot.team = bot.pers["team"];
 	
-	assert( isDefined(bot.team) );
-	if( !isDefined(bot.team) )
+	assert(isDefined(bot.team));
+	if(!isDefined(bot.team))
 	{
 		// The question is if we'll reach this due to the assert above
 		bot.hasSpawned = false;
@@ -364,7 +364,7 @@ spawnZombie(type, spawnpoint, bot)
 
 	bot scripts\bots\_types::loadZomStats(type);
 	bot.incdammod = 1;
-	if( !isDefined(bot.meleeSpeed) )
+	if(!isDefined(bot.meleeSpeed))
 	{
 		iPrintLnBold("ERROR");
 		setdvar("error_0", type);
@@ -372,7 +372,7 @@ spawnZombie(type, spawnpoint, bot)
 		wait 5;
 	}
 
-	bot.maxHealth = int( bot.maxHealth * level.dif_zomHPMod );
+	bot.maxHealth = int(bot.maxHealth * level.dif_zomHPMod);
 	bot.health = bot.maxHealth;
 
 	bot.isDoingMelee = false;
@@ -387,7 +387,7 @@ spawnZombie(type, spawnpoint, bot)
 	bot.isOnFire = false;
 	bot.isPoisoned = false;
 	bot.playIdleSound = true;
-	if( randomfloat(1) > bot.sprintChance )
+	if(randomfloat(1) > bot.sprintChance)
 		bot.sprinting = false;
 	else
 		bot.sprinting = true;
@@ -402,12 +402,12 @@ spawnZombie(type, spawnpoint, bot)
 	bot setSpawnWeapon(bot.pers["weapon"]);
 	bot switchToWeapon(bot.pers["weapon"]);
 	
-	if( isDefined(spawnpoint.angles) )
-		bot spawn( spawnpoint.origin, spawnpoint.angles );
+	if(isDefined(spawnpoint.angles))
+		bot spawn(spawnpoint.origin, spawnpoint.angles);
 	else
-		bot spawn( spawnpoint.origin, (0,0,0) );
+		bot spawn(spawnpoint.origin, (0,0,0));
 
-	if( bot.type == "halfboss" )
+	if(bot.type == "halfboss")
 		level.bossBulletCount++;
 	
 	level.botsAlive++;
@@ -488,10 +488,10 @@ followTarget(target, arealDifference){
 	self endon("death");
 	target endon("death");
 	
-	if( !isDefined( arealDifference ) )
+	if(!isDefined(arealDifference))
 		arealDifference = (0,0,0);
 	
-	while( isDefined( self ) && isAlive( target ) ){
+	while(isDefined(self) && isAlive(target)){
 		self.origin = (target.origin + arealDifference);
 		wait 0.05;
 	}
@@ -513,34 +513,34 @@ followTarget(target, arealDifference){
 *	@sHitLoc: String, name of the hit location
 *	@psOffsetTime: Float, time to wait before the damage is done???
 */
-Callback_BotDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime )
+Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime)
 {
 	// don't damage clients that are imune or dead
-	if( !isAlive(self) || isDefined(self.damageoff) )
+	if(!isAlive(self) || isDefined(self.damageoff))
 		return;
 	
 	// don't damage spectator clients
-	if( self.sessionteam == "spectator" )
+	if(self.sessionteam == "spectator")
 		return;
 	
 	// convert the weapon name to the script name
 	sWeapon = level.weaponKeyC2S[sWeapon];
 	
 	// don't damage clients that are imune to this type of damage
-	if( !self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker) )
+	if(!self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker))
 		return;
 
 	// increase the alert level of the bot
-	if( isDefined(self.alertLevel) )
+	if(isDefined(self.alertLevel))
 		self.alertLevel += 200;
 
 	// Apply the player related damage claculations
-	if( isDefined(eAttacker) && isPlayer(eAttacker) )
+	if(isDefined(eAttacker) && isPlayer(eAttacker))
 	{
 		// Check for insta-explosive grenades		TODO: Remove this and come up with a more useful function
-		if( eAttacker.chargedGrenades )
+		if(eAttacker.chargedGrenades)
 		{
-			if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp" )
+			if(sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp")
 			{
 				eInflictor detonate();
 				return;
@@ -548,56 +548,56 @@ Callback_BotDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWea
 		}
 		
 		// Explosive Crossbow sticking to the zombie
-		if( sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp" )
+		if(sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp")
 		{
-			eInflictor followTarget( self, ( eInflictor.origin - self.origin ) );
+			eInflictor followTarget(self, (eInflictor.origin - self.origin));
 			return;
 		}
 		
 		// Special Recharge Armored -> KNIFE
-		if ( eAttacker.curClass == "armored" && !eAttacker.isDown && sMeansOfDeath == "MOD_MELEE" )
+		if (eAttacker.curClass == "armored" && !eAttacker.isDown && sMeansOfDeath == "MOD_MELEE")
 		{
-			if( iDamage > self.health )
-				eAttacker scripts\players\_abilities::rechargeSpecial( self.health/25 );
+			if(iDamage > self.health)
+				eAttacker scripts\players\_abilities::rechargeSpecial(self.health/25);
 			else
-				eAttacker scripts\players\_abilities::rechargeSpecial( iDamage/25 );
+				eAttacker scripts\players\_abilities::rechargeSpecial(iDamage/25);
 		}
 		
-		if( !isDefined( iDamage ) || !isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) || !isDefined( self.incdammod ) )
+		if(!isDefined(iDamage) || !isDefined(eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage)) || !isDefined(self.incdammod))
 		{
-			logPrint( "LUK_DEBUG; Definition: iDamage: " + isDefined(iDamage) + ", getDamageModifier: " + isDefined( eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) ) + ", self.incdammod: " + isDefined(self.incdammod) + ", weapon: " + sWeapon + "\n" );
+			logPrint("LUK_DEBUG; Definition: iDamage: " + isDefined(iDamage) + ", getDamageModifier: " + isDefined(eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage)) + ", self.incdammod: " + isDefined(self.incdammod) + ", weapon: " + sWeapon + "\n");
 			return;
 		}
 		
-		iDamage = int( iDamage * eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) * self.incdammod );
+		iDamage = int(iDamage * eAttacker scripts\players\_abilities::getDamageModifier(sWeapon, sMeansOfDeath, self, iDamage) * self.incdammod);
 		
-		eAttacker notify( "damaged_bot", self );
+		eAttacker notify("damaged_bot", self);
 		
-		if( isDefined( eInflictor.isTurret ) && eInflictor.isTurret && isDefined( eInflictor.owner ) )
+		if(isDefined(eInflictor.isTurret) && eInflictor.isTurret && isDefined(eInflictor.owner))
 			eAttacker scripts\players\_damagefeedback::updateTurretDamageFeedback();
 		else
 			eAttacker scripts\players\_damagefeedback::updateDamageFeedback();
 		
-		if( self.isBot )
+		if(self.isBot)
 			self addToAssist(eAttacker, iDamage);
 	}
 
 	// check for Incendiary/Poisonous Ammo
-	if( isDefined(eAttacker.bulletMod) && randomFloat(1) <= 0.05		// apply fire or poison only if the attacker has it and with a 5% chance
+	if(isDefined(eAttacker.bulletMod) && randomFloat(1) <= 0.05		// apply fire or poison only if the attacker has it and with a 5% chance
 	&& self.type != "boss" && self.type != "halfboss"					// don't apply it to boss or halfboss zombies
 	&& !self.isPoisoned && !self.isOnFire								// don't apply it twice or both
 	&& !self.isZombie													// don't apply it to infected players
-	&& (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) && !scripts\players\_weapons::isExplosive(sWeapon) )		// only apply it with the primary or secondary, non explosive weapon
+	&& (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) && !scripts\players\_weapons::isExplosive(sWeapon))		// only apply it with the primary or secondary, non explosive weapon
 	{
 		// apply incendiary ammo
-		if( eAttacker.bulletMod == "incendiary" && self.type != "burning" && self.type != "napalm" && self.type != "hellhound" )
+		if(eAttacker.bulletMod == "incendiary" && self.type != "burning" && self.type != "napalm" && self.type != "hellhound")
 		{
 			self igniteBot(eAttacker);
 			eAttacker.stats["ignitions"]++;
 		}
 		
 		// apply poisonous ammo
-		if( eAttacker.bulletMod == "poison" && self.type != "toxic" )
+		if(eAttacker.bulletMod == "poison" && self.type != "toxic")
 		{
 			self poisonBot(eAttacker);
 			eAttacker.stats["poisons"]++;
@@ -605,27 +605,27 @@ Callback_BotDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWea
 	}
 
 	// disable knockback without a damage direction
-	if( !isDefined(vDir) )
+	if(!isDefined(vDir))
 		iDFlags |= level.iDFLAGS_NO_KNOCKBACK;
 
 	// apply the damage if the protection flag is not set
-	if( !(iDFlags & level.iDFLAGS_NO_PROTECTION) )
+	if(!(iDFlags & level.iDFLAGS_NO_PROTECTION))
 	{
 		if(iDamage < 1)
 			iDamage = 1;
 		
 		// total damage stats
-		if( isDefined( eAttacker.stats["damageDealt"] ) )
+		if(isDefined(eAttacker.stats["damageDealt"]))
 			eAttacker.stats["damageDealt"] += iDamage;
 			
 		// Medic Transfusion
-		if( isDefined( eAttacker ) && isPlayer(eAttacker) && eInflictor == eAttacker && isDefined( eAttacker.lastTransfusion ) )
-			if( !eAttacker.isDown && eAttacker.health < eAttacker.maxhealth && eAttacker.transfusion && (eAttacker.lastTransfusion + 1000 < getTime()) && randomfloat(1) <= 0.2 ){
+		if(isDefined(eAttacker) && isPlayer(eAttacker) && eInflictor == eAttacker && isDefined(eAttacker.lastTransfusion))
+			if(!eAttacker.isDown && eAttacker.health < eAttacker.maxhealth && eAttacker.transfusion && (eAttacker.lastTransfusion + 1000 < getTime()) && randomfloat(1) <= 0.2){
 				eAttacker.lastTransfusion = getTime();
 				eAttacker scripts\players\_players::healPlayer(eAttacker.maxhealth * 0.03);
 			}
 
-		if( isDefined( self.damagePerLoc ) && isDefined (sHitLoc) ){
+		if(isDefined(self.damagePerLoc) && isDefined (sHitLoc)){
 			if(!isDefined(self.damagePerLoc[sHitLoc]))
 				self.damagePerLoc[sHitLoc] = iDamage;
 			else
@@ -695,13 +695,13 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		return;
 
 	sWeapon = level.weaponKeyC2S[sWeapon];
-	if( (sHitLoc == "head" || sHitLoc == "helmet") && sMeansOfDeath != "MOD_MELEE" )
+	if((sHitLoc == "head" || sHitLoc == "helmet") && sMeansOfDeath != "MOD_MELEE")
 		sMeansOfDeath = "MOD_HEAD_SHOT";
 
-	if( sMeansOfDeath == "MOD_HEAD_SHOT" )
+	if(sMeansOfDeath == "MOD_HEAD_SHOT")
 		attacker.stats["headshotKills"]++;
 
-	if( level.dvar["zom_orbituary"] )
+	if(level.dvar["zom_orbituary"])
 		obituary(self, attacker, sWeapon, sMeansOfDeath);
 
 	self.sessionstate = "dead";
@@ -712,7 +712,7 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		attacker.kills++;
 		attacker.stats["kills"]++;
 		
-		if( isDefined( attacker.stats["killedZombieTypes"][self.type] ) ){
+		if(isDefined(attacker.stats["killedZombieTypes"][self.type])){
 			attacker.stats["killedZombieTypes"][self.type]++;
 		}
 		else
@@ -727,15 +727,15 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		// if (attacker.curClass == "medic" && !attacker.isDown)
 			// attacker scripts\players\_abilities::heal(5);
 		//attacker.score+=10;
-		assert( isDefined( self.rewardMultiplier ) );
-		attacker scripts\players\_players::incUpgradePoints( int( 10 * level.rewardScale * self.rewardMultiplier ) );
+		assert(isDefined(self.rewardMultiplier));
+		attacker scripts\players\_players::incUpgradePoints(int(10 * level.rewardScale * self.rewardMultiplier));
 		giveAssists(attacker);
 		
 		/* STATS MONITOR */
 		if(isDefined(eInflictor.isTurret))
 			attacker.stats["turretKills"]++;
 			
-		if( scripts\players\_weapons::isExplosive(sWeapon) && sMeansOfDeath != "MOD_MELEE" && !attacker.isDown)
+		if(scripts\players\_weapons::isExplosive(sWeapon) && sMeansOfDeath != "MOD_MELEE" && !attacker.isDown)
 			attacker.stats["explosiveKills"]++;
 			
 		if(sMeansOfDeath == "MOD_MELEE")
@@ -764,11 +764,11 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 	if(!self doSplatter(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration)){
 		if (corpse > 0)
 		{
-			body = self clonePlayer( deathAnimDuration );
+			body = self clonePlayer(deathAnimDuration);
 			
 			if (corpse > 1)
 			{
-				thread delayStartRagdoll( body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath );
+				thread delayStartRagdoll(body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath);
 			}
 		}
 	}
@@ -816,18 +816,18 @@ doSplatter(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc,
 		damage = self.maxhealth;
 	// if(isDefined(attacker) && self.type != "dog")
 	// if((sWeapon == attacker.primary || sWeapon == attacker.secondary))
-	// if(	( (iDamage > self.maxhealth * 0.6 && randomfloat(1) < 0.3) || (iDamage > self.maxhealth && randomfloat(1) < 0.9)))
+	// if(	((iDamage > self.maxhealth * 0.6 && randomfloat(1) < 0.3) || (iDamage > self.maxhealth && randomfloat(1) < 0.9)))
 	// if((sHitLoc == "head" || sHitLoc == "neck") && sMeansOfDeath != "MOD_MELEE"){
 		// self playsound("zom_splatter");
-		// playfx(level.splatterFX, self getTagOrigin("j_spinelower") );
+		// playfx(level.splatterFX, self getTagOrigin("j_spinelower"));
 		// attacker iprintln("^1CRITICAL HIT ON " + self.name);
 		// return true;
 	// }	
-	if( self.type != "dog" && self.type != "helldog" && self.type != "burning" && self.type != "napalm" )
-		if( ( sWeapon == attacker.primary || sWeapon == attacker.secondary ) )
-			if( ( damage/self.maxhealth ) > 0.8 && sMeansOfDeath != "MOD_MELEE" && ( sHitLoc == "head" || sHitLoc == "neck" || sHitLoc == "helmet" ) ){
+	if(self.type != "dog" && self.type != "helldog" && self.type != "burning" && self.type != "napalm")
+		if((sWeapon == attacker.primary || sWeapon == attacker.secondary))
+			if((damage/self.maxhealth) > 0.8 && sMeansOfDeath != "MOD_MELEE" && (sHitLoc == "head" || sHitLoc == "neck" || sHitLoc == "helmet")){
 				self playsound("zom_splatter");
-				playfx(level.splatterFX, self getTagOrigin("j_spinelower") );
+				playfx(level.splatterFX, self getTagOrigin("j_spinelower"));
 		// attacker iprintln("^1CRITICAL HIT ON " + self.name);
 		return true;
 	}
@@ -890,7 +890,7 @@ giveAssists(killer)
 				struct.player.stats["assists"]++;
 				damagePercentage = struct.damage/self.maxhealth;
 				rewardMP = 1;
-				if( !isDefined(self.rewardMultiplier) ){
+				if(!isDefined(self.rewardMultiplier)){
 					iprintln("Reward Multiplier is not defined for " + self.type);
 				}
 				else
@@ -899,7 +899,7 @@ giveAssists(killer)
 					// iprintlnbold("More than 100 percent damage by " + struct.player.name + " on " + self.name + ".... wtf?");
 				// iprintln(struct.player.name + " got an assist with " + int(damagePercentage*100) + " Percent damage!");
 				
-				struct.player thread scripts\players\_players::incUpgradePoints( int( ( 10 * level.rewardScale * rewardMP ) * damagePercentage ) );
+				struct.player thread scripts\players\_players::incUpgradePoints(int((10 * level.rewardScale * rewardMP) * damagePercentage));
 				if (damagePercentage*100 > 85)
 				{
 					struct.player thread scripts\players\_rank::giveRankXP("assist5");
@@ -970,7 +970,7 @@ monkeyOverride(){
 		while(level.monkeyEntities.size > 0 && self.type != "boss" && self.type != "halfboss"){
 			nearestEnt = undefined;
 			nearestDistance = 9999999999;
-			for ( i = 0; i < level.monkeyEntities.size; i++ )
+			for (i = 0; i < level.monkeyEntities.size; i++)
 			{
 				ent = level.monkeyEntities[i];
 				if(!isDefined(self.origin) || !isDefined(ent.origin))
@@ -989,7 +989,7 @@ monkeyOverride(){
 				self.targetedMonkey = true;
 				self.targetedMonkeyEntIndex = nearestEnt.index;
 				self.sprinting = true;
-				if ( distance(nearestEnt.origin, self.origin) < (self.meleeRange - 40) ){
+				if (distance(nearestEnt.origin, self.origin) < (self.meleeRange - 40)){
 					self zomGoIdle();
 				}
 			}
@@ -1021,7 +1021,7 @@ freezeBot(){
 	self endon("disconnect");
 	while(1){
 		while(1){
-			if( level.freezeBots )
+			if(level.freezeBots)
 				break;
 			else
 				wait 0.5;
@@ -1038,7 +1038,7 @@ freezeBot(){
 		self.playIdleSound = true;
 		
 		
-		if( isDefined( self getClosestTarget() ) ) // Giving the zombie a new target, preventing "onSight"-checks in case the zombie is stuck inside a wall
+		if(isDefined(self getClosestTarget())) // Giving the zombie a new target, preventing "onSight"-checks in case the zombie is stuck inside a wall
 			self zomSetTarget(self getClosestTarget().origin);
 		self thread zomMain();
 	}
@@ -1103,7 +1103,7 @@ zomMain()
 					if(self.bestTarget.isTargetable && self.bestTarget.visible)
 					{
 						self.lastMemorizedPos = self.bestTarget.origin;
-						if ( !checkForBarricade(self.bestTarget.origin) )
+						if (!checkForBarricade(self.bestTarget.origin))
 						{
 							if (distance(self.bestTarget.origin, self.origin) < self.meleeRange)
 							{
@@ -1226,13 +1226,13 @@ zomMovement()
 {
 	self.cur_speed = 0;
 	
-	if ((self.alertLevel >= 200 && (!self.walkOnly || self.quake)) || self.sprinting ) //GO RUNNING... AAHH
+	if ((self.alertLevel >= 200 && (!self.walkOnly || self.quake)) || self.sprinting) //GO RUNNING... AAHH
 	{
 		self setanim("sprint");
 		self.cur_speed = self.runSpeed;
 		if (self.quake)
 		{
-			Earthquake( 0.25, .3, self.origin, 380);
+			Earthquake(0.25, .3, self.origin, 380);
 		}
 		
 		if (level.dvar["zom_dominoeffect"])
@@ -1244,7 +1244,7 @@ zomMovement()
 		self.cur_speed = self.walkSpeed;
 		if (self.quake)
 		{
-			Earthquake( 0.17, .3, self.origin, 320);
+			Earthquake(0.17, .3, self.origin, 320);
 		}
 	}
 }
@@ -1466,7 +1466,7 @@ zomMoveTowards(target_position)
 	}
 	else
 	{
-		//if (self.lastTargetWp != targetWp || self.myWaypoint == nextWp )
+		//if (self.lastTargetWp != targetWp || self.myWaypoint == nextWp)
 		if (targetWp == self.myWaypoint)
 		{
 			//iprintln(level.waypoints[getNearestWp(self.origin)].origin+":"+level.waypoints[getNearestWp(target_position)].origin);
@@ -1478,21 +1478,21 @@ zomMoveTowards(target_position)
 		{
 			//time = GetTime();
 			/* This way may not be the safest and most reliable */
-			if( level.waypointLoops > 100000 && level.dvar["zom_antilagmonitor"] ){
+			if(level.waypointLoops > 100000 && level.dvar["zom_antilagmonitor"]){
 				// logPrint("DEBUG: Caught > 200000 loops in level.waypointLoops!\n");
 				// logPrint("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
 				// iprintln("Caught > 200000 loops, mitigating load to more frames...");
 				// iprintln("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
 				wait 0.05;
-				if( isDefined(target_position) )
+				if(isDefined(target_position))
 					self thread zomMoveTowards(target_position);
 				return;
 			}
-			if( level.botsLookingForWaypoints > getDvarInt("max_waypoint_bots") ){
-				if( getDvarInt("debug_max_waypoint_bots") )
+			if(level.botsLookingForWaypoints > getDvarInt("max_waypoint_bots")){
+				if(getDvarInt("debug_max_waypoint_bots"))
 					iprintln("Caught > " + getDvarInt("max_waypoint_bots") + " bots looking for waypoints!");
 				wait 0.05;
-				if( isDefined(target_position) )
+				if(isDefined(target_position))
 					self thread zomMoveTowards(target_position);
 				return;
 			}
@@ -1545,7 +1545,7 @@ zomMoveLockon(player, time, speed)
 	intervals = int(time / level.zomInterval);
 	for (i=0; i<intervals; i++)
 	{
-		if( !isDefined( player ) )
+		if(!isDefined(player))
 			break;
 		dis = distance(self.origin, player.origin);
 		if (dis > 48)
@@ -1624,7 +1624,7 @@ zomExplode(){
 }
 
 getMeleePreTime(){
-	switch( self getCurrentWeapon() ){
+	switch(self getCurrentWeapon()){
 		case "bot_zombie_melee_mp": return 0.5;
 		case "brick_blaster_mp":	return 0.3;
 		default: 					return 0.5;
@@ -1632,7 +1632,7 @@ getMeleePreTime(){
 }
 
 getMeleePostTime(){
-	switch( self getCurrentWeapon() ){
+	switch(self getCurrentWeapon()){
 		case "bot_zombie_melee_mp": return 1.2;
 		case "brick_blaster_mp":	return 0.6;
 		default: 					return 1.2;
@@ -1641,7 +1641,7 @@ getMeleePostTime(){
 
 zomMelee(bDoDamage)
 {
-	if(!isDefined( bDoDamage ) )
+	if(!isDefined(bDoDamage))
 		bDoDamage = true;
 	self endon("disconnect");
 	self endon("death");
@@ -1660,11 +1660,11 @@ zomMelee(bDoDamage)
 	wait self getMeleePreTime();
 	// wait .5;
 	if (self.quake)
-		Earthquake( 0.25, .2, self.origin, 380);
+		Earthquake(0.25, .2, self.origin, 380);
 	if (isalive(self))
 	{
-		if( bDoDamage )
-			self zomDoDamage( self.meleeRange );
+		if(bDoDamage)
+			self zomDoDamage(self.meleeRange);
 		if(self.type != "dog" && self.type != "helldog")
 		self zomSound(0, "zom_attack");
 		else
@@ -1698,12 +1698,12 @@ bossAttack()
 	self endon("disconnect");
 	self endon("death");
 		
-	if( level.nextBossJump < getTime() && randomfloat(1) < 0.15 ){
+	if(level.nextBossJump < getTime() && randomfloat(1) < 0.15){
 		self setAnim("jump");
 		playFX(level.bossShockwaveFX, self.origin);
 		self playsound("boss_charge");
 		wait 1.1;
-		Earthquake( 0.8, 1, self.origin, 600);
+		Earthquake(0.8, 1, self.origin, 600);
 		
 		if (isalive(self))
 		{
@@ -1714,7 +1714,7 @@ bossAttack()
 		wait .2;
 		self setAnim("stand");
 		level.lastBossJump = getTime();
-		level.nextBossJump = level.lastBossJump + ( 10000 + randomint(10000) );
+		level.nextBossJump = level.lastBossJump + (10000 + randomint(10000));
 	}
 	else
 		self zomMelee();
@@ -1791,10 +1791,10 @@ zomAreaDamage(range)
 	for (i=0; i<=level.players.size; i++)
 	{
 					target = level.players[i];
-					if (isdefined(target) && isalive(target) )
+					if (isdefined(target) && isalive(target))
 					{
 						distance = distance(self.origin, target.origin);
-						if (distance < range )
+						if (distance < range)
 						{
 							target.isPlayer = true;
 							//target.damageCenter = self.Mover.origin;
@@ -1825,7 +1825,7 @@ zomDoDamage(range)
 					if (isdefined(target))
 					{
 						distance = distance(self.origin, target.origin);
-						if (distance <meleeRange )
+						if (distance <meleeRange)
 						{
 							fwdDir = anglestoforward(self getplayerangles());
 							dirToTarget = vectorNormalize(target.origin-self.origin);
@@ -1858,7 +1858,7 @@ zomDoDamage(range)
 	{
 		obj = level.attackable_obj[i];
 		distance = distance2d(self.origin, obj.origin);
-		if (distance <meleeRange )
+		if (distance <meleeRange)
 		{
 			fwdDir = anglestoforward(self getplayerangles());
 			dirToTarget = vectorNormalize(obj.origin-self.origin);
@@ -1875,7 +1875,7 @@ zomDoDamage(range)
 	{
 		ent = level.barricades[i];
 		distance = distance2d(self.origin, ent.origin);
-		if (distance <meleeRange*2 )
+		if (distance <meleeRange*2)
 		{
 			ent thread scripts\players\_barricades::doBarricadeDamage(self.damage*level.dif_zomDamMod);
 			break;
@@ -1885,7 +1885,7 @@ zomDoDamage(range)
 	{
 		ent = level.dynamic_barricades[i];
 		distance = distance2d(self.origin, ent.origin);
-		if (distance <meleeRange )
+		if (distance <meleeRange)
 		{
 			ent thread scripts\players\_barricades::doBarricadeDamage(self.damage*level.dif_zomDamMod);
 			break;
@@ -1937,10 +1937,10 @@ zomSound(delay, sound)
 		self endon("death");
 		wait delay;
 	}
-	if( level.silenceZombies )
+	if(level.silenceZombies)
 		return;
 	if (isalive(self))
-	self playSound( sound );
+	self playSound(sound);
 }
 
 zomSetTarget(target)
@@ -1986,7 +1986,7 @@ checkForBarricade(targetposition)
 	return 0;
 }
 
-alertZombies( origin, distance, alertPower, ignoreEnt)
+alertZombies(origin, distance, alertPower, ignoreEnt)
 {
 	for (i=0; i < level.bots.size; i++)
 	{

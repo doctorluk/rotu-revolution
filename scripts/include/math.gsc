@@ -50,9 +50,9 @@ abs(x)
 
 /*
 	Cross Product of two vectors, giving us an orthogonal vector c of the plane drawn by a and b
-		( a2b3 - a3b2 )
-	c =	( a3b1 - a1b3 )
-		( a1b2 - a2b1 )
+		(a2b3 - a3b2)
+	c =	(a3b1 - a1b3)
+		(a1b2 - a2b1)
 */
 crossProduct(a, b){
 	
@@ -65,10 +65,10 @@ crossProduct(a, b){
 }
 
 dotProduct(vec1, vec2){
-	if( !isDefined( vec1 ) || !isDefined( vec2 ) )
+	if(!isDefined(vec1) || !isDefined(vec2))
 		return;
 	
-	return( vec1[0] * vec2[0], vec1[1] * vec2[1], vec1[2] * vec2[2] );
+	return(vec1[0] * vec2[0], vec1[1] * vec2[1], vec1[2] * vec2[2]);
 }
 
 

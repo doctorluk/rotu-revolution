@@ -24,7 +24,7 @@
 #include scripts\include\entities;
 
 startRegularWave(){
-	level endon( "game_ended" );
+	level endon("game_ended");
 	wavetype = "normal";
 	type = "normal";
 	
@@ -32,11 +32,11 @@ startRegularWave(){
 	preWave(wavetype, type);
 	spawntype = 0;
 
-	for( i=0; i<level.waveSize; ){ 
-		if( level.botsAlive < level.dif_zomMax && !level.spawningDisabled ){
-			if( getDvar("priospawner") == "1" )
+	for(i=0; i<level.waveSize;){ 
+		if(level.botsAlive < level.dif_zomMax && !level.spawningDisabled){
+			if(getDvar("priospawner") == "1")
 				spawntype = 5;
-			if( isDefined( spawnZombie(undefined, spawntype) ) )
+			if(isDefined(spawnZombie(undefined, spawntype)))
 				i++;
 		}
 		wait level.dif_zomSpawnRate;
@@ -46,18 +46,18 @@ startRegularWave(){
 }
 
 startSpecialWave(type){
-	level endon( "game_ended" );
+	level endon("game_ended");
 	wavetype = "special";
 	type = type;
 	
 	prePreWave(wavetype, type);
 	preWave(wavetype, type);
 
-	for ( i = 0; i < level.waveSize; ){
-		if ( level.botsAlive < level.dif_zomMax && !level.spawningDisabled){
+	for (i = 0; i < level.waveSize;){
+		if (level.botsAlive < level.dif_zomMax && !level.spawningDisabled){
 			toSpawn = scripts\bots\_types::getZombieType(type);
 			toSpawnSpawntype = scripts\bots\_types::getSpawnType(toSpawn, type);
-			if ( isDefined( spawnZombie(toSpawn, toSpawnSpawntype) ) ){
+			if (isDefined(spawnZombie(toSpawn, toSpawnSpawntype))){
 				i++;
 			}
 		}
@@ -71,18 +71,18 @@ startSpecialWave(type){
 
 startFinalWave()
 {
-	level endon( "game_ended" );
+	level endon("game_ended");
 	wavetype = "finale";
 	type = "finale";
 	
-	if( level.activePlayers < level.dvar["surv_finale_minplayers"] ){
+	if(level.activePlayers < level.dvar["surv_finale_minplayers"]){
 		// iprintln("^3Skipping ^7final wave as not enough players are playing!");
 		return;
 	}
 	
 	prePreWave(wavetype, type);
 
-	if( level.dvar["surv_extended_finale_announcement"] )
+	if(level.dvar["surv_extended_finale_announcement"])
 		preWave(wavetype, type);
 	else
 		preWave(wavetype, type + "_short");
@@ -95,7 +95,7 @@ startFinalWave()
 /* Logic before countdown starts */
 prePreWave(wavetype, type){
 	
-	if( !level.weStartedAtLeastOneGame )
+	if(!level.weStartedAtLeastOneGame)
 		level.weStartedAtLeastOneGame = true;
 
 	level.intermission = 1;
@@ -129,7 +129,7 @@ waveCountdown(type){
 			break;
 		
 		case "finale":
-			timer(level.dvar["surv_timeout_finale"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0) );
+			timer(level.dvar["surv_timeout_finale"], &"ZOMBIE_FINALWAVEIN", (.7,.2,0));
 			wait level.dvar["surv_timeout_finale"] + 2;
 			break;
 		
@@ -152,7 +152,7 @@ preWave(wavetype, type){
 	thread watchWaveProgress();
 	switch(type){
 		case "scary":
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
+			thread playSoundOnAllPlayers("wave_start", randomfloat(1));
 			label = [];
 			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER0";
 			label[label.size] = &"ZOMBIE_SCARYWAVE_AFTER1";
@@ -176,13 +176,13 @@ preWave(wavetype, type){
 			wait 3;
 			break;
 		case "boss":
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
+			thread playSoundOnAllPlayers("wave_start", randomfloat(1));
 			announceMessage(&"ZOMBIE_NEWBOSSWAVE", "", (.7,.2,0), 5, 85);
 			wait 5;
 			break;
 		case "normal":
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
-			announceMessage( level.announceNormal[ randomint(level.announceNormal.size) ] , level.waveSize, (.2,.7,0), 5, 95);
+			thread playSoundOnAllPlayers("wave_start", randomfloat(1));
+			announceMessage(level.announceNormal[ randomint(level.announceNormal.size) ] , level.waveSize, (.2,.7,0), 5, 95);
 			wait 5;
 			thread scripts\server\_environment::normalWaveEffects();
 			break;
@@ -206,9 +206,9 @@ preWave(wavetype, type){
 			level.claymoresEnabled = false;
 			thread scripts\bots\_types::dynamicFinale();
 			scripts\server\_environment::setGlobalFX(scripts\bots\_types::getFxForType(type));
-			for( level.burstSpawned = 0; level.burstSpawned < level.dvar["bot_count"] && level.burstSpawned < level.waveSize; ){ // This is the spawning of zombies while players don't see shit
+			for(level.burstSpawned = 0; level.burstSpawned < level.dvar["bot_count"] && level.burstSpawned < level.waveSize;){ // This is the spawning of zombies while players don't see shit
 				toSpawn = scripts\bots\_types::getFullyRandomZombieType();
-				if ( isDefined( spawnZombie( toSpawn, 3 ) ) )
+				if (isDefined(spawnZombie(toSpawn, 3)))
 						level.burstSpawned++;
 			}
 			wait 4.75;
@@ -257,9 +257,9 @@ preWave(wavetype, type){
 			level.claymoresEnabled = false;
 			thread scripts\bots\_types::dynamicFinale();
 			scripts\server\_environment::setGlobalFX(scripts\bots\_types::getFxForType("finale"));
-			for( level.burstSpawned = 0; level.burstSpawned < level.dvar["bot_count"] && level.burstSpawned < level.waveSize && level.burstSpawned < level.finaleToSpawn; ){ // This is the spawning of zombies while players don't see shit
+			for(level.burstSpawned = 0; level.burstSpawned < level.dvar["bot_count"] && level.burstSpawned < level.waveSize && level.burstSpawned < level.finaleToSpawn;){ // This is the spawning of zombies while players don't see shit
 				toSpawn = scripts\bots\_types::getFullyRandomZombieType();
-				if ( isDefined( spawnZombie( toSpawn, 3 ) ) )
+				if (isDefined(spawnZombie(toSpawn, 3)))
 						level.burstSpawned++;
 			}
 			wait 2;
@@ -285,19 +285,19 @@ preWave(wavetype, type){
 			thread watchIfZombiesAreDead();
 			break;
 		case "grouped":
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
+			thread playSoundOnAllPlayers("wave_start", randomfloat(1));
 			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
 			wait 5;
 			thread scripts\bots\_types::randomZombieProbabilityScenario(45);
 			break;
 		case "dog":
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
+			thread playSoundOnAllPlayers("wave_start", randomfloat(1));
 			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
 			wait 5;
 			thread scripts\server\_environment::normalWaveEffects();
 			break;
 		default:
-			thread playSoundOnAllPlayers( "wave_start", randomfloat(1) );
+			thread playSoundOnAllPlayers("wave_start", randomfloat(1));
 			announceMessage(&"ZOMBIE_NEWSPECIALWAVE", level.zom_typenames[type], (.7,.2,0), 5, 85);
 			wait 5;
 			break;
@@ -307,7 +307,7 @@ preWave(wavetype, type){
 	thread rotatePrioritizedSpawn(true);
 	level notify("start_monitoring");
 	thread scripts\players\_players::spawnJoinQueueLoop();
-	if( type != "finale" && type != "finale_short" )
+	if(type != "finale" && type != "finale_short")
 		thread waveAmbient(type);
 }
 
@@ -316,9 +316,9 @@ postWave(wavetype, type){
 	if(type != "boss")
 		thread killBuggedZombies();
 	
-	level waittill( "wave_finished" );
+	level waittill("wave_finished");
 	
-	if( type == "scary" ){
+	if(type == "scary"){
 		level.flashlightEnabled = false;
 		scripts\players\_players::flashlightForAll(false);
 	}
@@ -331,10 +331,10 @@ postWave(wavetype, type){
 
 waveAmbient(type, reset){
 	level endon("game_ended");
-	if( !isDefined( reset ) )
+	if(!isDefined(reset))
 		reset = false;
 		
-	if( !reset ){
+	if(!reset){
 		switch(type){
 			case "normal":
 				level.ambient = "zom_ambient";
@@ -349,7 +349,7 @@ waveAmbient(type, reset){
 				thread scripts\server\_environment::setBlur(scripts\bots\_types::getBlurForType(type), 20);
 				
 				fogTransition = 5;
-				if( type == "scary" ) fogTransition = 0;
+				if(type == "scary") fogTransition = 0;
 				scripts\server\_environment::setFog(scripts\bots\_types::getFogForType(type), fogTransition);
 				break;
 		}
@@ -357,7 +357,7 @@ waveAmbient(type, reset){
 	}
 	else{
 		scripts\server\_environment::stopAmbient();
-		if( type != "normal" ){
+		if(type != "normal"){
 			scripts\server\_environment::resetVision(10);
 			thread scripts\server\_environment::setBlur(level.dvar["env_blur"], 7);
 			scripts\server\_environment::setFog("default", 10);
@@ -380,10 +380,10 @@ getWaveSize(wave, type)
 {
 	// return 1;
 	// /*
-	if( !isDefined( type ) )
+	if(!isDefined(type))
 		type = "";
 		
-	if( type == "boss" )
+	if(type == "boss")
 		return 1;
 		
 	amount = 0;
@@ -406,7 +406,7 @@ getWaveSize(wave, type)
 			amount = level.dvar["surv_zombies_initial"] + players * level.dvar["surv_zombies_perplayer"] + waveid * level.dvar["surv_zombies_perwave"]; // 10 + a * 10 + x * 7
 			break;			
 	}
-	if( type == "finale" && amount < level.dvar["bot_count"] )
+	if(type == "finale" && amount < level.dvar["bot_count"])
 		amount = level.dvar["bot_count"] + 10;
 	return amount;
 	// */
@@ -416,7 +416,7 @@ burstSpawner(i){
 	level endon("game_ended");
 	level endon("wave_finished");
 	
-	while( i <= level.waveSize ){
+	while(i <= level.waveSize){
 		level waittill("all_zombies_are_dead");
 		
 		ii = 0;
@@ -426,17 +426,17 @@ burstSpawner(i){
 		
 		// iprintln("^1DEBUG: Starting burst spawn");
 		
-		// for(; ii < level.dvar["bot_count"] && level.botsAlive <= level.dvar["bot_count"] && i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
-		for(; i < level.waveSize && ii < level.finaleToSpawn; ){ // Burst spawning during finale
+		// for(; ii < level.dvar["bot_count"] && level.botsAlive <= level.dvar["bot_count"] && i < level.waveSize && ii < level.finaleToSpawn;){ // Burst spawning during finale
+		for(; i < level.waveSize && ii < level.finaleToSpawn;){ // Burst spawning during finale
 			toSpawn = scripts\bots\_types::getFullyRandomZombieType();
-			if ( isDefined( spawnZombie( toSpawn, 2 ) ) ){
+			if (isDefined(spawnZombie(toSpawn, 2))){
 					i++;
 					ii++;
 			}
 			
 			loops++;
 			
-			if( loops % 10 == 0 ) // More output! <3
+			if(loops % 10 == 0) // More output! <3
 				wait 0.05;
 		}
 		level notify("burst_done");
@@ -452,65 +452,65 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 	if(!isDefined(forcePrioritizedSpawning))
 		forcePrioritizedSpawning = false;
 		
-	if ( spawntype == 1 ) // From-sky spawn
+	if (spawntype == 1) // From-sky spawn
 	{
 		bot = scripts\bots\_bots::getAvailableBot();
-		if ( !isDefined( bot ) )
+		if (!isDefined(bot))
 			return undefined;
 		
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
-		if( level.waypoints.size < 2 ) // Fix for maps without waypoints
+		if(level.waypoints.size < 2) // Fix for maps without waypoints
 			spawn = getRandomSpawn();
 		else
 			spawn = level.waypoints[randomint(level.waypoints.size)];
 			
-		thread soulSpawn( type, spawn, bot );
+		thread soulSpawn(type, spawn, bot);
 		return bot;
 	}
-	else if ( spawntype == 2 ) { // Ground spawn for crawlers
+	else if (spawntype == 2) { // Ground spawn for crawlers
 		bot = scripts\bots\_bots::getAvailableBot();
-		if ( !isDefined( bot ) )
+		if (!isDefined(bot))
 			return undefined;
 		
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
-		if( level.waypoints.size < 2 ) // Fix for maps without waypoints
+		if(level.waypoints.size < 2) // Fix for maps without waypoints
 			spawn = getRandomSpawn();
 		else
 			spawn = level.waypoints[randomint(level.waypoints.size)];
-		thread groundSpawn( type, spawn, bot );
+		thread groundSpawn(type, spawn, bot);
 		return bot;
 	}
-	else if ( spawntype == 3 ) { // Random spawn for scary zombies
+	else if (spawntype == 3) { // Random spawn for scary zombies
 		bot = scripts\bots\_bots::getAvailableBot();
-		if ( !isDefined( bot ) )
+		if (!isDefined(bot))
 			return undefined;
 		
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
 		spawn = scripts\bots\_types::getScarySpawnpoint();
-		thread scripts\bots\_bots::spawnZombie( type, spawn, bot );
+		thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
 		return bot;
 	}
-	else if ( spawntype == 4 ) { // Random instant spawn somewhere on the map
+	else if (spawntype == 4) { // Random instant spawn somewhere on the map
 		bot = scripts\bots\_bots::getAvailableBot();
-		if ( !isDefined( bot ) )
+		if (!isDefined(bot))
 			return undefined;
 		
 		bot.hasSpawned = true;
 		
 		type = typeOverride;
 		spawn = level.waypoints[randomint(level.waypoints.size)];
-		thread scripts\bots\_bots::spawnZombie( type, spawn, bot );
+		thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
 		return bot;
 	}
-	else if ( spawntype == 5 ) { // Prioritized Spawn
+	else if (spawntype == 5) { // Prioritized Spawn
 		bot = scripts\bots\_bots::getAvailableBot();
-		if ( !isDefined( bot ) )
+		if (!isDefined(bot))
 			return undefined;
 		
 		bot.hasSpawned = true;
@@ -520,7 +520,7 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		else
 			type = scripts\gamemodes\_gamemodes::getRandomType();
 		spawn = getPrioritizedSpawn();
-		thread scripts\bots\_bots::spawnZombie( type, spawn, bot );
+		thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
 		return bot;
 	}
 	
@@ -530,26 +530,26 @@ spawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		else
 			type = scripts\gamemodes\_gamemodes::getRandomType();
 		spawn = getPrioritizedSpawn();
-		return scripts\bots\_bots::spawnZombie( type, spawn );
+		return scripts\bots\_bots::spawnZombie(type, spawn);
 	}else{
 		if (isdefined(typeOverride))
 		{
 			type = typeOverride;
 			spawn = getRandomSpawn();
-			return scripts\bots\_bots::spawnZombie( type, spawn );
+			return scripts\bots\_bots::spawnZombie(type, spawn);
 		}
 		else
 		{
 			type = scripts\gamemodes\_gamemodes::getRandomType();
 			spawn = getRandomSpawn();
-			return scripts\bots\_bots::spawnZombie( type, spawn );
+			return scripts\bots\_bots::spawnZombie(type, spawn);
 		}
 	}
 }
 
 groundSpawn(type, spawn, bot)
 {
-	//ent = spawn("script_origin", );
+	//ent = spawn("script_origin",);
 	playfx(level.groundSpawnFX, PhysicsTrace(spawn.origin, spawn.origin-200));
 	
 	scripts\bots\_bots::spawnZombie(type, spawn, bot);
@@ -566,9 +566,9 @@ soulSpawn(type, spawn, bot)
 {
 	time = 8 + randomint(13); // 20 sec max
 	org = spawn("script_model", spawn.origin + (0,0,time * 100));
-	org setmodel( "tag_origin" );
+	org setmodel("tag_origin");
 	wait .05;
-	playFXOnTag( level.soulFX , org, "tag_origin" );
+	playFXOnTag(level.soulFX , org, "tag_origin");
 	wait .05;
 	time -= randomint(3);
 	org moveto(spawn.origin+(0,0,48), time);
@@ -583,13 +583,13 @@ watchIfZombiesAreDead(){
 	level endon("wave_finished");
 	level endon("game_ended");
 	
-	ran = randomint( 4 ) + 2;
+	ran = randomint(4) + 2;
 	loops = 0;
 	
 	timelimit = 5 + randomint(10);
 	
 	while(1){
-		if( level.botsAlive <= ran || level.dvar["bot_count"] <= 5 || loops == (timelimit*10) ){
+		if(level.botsAlive <= ran || level.dvar["bot_count"] <= 5 || loops == (timelimit*10)){
 			wait 0.2 + level.finaleDelay;
 			loops = 0;
 			timelimit = 5 + randomint(10);
@@ -597,7 +597,7 @@ watchIfZombiesAreDead(){
 			
 			// iprintln("^1DEBUG: ^7Firing all_zombies_are_dead notify");
 			
-			ran = randomint( 4 ) + 2;
+			ran = randomint(4) + 2;
 			
 			wait 3;
 		}
@@ -627,7 +627,7 @@ killBuggedZombies(){
 		
 		wait 5;
 		
-		if ( level.activePlayers == level.alivePlayers ){
+		if (level.activePlayers == level.alivePlayers){
 			if (lastProg == level.waveProgress && !level.hasReceivedDamage) {
 				tollerance += 5;
 			}
@@ -638,7 +638,7 @@ killBuggedZombies(){
 			tollerance = 0;
 			
 		if (tollerance >= level.dvar["surv_stuck_tollerance"]){
-			if( detections >= 3 ){
+			if(detections >= 3){
 				iprintlnbold("Game appears to be stuck. Enforcing wave end...");
 				wait 3;
 				level notify("wave_finished");
@@ -654,7 +654,7 @@ killBuggedZombies(){
 			detections++;
 			iprintlnbold("^1Stuck zombies detected, cutting their head off!");
 			wait 1;
-			for ( i = 0; i < level.bots.size; i++ )
+			for (i = 0; i < level.bots.size; i++)
 			{
 				level.bots[i] suicide();
 				wait 0.05;
@@ -665,8 +665,8 @@ killBuggedZombies(){
 
 watchWaveProgress()
 {
-	level endon( "game_ended" );
-	level endon( "wave_finished" );
+	level endon("game_ended");
+	level endon("wave_finished");
 	while (1){
 		level waittill("bot_killed");
 		

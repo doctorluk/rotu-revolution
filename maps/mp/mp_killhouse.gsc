@@ -31,7 +31,7 @@ main()
 	game["allies_soldiertype"] = "desert";
 	game["axis_soldiertype"] = "desert";
 
-    setdvar( "r_specularcolorscale", "1" );
+    setdvar("r_specularcolorscale", "1");
     setdvar("r_glowbloomintensity0",".25");
     setdvar("r_glowbloomintensity1",".25");
     setdvar("r_glowskybleedintensity0",".3");

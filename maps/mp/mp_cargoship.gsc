@@ -32,8 +32,8 @@ main()
 	game["allies_soldiertype"] = "desert";
 	game["axis_soldiertype"] = "desert";
 
-    setdvar( "r_specularcolorscale", "1" );
-    setdvar( "compassmaxrange", "2100" );
+    setdvar("r_specularcolorscale", "1");
+    setdvar("compassmaxrange", "2100");
 
     thread maps\mp\mp_cargoship_waypoints::load_waypoints();
     thread maps\mp\mp_cargoship_tradespawns::load_tradespawns();

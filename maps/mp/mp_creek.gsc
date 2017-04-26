@@ -30,7 +30,7 @@ main()
 	game["allies_soldiertype"] = "desert";
 	game["axis_soldiertype"] = "desert";
 
-    setdvar( "r_specularcolorscale", "1" );
+    setdvar("r_specularcolorscale", "1");
 
     thread maps\mp\mp_creek_waypoints::load_waypoints();
     thread maps\mp\mp_creek_tradespawns::load_tradespawns();

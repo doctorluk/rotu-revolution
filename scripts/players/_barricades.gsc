@@ -25,8 +25,8 @@
 
 init()
 {
-	precacheModel( "com_barrel_metal" );
-	precacheModel( "com_barrel_benzin" );
+	precacheModel("com_barrel_metal");
+	precacheModel("com_barrel_benzin");
 
 	level.dynamic_barricades = [];
 	level.barricades = [];
@@ -35,24 +35,24 @@ init()
 	level.barrels[1] = 0;
 }
 
-giveBarrel( type )
+giveBarrel(type)
 {
-	if( !isDefined(type) )
+	if(!isDefined(type))
 		type = 0;
 
 	level.barrels[type]++;
-	self.carryObj = spawn( "script_model", (0,0,0) );
+	self.carryObj = spawn("script_model", (0,0,0));
 	self.carryObj.origin = self.origin + AnglesToForward(self.angles)*48;
 	self.carryObj.owner = self;
 	// wait 0.05;
-	self.carryObj linkto( self );
+	self.carryObj linkto(self);
 	self.carryObj.type = type;
 
 	self.carryObj.maxhp = 100;
-	if( self.carryObj.type == 1 )
-		self.carryObj setModel( "com_barrel_benzin" );
+	if(self.carryObj.type == 1)
+		self.carryObj setModel("com_barrel_benzin");
 	else
-		self.carryObj setModel( "com_barrel_metal" );
+		self.carryObj setModel("com_barrel_metal");
 	self.carryObj.hp = self.carryObj.maxhp;
 
 	self.canUse = false;
@@ -70,13 +70,13 @@ makeBarricade()
 placeBarrel()
 {
 	// self endon("downed");
-	self endon( "death" );
-	self endon( "disconnect" );
+	self endon("death");
+	self endon("disconnect");
 
 	wait 1;
-	while( 1 )
+	while(1)
 	{
-		if( self.isDown )
+		if(self.isDown)
 		{
 			barrel = self.carryObj;
 			barrel unlink();
@@ -90,10 +90,10 @@ placeBarrel()
 			return;
 		}
 
-		if( self attackButtonPressed() )
+		if(self attackButtonPressed())
 		{
 			newpos = playerPhysicsTrace(self.carryObj.origin, self.carryObj.origin - (0,0,1000));
-			if( self canPlaceBarrel(newpos) )
+			if(self canPlaceBarrel(newpos))
 			{
 				self.carryObj unlink();
 				wait .2;
@@ -102,9 +102,9 @@ placeBarrel()
 				self.carryObj.angles = self.angles;
 				level.dynamic_barricades[level.dynamic_barricades.size] = self.carryObj;
 				self.carryObj = undefined;
-				self notify( "used_usable" );
+				self notify("used_usable");
 				
-				iPrintLn( self.name + " placed an ^2obstacle^7." );
+				iPrintLn(self.name + " placed an ^2obstacle^7.");
 				
 				self.canUse = true;
 				self enableWeapons();
@@ -124,12 +124,12 @@ placeBarrel()
 canPlaceBarrel(newpos){
 	return (bulletTracePassed(self GetEye(), newpos, false, self.carryObj) && 
 			bulletTracePassed(self GetEye(), newpos + (0,0,48), false, self.carryObj) &&
-			bulletTracePassed(newpos, newpos + (0,0,48), false, self.carryObj) );
+			bulletTracePassed(newpos, newpos + (0,0,48), false, self.carryObj));
 }
 
 doBarricadeDamage(damage)
 {
-	if( self.bar_type == 0 )
+	if(self.bar_type == 0)
 	{
 		self.hp -= damage;
 		if (self.hp < 0)
@@ -137,7 +137,7 @@ doBarricadeDamage(damage)
 		
 		newPart = self.partsSize -  int(((self.hp -1)  / self.maxhp) * self.partsSize + 1);
 		
-		while (self.workingPart != newPart )
+		while (self.workingPart != newPart)
 		{
 			if (isdefined(self.deathFx))
 			PlayFX(self.deathFx, self.parts[self.workingPart].origin);
@@ -153,10 +153,10 @@ doBarricadeDamage(damage)
 			self.workingPart ++ ;
 		}
 	}
-	if( self.bar_type == 1 )
+	if(self.bar_type == 1)
 	{
 		self.hp -= damage;
-		if( self.hp <= 0 )
+		if(self.hp <= 0)
 		{
 			self thread barrelDeath();
 		}
@@ -198,13 +198,13 @@ removePart()
 barrelDeath()
 {
 	level.barrels[self.type] -= 1;
-	level.dynamic_barricades = removeFromArray( level.dynamic_barricades, self );
+	level.dynamic_barricades = removeFromArray(level.dynamic_barricades, self);
 
-	if( self.type == 1 )
+	if(self.type == 1)
 	{
-		playFX( level.explodeFX, self.origin );
-		self playSound( "explo_metal_rand" );
-		self thread scripts\players\_players::doAreaDamage( 200, 1000, self.owner );
+		playFX(level.explodeFX, self.origin);
+		self playSound("explo_metal_rand");
+		self thread scripts\players\_players::doAreaDamage(200, 1000, self.owner);
 	}
 
 	wait .01;

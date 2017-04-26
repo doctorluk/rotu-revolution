@@ -22,14 +22,14 @@
 
 getTurretCount(){
 	
-	if( !isDefined( self.useObjects ) )
+	if(!isDefined(self.useObjects))
 		return 0;
 	count = 0;
 	
-	for( i = 0; i < self.useObjects.size; i++ ){
+	for(i = 0; i < self.useObjects.size; i++){
 		currentEntity = self.useObjects[i];
 		
-		if( currentEntity.type == "turret" )
+		if(currentEntity.type == "turret")
 			count++;
 	}
 	return count;
@@ -40,14 +40,14 @@ waitTillNotMoving(delay){
 	self endon("death");
 	level endon("game_ended");
 	
-	if( !isDefined(delay) )
+	if(!isDefined(delay))
 		delay = 0.1;
 		
 	oldPosition = self.origin;
 	
 	while(1){
 		wait delay;
-		if( oldPosition == self.origin )
+		if(oldPosition == self.origin)
 			break;
 		oldPosition = self.origin;
 	}
@@ -55,7 +55,7 @@ waitTillNotMoving(delay){
 
 isOnServer(guid){
 	for(i = 0; i < level.players.size; i++){
-		if( level.players[i] getGUID() == guid )
+		if(level.players[i] getGUID() == guid)
 			return true;
 	}
 	return false;
@@ -63,7 +63,7 @@ isOnServer(guid){
 
 getNameByGUID(guid){
 	for(i = 0; i < level.players.size; i++){
-		if( level.players[i] getGUID() == guid )
+		if(level.players[i] getGUID() == guid)
 			return level.players[i].name;
 	}
 	return "";
@@ -71,7 +71,7 @@ getNameByGUID(guid){
 
 getPlayerEntityByGUID(guid){
 	for(i = 0; i < level.players.size; i++){
-		if( level.players[i] getGUID() == guid )
+		if(level.players[i] getGUID() == guid)
 			return level.players[i];
 	}
 }
@@ -90,7 +90,7 @@ freezePlayerForRoundEnd()
 	self closeInGameMenu();
 	self scripts\players\_usables::usableAbort();
 	
-	self freezeControls( true );
+	self freezeControls(true);
 }
 
 unfreezePlayerForRoundEnd()
@@ -98,19 +98,19 @@ unfreezePlayerForRoundEnd()
 	self closeMenu();
 	self closeInGameMenu();
 	
-	self freezeControls( false );
+	self freezeControls(false);
 }
 
 reviveActivePlayers(){
 
-	if ( level.dvar["surv_endround_revive"] ) {
+	if (level.dvar["surv_endround_revive"]) {
 	
 		revives = 0;
-		for ( i = 0 ; i < level.players.size; i++ ) {
+		for (i = 0 ; i < level.players.size; i++) {
 			player = level.players[i];
-			if( !isReallyPlaying(player) )
+			if(!isReallyPlaying(player))
 				continue;
-			if ( player.isDown && !player.isZombie ) {
+			if (player.isDown && !player.isZombie) {
 				player thread scripts\players\_players::revive();
 				revives++;
 			}
@@ -129,7 +129,7 @@ freezeAll(){
 	for(i = 0; i < level.players.size; i++){
 		p = level.players[i];
 		
-		if( !isReallyPlaying(p) )
+		if(!isReallyPlaying(p))
 			continue;
 		p freezePlayerForRoundEnd();
 	}
@@ -144,7 +144,7 @@ unfreezeAll(){
 }
 
 isReallyPlaying(player){
-	if( !isDefined( player ) )
+	if(!isDefined(player))
 		return false;
 	
 	if(player.sessionstate != "playing" || !player.isActive || player.sessionteam != "allies")
@@ -154,7 +154,7 @@ isReallyPlaying(player){
 }
 
 playSoundOnAllPlayers(sound, delay){
-	if( isDefined( delay ) && delay >= 0.05 )
+	if(isDefined(delay) && delay >= 0.05)
 		wait delay;
 	for(i = 0; i < level.players.size; i++)
 		level.players[i] playlocalsound(sound);
@@ -162,7 +162,7 @@ playSoundOnAllPlayers(sound, delay){
 
 pressesAnyButton(){
 
-	if( self adsbuttonpressed() || self attackbuttonpressed() || self fragbuttonpressed() || self meleebuttonpressed() || self secondaryoffhandbuttonpressed() || self usebuttonpressed() )
+	if(self adsbuttonpressed() || self attackbuttonpressed() || self fragbuttonpressed() || self meleebuttonpressed() || self secondaryoffhandbuttonpressed() || self usebuttonpressed())
 		return true;
 		
 	return false;

@@ -32,7 +32,7 @@ main()
     game["allies_soldiertype"] = "woodland";
     game["axis_soldiertype"] = "woodland";
 
-    setdvar( "r_specularcolorscale", "1" );
+    setdvar("r_specularcolorscale", "1");
     setdvar("compassmaxrange","2000");
 
     thread maps\mp\mp_bloc_waypoints::load_waypoints();

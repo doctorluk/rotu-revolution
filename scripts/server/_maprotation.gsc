@@ -32,6 +32,6 @@ map_rotate()
 	scripts\server\_maps::changeMap(nextmap);
 	else
 	{
-		map_restart( false );
+		map_restart(false);
 	}
 }

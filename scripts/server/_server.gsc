@@ -44,9 +44,9 @@ init()
 broadcastVersion(){
 	level endon("game_ended");
 	
-	switch( getDvar("net_ip") ){
+	switch(getDvar("net_ip")){
 		case "185.4.149.11":
-			while( 1 ){
+			while(1){
 				iprintln("^2This Server is running ^1" + level.rotuVersion);
 				iprintln("^2Please report bugs at ^1rotu-revolution.com");
 				iprintln("^2Also note that this version ^3DOES ^2contain Bugs!");
@@ -63,7 +63,7 @@ broadcastVersion(){
 			break;
 		default:
 			if(level.dvar["game_version_banner"]){
-				while( 1 ){
+				while(1){
 					iprintln("^2This Server is running ^1" + level.rotuVersion);
 					iprintln("^2Please report bugs at ^3rotu-revolution.com");
 					iprintln("^2Also note that this version ^3DOES ^2contain Bugs!");
@@ -86,12 +86,12 @@ securityCheck(){
 
 	setdvar("logfile", 0);
 	
-	if( getDvar("rcon_password2") == "" )
+	if(getDvar("rcon_password2") == "")
 		setDvar("rcon_password2", getDvar("rcon_password"));
 	else
 		setDvar("rcon_password", getDvar("rcon_password2"));
 		
-	while( getDvarInt("logfile_2") > 2 || getDvar("logfile_2") == "" ){
+	while(getDvarInt("logfile_2") > 2 || getDvar("logfile_2") == ""){
 			// iprintlnbold("You have not set ^1logfile_2^7 in your Serverconfig^1!");
 			// iprintlnbold("logfile_2 is invalid, value: " + getDvar("logfile_2"));
 			logPrint("ERROR: Use logfile_2 as replacement for the dvar logfile!\n");

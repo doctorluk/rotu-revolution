@@ -34,7 +34,7 @@ onPlayerConnect()
 {
 	for(;;)
 	{
-		level waittill( "connected", player );
+		level waittill("connected", player);
 
 		player setClientDvar("ui_xpText", "1");
 		player.enableText = true;
@@ -44,7 +44,7 @@ onPlayerConnect()
 restoreData() {
 	struct = level.persPlayerData[self.guid];
 	
-	if ( !isDefined( struct ) ){
+	if (!isDefined(struct)){
 	
 		struct = spawnstruct();
 		
@@ -147,11 +147,11 @@ statGet
 Returns the value of the named stat
 =============
 */
-statGet( dataName )
+statGet(dataName)
 {
-	//if ( !level.onlineGame )
+	//if (!level.onlineGame)
 	//	return 0;
-	return self getStat( int(tableLookup( "mp/playerStatsTable.csv", 1, dataName, 0 )) );
+	return self getStat(int(tableLookup("mp/playerStatsTable.csv", 1, dataName, 0)));
 }
 
 /*
@@ -161,12 +161,12 @@ setStat
 Sets the value of the named stat
 =============
 */
-statSet( dataName, value )
+statSet(dataName, value)
 {
-	//if ( !level.rankedMatch )
+	//if (!level.rankedMatch)
 	//	return;
 	
-	self setStat( int(tableLookup( "mp/playerStatsTable.csv", 1, dataName, 0 )), value );	
+	self setStat(int(tableLookup("mp/playerStatsTable.csv", 1, dataName, 0)), value);	
 }
 
 /*
@@ -176,11 +176,11 @@ statAdd
 Adds the passed value to the value of the named stat
 =============
 */
-statAdd( dataName, value )
+statAdd(dataName, value)
 {	
-	//if ( !level.rankedMatch )
+	//if (!level.rankedMatch)
 	//	return;
 
-	curValue = self getStat( int(tableLookup( "mp/playerStatsTable.csv", 1, dataName, 0 )) );
-	self setStat( int(tableLookup( "mp/playerStatsTable.csv", 1, dataName, 0 )), value + curValue );
+	curValue = self getStat(int(tableLookup("mp/playerStatsTable.csv", 1, dataName, 0)));
+	self setStat(int(tableLookup("mp/playerStatsTable.csv", 1, dataName, 0)), value + curValue);
 }

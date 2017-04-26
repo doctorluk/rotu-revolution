@@ -17,7 +17,7 @@
 
 init()
 {
-	if( level.dvar["game_lan_mode"] )
+	if(level.dvar["game_lan_mode"])
 		return;
 	
 /*	level.cheatDvars = [];						// This is a list of client side dvars we should check
@@ -41,7 +41,7 @@ onPlayerConnect()
 {
 	while(1)
 	{
-		level waittill( "connected", player );
+		level waittill("connected", player);
 		player thread check();
 	}
 }
@@ -55,28 +55,28 @@ check()
 
 checkValidGuid()
 {
-	self endon( "disconnect" );
+	self endon("disconnect");
 
 	lpGuid = self getGuid();
 	while(1)
 	{
 		guid = self getGuid();
-		if( guid != lpGuid || guid.size != 32 )
+		if(guid != lpGuid || guid.size != 32)
 		{
 			// the guid is not supposed to change, and has to be always 32 chars long
-			self sayAll( "I'm a hacking idiot, for which I now get kicked!" );
-			kick( self getEntityNumber() );
+			self sayAll("I'm a hacking idiot, for which I now get kicked!");
+			kick(self getEntityNumber());
 		}
 		else
 		{
 			// if it seems valid we check if it's hexadecimal
-			for( i = 0; i < 32; i++ )
+			for(i = 0; i < 32; i++)
 			{
-				char = GetSubStr( guid, i, i+1 );
-				if( !isHexadecimal(char) || char != toLower(char) )
+				char = GetSubStr(guid, i, i+1);
+				if(!isHexadecimal(char) || char != toLower(char))
 				{
-					self sayAll( "I'm a hacking idiot, for which I now get kicked!" );
-					kick( self getEntityNumber() );
+					self sayAll("I'm a hacking idiot, for which I now get kicked!");
+					kick(self getEntityNumber());
 				}
 			}
 		}
@@ -89,22 +89,22 @@ checkValidGuid()
 
 watchName()
 {
-	self endon( "disconnect" );
+	self endon("disconnect");
 
 	violations = 0;
-	while( 1 )
+	while(1)
 	{
-		name = toLower( getSubStr(self.name, 0, 3) );
-		if( name == "bot" )		// should we maybe make this a list off names instead?
+		name = toLower(getSubStr(self.name, 0, 3));
+		if(name == "bot")		// should we maybe make this a list off names instead?
 		{
-			self iPrintLnBold( "^1Warning: bot is not allowed as name/prefix!" );
+			self iPrintLnBold("^1Warning: bot is not allowed as name/prefix!");
 			violations++;
 		}
-		else if( violations > 0 && false /*level.dvar["admin_decay_namedbot"] TODO: ADD CONFIG VAR*/)
+		else if(violations > 0 && false /*level.dvar["admin_decay_namedbot"] TODO: ADD CONFIG VAR*/)
 			violations--;
 		
-		if( violations >= 10 )
-			kick( self getEntityNumber() );
+		if(violations >= 10)
+			kick(self getEntityNumber());
 		
 		wait 2;
 	}
@@ -113,47 +113,47 @@ watchName()
 /*
 watchCheatDvars()
 {
-	self endon( "disconnect" );
+	self endon("disconnect");
 
 	violations = 0;
-	while( 1 )
+	while(1)
 	{
-		for( i = 0; i < level.cheatDvars.size; i++ )
+		for(i = 0; i < level.cheatDvars.size; i++)
 		{
 			dvarname = level.cheatDvars[i].name;
 			dvarvalue = level.cheatDvars[i].value;
 					
-			value = self getClientDvar( dvarname );
+			value = self getClientDvar(dvarname);
 			
-			if( isSubStr(dvarvalue, "-") )
+			if(isSubStr(dvarvalue, "-"))
 			{
-				from_to = strTok( dvarvalue, "-" );
-				if( int(value) < int(from_to[0]) || int(value) > int(from_to[1]) )
+				from_to = strTok(dvarvalue, "-");
+				if(int(value) < int(from_to[0]) || int(value) > int(from_to[1]))
 				{
-					self iPrintLnBold( "^1", dvarname, " is not allowed outside the range off ", dvarvalue, "!" );
+					self iPrintLnBold("^1", dvarname, " is not allowed outside the range off ", dvarvalue, "!");
 					violations++;	
 				}
 			}
-			else if( isSubStr(dvarvalue, ";") )
+			else if(isSubStr(dvarvalue, ";"))
 			{
-				if( !isSubStr( dvarvalue, value ) )
+				if(!isSubStr(dvarvalue, value))
 				{
-					self iPrintLnBold( "^1", dvarname, " is not allowed to be anything but ", dvarvalue, "!" );
+					self iPrintLnBold("^1", dvarname, " is not allowed to be anything but ", dvarvalue, "!");
 					violations++;
 				}
 			}
 			else
 			{
-				if( value != dvarvalue )
+				if(value != dvarvalue)
 				{
-					self iPrintLnBold( "^1", dvarname, " is not allowed to be any other value then ", dvarvalue, "!" );
+					self iPrintLnBold("^1", dvarname, " is not allowed to be any other value then ", dvarvalue, "!");
 					violations++;
 				}
 			}
 		}
 		
-		if( violations >= 10 )
-			kick( self getEntityNumber() );
+		if(violations >= 10)
+			kick(self getEntityNumber());
 		
 		wait 2;
 	}	

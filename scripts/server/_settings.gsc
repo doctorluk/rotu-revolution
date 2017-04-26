@@ -119,7 +119,7 @@ loadSettings()
 	// dvarInt(	"surv", 		"specialwaves",	 		5,		1,		100);
 	
 	// 1 = Normal, 2 = Dogs, 3 = Burning, 4 = Crawlers, 5 = Hell, 6 = Scary, 7 = Boss (to be changed), 8 = grouped Normal, 20 = Increase Shop Costs and Zombie Damage
-	dvarString( "surv",			"waves",				"1;2;6;4;7;20;8;3;6;7");
+	dvarString("surv",			"waves",				"1;2;6;4;7;20;8;3;6;7");
 	dvarInt(	"surv", 		"zombies_initial",		10,		1,		1000);
 	dvarInt(	"surv", 		"zombies_perplayer",	10,		1,		1000);
 	dvarInt(	"surv", 		"zombies_perwave",		5,		1,		1000);
@@ -142,15 +142,15 @@ loadSettings()
 	dvarInt(	"surv",			"stuck_tollerance",		30,		10,		360);
 	dvarInt(	"surv",			"waves_repeat",			2,		1,		100);
 	dvarBool(	"surv",			"dynamic_finale_difficulty",		1); // Use game_difficulty settings or not
-	dvarInt(	"surv",			"finale_minplayers",	7,	1, 64 ); // A minimum amount of players that have to play in order to start the final wave
+	dvarInt(	"surv",			"finale_minplayers",	7,	1, 64); // A minimum amount of players that have to play in order to start the final wave
 	dvarBool(	"surv",			"endround_revive",		1);
 	dvarBool(	"surv",			"rotu_stats",			0); // Enable RotU-R stats logging when a round ends?
 	
-	dvarInt(	"surv",			"phoenix_minplayers",	3,	1, 64 );
-	dvarInt(	"surv",			"phoenix_minwave",	3,	1, 64 );
-	dvarFloat(	"surv",			"phoenix_base_percentage",	0.2, 0.01, 1.0 );
-	dvarInt(	"surv",			"phoenix_wave_stepsize",	2, 1, 100 );
-	dvarFloat(	"surv",			"phoenix_wave_percentage",	0.03, 0,  1 );
+	dvarInt(	"surv",			"phoenix_minplayers",	3,	1, 64);
+	dvarInt(	"surv",			"phoenix_minwave",	3,	1, 64);
+	dvarFloat(	"surv",			"phoenix_base_percentage",	0.2, 0.01, 1.0);
+	dvarInt(	"surv",			"phoenix_wave_stepsize",	2, 1, 100);
+	dvarFloat(	"surv",			"phoenix_wave_percentage",	0.03, 0,  1);
 	
 	
 	dvarInt(	"shop", 		"item1_costs",	 		2000,		1,		100000); // Restore Health
@@ -170,8 +170,8 @@ loadSettings()
 	dvarBool(	"shop",			"multiply_costs",			1);
 	dvarInt(	"shop", 		"multiply_costs_amount",	 	40,		0,		100);
 	
-	dvarString(	"surv",			"playedmaps",	"" );
-	dvarString(	"surv",			"recentmaps",	"" );
+	dvarString(	"surv",			"playedmaps",	"");
+	dvarString(	"surv",			"recentmaps",	"");
 
 	setdvar("g_teamname_axis", "^9Zombies");
 	setdvar("g_teamname_allies", "Survivors");

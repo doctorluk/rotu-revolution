@@ -45,7 +45,7 @@ SetupCallbacks()
 
 catchBot()
 {
-	if( self getStat(512) == 100 ) //RELOADING ZOMBIE :]
+	if(self getStat(512) == 100) //RELOADING ZOMBIE :]
 	{
 		level.loadBots = 0;
 		self.isBot = true;
@@ -79,7 +79,7 @@ Callback_PlayerConnect()
 	{
 		self scripts\players\_weapons::initPlayerWeapons();
 		
-		iPrintln( self.name + " ^7connected." );
+		iPrintln(self.name + " ^7connected.");
 		
 		self setClientDvars("cg_drawSpectatorMessages", 1,
 							"ui_hud_hardcore", 0,
@@ -138,26 +138,26 @@ Callback_PlayerDisconnect()
 	if (self.isBot || !self.hasBegun)
 	return;
 	
-	// if( isReallyPlaying( self ) )
+	// if(isReallyPlaying(self))
 		// self.persData.lastPlayedWave = level.currentWave;
 		
 	self scripts\players\_players::onPlayerDisconnect();
 		
-	if( isDefined( self.persData.lastPlayedWave ) && isAlive( self ) ){
+	if(isDefined(self.persData.lastPlayedWave) && isAlive(self)){
 		// logPrint("Updated your lastPlayedWave, " + self.name + ", it is " + level.currentWave + "\n");
 		self.lastPlayedWave = level.currentWave;
 		self.persData.lastPlayedWave = self.lastPlayedWave;
 	}
 	
 	self scripts\players\_players::cleanup();
-	if ( isdefined(self.carryObj) )
+	if (isdefined(self.carryObj))
 			self.carryObj delete();
 	
 	self setclientdvars("ui_hud_hardcore", 0,
 						"ui_rotuversion_short", "",
 						"ui_damagereduced", 0);
 	
-	//iPrintln( self.name + " ^7disconnected." );
+	//iPrintln(self.name + " ^7disconnected.");
 	logPrint("LOG_ROTU_RANK;" + self getGuid() + ";" + self.pers["prestige"] + ";" + self.pers["rank"] + "\n");
 	lpselfnum = self getEntityNumber();
 	lpGuid = self getGuid();
@@ -166,7 +166,7 @@ Callback_PlayerDisconnect()
 	level.players = removeFromArray(level.players, self);
 	level.joinQueue = removeFromArray(level.joinQueue, self);
 	
-	self notify( "disconnect" );
+	self notify("disconnect");
 	level notify("update_classcounts");
 }
 

@@ -32,55 +32,55 @@ init()
 
 	precacheShader("white");
 
-	precacheString( &"RANK_PLAYER_WAS_PROMOTED_N" );
-	precacheString( &"RANK_PLAYER_WAS_PROMOTED" );
-	precacheString( &"RANK_PROMOTED" );
-	precacheString( &"MP_PLUS" );
-	precacheString( &"RANK_ROMANI" );
-	precacheString( &"RANK_ROMANII" );
+	precacheString(&"RANK_PLAYER_WAS_PROMOTED_N");
+	precacheString(&"RANK_PLAYER_WAS_PROMOTED");
+	precacheString(&"RANK_PROMOTED");
+	precacheString(&"MP_PLUS");
+	precacheString(&"RANK_ROMANI");
+	precacheString(&"RANK_ROMANII");
 
-	registerScoreInfo( "kill", 10 );
-	registerScoreInfo( "assist0", 1 );
-	registerScoreInfo( "assist1", 2 );
-	registerScoreInfo( "assist2", 3 );
-	registerScoreInfo( "assist3", 5 );
-	registerScoreInfo( "assist4", 7 );
-	registerScoreInfo( "assist5", 10 );
-	registerScoreInfo( "revive", 50 );
-	registerScoreInfo( "headshot", 10 );
-	registerScoreInfo( "cheat", 5000 );
-	registerScoreInfo( "suicide", 0 );
-	registerScoreInfo( "teamkill", 0 );
+	registerScoreInfo("kill", 10);
+	registerScoreInfo("assist0", 1);
+	registerScoreInfo("assist1", 2);
+	registerScoreInfo("assist2", 3);
+	registerScoreInfo("assist3", 5);
+	registerScoreInfo("assist4", 7);
+	registerScoreInfo("assist5", 10);
+	registerScoreInfo("revive", 50);
+	registerScoreInfo("headshot", 10);
+	registerScoreInfo("cheat", 5000);
+	registerScoreInfo("suicide", 0);
+	registerScoreInfo("teamkill", 0);
 
 	
-	registerScoreInfo( "challenge", 250 );
+	registerScoreInfo("challenge", 250);
 
-	level.maxRank = int(tableLookup( "mp/rankTable.csv", 0, "maxrank", 1 ));
-	level.maxPrestige = int(tableLookup( "mp/rankIconTable.csv", 0, "maxprestige", 1 ));
+	level.maxRank = int(tableLookup("mp/rankTable.csv", 0, "maxrank", 1));
+	level.maxPrestige = int(tableLookup("mp/rankIconTable.csv", 0, "maxprestige", 1));
 	
 	pId = 0;
 	rId = 0;
-	for ( pId = 0; pId <= level.maxPrestige; pId++ )
+	for (pId = 0; pId <= level.maxPrestige; pId++)
 	{
-		for ( rId = 0; rId <= level.maxRank; rId++ )
-			precacheShader( tableLookup( "mp/rankIconTable.csv", 0, rId, pId+1 ) );
+		for (rId = 0; rId <= level.maxRank; rId++)
+			precacheShader(tableLookup("mp/rankIconTable.csv", 0, rId, pId+1));
 	}
 
 	rankId = 0;
-	rankName = tableLookup( "mp/ranktable.csv", 0, rankId, 1 );
-	assert( isDefined( rankName ) && rankName != "" );
+	rankName = tableLookup("mp/ranktable.csv", 0, rankId, 1);
+	assert(isDefined(rankName) && rankName != "");
 		
-	while ( isDefined( rankName ) && rankName != "" )
+	while (isDefined(rankName) && rankName != "")
 	{
-		level.rankTable[rankId][1] = tableLookup( "mp/ranktable.csv", 0, rankId, 1 );
-		level.rankTable[rankId][2] = tableLookup( "mp/ranktable.csv", 0, rankId, 2 );
-		level.rankTable[rankId][3] = tableLookup( "mp/ranktable.csv", 0, rankId, 3 );
-		level.rankTable[rankId][7] = tableLookup( "mp/ranktable.csv", 0, rankId, 7 );
+		level.rankTable[rankId][1] = tableLookup("mp/ranktable.csv", 0, rankId, 1);
+		level.rankTable[rankId][2] = tableLookup("mp/ranktable.csv", 0, rankId, 2);
+		level.rankTable[rankId][3] = tableLookup("mp/ranktable.csv", 0, rankId, 3);
+		level.rankTable[rankId][7] = tableLookup("mp/ranktable.csv", 0, rankId, 7);
 
-		precacheString( tableLookupIString( "mp/ranktable.csv", 0, rankId, 16 ) );
+		precacheString(tableLookupIString("mp/ranktable.csv", 0, rankId, 16));
 
 		rankId++;
-		rankName = tableLookup( "mp/ranktable.csv", 0, rankId, 1 );		
+		rankName = tableLookup("mp/ranktable.csv", 0, rankId, 1);		
 	}
 
 	level.statOffsets = [];
@@ -100,87 +100,87 @@ init()
 }
 
 
-isRegisteredEvent( type )
+isRegisteredEvent(type)
 {
-	if ( isDefined( level.scoreInfo[type] ) )
+	if (isDefined(level.scoreInfo[type]))
 		return true;
 	else
 		return false;
 }
 
-registerScoreInfo( type, value )
+registerScoreInfo(type, value)
 {
 	level.scoreInfo[type]["value"] = value;
 }
 
-getScoreInfoValue( type )
+getScoreInfoValue(type)
 {
-	return ( level.scoreInfo[type]["value"] );
+	return (level.scoreInfo[type]["value"]);
 }
 
-getScoreInfoLabel( type )
+getScoreInfoLabel(type)
 {
-	return ( level.scoreInfo[type]["label"] );
+	return (level.scoreInfo[type]["label"]);
 }
 
-getRankInfoMinXP( rankId )
+getRankInfoMinXP(rankId)
 {
 	return int(level.rankTable[rankId][2]);
 }
 
-getRankInfoXPAmt( rankId )
+getRankInfoXPAmt(rankId)
 {
 	return int(level.rankTable[rankId][3]);
 }
 
-getRankInfoMaxXp( rankId )
+getRankInfoMaxXp(rankId)
 {
 	return int(level.rankTable[rankId][7]);
 }
 
-getRankInfoFull( rankId )
+getRankInfoFull(rankId)
 {
-	return tableLookupIString( "mp/ranktable.csv", 0, rankId, 16 );
+	return tableLookupIString("mp/ranktable.csv", 0, rankId, 16);
 }
 
-getRankInfoIcon( rankId, prestigeId )
+getRankInfoIcon(rankId, prestigeId)
 {
-	return tableLookup( "mp/rankIconTable.csv", 0, rankId, prestigeId+1 );
+	return tableLookup("mp/rankIconTable.csv", 0, rankId, prestigeId+1);
 }
 
-getRankInfoUnlockWeapon( rankId )
+getRankInfoUnlockWeapon(rankId)
 {
-	return tableLookup( "mp/ranktable.csv", 0, rankId, 8 );
+	return tableLookup("mp/ranktable.csv", 0, rankId, 8);
 }
 
-getRankInfoUnlockPerk( rankId )
+getRankInfoUnlockPerk(rankId)
 {
-	return tableLookup( "mp/ranktable.csv", 0, rankId, 9 );
+	return tableLookup("mp/ranktable.csv", 0, rankId, 9);
 }
 
-getRankInfoUnlockChallenge( rankId )
+getRankInfoUnlockChallenge(rankId)
 {
-	return tableLookup( "mp/ranktable.csv", 0, rankId, 10 );
+	return tableLookup("mp/ranktable.csv", 0, rankId, 10);
 }
 
-getRankInfoUnlockFeature( rankId )
+getRankInfoUnlockFeature(rankId)
 {
-	return tableLookup( "mp/ranktable.csv", 0, rankId, 15 );
+	return tableLookup("mp/ranktable.csv", 0, rankId, 15);
 }
 
-getRankInfoUnlockCamo( rankId )
+getRankInfoUnlockCamo(rankId)
 {
-	return tableLookup( "mp/ranktable.csv", 0, rankId, 11 );
+	return tableLookup("mp/ranktable.csv", 0, rankId, 11);
 }
 
-getRankInfoUnlockAttachment( rankId )
+getRankInfoUnlockAttachment(rankId)
 {
-	return tableLookup( "mp/ranktable.csv", 0, rankId, 12 );
+	return tableLookup("mp/ranktable.csv", 0, rankId, 12);
 }
 
-getRankInfoLevel( rankId )
+getRankInfoLevel(rankId)
 {
-	return int( tableLookup( "mp/ranktable.csv", 0, rankId, 13 ) );
+	return int(tableLookup("mp/ranktable.csv", 0, rankId, 13));
 }
 
 /**
@@ -191,32 +191,32 @@ onPlayerConnect()
 {
 	//for(;;)
 	//{
-	//	level waittill( "connected", player );
+	//	level waittill("connected", player);
 	
-		self endon( "disconnect" ); //A user can lose connection exactly after connecting
+		self endon("disconnect"); //A user can lose connection exactly after connecting
 
-		self.pers["rankxp"] = self scripts\players\_persistence::statGet( "rankxp" );
-		rankId = self getRankForXp( self getRankXP() );
+		self.pers["rankxp"] = self scripts\players\_persistence::statGet("rankxp");
+		rankId = self getRankForXp(self getRankXP());
 		self.pers["rank"] = rankId;
 		self.pers["participation"] = 0;
 
-		self scripts\players\_persistence::statSet( "rank", rankId );
-		self scripts\players\_persistence::statSet( "minxp", getRankInfoMinXp( rankId ) );
-		self scripts\players\_persistence::statSet( "maxxp", getRankInfoMaxXp( rankId ) );
-		self scripts\players\_persistence::statSet( "lastxp", self.pers["rankxp"] );
+		self scripts\players\_persistence::statSet("rank", rankId);
+		self scripts\players\_persistence::statSet("minxp", getRankInfoMinXp(rankId));
+		self scripts\players\_persistence::statSet("maxxp", getRankInfoMaxXp(rankId));
+		self scripts\players\_persistence::statSet("lastxp", self.pers["rankxp"]);
 		
 		prestige = self getPrestigeLevel();
 		
 		self.rankHacker = false;
 		if (prestige>1) {
 			stat = self getstat(253);
-			if (rankId>stat ) {
+			if (rankId>stat) {
 				if (rankId<20) {
 					self setstat(253, rankId);
 				} else {
 					self.rankHacker = true;
 					iprintln(self.name + " was kicked for rank hacking.");
-					Kick( self getEntityNumber());
+					Kick(self getEntityNumber());
 				}
 			} else { if (stat != rankId) self setstat(253, rankId); }
 		}
@@ -225,21 +225,21 @@ onPlayerConnect()
 		// for keeping track of rank through stat#251 used by menu script
 		// attempt to move logic out of menus as much as possible
 		self.cur_rankNum = rankId;
-		assertex( isdefined(self.cur_rankNum), "rank: "+ rankId + " does not have an index, check mp/ranktable.csv" );
-		self setStat( 251, self.cur_rankNum );
+		assertex(isdefined(self.cur_rankNum), "rank: "+ rankId + " does not have an index, check mp/ranktable.csv");
+		self setStat(251, self.cur_rankNum);
 		
 		
 		
 		if (prestige!=self getstat(210)) {
 			self.rankHacker = true;
 			iprintln(self.name + " was kicked for prestige hacking.");
-			Kick( self getEntityNumber());
+			Kick(self getEntityNumber());
 		}
 		
-		self setRank( rankId, prestige );
+		self setRank(rankId, prestige);
 		self.pers["prestige"] = prestige;
 		
-		self setclientdvar( "ui_lobbypopup", "" );
+		self setclientdvar("ui_lobbypopup", "");
 		
 		
 		//player updateChallenges();
@@ -305,33 +305,33 @@ onPlayerSpawned()
 	}*/
 }
 
-roundUp( floatVal )
+roundUp(floatVal)
 {
-	if ( int( floatVal ) != floatVal )
-		return int( floatVal+1 );
+	if (int(floatVal) != floatVal)
+		return int(floatVal+1);
 	else
-		return int( floatVal );
+		return int(floatVal);
 }
 
-giveRankXP( type, value )
+giveRankXP(type, value)
 {
 	self endon("disconnect");
 	
 	if (self.rankHacker)
 	return;
 
-	/*if ( level.teamBased && (!level.playerCount["allies"] || !level.playerCount["axis"]) )
+	/*if (level.teamBased && (!level.playerCount["allies"] || !level.playerCount["axis"]))
 		return;
-	else if ( !level.teamBased && (level.playerCount["allies"] + level.playerCount["axis"] < 2) )
+	else if (!level.teamBased && (level.playerCount["allies"] + level.playerCount["axis"] < 2))
 		return;*/
 
-	if ( !isDefined( value ) )
-		value = getScoreInfoValue( type );
+	if (!isDefined(value))
+		value = getScoreInfoValue(type);
 	
-	if ( !isDefined( self.xpGains[type] ) )
+	if (!isDefined(self.xpGains[type]))
 		self.xpGains[type] = 0;
 
-	/*switch( type )
+	/*switch(type)
 	{
 		case "kill":
 		case "headshot":
@@ -345,9 +345,9 @@ giveRankXP( type, value )
 		case "assault":
 		case "plant":
 		case "defuse":
-			if ( level.numLives >= 1 )
+			if (level.numLives >= 1)
 			{
-				multiplier = max(1,int( 10/level.numLives ));
+				multiplier = max(1,int(10/level.numLives));
 				value = int(value * multiplier);
 			}
 			break;
@@ -357,20 +357,20 @@ giveRankXP( type, value )
 	
 	self.xpGains[type] += value;
 		
-	self incRankXP( value );
+	self incRankXP(value);
 
-	if (  updateRank() )
+	if ( updateRank())
 		self thread updateRankAnnounceHUD();
 
-	//if ( isDefined( self.enableText ) && self.enableText && !level.hardcoreMode )
+	//if (isDefined(self.enableText) && self.enableText && !level.hardcoreMode)
 	//{
-		if ( type == "teamkill" )
-			self thread updateRankScoreHUD( 0 - getScoreInfoValue( "kill" ) );
+		if (type == "teamkill")
+			self thread updateRankScoreHUD(0 - getScoreInfoValue("kill"));
 		else
-			self thread updateRankScoreHUD( value );
+			self thread updateRankScoreHUD(value);
 	//}
 
-	/*switch( type )
+	/*switch(type)
 	{
 		case "kill":
 		case "headshot":
@@ -418,27 +418,27 @@ giveRankXP( type, value )
 
 /* [0] = player-ID, [1] = prestige level, [2] = force overwrite */
 overwritePrestige(args){
-	if( args.size != 2 && args.size != 3 )
+	if(args.size != 2 && args.size != 3)
 		return;
 		
 	// args[3] = check whether old prestige > new prestige, don't act if not
-	if( args.size == 2 )
+	if(args.size == 2)
 		args[2] = 0;
 	
-	for( i = 0; i < level.players.size; i++ )
-		if( level.players[i] getEntityNumber() == int(args[0]) ){
+	for(i = 0; i < level.players.size; i++)
+		if(level.players[i] getEntityNumber() == int(args[0])){
 			player = level.players[i];
 			player endon("disconnect");
 			prestige = int(args[1]);
 			
-			if( !int(args[2]) ) // in case we don't overwrite, we don't continue
-				if( prestige <= player.pers["prestige"] )
+			if(!int(args[2])) // in case we don't overwrite, we don't continue
+				if(prestige <= player.pers["prestige"])
 					return;
 				
-			if( prestige > level.maxPrestige )
+			if(prestige > level.maxPrestige)
 				prestige = level.maxPrestige;
 			
-			if( prestige < player.pers["prestige"] )
+			if(prestige < player.pers["prestige"])
 				player fullReset();
 			
 			player.pers["prestige"] = prestige;
@@ -451,35 +451,35 @@ overwritePrestige(args){
 
 /* [0] = player-ID, [1] = prestige level, [2] = force overwrite */
 overwriteRank(args){
-	if( args.size != 2 && args.size != 3 )
+	if(args.size != 2 && args.size != 3)
 		return;
 		
 	// args[3] = check whether old prestige > new prestige, don't act if not
-	if( args.size == 2 )
+	if(args.size == 2)
 		args[2] = 0;
 	
-	for( i = 0; i < level.players.size; i++ )
-		if( level.players[i] getEntityNumber() == int(args[0]) ){
+	for(i = 0; i < level.players.size; i++)
+		if(level.players[i] getEntityNumber() == int(args[0])){
 			player = level.players[i];
 			player endon("disconnect");
 			rank = int(args[1]);
 			
-			if( !int(args[2]) ) // in case we don't overwrite, we don't continue
-				if( rank - 1 <= player.pers["rank"] )
+			if(!int(args[2])) // in case we don't overwrite, we don't continue
+				if(rank - 1 <= player.pers["rank"])
 					return;
 			
-			if( rank > 55 )
+			if(rank > 55)
 				rank = 55;
-			else if( rank < 0 )
+			else if(rank < 0)
 				rank = 0;
 			
-			if( rank < player.pers["rank"] ){
+			if(rank < player.pers["rank"]){
 				oldPrestige = [];
 				oldPrestige[0] = args[0];
 				oldPrestige[1] = player.pers["prestige"];
 				overwritePrestige(oldPrestige);
 			}
-			player incRankXP( getXPNeededForRank(rank) - player.pers["rankxp"] );
+			player incRankXP(getXPNeededForRank(rank) - player.pers["rankxp"]);
 			player updateRank(true);
 			player iprintlnbold("Your ^5Rank ^7has been changed to " + rank + " by the Server!");
 			iprintln("The ^5Rank ^7of " + player.name + " has been changed to " + rank + " by the Server!");
@@ -487,11 +487,11 @@ overwriteRank(args){
 }
 
 fullResetRcon(args){
-	if( args.size < 1 )
+	if(args.size < 1)
 		return;
 	
-	for( i = 0; i < level.players.size; i++ )
-		if( level.players[i] getEntityNumber() == int(args[0]) ){
+	for(i = 0; i < level.players.size; i++)
+		if(level.players[i] getEntityNumber() == int(args[0])){
 			player = level.players[i];
 			
 			player fullReset();
@@ -501,7 +501,7 @@ fullResetRcon(args){
 prestigeUp(force) {
 	//if (self.rankHacker)
 	//return;
-	if( !isDefined( force ) )
+	if(!isDefined(force))
 		force = false;
 	
 	if (self.pers["prestige"] == level.maxPrestige && !force)
@@ -510,7 +510,7 @@ prestigeUp(force) {
 		return;
 	
 	//self.pers["rank"] = 0;
-	if( !force )
+	if(!force)
 		self.pers["prestige"]+=int(self.pers["rankxp"]/(getRankInfoMaxXp(level.maxRank)-10));
 	self setStat(2326, self.pers["prestige"]);
 	self setStat(210, self.pers["prestige"]);
@@ -520,20 +520,20 @@ prestigeUp(force) {
 	wait 100;
 	//self scripts\players\_classes::getSkillpoints(rankId);
 	wait 0.05;
-	self setStat( 252, rankId );
-	self setStat( 253, rankId );
+	self setStat(252, rankId);
+	self setStat(253, rankId);
 	self.pers["rankxp"] = 0;
-	self scripts\players\_persistence::statSet( "rankxp", 0 );
-	self scripts\players\_persistence::statSet( "rank", rankId );
-	self scripts\players\_persistence::statSet( "minxp", int(level.rankTable[rankId][2]) );
-	self scripts\players\_persistence::statSet( "maxxp", int(level.rankTable[rankId][7]) );
+	self scripts\players\_persistence::statSet("rankxp", 0);
+	self scripts\players\_persistence::statSet("rank", rankId);
+	self scripts\players\_persistence::statSet("minxp", int(level.rankTable[rankId][2]));
+	self scripts\players\_persistence::statSet("maxxp", int(level.rankTable[rankId][7]));
 	self updateRankAnnounceHUD();*/
-	self scripts\players\_persistence::statSet( "rankxp", 0 );
-	self scripts\players\_persistence::statSet( "rank", 0 );
-	self scripts\players\_persistence::statSet( "minxp", int(level.rankTable[0][2]) );
-	self scripts\players\_persistence::statSet( "maxxp", int(level.rankTable[0][7]) );
-	self setStat( 252, 0 );
-	self setStat( 253, 0 );
+	self scripts\players\_persistence::statSet("rankxp", 0);
+	self scripts\players\_persistence::statSet("rank", 0);
+	self scripts\players\_persistence::statSet("minxp", int(level.rankTable[0][2]));
+	self scripts\players\_persistence::statSet("maxxp", int(level.rankTable[0][7]));
+	self setStat(252, 0);
+	self setStat(253, 0);
 	self.pers["rankxp"] = 0;
 	self setRank(0, self.pers["prestige"]);
 	//updateRank();
@@ -541,24 +541,24 @@ prestigeUp(force) {
 }
 
 fullReset(){
-	self setStat( 2326, 0 );
-	self setStat( 210, 0 );
-	self scripts\players\_persistence::statSet( "rankxp", 0 );
-	self scripts\players\_persistence::statSet( "rank", 0 );
-	self scripts\players\_persistence::statSet( "minxp", int(level.rankTable[0][2]) );
-	self scripts\players\_persistence::statSet( "maxxp", int(level.rankTable[0][7]) );
-	self setStat( 252, 0 );
-	self setStat( 253, 0 );
+	self setStat(2326, 0);
+	self setStat(210, 0);
+	self scripts\players\_persistence::statSet("rankxp", 0);
+	self scripts\players\_persistence::statSet("rank", 0);
+	self scripts\players\_persistence::statSet("minxp", int(level.rankTable[0][2]));
+	self scripts\players\_persistence::statSet("maxxp", int(level.rankTable[0][7]));
+	self setStat(252, 0);
+	self setStat(253, 0);
 	self.pers["rank"] = 0;
 	self.pers["rankxp"] = 0;
-	self setRank( 0, 0 );
+	self setRank(0, 0);
 	self scripts\players\_classes::resetSkillpoints();
 }
 
 resetRank(delay) {
 	self endon("disconnect");
 	wait delay;
-	rankId = self getRankForXp( self getRankXP() );
+	rankId = self getRankForXp(self getRankXP());
 	self.pers["rank"] = rankId;
 	
 	self scripts\players\_classes::getSkillpoints(rankId);
@@ -570,21 +570,21 @@ resetRank(delay) {
  * @return will send true if player needs rank up and false if not.
  */
 
-updateRank( useWait )
+updateRank(useWait)
 {
-	if ( self.rankHacker || isdefined( self.updatingrank ) )
+	if (self.rankHacker || isdefined(self.updatingrank))
 		return false;
 	
 	self.updatingrank = true;
 	
-	if( !isDefined( useWait ) )
+	if(!isDefined(useWait))
 		useWait = false;
 	
-	if( useWait )
+	if(useWait)
 		self endon("disconnect");
 	
 	newRankId = self getRank();
-	if ( newRankId == self.pers["rank"] )
+	if (newRankId == self.pers["rank"])
 	{
 		self.updatingrank = undefined;
 		return false;
@@ -594,23 +594,23 @@ updateRank( useWait )
 	rankId = self.pers["rank"];
 	self.pers["rank"] = newRankId;
 
-	while ( rankId <= newRankId )
+	while (rankId <= newRankId)
 	{	
-		self scripts\players\_persistence::statSet( "rank", rankId );
-		self scripts\players\_persistence::statSet( "minxp", int(level.rankTable[rankId][2]) );
-		self scripts\players\_persistence::statSet( "maxxp", int(level.rankTable[rankId][7]) );
+		self scripts\players\_persistence::statSet("rank", rankId);
+		self scripts\players\_persistence::statSet("minxp", int(level.rankTable[rankId][2]));
+		self scripts\players\_persistence::statSet("maxxp", int(level.rankTable[rankId][7]));
 	
 		// set current new rank index to stat#252
-		self setStat( 252, rankId );
-		self setStat( 253, rankId );
+		self setStat(252, rankId);
+		self setStat(253, rankId);
 		
 		rankId++;
-		if( useWait )
+		if(useWait)
 			wait 0.05;
 	}
-	self logString( "promoted from " + oldRank + " to " + newRankId + " timeplayed: " + self scripts\players\_persistence::statGet( "time_played_total" ) );
+	self logString("promoted from " + oldRank + " to " + newRankId + " timeplayed: " + self scripts\players\_persistence::statGet("time_played_total"));
 	
-	self setRank( newRankId, self.pers["prestige"] );
+	self setRank(newRankId, self.pers["prestige"]);
 	self scripts\players\_classes::getSkillpoints(newRankId);
 	self.updatingrank = undefined;
 	return true;
@@ -628,19 +628,19 @@ updateRankAnnounceHUD()
 	self endon("update_rank");
 
 	team = self.pers["team"];
-	if ( !isdefined( team ) )
+	if (!isdefined(team))
 		return;	
 		
-	newRankName = self getRankInfoFull( self.pers["rank"] );
+	newRankName = self getRankInfoFull(self.pers["rank"]);
 	
 	/*subRank = int(rank_char[rank_char.size-1]);
 	
-	if ( subRank == 2 )
+	if (subRank == 2)
 	{
 		textLabel = newRankName;
 		notifyText = &"RANK_ROMANI";
 	}
-	else if ( subRank == 3 )
+	else if (subRank == 3)
 	{
 		textLabel = newRankName;
 		notifyText = &"RANK_ROMANII";
@@ -650,7 +650,7 @@ updateRankAnnounceHUD()
 		notifyText = newRankName;
 	}
 
-	thread scripts\players\_hud_message::notifyMessage( notifyData );*/
+	thread scripts\players\_hud_message::notifyMessage(notifyData);*/
 	
 	rank_char = level.rankTable[self.pers["rank"]][1];
 	subRank = int(rank_char[rank_char.size-1]);
@@ -662,7 +662,7 @@ updateRankAnnounceHUD()
 	
 	if (subRank == 1)
 	{
-		iprintln( &"RANK_PLAYER_WAS_PROMOTED", self.name, newRankName);
+		iprintln(&"RANK_PLAYER_WAS_PROMOTED", self.name, newRankName);
 	}
 }
 
@@ -672,25 +672,25 @@ endGameUpdate()
 	player = self;			
 }
 
-updateRankScoreHUD( amount )
+updateRankScoreHUD(amount)
 {
-	/*self endon( "disconnect" );
-	self endon( "joined_team" );
-	self endon( "joined_spectators" );
+	/*self endon("disconnect");
+	self endon("joined_team");
+	self endon("joined_spectators");
 
-	if ( amount == 0 )
+	if (amount == 0)
 		return;
 
-	self notify( "update_score" );
-	self endon( "update_score" );
+	self notify("update_score");
+	self endon("update_score");
 
 	self.rankUpdateTotal += amount;
 
-	wait ( 0.05 );
+	wait (0.05);
 
-	if( isDefined( self.hud_rankscroreupdate ) )
+	if(isDefined(self.hud_rankscroreupdate))
 	{			
-		if ( self.rankUpdateTotal < 0 )
+		if (self.rankUpdateTotal < 0)
 		{
 			self.hud_rankscroreupdate.label = &"";
 			self.hud_rankscroreupdate.color = (1,0,0);
@@ -703,10 +703,10 @@ updateRankScoreHUD( amount )
 
 		self.hud_rankscroreupdate setValue(self.rankUpdateTotal);
 		self.hud_rankscroreupdate.alpha = 0.85;
-		self.hud_rankscroreupdate thread maps\mp\gametypes\_hud::fontPulse( self );
+		self.hud_rankscroreupdate thread maps\mp\gametypes\_hud::fontPulse(self);
 
 		wait 1.25;
-		self.hud_rankscroreupdate fadeOverTime( 0.75 );
+		self.hud_rankscroreupdate fadeOverTime(0.75);
 		self.hud_rankscroreupdate.alpha = 0;
 		
 		self.rankUpdateTotal = 0;
@@ -724,36 +724,36 @@ getRank()
 	rankXp = self.pers["rankxp"];
 	rankId = self.pers["rank"];
 	
-	if ( rankXp < (getRankInfoMinXP( rankId ) + getRankInfoXPAmt( rankId )) )
+	if (rankXp < (getRankInfoMinXP(rankId) + getRankInfoXPAmt(rankId)))
 		return rankId;
 	else
-		return self getRankForXp( rankXp );
+		return self getRankForXp(rankXp);
 }
 
-getXPNeededForRank( rankID ){
+getXPNeededForRank(rankID){
 	rankID -= 1;
 	
-	if( rankID < 0 )
+	if(rankID < 0)
 		rankID = 0;
-	else if( rankID > 54 )
+	else if(rankID > 54)
 		rankID = 54;
 		
-	return getRankInfoMinXP( rankID );
+	return getRankInfoMinXP(rankID);
 }
 
-getRankForXp( xpVal )
+getRankForXp(xpVal)
 {
 	rankId = 0;
 	rankName = level.rankTable[rankId][1];
-	assert( isDefined( rankName ) );
+	assert(isDefined(rankName));
 	
-	while ( isDefined( rankName ) && rankName != "" )
+	while (isDefined(rankName) && rankName != "")
 	{
-		if ( xpVal < getRankInfoMinXP( rankId ) + getRankInfoXPAmt( rankId ) )
+		if (xpVal < getRankInfoMinXP(rankId) + getRankInfoXPAmt(rankId))
 			return rankId;
 
 		rankId++;
-		if ( isDefined( level.rankTable[rankId] ) )
+		if (isDefined(level.rankTable[rankId]))
 			rankName = level.rankTable[rankId][1];
 		else
 			rankName = undefined;
@@ -771,7 +771,7 @@ getSPM()
 
 getPrestigeLevel()
 {
-	return self scripts\players\_persistence::statGet( "plevel" );
+	return self scripts\players\_persistence::statGet("plevel");
 }
 
 getRankXP()
@@ -779,16 +779,16 @@ getRankXP()
 	return self.pers["rankxp"];
 }
 
-incRankXP( amount )
+incRankXP(amount)
 {
 	if(getDvar("developer_script") == "1") return;
 	
 	xp = self getRankXP();
 	newXp = (xp + amount);
 
-	if ( self.pers["rank"] == level.maxRank && newXp >= getRankInfoMaxXP( level.maxRank ) )
-		newXp = getRankInfoMaxXP( level.maxRank );
+	if (self.pers["rank"] == level.maxRank && newXp >= getRankInfoMaxXP(level.maxRank))
+		newXp = getRankInfoMaxXP(level.maxRank);
 
 	self.pers["rankxp"] = newXp;
-	self scripts\players\_persistence::statSet( "rankxp", newXp );
+	self scripts\players\_persistence::statSet("rankxp", newXp);
 }

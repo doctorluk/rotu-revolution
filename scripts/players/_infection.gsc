@@ -29,10 +29,10 @@ init()
 
 precache()
 {
-	precacheShellShock( "infection" );
-	precacheHeadIcon( "icon_infection" );
+	precacheShellShock("infection");
+	precacheHeadIcon("icon_infection");
 
-	precacheModel( "ch_tombstone3" );
+	precacheModel("ch_tombstone3");
 }
 
 cureInfection()
@@ -51,8 +51,10 @@ goInfected()
 	self endon("infection_cured");
 	self endon("disconnect");
 	self endon("death");
-	if( self.infected || level.godmode )
+	if(self.infected || level.godmode)
 		return;
+	
+	self notify("infected");
 
 	if (!self.isDown)
 		level scripts\players\_usables::addUsable(self, "infected", &"USE_CURE", 96);
@@ -137,10 +139,10 @@ waitGoZombie()
 	self endon("death");
 	self endon("revived");
 	self endon("infection_cured");
-	while ( !self.isDown )
+	while (!self.isDown)
 	{
 		wait 0.2;
-		if( self.isDown )
+		if(self.isDown)
 			wait 3;
 	}
 	self thread playerGoZombie();
@@ -153,8 +155,8 @@ playerGoZombie()
 	if (self.sessionteam=="spectator")
 	return;
 	
-	self.tombEnt = spawn( "script_model", self.origin );
-	self.tombEnt setmodel( "ch_tombstone3" );
+	self.tombEnt = spawn("script_model", self.origin);
+	self.tombEnt setmodel("ch_tombstone3");
 	self.tombEnt.origin = self.origin;
 	self.tombEnt.angles = self.angles;
 	self.tombEnt.targetname = "tombstone";
@@ -174,7 +176,7 @@ playerGoZombie()
 	self.infection_overlay destroy();
 	
 	self scripts\bots\_types::loadZomStats(type);
-	self.maxHealth = int( self.maxHealth * level.dif_zomHPMod );
+	self.maxHealth = int(self.maxHealth * level.dif_zomHPMod);
 	
 	self.health = self.maxHealth;
 	
@@ -187,7 +189,7 @@ playerGoZombie()
 	
 	self takeallweapons();
 	
-	self spawn( self.origin, self.angles );
+	self spawn(self.origin, self.angles);
 	
 	self detachall();
 	// self setmodel("skeleton");
@@ -241,15 +243,15 @@ cleanupZombie(){
 	self setclientdvar("cg_thirdperson", 0);
 	self permanentTweaksOff();
 	
-	if ( isReallyPlaying(self) ) {
+	if (isReallyPlaying(self)) {
 		if (isdefined(self.tombEnt))
 		{
-			self setorigin( self.tombEnt.origin, self.tombEnt.angles );
+			self setorigin(self.tombEnt.origin, self.tombEnt.angles);
 			self.tombEnt delete();
 		}
 		else
 		{
-			self setorigin( self.origin, self.angles );
+			self setorigin(self.origin, self.angles);
 			self iprintlnbold("You're bugged, but don't worry");
 		}
 		

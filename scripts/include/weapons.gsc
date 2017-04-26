@@ -25,14 +25,14 @@
 *	@weap: Script name of the weapon to give
 *	@var: Integer value from 0-16 to use a different weapon model
 */
-giveWeap( weap, var )
+giveWeap(weap, var)
 {
 	// var is usually the camo, so set it to 0 if undefined
-	if( !isDefined(var) )
+	if(!isDefined(var))
 		var = 0;
 
 	// give the weapon taking the weapon key into account
-	self giveWeapon( level.weaponKeyS2C[weap], var );
+	self giveWeapon(level.weaponKeyS2C[weap], var);
 }
 
 /**
@@ -40,9 +40,9 @@ giveWeap( weap, var )
 *
 *	@weap: Script name of the weapon to take
 */
-takeWeap( weap )
+takeWeap(weap)
 {
-	self takeWeapon( level.weaponKeyS2C[weap] );	
+	self takeWeapon(level.weaponKeyS2C[weap]);	
 }
 
 /**
@@ -50,9 +50,9 @@ takeWeap( weap )
 *
 *	@weap: Script name of the weapon to change to
 */
-setSpawnWeap( weap )
+setSpawnWeap(weap)
 {
-	self setSpawnWeapon( level.weaponKeyS2C[weap] );
+	self setSpawnWeapon(level.weaponKeyS2C[weap]);
 }
 
 /**
@@ -60,9 +60,9 @@ setSpawnWeap( weap )
 *
 *	@weap: Script name of the weapon to change to
 */
-switchToWeap( weap )
+switchToWeap(weap)
 {
-	self switchToWeapon( level.weaponKeyS2C[weap] );	
+	self switchToWeapon(level.weaponKeyS2C[weap]);	
 }
 
 /**
@@ -70,9 +70,9 @@ switchToWeap( weap )
 *
 *	@weap: Script name of the weapon the ammo will be refilled
 */
-giveWeapMaxAmmo( weap )
+giveWeapMaxAmmo(weap)
 {
-	self giveMaxAmmo( level.weaponKeyS2C[weap] );
+	self giveMaxAmmo(level.weaponKeyS2C[weap]);
 }
 
 /**
@@ -81,9 +81,9 @@ giveWeapMaxAmmo( weap )
 *	@weap: Script name of the weapon
 *	@ammo: Integer value of the ammo
 */
-setWeapAmmoStock( weap, ammo )
+setWeapAmmoStock(weap, ammo)
 {
-	self setWeaponAmmoStock( level.weaponKeyS2C[weap], ammo );
+	self setWeaponAmmoStock(level.weaponKeyS2C[weap], ammo);
 }
 
 /**
@@ -92,25 +92,25 @@ setWeapAmmoStock( weap, ammo )
 *	@weap: Script name of the weapon
 *	@ammo: Integer value of the ammo
 */
-setWeapAmmoClip( weap, ammo )
+setWeapAmmoClip(weap, ammo)
 {
-	self setWeaponAmmoClip( level.weaponKeyS2C[weap], ammo );
+	self setWeaponAmmoClip(level.weaponKeyS2C[weap], ammo);
 }
 
 /**
 * Returns the current ammount of ammo in the players weapon stock.
 */
-getWeapAmmoStock( weap )
+getWeapAmmoStock(weap)
 {
-	return self getWeaponAmmoStock( level.weaponKeyS2C[weap] );
+	return self getWeaponAmmoStock(level.weaponKeyS2C[weap]);
 }
 
 /**
 * Returns the current ammount of ammo in the players weapon clip.
 */
-getWeapAmmoClip( weap )
+getWeapAmmoClip(weap)
 {
-	return self getWeaponAmmoClip( level.weaponKeyS2C[weap] );
+	return self getWeaponAmmoClip(level.weaponKeyS2C[weap]);
 }
 
 /**
@@ -124,25 +124,25 @@ getCurrentWeap()
 /**
 * Returns true if the player has the given weapon, false otherwise.
 */
-hasWeap( weap )
+hasWeap(weap)
 {
-	return self hasWeapon( level.weaponKeyS2C[weap] );
+	return self hasWeapon(level.weaponKeyS2C[weap]);
 }
 
 /**
 * Returns the clip size of the given weapon.
 */
-weapClipSize( weap )
+weapClipSize(weap)
 {
-	return weaponClipSize( level.weaponKeyS2C[weap] );
+	return weaponClipSize(level.weaponKeyS2C[weap]);
 }
 
 /**
 * Returns the ammount of max ammo of the given weapon.
 */
-weapMaxAmmo( weap )
+weapMaxAmmo(weap)
 {
-	return weaponMaxAmmo( level.weaponKeyS2C[weap] );
+	return weaponMaxAmmo(level.weaponKeyS2C[weap]);
 }
 
 /**
@@ -151,11 +151,11 @@ weapMaxAmmo( weap )
 *	@weap: Script name of the weapon
 *	@var: Integer value from 0-16 to distinguish the different weapon models
 */
-getWeapModel( weap, var )
+getWeapModel(weap, var)
 {
 	// make sure the camo value is set
-	if( !isDefined(var) )
+	if(!isDefined(var))
 		var = 0;
 	
-	return getWeaponModel( level.weaponKeyS2C[weap], var );	
+	return getWeaponModel(level.weaponKeyS2C[weap], var);	
 }
