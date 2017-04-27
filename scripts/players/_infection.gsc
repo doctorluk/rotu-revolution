@@ -152,8 +152,9 @@ playerGoZombie()
 {
 	self endon("disconnect");
 	self endon("death");
-	if (self.sessionteam=="spectator")
-	return;
+	
+	if (self.sessionteam == "spectator")
+		return;
 	
 	self.tombEnt = spawn("script_model", self.origin);
 	self.tombEnt setmodel("ch_tombstone3");

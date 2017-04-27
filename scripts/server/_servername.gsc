@@ -1,32 +1,30 @@
-//
-// vim: set ft=cpp:
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: scripts\servers\_servername.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
+
+
+/***
+*
+* 	_servername.gsc
+*	Changes placeholders in the servername with live-data
+*
+*/
 
 init()
 {
 	if(!level.dvar["game_changing_hostname"] || getDvar("sv_newhostname") == "")
 		return;
-		
-	// addDvar("game_chan", "plugin_hostname_updatetime", 10, 2, 60, "int");
-//	if(getDvar("sv_newhostname") == "")
-//		setDvar("sv_newhostname", "^1DeathRun ^2V1.2 ^7- Round: PIHN_ROUND/PIHN_MAXROUNDS - Players: PIHN_PLAYERS/PIHN_MAXPLAYERS - Activator: PIHN_ACTIVATOR");
 	
 	wait 1;
 	
@@ -120,13 +118,13 @@ CheckString(search, string)
 	cont = false;
 	mark = [];
 	
-	for(i=0;i<string.size;i++)
+	for(i = 0; i < string.size; i++)
 	{
 		if(string[i] != search[0])
 			continue;
 		
 		mark[0] = i;
-		for(ii=0;ii<search.size;ii++)
+		for(ii = 0; ii < search.size; ii++)
 		{
 			if(search[ii] != string[i+ii])
 			{
@@ -193,7 +191,7 @@ ReplaceString(replace)
 		case "PIHN_BESTPLAYER":
 			max = 0;
 			best = undefined;
-			for(i=0;i<level.players.size;i++){
+			for(i = 0; i < level.players.size; i++){
 				p = level.players[i];
 				if(p.isActive){
 					if(p.score > max){
@@ -209,7 +207,7 @@ ReplaceString(replace)
 		case "PIHN_MOSTKILLSPLAYER":
 			max = 0;
 			best = undefined;
-			for(i=0;i<level.players.size;i++){
+			for(i = 0; i<level.players.size; i++){
 				p = level.players[i];
 				if(p.isActive){
 					if(p.kills > max){
