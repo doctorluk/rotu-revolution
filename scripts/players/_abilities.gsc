@@ -48,38 +48,84 @@ precache()
 
 loadAbilityStats()
 {
-	level.special["fake_death"]["recharge_time"] = 55;
-	level.special["fake_death"]["duration"] = 15;
+
+	// TODO: Move to Assassin and use same data format as the other classes
+	level.special_quickescape_duration = 6;
+	level.special_quickescape_intermission = 15;
+	level.special_stealthmove_intermission = 10;
 	
-	level.special["smoke_grenade"]["recharge_time"] = 5;		// TODO: This is for debugging, get a more realistic time
+	loadAbilityStats_soldier();
+	loadAbilityStats_assassin();
+	loadAbilityStats_armored();
+	loadAbilityStats_engineer();
+	loadAbilityStats_scout();
+	loadAbilityStats_medic();
 	
+}
+
+loadAbilityStats_soldier(){
+	
+	// F-Special
 	level.special["rampage"]["recharge_time"] = 50;
 	level.special["rampage"]["duration"] = 15;
 	
-	level.special["aura"]["recharge_time"] = 60;
-	level.special["aura"]["duration"] = 20;
+}
+
+loadAbilityStats_assassin(){
+
+	// TODO: They are not used
+	level.special["fake_death"]["recharge_time"] = 55;
+	level.special["fake_death"]["duration"] = 15;
 	
+	// TODO: They are not used
+	level.special["smoke_grenade"]["recharge_time"] = 5; // TODO: This is for debugging, get a more realistic time
+	
+}
+
+loadAbilityStats_armored(){
+	
+	// TODO: Throwable or F-Special?
 	level.special["armoredshield"]["radius"] = 500 / 2.54; // 500cm in Maya to inches
 	level.special["armoredshield"]["recharge_time"] = 25;
 	level.special["armoredshield"]["duration"] = 60;
 	level.special["armoredshield"]["damagereduction"] = 0.6;
 	
+	// F-Special
 	level.special["invincible"]["recharge_time"] = 60;
 	level.special["invincible"]["duration"] = 20;
 	
+}
+
+loadAbilityStats_engineer(){
+	
+	// F-Special
+	level.special["augmentation"]["recharge_time"] = 1;
+	
+	// Throwable Special
+	level.special["ammo"]["recharge_time"] = 75;
+	
+}
+
+loadAbilityStats_scout(){
+
+	// TODO: They are not used
 	level.special["escape"]["recharge_time"] = 40;
 	level.special["escape"]["duration"] = 10;
 	
-	level.special["ammo"]["recharge_time"] = 75;
-	level.special["augmentation"]["recharge_time"] = 1;
-	
-	level.special["medkit"]["recharge_time"] = 60;
-	
+	// Throwable Special
 	level.special["monkey_bomb"]["recharge_time"] = 65;
 	
-	level.special_quickescape_duration = 6;
-	level.special_quickescape_intermission = 15;
-	level.special_stealthmove_intermission = 10;
+}
+
+loadAbilityStats_medic(){
+
+	// F-Special
+	level.special["aura"]["recharge_time"] = 60;
+	level.special["aura"]["duration"] = 20;
+	
+	// Throwable Special
+	level.special["medkit"]["recharge_time"] = 60;
+	
 }
 
 stopActiveAbility()
