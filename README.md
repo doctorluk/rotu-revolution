@@ -1,4 +1,4 @@
-##DO NOT USE THESE FILES ON A PRODUCTIVE SERVER
+## DO NOT USE THESE FILES ON A PRODUCTIVE SERVER
 The files are intended to be used by experienced developers ONLY! There are currently many errors and problems in the code!
 
 If you are looking for **STABLE RELEASES** of RotU-Revolution, have a look here instead:
@@ -16,12 +16,12 @@ These have to be put into a mod folder, just like any other CoD4 mod.
 
 **Please keep in mind that these files might not always be up-2-date with this repository, but usually they SHOULD be**
 
-* Images [2d.iwd] (http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/2d.iwd)
-* Sounds [sound.iwd] (http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/sound.iwd)
-* Client CFG [ccfg.iwd] (http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/ccfg.iwd)
-* Weapons [weapons.iwd] (http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/weapons.iwd)
-* Map Scripts [rotu_svr_mapscripts.iwd] (http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/rotu_svr_mapscripts.iwd)
-* Mod File [mod.ff] (http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/mod.ff)
+* Images [2d.iwd](http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/2d.iwd)
+* Sounds [sound.iwd](http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/sound.iwd)
+* Client CFG [ccfg.iwd](http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/ccfg.iwd)
+* Weapons [weapons.iwd](http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/weapons.iwd)
+* Map Scripts [rotu_svr_mapscripts.iwd](http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/rotu_svr_mapscripts.iwd)
+* Mod File [mod.ff](http://dl.survival-and-obliteration.com/cod4dl.php?s=rotu_r_dev&file=/mods/rotu-r-alpha/mod.ff)
 * The configs from the normal release can be used (downloadable on our project page, link at the top), unless noted otherwise
 
 In order to run these scripts, the content of this repository has to be put into your mods folder. Using the *players/_players.gsc* as an example, it should be located here:
