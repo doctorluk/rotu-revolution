@@ -93,8 +93,8 @@ reportMyCoordinates()
 	
 	mapname = getDvar("mapname");
 	
-	logPrint("GETENDVIEW;" + origin[0] + "," + origin[1] + "," + origin[2] + ";" + angle[0] + "," + angle[1] + "," + angle[2] + " for " + mapname + "\n");
+	logPrint("GETENDVIEW;" + int(origin[0]) + "," + int(origin[1]) + "," + int(origin[2]) + ";" + int(angle[0]) + "," + int(angle[1]) + "," + int(angle[2]) + " for " + mapname + "\n");
 	self iprintlnbold("Screenshot this:");
-	self iprintlnbold(origin[0] + "," + origin[1] + "," + origin[2] + ";" + angle[0] + "," + angle[1] + "," + angle[2]);
+	self iprintlnbold(int(origin[0]) + "," + int(origin[1]) + "," + int(origin[2]) + ";" + int(angle[0]) + "," + int(angle[1]) + "," + int(angle[2]));
 	self iprintlnbold("Map: " + mapname);
 }
