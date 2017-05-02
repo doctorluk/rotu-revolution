@@ -352,7 +352,7 @@ joinSpectator()
 		level notify("update_classcounts");
 	
 	// Starting the debug function to display the current coordinates of a player
-	self thread giveCoordinatesToSpec();
+	self thread scripts\level\_spectatecoords::giveCoordinatesToSpec();
 }
 
 /**
@@ -627,7 +627,7 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 	}
 	
 	// Check all cases of immunity of the player
-	if (self.isDown || self.god || level.godmode || (self.spawnProtectionTime + (level.dvar["game_player_spawnprotection_time"] * 1000) > getTime() && level.dvar["game_player_spawnprotection"]))
+	if (self.isDown /*|| self.god || level.godmode */ || (self.spawnProtectionTime + (level.dvar["game_player_spawnprotection_time"] * 1000) > getTime() && level.dvar["game_player_spawnprotection"]))
 		return;
 
 	// ??
@@ -676,7 +676,9 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 				
 				if((playerPos[2] + 15) >= domePos[2] && distance(domePos, playerEye) <= level.special["armoredshield"]["radius"])
 				{
+					previousIDamage = iDamage;
 					iDamage = int(1 - level.special["armoredshield"]["damagereduction"] * iDamage);
+					self iprintln("Damage reduced by " + (previousIDamage - iDamage)); 
 					break;
 				}
 			}
@@ -688,6 +690,9 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 		
 		// Make sure that damage cannot be less than 1
 		iDamage = int(max(iDamage, 1));
+		
+		if(self.god || level.godmode) // TODO: For debugging purposes further down, move up to reduce compute load
+			return;
 		
 		// Calculation is done, make the actual damage happen
 		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
@@ -1639,38 +1644,6 @@ getRemainingUpgradePoints()
 	}
 	
 	return totalpoints;
-}
-
-/**
-*	Debug function that shows a spectator' coordinates when holding F for 3 Seconds
-*/
-giveCoordinatesToSpec()
-{
-	self notify("kill_coordinates");
-	self endon("disconnect");
-	self endon("spawned");
-	self endon("kill_coordinates");
-	
-	i = 0;
-	
-	wait .5;
-	// Check if a player's holding the USE button for 3 Seconds, show the coordinates, reset it otherwise
-	while(1)
-	{
-		if(i == 2)
-		{
-			self reportMyCoordinates();
-			i = 0;
-		}
-		else if(self useButtonPressed())
-		{
-			i++;
-		}
-		else
-			i = 0;
-			
-		wait 1;				
-	}
 }
 
 /**
