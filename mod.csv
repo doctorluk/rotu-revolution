@@ -155,8 +155,9 @@ material,overlay_armored
 
 stringtable,mp/rankTable.csv
 stringtable,mp/rankIconTable.csv
-stringtable,mp/didYouKnow.csv
+//stringtable,mp/didYouKnow.csv
 stringtable,mp/weaponTable.csv
+stringtable,mp/endgameCoordinates.csv
 // stringtable,mp/challengeTable.csv
 
 rawfile,shock/toxic_gas_mp.shock
