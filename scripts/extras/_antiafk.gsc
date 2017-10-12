@@ -46,17 +46,23 @@ antiAFK(){
 		handleTypeText = "PUT TO SPECTATOR";
 		
 	oldpos = self getOrigin();
+	oldstance = self getStance();
+	oldangles = self getPlayerAngles();
 	
-	while(1){		
+	while(1){
+		// self iprintln(self.antiAFK);
 		oldweapon = self getCurrentWeapon();
 		
 		wait 0.05;
 		
 		if(self.isDown || self.isZombie){ wait 0.05; continue; }
 		
-		if(self pressesAnyButton() || oldweapon != self getCurrentWeapon() ||  (self.antiAFK % 100 == 0 && self.antiAFK && distance(oldpos, self getOrigin()) > 200)){
+		if(oldangles != self getPlayerAngles() || oldstance != self getStance() || self pressesAnyButton() || oldweapon != self getCurrentWeapon() ||  (self.antiAFK % 100 == 0 && self.antiAFK && distance(oldpos, self getOrigin()) > 200)){
 			oldpos = self getOrigin();
+			oldstance = self getStance();
+			oldangles = self getPlayerAngles();
 			self.antiAFK = 0;
+			wait 1;
 			continue;
 		}
 		else
