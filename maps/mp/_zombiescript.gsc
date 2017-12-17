@@ -1,22 +1,17 @@
-//
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution ALPHA 0.7 by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: maps\mp\_zombiescript.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
 
 #include scripts\include\hud;
 #include scripts\include\entities;
@@ -35,7 +30,7 @@ setPlayerSpawns(targetname)
 
 setWorldVision(vision, transitiontime)
 {
-	visionSetNaked( vision, transitiontime );
+	visionSetNaked(vision, transitiontime);
 	level.vision = vision;
 }
 
@@ -118,7 +113,7 @@ removeSurvSpawn(targetname) // Removing spawns for survival mode (incoming waves
 buildSurvSpawnByClassname(classname, priority)
 {
 	ent = getEntArray(classname, "classname");
-	for( i = 0; i < ent.size; i++ ){
+	for(i = 0; i < ent.size; i++){
 		ent[i].targetname = classname;
 	}
 	scripts\gamemodes\_survival::addSpawn(classname, priority);
@@ -126,7 +121,7 @@ buildSurvSpawnByClassname(classname, priority)
 
 prepareMap(){
 	ent = getEntArray("oldschool_pickup", "targetname");
-	for( i = 0; i < ent.size; i++ ){
+	for(i = 0; i < ent.size; i++){
 		ent[i] delete();
 	}
 	
@@ -142,7 +137,7 @@ prepareMap(){
 /*
 prepareMap(){
 	ent = getEntArray("oldschool_pickup", "targetname");
-	for( i = 0; i < ent.size; i++ ){
+	for(i = 0; i < ent.size; i++){
 		ent[i] delete();
 	}
 	
@@ -154,7 +149,7 @@ prepareMap(){
 	maps\mp\gametypes\_gameobjects::main(allowed);
 }
 */
-buildWeaponUpgrade( targetname ) // Weaponshop actually
+buildWeaponUpgrade(targetname) // Weaponshop actually
 {
 	ents = getentarray(targetname, "targetname");
 	for (i=0; i<ents.size; i++)
@@ -179,7 +174,7 @@ waittillStart()
 	scripts\level\_tradespawns::buildTradespawns();
 	scripts\gamemodes\_gamemodes::initGameMode();
 	
-	while( level.activePlayers == 0 )
+	while(level.activePlayers == 0)
 		wait .5;
 }
 

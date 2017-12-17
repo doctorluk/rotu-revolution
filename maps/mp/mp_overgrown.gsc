@@ -1,3 +1,18 @@
+/**
+* vim: set ft=cpp:
+* file: maps\mp\mp_overgrown.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
+
 #include maps\mp\_zombiescript;
 main()
 {
@@ -9,7 +24,7 @@ main()
 	maps\mp\_compass::setupMiniMap("compass_map_mp_overgrown");
 
 	//setExpFog(100, 3000, 0.613, 0.621, 0.609, 0);
-	//VisionSetNaked( "mp_overgrown" );
+	//VisionSetNaked("mp_overgrown");
 	ambientPlay("ambient_overgrown_day");
 
 	game["allies"] = "marines";
@@ -19,7 +34,7 @@ main()
 	game["allies_soldiertype"] = "desert";
 	game["axis_soldiertype"] = "desert";
 
-	setdvar( "r_specularcolorscale", "1" );
+	setdvar("r_specularcolorscale", "1");
 
 	setdvar("r_glowbloomintensity0",".25");
 	setdvar("r_glowbloomintensity1",".25");

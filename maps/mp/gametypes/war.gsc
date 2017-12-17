@@ -1,16 +1,20 @@
-// these will make the spawns available in the Radiant
-/*QUAKED mp_tdm_spawn (0.0 0.0 1.0) (-16 -16 0) (16 16 72)
-Players spawn away from enemies and near their team at one of these positions.*/
+/**
+* vim: set ft=cpp:
+* file: maps\mp\gametypes\war.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
 
-/*QUAKED mp_tdm_spawn_axis_start (0.5 0.0 1.0) (-16 -16 0) (16 16 72)
-Axis players spawn away from enemies and near their team at one of these positions at the start of a round.*/
-
-/*QUAKED mp_tdm_spawn_allies_start (0.0 0.5 1.0) (-16 -16 0) (16 16 72)
-Allied players spawn away from enemies and near their team at one of these positions at the start of a round.*/
-
-// Just forwarding to the other gametype works pretty well
 main()
 {
-	setDvar( "g_gametype", "surv" );
+	setDvar("g_gametype", "surv");
 	maps\mp\gametypes\surv::main();
 }
