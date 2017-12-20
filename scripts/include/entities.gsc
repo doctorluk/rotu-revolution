@@ -136,7 +136,7 @@ getClosestPlayerArray()
 		newn = 1;
 		
 		// loop through the players
-		for(i = 0; i < players; i++)
+		for(i = 0; i < players.size; i++)
 		{
 			// create a var for ease of access
 			player = players[i];
