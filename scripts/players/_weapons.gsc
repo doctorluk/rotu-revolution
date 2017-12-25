@@ -161,6 +161,22 @@ watchWeaponUsage()
 
 		self waittill("end_firing");
 		
+		if ( weap == self.primary )
+		{
+			self.persData.primaryAmmoClip = self getWeapAmmoClip( self.primary );
+			self.persData.primaryAmmoStock = self getWeapAmmoStock( self.primary );
+		}
+		else if ( weap == self.secondary )
+		{
+			self.persData.secondaryAmmoClip = self getWeapAmmoClip( self.secondary );
+			self.persData.secondaryAmmoStock = self getWeapAmmoStock( self.secondary );
+		}
+		else if ( weap == self.extra )
+		{
+			self.persData.extraAmmoClip = self getWeapAmmoClip( self.extra );
+			self.persData.extraAmmoStock = self getWeapAmmoStock( self.extra );
+		}
+		
 		self.firingWeapon = false;
 	}
 }
@@ -191,7 +207,7 @@ alertTillEndFiring()
 }
 
 watchWeaponSwitching()
-{	
+{
 	self endon("death");
 	self endon("disconnect");
 
@@ -203,116 +219,11 @@ watchWeaponSwitching()
 		if(weapon == "none")
 			continue;
 		
-		self thread watchWeaponUsageSingle();
-		self thread watchWeaponReload();
-		
 		weapon = level.weaponKeyC2S[weapon];
 		if(lastWeapon != weapon)
 			self thread rotateActionslotWeapons(weapon);
 		
 		lastWeapon = weapon;
-	}
-}
-
-/**
-* Keeps track of the ammo in the magazine of the gun.
-*/
-watchWeaponUsageSingle()
-{
-	self endon("weapon_change");
-	self endon("disconnect");
-	self endon("death");
-	
-	weap = self getCurrentWeap();
-	if(weap == self.primary)
-	{
-		self setClientDvars("ui_ammo_clip", self.persData.primaryAmmoClip, "ui_ammo_stock", self.persData.primaryAmmoStock, "ui_ammo_show", 1);
-	}
-	else if(weap == self.secondary)
-	{
-		self setClientDvars("ui_ammo_clip", self.persData.secondaryAmmoClip, "ui_ammo_stock", self.persData.secondaryAmmoStock, "ui_ammo_show", 1);
-	}
-	else if(weap == self.extra)
-	{
-		self setClientDvars("ui_ammo_clip", self.persData.extraAmmoClip, "ui_ammo_stock", self.persData.extraAmmoStock, "ui_ammo_show", 1);
-	}
-	else
-	{
-		ammoClip = self getWeapAmmoClip(weap);
-		ammoStock = self getWeapAmmoStock(weap);
-		self setClientDvars("ui_ammo_clip", ammoClip, "ui_ammo_stock", ammoStock, "ui_ammo_show", 1);
-	}
-
-	for(;;)
-	{
-		self waittill("weapon_fired");
-		
-		if(weap == self.primary)
-		{
-			self.persData.primaryAmmoClip--;
-			
-			self setClientDvar("ui_ammo_clip", self.persData.primaryAmmoClip);
-		}
-		else if(weap == self.secondary)
-		{
-			self.persData.secondaryAmmoClip--;
-			
-			self setClientDvar("ui_ammo_clip", self.persData.secondaryAmmoClip);
-		}
-		else if(weap == self.extra)
-		{
-			self.persData.extraAmmoClip--;
-			
-			self setClientDvar("ui_ammo_clip", self.persData.extraAmmoClip);
-		}
-		else
-		{
-			ammoClip = self getWeapAmmoClip(weap);
-			
-			self setClientDvar("ui_ammo_clip", ammoClip);
-		}
-	}
-}
-
-watchWeaponReload()
-{
-	self endon("weapon_change");
-	self endon("disconnect");
-	self endon("death");
-	
-	weap = self getCurrentWeap();
-	
-	for(;;)
-	{
-		self waittill("reload");
-		
-		if(weap == self.primary)
-		{
-			self.persData.primaryAmmoClip = self getWeapAmmoClip(self.primary);
-			self.persData.primaryAmmoStock = self getWeapAmmoStock(self.primary);
-			
-			self setClientDvars("ui_ammo_clip", self.persData.primaryAmmoClip, "ui_ammo_stock", self.persData.primaryAmmoStock);
-		}
-		else if(weap == self.secondary)
-		{
-			self.persData.secondaryAmmoClip = self getWeapAmmoClip(self.secondary);
-			self.persData.secondaryAmmoStock = self getWeapAmmoStock(self.secondary);
-			
-			self setClientDvars("ui_ammo_clip", self.persData.secondaryAmmoClip, "ui_ammo_stock", self.persData.secondaryAmmoStock);
-		}
-		else if(weap == self.extra)
-		{
-			self.persData.extraAmmoClip = self getWeapAmmoClip(self.extra);
-			self.persData.extraAmmoStock = self getWeapAmmoStock(self.extra);
-			
-			self setClientDvars("ui_ammo_clip", self.persData.extraAmmoClip, "ui_ammo_stock", self.persData.extraAmmoStock);
-		}
-		else
-		{
-			ammoClip = self getWeapAmmoClip(weap);
-			ammoStock = self getWeapAmmoStock(weap);
-			self setClientDvars("ui_ammo_clip", ammoClip, "ui_ammo_stock", ammoStock);
-		}
 	}
 }
 
