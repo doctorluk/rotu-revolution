@@ -12,26 +12,16 @@
 * You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
 * Based on Reign of the Undead 2.1 created by Bipo and Etheross
 */
-
-
-/***
-*
-* 	_weapons.gsc
-*	TODO: Description
-*
-*/
-
 #include scripts\include\entities;
 #include scripts\include\weapons;
 #include scripts\include\data;
 
 init()
 {
-	level.onGiveWeapons = -1;
 	level.spawnPrimary = "none";
 	level.spawnSecondary = "none";
-	level.monkeyEntitiesIndex = 0;
-	
+
+	// array for the special weapons, e.g raygun
 	level.specialWeps = [];
 	
 	// number of weapons for players
@@ -70,22 +60,25 @@ init()
 
 	level.monkeyEffect = loadfx("monkey_grenade/monkey_grenade_onfloor");
 	level.monkeyEntities = [];
+	level.monkeyEntitiesIndex = 0;
 
+	// TODO: move this to the _claymore.gsc and actually make use of it again
 	claymoreDetectionConeAngle = 70;
 	level.claymoreDetectionDot = cos(claymoreDetectionConeAngle);
 	level.claymoreDetectionMinDist = 20;
 	level.claymoreDetectionGracePeriod = 0.75;
 	level.claymoreDetonateRadius = 150;
-
+	level.claymoreFXid = loadfx("misc/claymore_laser");
+	
+	// TODO: check if needed and adjust
 	level.C4explodeThisFrame = false;
 	level.C4FXid = loadfx("bo_crossbow/light_crossbow_blink");	//For the new crossbow, we need to replace this
 	//level.C4FXid = loadfx("misc/light_c4_blink"); //Old One
-	level.claymoreFXid = loadfx("misc/claymore_laser");
-}
+}	/* init */
 
 isSpecialWeap(weap)
 {
-	for(i = 0; i < level.specialWeps.size; i++)
+	for( i = 0; i < level.specialWeps.size; i++)
 	{
 		if(level.specialWeps[i] == weap)
 			return true;

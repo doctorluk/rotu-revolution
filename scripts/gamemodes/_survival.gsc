@@ -84,14 +84,12 @@ loadConfig()
 	
 	if (level.dvar["surv_weaponmode"] == "wawzombies")
 	{
-		level.onGiveWeapons = 0;
 		level.ammoStockType = "weapon";
 		level.spawnPrimary = level.dvar["surv_waw_spawnprimary"];
 		level.spawnSecondary = level.dvar["surv_waw_spawnsecondary"];
 	}
 	else if (level.dvar["surv_weaponmode"] == "upgrade")
 	{
-		level.onGiveWeapons = 1;
 		level.ammoStockType = "upgrade";
 	}
 	level.slowBots = 1 - level.dvar["surv_slow_start"];

@@ -518,8 +518,6 @@ xanim,viewmodel_backpack_putaway
 xanim,viewmodel_backpack_sprint_in
 xanim,viewmodel_backpack_sprint_loop
 xanim,viewmodel_backpack_sprint_out
-xmodel,mw3_sentry_gl_base
-xmodel,mw3_sentry_gl_turret
 
 // TF CAR101
 xmodel,viewmodel_car101_tf
@@ -647,17 +645,13 @@ xanim,viewmodel_fn2000_ads_down
 xanim,viewmodel_fn2000_kobra_ads_up
 xanim,viewmodel_fn2000_kobra_ads_down
 
-// BO2 Sentry Turret
-material,bo2_mtl_t6_wpn_minigun
-material,bo2_mtl_t6_wpn_turret_sentry_gun_ammo
-material,bo2_mtl_t6_wpn_turret_sentry_gun_base
-
+// Sentry Turrets
 xmodel,bo2_turret_sentry_gun
+xmodel,mw3_sentry_gl_base
+xmodel,mw3_sentry_gl_turret
 
 // Wounded Viewhands
 xmodel,viewmodel_base_viewhands
-material,mtl_viewhands_wounded_cloth
-material,mtl_viewhands_wounded_skin
 
 // Needed for tradespawns
 xmodel,com_stove
