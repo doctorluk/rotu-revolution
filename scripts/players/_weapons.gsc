@@ -12,6 +12,14 @@
 * You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
 * Based on Reign of the Undead 2.1 created by Bipo and Etheross
 */
+
+/***
+*
+*	TODO: Add file description
+*
+*/
+
+
 #include scripts\include\entities;
 #include scripts\include\weapons;
 #include scripts\include\data;

@@ -2,7 +2,7 @@
 * vim: set ft=cpp:
 * file: scripts\include\weapons.gsc
 *
-* authors: Luk, 3aGl3, Bipo, Etheross
+* authors: Luk, 3aGl3
 * team: SOG Modding
 *
 * project: RotU - Revolution
@@ -13,10 +13,13 @@
 * Based on Reign of the Undead 2.1 created by Bipo and Etheross
 */
 
-/**
-* The functions in this file make use of the weaponKey that is generated uppon loading the map. Said weapon key
-* will translate a weapons script name to the assigned console name before sending it to the engine. These
-* functions do nothing more then providing a quick way of accessing the weapon key.
+/***
+*
+*	weapons.gsc
+*
+*	The functions in this file make use of the weaponKey that is generated upon loading the map. Said weapon key
+*	will translate a weapons script name to the assigned console name before sending it to the engine. These
+*	functions do nothing more then providing a quick way of accessing the weapon key.
 */
 
 /**
