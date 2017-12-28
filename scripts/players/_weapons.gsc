@@ -24,8 +24,8 @@ init()
 	// array for the special weapons, e.g raygun
 	level.specialWeps = [];
 	
-	// number of weapons for players
-	max_weapon_num = 110;
+	// number of weapons for players, should match the ID in weaponTable.csv
+	max_weapon_num = 111;
 
 	// generating weaponlist array
 	level.weaponList = [];
