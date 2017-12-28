@@ -22,7 +22,6 @@
 
 /**
 * 	Dummy function for the GetRealTime() function in CoD4X which isn't available here
-*
 */
 _GetRealTime(){
 	return -1;
