@@ -641,9 +641,16 @@ xanim,viewmodel_fn2000_ads_fire
 xanim,viewmodel_fn2000_ads_up
 xanim,viewmodel_fn2000_ads_down
 
+# Reflex
+xanim,viewmodel_fn2000_reflex_ads_up
+xanim,viewmodel_fn2000_reflex_ads_down
+
 # Kobra and Holo
 xanim,viewmodel_fn2000_kobra_ads_up
 xanim,viewmodel_fn2000_kobra_ads_down
+
+# ACOG
+xanim,viewmodel_fn2000_acog_ads_up
 
 // Sentry Turrets
 xmodel,bo2_turret_sentry_gun
