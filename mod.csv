@@ -1,11 +1,31 @@
+//
+// file: mod.csv
+//
+// authors: Luk, 3aGl3, Bipo, Etheross
+// team: SOG Modding
+//
+// project: RotU - Revolution
+// website: http://sogmods.net/
+//
+// Reign of the Undead - Revolution by Luk and 3aGl3
+// You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+// Based on Reign of the Undead 2.1 created by Bipo and Etheross
+//
+
+// ignore assets already in the base game
 ignore,mod_ignore
+
+// include mod scripts for a standalone version
 // include,mod_scripts
 
-rawfile,animtrees/multiplayer.atr
-rawfile,mp/playeranim.script
-rawfile,mp/playeranimtypes.txt
-rawfile,mp/CoD2maps.arena
+// sounds
+sound,abilities,,all_mp
+sound,turrets,,all_mp
+sound,zombies_windows,,all_mp
+sound,voice,,all_mp
+sound,weapons,,all_mp
 
+// localization
 localize,mpui
 localize,weapon
 localize,zombie
@@ -20,6 +40,30 @@ localize,queue
 localize,use
 localize,class
 
+// include rawfiles
+// 3rd person animation
+rawfile,animtrees/multiplayer.atr
+rawfile,mp/playeranim.script
+rawfile,mp/playeranimtypes.txt
+// shock
+rawfile,shock/toxic_gas_mp.shock
+rawfile,shock/infection.shock
+rawfile,shock/boss.shock
+rawfile,shock/general_shock.shock
+// vision files
+rawfile,vision/boss.vision
+rawfile,vision/icbm_launch.vision
+rawfile,vision/inferno.vision
+rawfile,vision/rotu.vision
+rawfile,vision/finale.vision
+rawfile,vision/thunder.vision
+rawfile,vision/night.vision
+rawfile,vision/last_chance_revive.vision
+rawfile,vision/greyvision.vision
+// custom map list
+rawfile,mp/CoD2maps.arena
+
+// effects
 fx,explosions/pyromaniac
 fx,turrets/augmented_turret
 fx,fire/emb_burst_a
@@ -55,6 +99,7 @@ fx,zombies/fx_zombie_fog_static_xlg
 fx,zombies/eye_glow_le
 fx,zombies/eye_glow_ri
 
+// gametype scripts
 rawfile,maps/mp/gametypes/_gametypes.txt
 rawfile,maps/mp/gametypes/war.txt
 rawfile,maps/mp/gametypes/war.gsc
@@ -65,6 +110,7 @@ rawfile,maps/mp/gametypes/dm.gsc
 rawfile,maps/mp/_load.gsc
 rawfile,maps/mp/_zombiescript.gsc
 
+// materials
 material,hud_ammo
 material,hud_icon_developer
 material,hud_icon_ammobox
@@ -153,24 +199,15 @@ material,rank_prestige_45
 material,overlay_armored
 //material,overlay_shocked
 
+// stringtables
 stringtable,mp/rankTable.csv
 stringtable,mp/rankIconTable.csv
-//stringtable,mp/didYouKnow.csv
+// stringtable,mp/didYouKnow.csv
 stringtable,mp/weaponTable.csv
 stringtable,mp/endgameCoordinates.csv
 // stringtable,mp/challengeTable.csv
 
-rawfile,shock/toxic_gas_mp.shock
-rawfile,shock/infection.shock
-rawfile,shock/boss.shock
-rawfile,shock/general_shock.shock
-
-sound,abilities,,all_mp
-sound,turrets,,all_mp
-sound,zombies_windows,,all_mp
-sound,voice,,all_mp
-sound,weapons,,all_mp
-
+// menus
 menufile,ui/playerprofile.menu
 menufile,ui_mp/challenges.menu
 menufile,ui_mp/controls_multi.menu
@@ -193,21 +230,7 @@ menufile,ui_mp/scriptmenus/scoreboard.menu
 menufile,ui_mp/scriptmenus/skillpoints.menu
 menufile,ui_mp/scriptmenus/team_marinesopfor.menu
 
-
-rawfile,vision/boss.vision
-rawfile,vision/icbm_launch.vision
-rawfile,vision/inferno.vision
-rawfile,vision/rotu.vision
-rawfile,vision/finale.vision
-rawfile,vision/thunder.vision
-rawfile,vision/night.vision
-rawfile,vision/last_chance_revive.vision
-rawfile,vision/greyvision.vision
-//rawfile,vision/test1.vision
-//rawfile,vision/test2.vision
-//rawfile,vision/test3.vision
-//rawfile,vision/test4.vision
-
+// custom weapons
 weapon,mp/bot_zombie_walk_mp
 weapon,mp/bot_zombie_stand_mp
 weapon,mp/bot_zombie_run0_mp
@@ -224,6 +247,8 @@ weapon,mp/bot_quad_sprint_mp
 
 weapon,mp/bot_boss_jump_mp
 
+// animations
+// zombies
 xanim,ai_zombie_attack_v2
 xanim,ai_zombie_attack_v4
 xanim,ai_zombie_quad_idle
@@ -243,16 +268,17 @@ xanim,ai_zombie_taunts_11
 
 xanim,death_stand_dropinplace
 
-xanim,german_shepherd_sitting_looking_idle
-xanim,zombie_dog_run
-xanim,zombie_dog_run_attack
-xanim,zombie_dog_death_front
-
 xanim,hunted_dazed_walk_A_zombie
 xanim,standunarmed_idle_loop
 xanim,unarmed_panickedrun_loop_V1
 
 xanim,noweapon
+
+// dogs
+xanim,german_shepherd_sitting_looking_idle
+xanim,zombie_dog_run
+xanim,zombie_dog_run_attack
+xanim,zombie_dog_death_front
 
 // 3rdp Player
 xanim,pb_minigun_standjump_land
@@ -276,20 +302,15 @@ xanim,pt_rifle_stand_reload_rearclip
 xanim,pt_rifle_prone_reload_rearclip
 xanim,pt_rifle_crouch_reload_rearclip
 
+// player/zombie models
 // ## ZOMBIE WOLF
 xmodel,zombie_wolf
 
-material,mtl_zombie_wolf
-material,mtl_zombie_wolf_fur
-material,mtl_nazi_hellhound_eyes
-
-// ## Stock dead-model BODIES
+// ## Stock dead-model
 xmodel,body_sp_russian_loyalist_a_dead
 xmodel,body_sp_russian_loyalist_b_dead
 xmodel,body_sp_russian_loyalist_c_dead
 xmodel,body_sp_russian_loyalist_d_dead
-
-// ## Stock dead-model HEADS 
 xmodel,head_sp_loyalist_alex_helmet_body_a_dead
 xmodel,head_sp_loyalist_mackey_hat_body_b_dead
 xmodel,head_sp_loyalist_josh_helmet_body_c_dead
@@ -298,129 +319,69 @@ xmodel,head_sp_loyalist_tom_hat_body_d_dead
 // ## German Nazi Zombie Body 1_1
 xmodel,char_ger_honorgd_bodyz1_1
 
-material,mtl_char_ger_headz1_1
-material,mtl_char_ger_honorguard_linen1_1
-material,mtl_char_ger_honorguard_lthr1_1
-material,mtl_char_ger_honorguard_metal1_1
-
 // ## German Nazi Zombie Body 2_1
 xmodel,char_ger_honorgd_bodyz2_1
 
 // ## German Nazi Zombie Body 2_2
 xmodel,char_ger_honorgd_bodyz2_2
 
-material,mtl_char_ger_honorguard_linen1_2
-material,mtl_char_ger_honorguard_lthr1_2
-material,mtl_char_ger_honorguard_metal1_2
-
 // ## German Nazi Zombie Head 1_1
 xmodel,char_ger_honorgd_zombiehead1_1
-
-material,mtl_char_ger_headz1_1
-material,mtl_char_ger_nazizombie_eyes
 
 // ## German Nazi Zombie Head 1_2
 xmodel,char_ger_honorgd_zombiehead1_2
 
-material,mtl_char_ger_headz1_2
-
 // ## German Nazi Zombie Head 1_3
 xmodel,char_ger_honorgd_zombiehead1_3
-
-material,mtl_char_ger_headz1_3
 
 // ## German Nazi Zombie Head 1_4
 xmodel,char_ger_honorgd_zombiehead1_4
 
-material,mtl_char_ger_headz1_4
-
 // ## BO1 Zombie Scientist
-material,bo1_mtl_c_rus_scientist_2_corpse
 xmodel,bo1_c_usa_pent_zombie_scientist_body
 
 // ## BO1 Napalm Zombie
-material,bo1_mtl_viet_zombie_napalm_body
-material,bo1_mtl_viet_zombie_napalm_head
 xmodel,bo1_c_viet_zombie_napalm
-// Head
 xmodel,bo1_c_viet_zombie_napalm_head
 
 // ## BO1 Cosmonaut HELL REPLACEMENT
-material,bo1_mtl_c_zom_cosmo_cosmonaut_body
 xmodel,bo1_c_zom_cosmo_cosmonaut_body
-// Heads
-material,bo1_mtl_c_cosmo_zombieheads
-material,bo1_mtl_gen_eye_cornea
-material,bo1_mtl_gen_eye_iris_blue
 xmodel,bo1_c_zom_cosmo_head1
 xmodel,bo1_c_zom_cosmo_head2
 xmodel,bo1_c_zom_cosmo_head3
 xmodel,bo1_c_zom_cosmo_head4
 
 // ## BO1 bo1_c_zom_george_romero_zombiefied_fb also known as BIG SEMI BOSS
-
-// xmodel,bo1_c_zom_george_romero_zombiefied_fb
-material,mtl_c_gen_insidemouth
-material,mtl_gen_eye_iris_darkbrown
-material,mtl_zom_barechest_body_skin_glow
-material,mtl_zom_romero_body_zombified
-material,mtl_zom_romero_glasses_lens
-material,mtl_zom_romero_glasses_rim
-material,mtl_zom_romero_head_hair
-material,mtl_zom_romero_head_ponytail
-material,mtl_zom_romero_head_zombiefied
-
 xmodel,zom_george_romero
 
 // ## BO1 officeworker replacing FAST ZOMBIES
-material,bo1_mtl_c_usa_pent_tie1
-material,bo1_mtl_c_zombie_pent_pants
-material,bo1_mtl_c_zombie_pent_shirt1
 xmodel,bo1_c_usa_pent_zombie_officeworker_body
 
 // ## BO1 Generic Normal Zombie Heads
-material,bo1_mtl_c_ger_zombie_eyes
-material,bo1_mtl_c_ger_zombie_head1
 xmodel,bo1_c_ger_zombie_head1
 xmodel,bo1_c_ger_zombie_head2
 xmodel,bo1_c_ger_zombie_head3
 xmodel,bo1_c_ger_zombie_head4
-
-material,bo1_mtl_c_zom_heads
 xmodel,bo1_c_zom_head_1
 xmodel,bo1_c_zom_head_2
 xmodel,bo1_c_zom_head_3
 xmodel,bo1_c_zom_head_4
 
 // ## BO1 Militarypolice replacing FAT ZOMBIE
-material,bo1_mtl_c_zom_militarypolice_body
-material,bo1_mtl_c_zom_militarypolice_gear
 xmodel,bo1_c_usa_pent_zombie_militarypolice_body
 
 // ## BO1 Female Zombie (GENERIC)
-material,bo1_mtl_c_viet_zombie_female_body
-material,bo1_mtl_c_viet_zombie_female_body_skin
-material,bo1_mtl_c_viet_zombie_female_head
 xmodel,bo1_c_viet_zombie_female
-// HEAD
-material,bo1_mtl_c_viet_zombie_female_hair
 xmodel,bo1_c_viet_zombie_female_head
 
 // ## BO1 NVA1 Zombie (GENERIC)
-material,bo1_mtl_c_zom_vtn_nva1_body
 xmodel,bo1_c_viet_zombie_nva1_body
-// HEAD
-material,bo1_mtl_c_zom_vtn_nva1_head
 xmodel,bo1_c_viet_zombie_nva1_head1
 
 // ## Tanky Speznaz Zombie body
-material,bo1_mtl_c_zom_cosmo_spetznaz_body
 xmodel,bo1_c_zom_cosmo_spetznaz_body
 
 // ## BO2 Avagadro Veins&Arteries Body model (electric zombie)
-// material,bo2_mtl_c_zom_avagadro_brain
-// material,bo2_mtl_c_zom_avagadro_veins
-// material,bo2_mtl_c_zom_avagadro_guts
 // xmodel,bo2_c_zom_avagadro_fb
 
 // ## Invisible Hitbox model
@@ -428,7 +389,6 @@ material,lambert1
 xmodel,player_sp_rig_empty
 
 // ## Gore-Splatter Effects
-material,mtl_fx_char_gib_chunks
 xmodel,fx_char_gib_chunk_fat
 xmodel,fx_char_gib_chunk_flesh01
 xmodel,fx_char_gib_chunk_flesh02
@@ -437,16 +397,11 @@ xmodel,fx_char_gib_chunk_meat01
 xmodel,fx_char_gib_chunk_meat02
 xmodel,fx_char_gib_chunk_meat03
 
-material,mtl_char_ger_pnzrgren_body1_1
-material,mtl_char_jap_impinf_gore_blend
-material,mtl_char_jap_impinf_gore_limbs
 xmodel,char_ger_pnzrgren_body1_g_llegspawn
-material,mtl_char_usa_raider_mp_head1
 xmodel,char_usa_marine_body1_m_g_rarmspawn
 xmodel,char_usa_marine_wet_body1_g_larmspawn
 
 // ## Gore-Splatter Effects BO1
-material,bo1_mtl_fx_char_gib_chunks
 xmodel,bo1_fx_char_gib_chunk_bone02
 xmodel,bo1_fx_char_gib_chunk_bone03
 xmodel,bo1_fx_char_gib_chunk_fat
@@ -485,8 +440,8 @@ xmodel,head_sp_sas_woodland_todd
 xmodel,head_sp_sas_woodland_hugh
 xmodel,head_sp_spetsnaz_collins_vladbody
 
-// ## Custom Weapons
-// .44 Magnum
+// Custom Weapons
+// ## .44 Magnum
 xmodel,viewmodel_bf3_taurus44
 xmodel,weapon_bf3_taurus44
 
@@ -504,7 +459,7 @@ xanim,viewmodel_magnum_sprint_in
 xanim,viewmodel_magnum_sprint_loop
 xanim,viewmodel_magnum_sprint_out
 
-// Medic and Ammobag
+// ## Medic and Ammobag
 xmodel,viewmodel_bf3_medicbag
 xmodel,weapon_bf3_medicbag
 xmodel,viewmodel_bf3_ammobag
@@ -519,7 +474,7 @@ xanim,viewmodel_backpack_sprint_in
 xanim,viewmodel_backpack_sprint_loop
 xanim,viewmodel_backpack_sprint_out
 
-// TF CAR101
+// ## CAR101
 xmodel,viewmodel_car101_tf
 xmodel,weapon_car101_tf
 
@@ -535,16 +490,13 @@ xanim,viewmodel_car101_grip_ADS_up
 xanim,viewmodel_car101_grip_ADS_fire
 xanim,viewmodel_car101_grip_ADS_down
 
-# HCOG
 xanim,viewmodel_car101_grip_hcog_ADS_up
 xanim,viewmodel_car101_grip_hcog_ADS_down
-
-# Holo
 xanim,viewmodel_car101_grip_holo_re_ADS_up
 xanim,viewmodel_car101_grip_holo_re_ADS_down
 
 
-// TF Kraber
+// ## TF Kraber
 xmodel,viewmodel_kraber_tf
 xmodel,weapon_kraber_tf
 
@@ -563,7 +515,7 @@ xanim,viewmodel_kraber_ap_sprint_in
 xanim,viewmodel_kraber_ap_sprint_loop
 xanim,viewmodel_kraber_ap_sprint_out
 
-// MP5k
+// ## MP5k
 xmodel,viewmodel_bf3_mp5k
 xmodel,weapon_bf3_mp5k
 
@@ -584,7 +536,7 @@ xanim,viewmodel_mp5_grip_ads_fire
 xanim,viewmodel_mp5_grip_ads_up
 xanim,viewmodel_mp5_grip_ads_down
 
-// Combat Knife
+// ## Combat Knife
 material,death_knife
 
 xanim,viewmodel_strider_idle
@@ -599,7 +551,7 @@ xanim,viewmodel_strider_sprint_out
 xanim,viewmodel_strider_ads_up
 xanim,viewmodel_strider_ads_down
 
-// BF3 SCAR H
+// ## SCAR H
 xmodel,viewmodel_bf3_scar_h
 xmodel,weapon_bf3_scar_h
 
@@ -622,17 +574,12 @@ xanim,viewmodel_scar_h_grip_sprint_out
 xanim,viewmodel_scar_h_grip_ads_fire
 xanim,viewmodel_scar_h_grip_ads_last_shot
 
-# Iron and ACOG
 xanim,viewmodel_scar_h_grip_ads_up
 xanim,viewmodel_scar_h_grip_ads_down
-
-# Reflex and Holo
 xanim,viewmodel_scar_h_reflex_ads_up
-
-# Kobra
 # xanim,viewmodel_scar_h_kobra_ads_up
 
-// BF3 F2000
+// ## F2000
 xmodel,viewmodel_bf3_f2000
 xmodel,weapon_bf3_f2000
 
@@ -650,15 +597,10 @@ xanim,viewmodel_fn2000_ads_fire
 xanim,viewmodel_fn2000_ads_up
 xanim,viewmodel_fn2000_ads_down
 
-# Reflex
 xanim,viewmodel_fn2000_reflex_ads_up
 xanim,viewmodel_fn2000_reflex_ads_down
-
-# Kobra and Holo
 xanim,viewmodel_fn2000_kobra_ads_up
 xanim,viewmodel_fn2000_kobra_ads_down
-
-# ACOG
 xanim,viewmodel_fn2000_acog_ads_up
 
 // Sentry Turrets
@@ -673,7 +615,7 @@ xmodel,viewmodel_base_viewhands
 xmodel,com_stove
 xmodel,com_vending_can_new1_lit
 
-// Santa hat for the winter season
+// Seasonal xmodels
 xmodel,santa_hat
 
 // Armored Dome
