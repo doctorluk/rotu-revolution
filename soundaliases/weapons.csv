@@ -50,6 +50,14 @@ weap_mag44_clipin_plr,,weapons/magnum/wpfoly_magnm_reload_clipout_v2.wav,0.55,0.
 weap_mag44_cock_plr,,weapons/magnum/wpfoly_magnm_reload_cock_v2.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,
 weap_mag44_chamber_close_plr,,weapons/magnum/wpfoly_magnm_reload_chamber_close_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,
 
+# MTAR 21
+weap_tar21_fire_plr,,weapons/mtar21/wpnfire_tavor_v2_01.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,local,,,,0.85,,,,,weapon2,,,,
+weap_tar21_fire_npc,,weapons/mtar21/wpnfire_tavor_v2_01_mn.wav,0.84,0.9,wpnai,1,1,35,10920,weapon,,,,0.7,all_mp,,,,weapon4
+weap_tar21_mag_in_plr,,weapons/mtar21/wpfoly_tavor_reload_clipin_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+weap_tar21_mag_out_plr,,weapons/mtar21/wpfoly_tavor_reload_clipout_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+weap_tar21_tap_plr,,weapons/mtar21/wpfoly_tavor_reload_lift_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+weap_tar21_bolt_back_plr,,weapons/mtar21/wpfoly_tavor_reload_chamber_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+
 # Monkey Bomb
 monk_cymb_1,1,weapons/monkey/monk_cymb_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
 monk_cymb_2,2,weapons/monkey/monk_cymb_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,

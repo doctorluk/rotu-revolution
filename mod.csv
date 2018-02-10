@@ -603,6 +603,26 @@ xanim,viewmodel_fn2000_kobra_ads_up
 xanim,viewmodel_fn2000_kobra_ads_down
 xanim,viewmodel_fn2000_acog_ads_up
 
+// ## MTAR-21
+xmodel,viewmodel_bf4_mtar21
+xmodel,weapon_bf4_mtar21
+
+xanim,viewmodel_tavor_idle
+xanim,viewmodel_tavor_fire
+xanim,viewmodel_tavor_reload
+xanim,viewmodel_tavor_reload_empty
+xanim,viewmodel_tavor_first_raise
+xanim,viewmodel_tavor_pullout
+xanim,viewmodel_tavor_pullout_quick
+xanim,viewmodel_tavor_putaway
+xanim,viewmodel_tavor_putaway_quick
+xanim,viewmodel_tavor_sprint_in
+xanim,viewmodel_tavor_sprint_loop
+xanim,viewmodel_tavor_sprint_out
+xanim,viewmodel_tavor_ads_fire
+xanim,viewmodel_tavor_ads_up
+xanim,viewmodel_tavor_ads_down
+
 // Sentry Turrets
 xmodel,bo2_turret_sentry_gun
 xmodel,mw3_sentry_gl_base
