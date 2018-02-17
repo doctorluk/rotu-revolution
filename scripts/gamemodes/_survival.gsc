@@ -30,7 +30,6 @@ initGame()
 	level.currentWave = 1;
 	level.ambient = "zom_ambient0";
 	level.flashlightEnabled = false;
-	level.difficulties = level.dvar["surv_waves_repeat"];
 	level.currentDifficulty = 0;
 	level.currentType = "";
 	level.lastSpecialWave = "";

@@ -243,7 +243,8 @@ loadZomModel(type)
 		self attach(head);
 	}
 	
-	addSantaHat(type);
+	if(level.dvar["surv_seasonal_features"])
+		addSantaHat(type);
 }
 
 addSantaHat(type){
