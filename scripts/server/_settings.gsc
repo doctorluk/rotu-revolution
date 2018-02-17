@@ -124,7 +124,7 @@ loadSettings()
 	dvarBool(	"game",			"mapvote",				1);
 	
 	// Time for the mapvote
-	dvarInt(	"game",			"mapvote_time",			20,		5,		60
+	dvarInt(	"game",			"mapvote_time",			20,		5,		60);
 	
 	// Amount of maps displayed when voting for a map
 	dvarInt(	"game",			"mapvote_count",		8,		1, 		15);
