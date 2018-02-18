@@ -638,7 +638,7 @@ ARMORED_PASSIVE(ability)
 		break;
 		
 		case "AB3":
-			self reloadForArmored();
+			
 		break;
 		
 		case "AB4":
@@ -1266,26 +1266,6 @@ heal(x)
 	self updateHealthHud(self.health / self.maxhealth);
 }
 
-reloadForArmored()
-{
-	self endon("disconnect");
-	self endon("death");
-	
-	while(1)
-	{
-		if (self.curClass != "armored" || self.sessionstate == "spectator")
-			return;
-			
-		self waittill("weapon_change");
-		
-		wep = self getCurrentWeapon();
-		
-		if (scripts\players\_weapons::isLMG(wep))
-			self setPerk("specialty_fastreload");
-		else
-			self unsetPerk("specialty_fastreload");
-	}
-}
 
 dynamicAccuracy()
 {
