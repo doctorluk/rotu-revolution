@@ -163,7 +163,6 @@ resetAbilities()
 	self.canAssasinate = false;
 	self.isHitman = false;
 	self.focus = -1;
-	self.knifeMod = "";
 	self.bulletMod = "";
 	self.knifeDamageMP = 1;
 	self.weaponNoiseMP = 1;
@@ -504,7 +503,7 @@ STEALTH_PASSIVE(ability)
 		break;
 		
 		case "AB2":
-			self.knifeMod += "assassin";
+			
 		break;
 		
 		case "AB3":
@@ -635,7 +634,7 @@ ARMORED_PASSIVE(ability)
 		
 		case "AB2":
 			self setPerk("specialty_bulletaccuracy");
-			self.knifeMod += "armored";
+			
 		break;
 		
 		case "AB3":
