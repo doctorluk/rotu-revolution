@@ -72,10 +72,6 @@ loadAbilityStats_soldier(){
 }
 
 loadAbilityStats_assassin(){
-
-	// TODO: They are not used
-	level.special["fake_death"]["recharge_time"] = 55;
-	level.special["fake_death"]["duration"] = 15;
 	
 	// TODO: They are not used
 	level.special["smoke_grenade"]["recharge_time"] = 5; // TODO: This is for debugging, get a more realistic time
@@ -473,15 +469,11 @@ STEALTH_PRIMARY(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self giveWeap("smoke_grenade_mp");
-			self setWeapAmmoClip("smoke_grenade_mp", 0);
-			self setOffhandSecondaryClass("smoke");
-			self thread watchSmokeGrenades();
-			self thread restoreSmokeGrenade(level.special["smoke_grenade"]["recharge_time"]);
+			
 		break;
 		
 		case "AB2":
-			self loadSpecialAbility("fake_death");
+			
 		break;
 		
 		case "AB3":
@@ -504,7 +496,7 @@ STEALTH_PASSIVE(ability)
 		break;
 		
 		case "AB3":
-			self thread stealthMovement();
+			
 		break;
 		
 		case "AB4":
@@ -1099,83 +1091,6 @@ beArmoredDome(duration)
 	dome delete();
 }
 
-//For assassin = makes ur screen 24/7 green, zombies can't see u
-stealthMovement()
-{
-	self thread interruptStealthMovement();
-	self thread stealthMovementWait();
-	self thread restoreInvisibility(level.special_stealthmove_intermission);
-}
-
-interruptStealthMovement()
-{
-	self endon("reset_abilities");
-	self endon("death");
-	self endon("disconnect");
-	while(1)
-	{
-		self waittill_any("weapon_fired", "grenade_fire", "detonated", "used_usable");
-		self notify("end_trance");
-		self.canHaveStealth = false;
-		wait 0.05;
-	}
-}
-
-stealthMovementWait()
-{
-	self endon("reset_abilities");
-	self endon("death");
-	self endon("disconnect");
-	i = 0;
-	while(1)
-	{
-		if(!self.canHaveStealth || self.isDown)
-		{
-			i = 0;
-			self.canHaveStealth = true;
-			
-			if(!self.isDown)
-				self thread restoreInvisibility(level.special_stealthmove_intermission);
-		}
-		else if(i >= level.special_stealthmove_intermission && !self.inTrance && self.visible)
-		{
-			self thread trance_stealthmove();
-			self thread trance_stealthmove_end();
-		}
-		i += 0.1;
-		wait 0.1;
-	}
-
-}
-
-trance_stealthmove()
-{
-	self endon("end_trance");
-	self endon("death");
-	self endon("disconnect");
-	
-	while(self.inTrance)
-		wait .5;
-	
-	self.trance = "stealthmove";
-	self.inTrance = true;
-	self.visible = false;
-	self playerFilmTweaks(1, 0, 0, "0 1 0",  "0 1 2", 0, 1.1, 1);//1, 0, .75, ".25 1 .5",  "25 1 .7", .20, 1.4, 1
-		
-	self waittill("end_trance");
-}
-
-trance_stealthmove_end()
-{
-	self endon("death");
-	self endon("disconnect");
-	self waittill("end_trance");
-	self.inTrance = false;
-	self.trance = "";
-	self playerFilmTweaksOff();
-	self.visible = true;
-}
-
 quickEscape() // When health gets below 25% we give ourselves a speedboost - for Assassin class
 {
 	self endon("reset_abilities");
@@ -1390,12 +1305,7 @@ onSpecialAbility()
 			self doEscape(self.special["duration"]);
 			iprintln(self.name + "^7 ^5sped ^7themself up^7!");
 			self resetSpecial();
-		break;
-		
-		case "fake_death":
-			self doNinja(self.special["duration"]);
-			iprintln(self.name + "^7 is temporarily ^5untargetable^7!");
-			self resetSpecial();
+
 		break;
 	}
 }
@@ -1640,42 +1550,6 @@ doRampage(time)
 	
 	if (!self.hasFastReload)
 		self unSetPerk("specialty_fastreload");
-}
-
-//*****************************************************************************************
-// 										 Fake Death Special
-//*****************************************************************************************
-
-doNinja(time)
-{
-	self endon("death");
-	self endon("downed");
-	self endon("disconnect");
-	self notify("end_trance");
-	
-	wait 0.1;
-	
-	self setClientDvar("ui_specialtext", "^5Special Activated!");
-	self.canUseSpecial = false;
-	self.trance = "stealthmove";
-	self.inTrance = true;
-	self.visible = false;
-	self thread screenFlash((0.1, 0.1, 0.65), 0.5, 0.6);
-	//(enable, invert, desaturation, darktint,  lighttint, brightness, contrast, fovscale)
-	self playerFilmTweaks(1, 0, 0, "2 2 0",  "1 2 2", 0, 1.1, 1);
-	
-	wait time;
-	
-	self.trance = "";
-	self.inTrance = false;
-	self.visible = true;
-	self playerFilmTweaksOff();
-	self thread screenFlash((0.1, 0.1, 0.65), 0.5, 0.6);
-	
-	wait 0.1;
-	
-	self notify("end_trance");
-
 }
 
 //*****************************************************************************************
