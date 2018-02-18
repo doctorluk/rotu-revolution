@@ -156,7 +156,6 @@ resetAbilities()
 	self.revivetime = level.dvar["surv_revivetime"];
 	
 	self clearPerks();
-	self setStableMissile(0);
 	
 	if(isDefined(self.armored_hud))
 		self.armored_hud destroy();
@@ -506,7 +505,7 @@ SOLDIER_PRIMARY(ability)
 		break;
 		
 		case "AB3":
-			self setStableMissile(1);
+		
 		break;
 	}
 }
