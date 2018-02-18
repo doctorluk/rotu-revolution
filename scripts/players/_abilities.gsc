@@ -536,7 +536,7 @@ MEDIC_PRIMARY(ability)
 		break;
 		
 		case "AB2":
-			self loadSpecialAbility("aura");
+			
 		break;
 		
 		case "AB3":
@@ -1273,13 +1273,7 @@ onSpecialAbility()
 	self notify("special_ability");
 	
 	switch (self.special["ability"])
-	{
-		case "aura":
-			self thread specialAura(self.special["duration"]);
-			iprintln(self.name + "^7 has placed a ^2Healing Aura^7!");
-			self resetSpecial();
-		break;
-		
+	{		
 		case "rampage":
 			self doRampage(self.special["duration"]);
 			iprintln(self.name + "^7 activated their ^1Rampage^7!");
@@ -1314,68 +1308,6 @@ resetSpecial()
 	self.canUseSpecial = false;
 	self.specialRecharge = 0;
 	self setClientDvars("ui_specialtext", "^1Special Recharging", "ui_specialrecharge", 0);
-}
-
-//*****************************************************************************************
-// 										 Aura Special
-//*****************************************************************************************
-
-specialAura(time)
-{
-	self endon("disconnect");
-	self endon("killed_player");
-	
-	origin = self.origin;
-	trace = bulletTrace(self.origin + (0, 0, 50), self.origin + (0, 0, -200), false, self);
-  
-    if(trace["fraction"] < 1)
-       origin = trace["position"];
-
-	healObject = spawnHealFX(origin, level.healingEffect);
-	healObject.healing = self.auraHealing;
-	healObject.owner = self;	
-	healObject thread healObjectHeal(time);
-	self playsound("aura_spawn");
-}
-
-spawnHealFX(groundpoint, fx)
-{
-	effect = spawnFx(fx, groundpoint, getGroundTilt(groundpoint));
-	triggerFx(effect);
-	
-	return effect;
-}
-
-healObjectHeal(time)
-{
-	wait 2;
-	timePassed = 0;
-	while (timePassed < time)
-	{
-		for (i = 0; i <= level.players.size; i++)
-		{
-			player = level.players[i];
-			
-			if (isDefined(player) && player.isAlive && distance(self.origin, player.origin) <= 240 && player.health < player.maxhealth)
-				self thread healThread(player);				
-		}
-		timePassed += 2;
-		wait 2;
-	}
-	
-	self delete();
-}
-
-healThread(player)
-{
-	player endon("disconnect");
-
-	// send out a glowing ball that follows the player around
-	self thread glow_heal_ball_out(player);
-
-	// once the ball reached him we heal him
-	player waittill("glow_ball_reached");
-	self.owner thread healPlayer(player, self.healing);
 }
 
 healPlayer(player, heal)
