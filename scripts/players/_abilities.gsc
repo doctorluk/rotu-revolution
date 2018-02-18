@@ -163,7 +163,6 @@ resetAbilities()
 	self.canAssasinate = false;
 	self.isHitman = false;
 	self.focus = -1;
-	self.bulletMod = "";
 	self.knifeDamageMP = 1;
 	self.weaponNoiseMP = 1;
 	self.immune = false;
@@ -573,7 +572,7 @@ MEDIC_PASSIVE(ability)
 		break;
 		
 		case "AB4":
-			self.bulletMod = "poison";
+			
 		break;
 	}
 }
@@ -704,7 +703,7 @@ ENGINEER_PASSIVE(ability)
 		break;
 		
 		case "AB4":
-			self.bulletMod = "incendiary";
+			
 		break;
 	}
 }

@@ -573,28 +573,6 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 			self addToAssist(eAttacker, iDamage);
 	}
 
-	// check for Incendiary/Poisonous Ammo
-	if(isDefined(eAttacker.bulletMod) && randomFloat(1) <= 0.05		// apply fire or poison only if the attacker has it and with a 5% chance
-	&& self.type != "boss" && self.type != "halfboss"					// don't apply it to boss or halfboss zombies
-	&& !self.isPoisoned && !self.isOnFire								// don't apply it twice or both
-	&& !self.isZombie													// don't apply it to infected players
-	&& (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) && !scripts\players\_weapons::isExplosive(sWeapon))		// only apply it with the primary or secondary, non explosive weapon
-	{
-		// apply incendiary ammo
-		if(eAttacker.bulletMod == "incendiary" && self.type != "burning" && self.type != "napalm" && self.type != "hellhound")
-		{
-			self igniteBot(eAttacker);
-			eAttacker.stats["ignitions"]++;
-		}
-		
-		// apply poisonous ammo
-		if(eAttacker.bulletMod == "poison" && self.type != "toxic")
-		{
-			self poisonBot(eAttacker);
-			eAttacker.stats["poisons"]++;
-		}
-	}
-
 	// disable knockback without a damage direction
 	if(!isDefined(vDir))
 		iDFlags |= level.iDFLAGS_NO_KNOCKBACK;
