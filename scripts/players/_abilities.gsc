@@ -181,7 +181,6 @@ resetAbilities()
 	self.infectionMP = 1;
 	self.canZoom = true;
 	self.chargedGrenades = false;
-	self.headshotMP = 1;
 	self.medkitTime = 12;
 	self.medkitHealing = 25;
 	self.auraHealing = 35;
@@ -759,7 +758,7 @@ SCOUT_PASSIVE(ability)
 		break;
 		
 		case "AB2":
-			self.headshotMP = 2;
+			
 		break;
 		
 		case "AB3":
