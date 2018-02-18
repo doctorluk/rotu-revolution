@@ -537,15 +537,6 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 	// Apply the player related damage claculations
 	if(isDefined(eAttacker) && isPlayer(eAttacker))
 	{
-		// Check for insta-explosive grenades		TODO: Remove this and come up with a more useful function
-		if(eAttacker.chargedGrenades)
-		{
-			if(sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp")
-			{
-				eInflictor detonate();
-				return;
-			}
-		}
 		
 		// Explosive Crossbow sticking to the zombie
 		if(sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp")
