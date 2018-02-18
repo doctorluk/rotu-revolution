@@ -722,7 +722,7 @@ SCOUT_PRIMARY(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self loadSpecialAbility("escape");
+			
 		break;
 		
 		case "AB2":
@@ -1293,13 +1293,6 @@ onSpecialAbility()
 				self resetSpecial();
 			}
 		break;
-		
-		case "escape":
-			self doEscape(self.special["duration"]);
-			iprintln(self.name + "^7 ^5sped ^7themself up^7!");
-			self resetSpecial();
-
-		break;
 	}
 }
 
@@ -1535,41 +1528,6 @@ doInvincibleHud()
 		self.armored_hud.alpha = 1;
 		wait 0.5;
 	}
-}
-
-//*****************************************************************************************
-// 										 Escape Special
-//*****************************************************************************************
-
-doEscape(time)
-{
-	self endon("downed");
-	self endon("death");
-	self endon("disconnect");
-	
-	if(self.inTrance)
-		self notify("end_trance");
-	
-	self endon("end_trance");
-	
-	self setClientDvar("ui_specialtext", "^5Special Activated!");
-	self.canUseSpecial = false;
-	self.trance = "quick_escape";
-	self.inTrance = true;
-	self.visible = true;
-	
-	self setMoveSpeedScale(self.speed + 0.25);
-	
-	self thread screenFlash((0.1, 0.1, 0.65), 0.5, 0.6);
-	self playerFilmTweaks(1, 0, 0, "0 1 2",  "2 2 1", 0, 1, 1);//1, 0, .75, ".25 .5 1",  ".25 .7 1", .20, 1.4, 1.25
-	
-	wait time;
-	
-	self.inTrance = false;
-	self playerFilmTweaksOff();
-	self thread screenFlash((0.1, 0.1, 0.65), 0.5, 0.6);
-	self setMoveSpeedScale(self.speed);
-	self notify("end_trance");
 }
 
 //*****************************************************************************************
