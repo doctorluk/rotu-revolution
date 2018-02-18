@@ -118,9 +118,8 @@ getFullClassName(){
 	switch(self.class){
 		case "soldier": return "Soldier";
 		case "armored": return "Armored";
-		case "stealth": return "Assassin";
+		case "specialist": return "Specialist";
 		case "engineer": return "Engineer";
-		case "scout": return "Scout";
 		case "medic": return "Medic";
 		default: return "undefined";
 	}

@@ -690,7 +690,7 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		attacker thread scripts\players\_rank::giveRankXP("kill");
 		attacker thread scripts\players\_spree::checkSpree();
 		
-		if (attacker.curClass=="stealth" && !attacker.isDown) {
+		if (attacker.curClass=="specialist" && !attacker.isDown) {
 			attacker scripts\players\_abilities::rechargeSpecial(5);
 		}
 		// if (attacker.curClass == "medic" && !attacker.isDown)

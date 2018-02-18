@@ -96,10 +96,9 @@ loadSettings()
 	
 	// Maximum class settings
 	dvarInt(	"game",			"max_soldiers",			players,		0,		getDvarInt("sv_maxclients"));
-	dvarInt(	"game",			"max_assassins",		players,		0,		getDvarInt("sv_maxclients"));
+	dvarInt(	"game",			"max_specialists",		players,		0,		getDvarInt("sv_maxclients"));
 	dvarInt(	"game",			"max_armored",			players,		0,		getDvarInt("sv_maxclients"));
 	dvarInt(	"game",			"max_engineers",		players,		0,		getDvarInt("sv_maxclients"));
-	dvarInt(	"game",			"max_scouts",			players,		0,		getDvarInt("sv_maxclients"));
 	dvarInt(	"game",			"max_medics",			players,		0,		getDvarInt("sv_maxclients"));
 	
 	// Increases ragdoll forces, TODO: doesn't seem to work

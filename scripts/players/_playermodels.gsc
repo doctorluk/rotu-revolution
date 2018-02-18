@@ -78,7 +78,7 @@ setPlayerClassModel(class)
 				break;
 			}
 		break;
-		case "stealth":
+		case "specialist":
 			self.myBody = "body_mp_usmc_woodland_sniper";
 			self.myHead = "head_mp_usmc_ghillie";
 		break;
@@ -108,34 +108,34 @@ setPlayerClassModel(class)
 				break;
 			}
 		break;
-		case "scout":
-			rI = randomint(2);
-			switch (rI)
-			{
-				case 0:
-					self.myBody = "body_mp_usmc_woodland_recon";
-				break;
-				case 1:
-					self.myBody = "body_mp_usmc_woodland_recon";
-				break;
-			}
+		// case "scout":
+			// rI = randomint(2);
+			// switch (rI)
+			// {
+				// case 0:
+					// self.myBody = "body_mp_usmc_woodland_recon";
+				// break;
+				// case 1:
+					// self.myBody = "body_mp_usmc_woodland_recon";
+				// break;
+			// }
 				
-			rI = randomint(3);
-			switch (rI)
-			{
-				case 0:
-					self.myHead = "head_sp_opforce_geoff_headset_body_c";
-				break;
-				case 1:
-					self.myHead = "head_sp_sas_woodland_peter";
-				break;
-				case 2:
-					self.myHead = "head_sp_sas_woodland_todd";
-				break;
-			}
+			// rI = randomint(3);
+			// switch (rI)
+			// {
+				// case 0:
+					// self.myHead = "head_sp_opforce_geoff_headset_body_c";
+				// break;
+				// case 1:
+					// self.myHead = "head_sp_sas_woodland_peter";
+				// break;
+				// case 2:
+					// self.myHead = "head_sp_sas_woodland_todd";
+				// break;
+			// }
 
 
-		break;
+		// break;
 		case "medic":
 				self.myBody = "body_mp_usmc_sniper";
 				

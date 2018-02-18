@@ -48,17 +48,11 @@ precache()
 
 loadAbilityStats()
 {
-
-	// TODO: Move to Assassin and use same data format as the other classes
-	level.special_quickescape_duration = 6;
-	level.special_quickescape_intermission = 15;
-	level.special_stealthmove_intermission = 10;
 	
 	loadAbilityStats_soldier();
-	loadAbilityStats_assassin();
+	loadAbilityStats_specialist();
 	loadAbilityStats_armored();
 	loadAbilityStats_engineer();
-	loadAbilityStats_scout();
 	loadAbilityStats_medic();
 	
 }
@@ -71,10 +65,9 @@ loadAbilityStats_soldier(){
 	
 }
 
-loadAbilityStats_assassin(){
+loadAbilityStats_specialist(){
 	
-	// TODO: They are not used
-	level.special["smoke_grenade"]["recharge_time"] = 5; // TODO: This is for debugging, get a more realistic time
+	// TODO: Fill with stats
 	
 }
 
@@ -99,17 +92,6 @@ loadAbilityStats_engineer(){
 	
 	// Throwable Special
 	level.special["ammo"]["recharge_time"] = 75;
-	
-}
-
-loadAbilityStats_scout(){
-
-	// TODO: They are not used
-	level.special["escape"]["recharge_time"] = 40;
-	level.special["escape"]["duration"] = 10;
-	
-	// Throwable Special
-	level.special["monkey_bomb"]["recharge_time"] = 65;
 	
 }
 
@@ -315,7 +297,8 @@ loadGeneralAbilities(class)
 			self.maxhealth = 115;
 		break;
 		
-		case "stealth":
+		// TODO: Okay?
+		case "specialist":
 			self.maxhealth = 100;
 			self setPerk("specialty_quieter");
 			self.speed = 1.02;
@@ -323,12 +306,6 @@ loadGeneralAbilities(class)
 		
 		case "medic":
 			self.maxhealth = 110;
-		break;
-		
-		case "scout":
-			self.maxhealth = 90;
-			self setPerk("specialty_longersprint");
-			self.speed = 1.08;
 		break;
 		
 		case "amored":
@@ -362,8 +339,8 @@ loadAbility(class, type, ability)
 			loadSoldierAbility(type, ability);
 		break;
 		
-		case "stealth":
-			loadStealthAbility(type, ability);
+		case "specialist":
+			loadSpecialistAbility(type, ability);
 		break;
 		
 		case "medic":
@@ -376,10 +353,6 @@ loadAbility(class, type, ability)
 		
 		case "engineer":
 			loadEngineerAbility(type, ability);
-		break;
-		
-		case "scout":
-			loadScoutAbility(type, ability);
 		break;
 	}
 
@@ -446,25 +419,25 @@ SOLDIER_PASSIVE(ability)
 	}
 }
 
-loadStealthAbility(type, ability)
+loadSpecialistAbility(type, ability)
 {
 	switch (type)
 	{
 		case "PR":
-			self thread STEALTH_PRIMARY(ability);
+			self thread SPECIALIST_PRIMARY(ability);
 		break;
 		
 		case "PS":
-			self thread STEALTH_PASSIVE(ability);
+			self thread SPECIALIST_PASSIVE(ability);
 		break;
 	}
 }
 
-///////////////
-//	STEALTH  //
-///////////////
+//////////////////
+//	SPECIALIST  //
+//////////////////
 
-STEALTH_PRIMARY(ability)
+SPECIALIST_PRIMARY(ability)
 {
 	switch (ability)
 	{
@@ -482,7 +455,7 @@ STEALTH_PRIMARY(ability)
 	}
 }
 
-STEALTH_PASSIVE(ability)
+SPECIALIST_PASSIVE(ability)
 {
 	switch (ability)
 	{
@@ -499,7 +472,7 @@ STEALTH_PASSIVE(ability)
 		break;
 		
 		case "AB4":
-			
+			self.hasRadar = true;
 		break;
 	}
 }
@@ -699,67 +672,6 @@ ENGINEER_PASSIVE(ability)
 	}
 }
 
-loadScoutAbility(type, ability)
-{
-	switch (type)
-	{
-		case "PR":
-			self thread SCOUT_PRIMARY(ability);
-		break;
-		
-		case "PS":
-			self thread SCOUT_PASSIVE(ability);
-		break;
-	}
-}
-
-///////////////
-//	SCOUT    //
-///////////////
-
-SCOUT_PRIMARY(ability)
-{
-	switch (ability)
-	{
-		case "AB1":
-			
-		break;
-		
-		case "AB2":
-			self setPerk("specialty_holdbreath");
-		break;
-		
-		case "AB3":
-			self giveWeapon("usp_silencer_mp");
-			self setOffhandSecondaryClass("flash");
-			self setWeaponAmmoClip("usp_silencer_mp", 0);
-			self thread restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);
-		break;
-	}
-}
-
-SCOUT_PASSIVE(ability)
-{
-	switch (ability)
-	{
-		case "AB1":
-			
-		break;
-		
-		case "AB2":
-			
-		break;
-		
-		case "AB3":
-			
-		break;
-		
-		case "AB4":
-			self.hasRadar = true;
-		break;
-	}
-}
-
 // Abilities
 rechargeSpecial(delta)
 {
@@ -816,27 +728,6 @@ watchArmoredDome()
 			shield thread beArmoredDome(level.special["armoredshield"]["duration"]);
 			self thread restoreArmoredDome(level.special["armoredshield"]["recharge_time"]);
 			// self playsound("take_medkit"); /* TODO: INSERT PROPER "DEPLOYING SHIELD" SOUND */
-		}
-	}
-}
-
-watchSmokeGrenades()
-{
-	self endon("reset_abilities");
-	self endon("downed");
-	self endon("death");
-	self endon("disconnect");
-
-	while(1)
-	{
-		self waittill ("grenade_fire", nade, weaponName);
-		
-		if(weaponName == level.weaponKeyS2C["smoke_grenade_mp"])
-		{
-			nade.owner = self;
-			nade thread beSmokeGrenade(self.smokeTime);
-			self thread restoreSmokeGrenade(level.special["smoke_grenade"]["recharge_time"]);
-			self playSound("throw_smoke");
 		}
 	}
 }
@@ -995,32 +886,6 @@ beAmmobox(time)
 	self delete();
 }
 
-beSmokeGrenade(time)
-{
-//	self waittill("explode");		this will not work...
-	origin = self.origin;
-	while(isDefined(self))
-	{
-		// so we work around by grabbing the origin while the grenade exists
-		if(origin != self.origin)
-			origin = self.origin;
-			
-		wait 0.05;
-	}
-
-	// these should match the fx values
-	radius = 250;
-	height = 150;
-	duration = 30;
-	
-	// TODO: Make the trigger grow over time
-	trigger = spawn("trigger_radius", origin, 0, radius, height);
-	trigger setContents(2); // so zombies can't see through
-
-	wait duration;
-	trigger delete();
-}
-
 beMedkit(time, heal)
 {
 	self endon("death");
@@ -1090,7 +955,7 @@ beArmoredDome(duration)
 	dome delete();
 }
 
-quickEscape() // When health gets below 25% we give ourselves a speedboost - for Assassin class
+quickEscape() // When health gets below 25% we give ourselves a speedboost - for Specialist class
 {
 	self endon("reset_abilities");
 	self endon("death");
@@ -1230,6 +1095,9 @@ accuracyChangeDown()
 	}
 }
 
+/*
+* TODO: Monitor Special-Grenade button instead of USE
+*/
 watchSpecialAbility()
 {
 	self endon("disconnect");
@@ -1273,19 +1141,22 @@ onSpecialAbility()
 	self notify("special_ability");
 	
 	switch (self.special["ability"])
-	{		
+	{
+		// SOLDIER
 		case "rampage":
 			self doRampage(self.special["duration"]);
 			iprintln(self.name + "^7 activated their ^1Rampage^7!");
 			self resetSpecial();
 		break;
 		
+		// ARMORED
 		case "invincible":
 			self doInvincible(self.special["duration"]);
 			iprintln(self.name + "^7 has become ^3Invincible^7!");
 			self resetSpecial();
 		break;
 		
+		// ENGINEER
 		case "augmentation":
 			if (self doAugmentation())
 			{
@@ -1561,17 +1432,3 @@ doAugmentation()
 		
 	return true;
 }
-
-
-// doAmmoSpecial()
-// {
-	// weapon = self GetCurrentWeapon();
-	// if (weapon == self.primary || weapon == self.secondary)
-	// {
-		// self playlocalsound("weap_pickup");
-		// self GiveMaxAmmo(weapon);
-		// return 1;
-	// }
-	// self iprintln("^1Invalid weapon!");
-	// return 0;
-// }
