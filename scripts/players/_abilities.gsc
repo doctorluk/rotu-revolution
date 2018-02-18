@@ -478,7 +478,6 @@ STEALTH_PRIMARY(ability)
 		
 		case "AB3":
 			self thread quickEscape();
-			self SetMoveSpeedScale(self.speed + .2);
 		break;
 	}
 }
@@ -500,7 +499,7 @@ STEALTH_PASSIVE(ability)
 		break;
 		
 		case "AB4":
-			// The explosive crossbow was here
+			
 		break;
 	}
 }
