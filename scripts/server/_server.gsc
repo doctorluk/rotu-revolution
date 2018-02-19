@@ -32,6 +32,7 @@ init()
 	thread scripts\server\_adminmenu::init();
 	thread scripts\server\_scoreboard::init();
 	thread scripts\server\_servername::init();
+	thread scripts\server\_build::init();
 	thread scripts\security\_security::init();
 	thread scripts\level\_tradespawns::init();
 	

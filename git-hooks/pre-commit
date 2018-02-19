@@ -1,0 +1,8 @@
+#!/bin/sh
+version=`git rev-list --all --count`
+
+#//22
+#init(){
+#	level.buildnumber = 22;
+#}
+printf "//$version\ninit(){\n\tlevel.buildnumber = $version;\n}" > ./scripts/server/_build.gsc

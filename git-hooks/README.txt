@@ -1,0 +1,1 @@
+If you want to enable automatic incrementing of the _build.gsc, copy the pre-commit file into your .git/hooks/ directory.

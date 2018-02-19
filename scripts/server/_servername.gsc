@@ -38,6 +38,7 @@ Useable paramaters:
 
 PIHN_VERSIONFULL		-	Version (incl. "RotU-Revolution")
 PIHN_VERSIONSHORT		-	Version number only
+PIHN_BUILD				-	Build number
 PIHN_PLAYERS			-	Amount of Players
 PIHN_SOLDIERS			-	Amount of Soldiers
 PIHN_SPECIALISTS		-	Amount of Specialists
@@ -84,6 +85,7 @@ GetNewHostname()
 	//iPrintln("Getting new hostname: " + string);
 	string = CheckString("PIHN_VERSIONFULL", string);
 	string = CheckString("PIHN_VERSIONSHORT", string);
+	string = CheckString("PIHN_BUILD", string);
 	string = CheckString("PIHN_PLAYERS", string);
 	string = CheckString("PIHN_SOLDIERS", string);
 	string = CheckString("PIHN_SPECIALISTS", string);
@@ -153,6 +155,8 @@ ReplaceString(replace)
 			return level.rotuVersion_hostname;
 		case "PIHN_VERSIONSHORT":
 			return level.rotuVersion_hostname_short;
+		case "PIHN_BUILD":
+			return level.buildnumber;
 		case "PIHN_PLAYERS":
 			return level.activePlayers;
 		case "PIHN_SOLDIERS":
