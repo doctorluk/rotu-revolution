@@ -220,8 +220,8 @@ onMenuResponse()
 				self scripts\players\_classes::incClassRank("soldier");
 			break;
 
-			case "upgr_stealth":
-				self scripts\players\_classes::incClassRank("stealth");
+			case "upgr_specialist":
+				self scripts\players\_classes::incClassRank("specialist");
 			break;
 
 			case "upgr_armored":
@@ -230,9 +230,6 @@ onMenuResponse()
 			
 			case "upgr_engineer":
 				self scripts\players\_classes::incClassRank("engineer");
-			break;
-			case "upgr_scout":
-				self scripts\players\_classes::incClassRank("scout");
 			break;
 			case "upgr_medic":
 				self scripts\players\_classes::incClassRank("medic");

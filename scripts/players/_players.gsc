@@ -83,8 +83,7 @@ precache()
 	precacheStatusIcon("icon_medic");
 	precacheStatusIcon("icon_engineer");
 	precacheStatusIcon("icon_soldier");
-	precacheStatusIcon("icon_stealth");
-	precacheStatusIcon("icon_scout");
+	precacheStatusIcon("icon_specialist");
 	precacheStatusIcon("icon_armored");
 	precacheStatusIcon("icon_down");
 	precacheStatusIcon(	"icon_spec");

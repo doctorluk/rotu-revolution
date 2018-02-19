@@ -109,99 +109,99 @@ REFERENCE			DES_SOLDIER_PS_AB4D
 LANG_ENGLISH		"The Soldier is the only one with enough will power to resist the Zombie's virus and has become immune to it. ^3Unlocked at Soldier ^3rank 30."
 
 ///////////////
-//	STEALTH  //
+//	SPECIALIST  //
 ///////////////
 
 	//PRIMARY
 		// ABILITY 1 //
-REFERENCE			STEALTH_PR_AB1
+REFERENCE			SPECIALIST_PR_AB1
 LANG_ENGLISH        "Crossbow"
 
-REFERENCE			STEALTH_PR_AB1D
+REFERENCE			SPECIALIST_PR_AB1D
 LANG_ENGLISH        "Crossbow (^3lvl 5^7)"
 
-REFERENCE			DES_STEALTH_PR_AB1
+REFERENCE			DES_SPECIALIST_PR_AB1
 LANG_ENGLISH		"The Assassin carries a deadly Crossbow with him."
 
-REFERENCE			DES_STEALTH_PR_AB1D
+REFERENCE			DES_SPECIALIST_PR_AB1D
 LANG_ENGLISH		"The Assassin carries a deadly Crossbow with him. ^3Unlocked at Assassin rank 5."
 
 		// ABILITY 2 //
-REFERENCE			STEALTH_PR_AB2
+REFERENCE			SPECIALIST_PR_AB2
 LANG_ENGLISH        "Fake Death"
 
-REFERENCE			STEALTH_PR_AB2D
+REFERENCE			SPECIALIST_PR_AB2D
 LANG_ENGLISH        "Fake Death (^3lvl 15^7)"
 
 
-REFERENCE			DES_STEALTH_PR_AB2
+REFERENCE			DES_SPECIALIST_PR_AB2
 LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him."
 
-REFERENCE			DES_STEALTH_PR_AB2D
+REFERENCE			DES_SPECIALIST_PR_AB2D
 LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him. ^3Unlocked at Assassin rank^3 15."
 
 		// ABILITY 3 //
-REFERENCE			STEALTH_PR_AB3
+REFERENCE			SPECIALIST_PR_AB3
 LANG_ENGLISH        "Quick Escape"
 
-REFERENCE			STEALTH_PR_AB3D
+REFERENCE			SPECIALIST_PR_AB3D
 LANG_ENGLISH        "Quick Escape (^3lvl 25^7)"
 
 
-REFERENCE			DES_STEALTH_PR_AB3
+REFERENCE			DES_SPECIALIST_PR_AB3
 LANG_ENGLISH		"When the Assassin's health gets below 25% he becomes invisible to the Zombies and gets a small speed boost, after a few seconds the effect will wear off."
 
-REFERENCE			DES_STEALTH_PR_AB3D
+REFERENCE			DES_SPECIALIST_PR_AB3D
 LANG_ENGLISH		"When the Assassin's health gets below 25% he becomes invisible to the Zombies and gets a small speed boost, after a few seconds the effect will wear off.  ^3Unlocked at Assassin rank ^325."
 
 	//PASSIVE
 		// ABILITY 1 //
-REFERENCE			STEALTH_PS_AB1
+REFERENCE			SPECIALIST_PS_AB1
 LANG_ENGLISH        "Way of the Assassin"
 
-REFERENCE			DES_STEALTH_PS_AB1
+REFERENCE			DES_SPECIALIST_PS_AB1
 LANG_ENGLISH		"The Assassin gains a ^115%^7 damage penalty on fully automatic weapons and on all non-silenced weapons, on all other weapons a ^210%^7 damage bonus and a ^230%^7 melee/crossbow damage bonus."
 
 		// ABILITY 2 //
-REFERENCE			STEALTH_PS_AB2
+REFERENCE			SPECIALIST_PS_AB2
 LANG_ENGLISH        "Agile Blade"
 
-REFERENCE			STEALTH_PS_AB2D
+REFERENCE			SPECIALIST_PS_AB2D
 LANG_ENGLISH        "Agile Blade (^3lvl 10^7)"
 
 
-REFERENCE			DES_STEALTH_PS_AB2
+REFERENCE			DES_SPECIALIST_PS_AB2
 LANG_ENGLISH		"His ability to be agile even in the biggest fight makes him do more knife damage to the Boss and to every other infected individual."
 
-REFERENCE			DES_STEALTH_PS_AB2D
+REFERENCE			DES_SPECIALIST_PS_AB2D
 LANG_ENGLISH		"His ability to be agile even in the biggest fight makes him do more knife damage to the Boss and to every other infected individual. ^3Unlocked at Assassin rank 10."
 
 		// ABILITY 3 //
-REFERENCE			STEALTH_PS_AB3
+REFERENCE			SPECIALIST_PS_AB3
 LANG_ENGLISH        "Silent Boots"
 
-REFERENCE			STEALTH_PS_AB3D
+REFERENCE			SPECIALIST_PS_AB3D
 LANG_ENGLISH        "Silent Boots (^3lvl 20^7)"
 
 
-REFERENCE			DES_STEALTH_PS_AB3
+REFERENCE			DES_SPECIALIST_PS_AB3
 LANG_ENGLISH		"Having the ability to make no noise when walking gives the Assassin the ability to become unnoticed by Zombies when not making any other noises (such as Shopping, Shooting, Reviving etc.)."
 
-REFERENCE			DES_STEALTH_PS_AB3D
+REFERENCE			DES_SPECIALIST_PS_AB3D
 LANG_ENGLISH		"Having the ability to make no noise when walking gives the Assassin the ability to become unnoticed by Zombies when not making any other noises (such as Shopping, Shooting, Reviving etc.). ^3Unlocked ^3at Assassin rank 20."
 
 		// ABILITY 4 //
-REFERENCE			STEALTH_PS_AB4
+REFERENCE			SPECIALIST_PS_AB4
 LANG_ENGLISH        "Explosive Crossbow"
 
-REFERENCE			STEALTH_PS_AB4D
+REFERENCE			SPECIALIST_PS_AB4D
 LANG_ENGLISH        "Explosive Crossbow (^3lvl 30^7)"
 
 
-REFERENCE			DES_STEALTH_PS_AB4
+REFERENCE			DES_SPECIALIST_PS_AB4
 LANG_ENGLISH		"The Assassin replaces his normal Crossbow with a deadly Explosive Crossbow."
 
-REFERENCE			DES_STEALTH_PS_AB4D
+REFERENCE			DES_SPECIALIST_PS_AB4D
 LANG_ENGLISH		"The Assassin replaces his normal Crossbow with a deadly Explosive Crossbow. ^3Unlocked at Assassin ^3rank 30."
 
 
@@ -491,101 +491,6 @@ LANG_ENGLISH		"The Armored receives ^210%^7 less damage and has a smaller change
 
 REFERENCE			DES_ARMORED_PS_AB4D
 LANG_ENGLISH		"The Armored receives ^210%^7 less damage and has a smaller change of getting infected. ^3Unlocked at Armored ^3rank 30."
-
-///////////////
-//	SCOUT  //
-///////////////
-
-	//PRIMARY
-		// ABILITY 1 //
-REFERENCE			SCOUT_PR_AB1
-LANG_ENGLISH        "Quick Escape"
-
-REFERENCE			SCOUT_PR_AB1D
-LANG_ENGLISH        "Quick Escape (^3lvl 5^7)"
-
-REFERENCE			DES_SCOUT_PR_AB1
-LANG_ENGLISH		"The Scout gets a temporary speed boost."
-
-REFERENCE			DES_SCOUT_PR_AB1D
-LANG_ENGLISH		"The Scout gets a temporary speed boost. ^3Unlocked at Scout rank 5."
-
-		// ABILITY 2 //
-REFERENCE			SCOUT_PR_AB2
-LANG_ENGLISH        "Iron Lungs"
-
-REFERENCE			SCOUT_PR_AB2D
-LANG_ENGLISH        "Iron Lungs (^3lvl 15^7)"
-
-REFERENCE			DES_SCOUT_PR_AB2
-LANG_ENGLISH		"After being in duty for 14 months, the Scout has finalized the technique of holding his breath when aiming. Hold ^3SHIFT ^7(default) while aiming with scopes to hold your breath!"
-
-REFERENCE			DES_SCOUT_PR_AB2D
-LANG_ENGLISH		"After being in duty for 14 months, the Scout has finalized the technique of holding his breath when aiming. Hold ^3SHIFT ^7(default) while aiming with scopes to hold your breath!. ^3Unlocked at Scout rank^3 15."
-
-		// ABILITY 3 //
-REFERENCE			SCOUT_PR_AB3
-LANG_ENGLISH        "Monkey Bomb"
-
-REFERENCE			SCOUT_PR_AB3D
-LANG_ENGLISH        "Monkey Bomb (^3lvl 25^7)"
-
-
-REFERENCE			DES_SCOUT_PR_AB3
-LANG_ENGLISH		"The Scout carries a Zombie distracting bomb that will vastly disrupt their bodies once it blows up."
-
-REFERENCE			DES_SCOUT_PR_AB3D
-LANG_ENGLISH		"The Scout carries a Zombie distracting bomb that will vastly disrupt their bodies once it blows up. ^3Unlocked at Scout rank ^325."
-
-	//PASSIVE
-		// ABILITY 1 //
-REFERENCE			SCOUT_PS_AB1
-LANG_ENGLISH        "Scouting"
-
-REFERENCE			DES_SCOUT_PS_AB1
-LANG_ENGLISH		"The Scout gets a ^210%^7 damage bonus on snipers, sub-machine guns and pistols, furthermore he gets a ^115%^7 damage penalty on LMG's and assault rifles."
-
-		// ABILITY 2 //
-REFERENCE			SCOUT_PS_AB2
-LANG_ENGLISH        "Head Hunter"
-
-REFERENCE			SCOUT_PS_AB2D
-LANG_ENGLISH        "Head Hunter (^3lvl 10^7)"
-
-
-REFERENCE			DES_SCOUT_PS_AB2
-LANG_ENGLISH		"Headshots deal another ^250%^7 damage."
-
-REFERENCE			DES_SCOUT_PS_AB2D
-LANG_ENGLISH		"Headshots deal another ^250%^7 damage. ^3Unlocked at Scout rank 10."
-
-		// ABILITY 3 //
-REFERENCE			SCOUT_PS_AB3
-LANG_ENGLISH        "Intelligent Grenades"
-
-REFERENCE			SCOUT_PS_AB3D
-LANG_ENGLISH        "Intelligent Grenades (^3lvl 20^7)"
-
-
-REFERENCE			DES_SCOUT_PS_AB3
-LANG_ENGLISH		"An impact sensor has been implemented into the Scout's frag grenades. If you hit a Zombie when throwing a grenade, the grenade will explode instantly."
-
-REFERENCE			DES_SCOUT_PS_AB3D
-LANG_ENGLISH		"An impact sensor has been implemented into the Scout's frag grenades. If you hit a Zombie when throwing a grenade, the grenade will explode instantly. ^3Unlocked at Scout rank 20."
-
-		// ABILITY 4 //
-REFERENCE			SCOUT_PS_AB4
-LANG_ENGLISH        "Scouting Drone"
-
-REFERENCE			SCOUT_PS_AB4D
-LANG_ENGLISH        "Scouting Drone (^3lvl 30^7)"
-
-
-REFERENCE			DES_SCOUT_PS_AB4
-LANG_ENGLISH		"A scouting drone provides the Scout with permanent vision on the Zombies' location."
-
-REFERENCE			DES_SCOUT_PS_AB4D
-LANG_ENGLISH		"A scouting drone provides the Scout with permanent vision on the Zombies' location. ^3Unlocked at Scout ^3rank 30."
 
 // SELECTABLE ABILITIES
 

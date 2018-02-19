@@ -78,7 +78,7 @@ TestClient(team)
         wait .05;
         
     self scripts\players\_players::joinAllies();
-	thread scripts\players\_classes::pickClass("stealth");
+	thread scripts\players\_classes::pickClass("specialist");
 	wait 0.1;
 	self closeMenu();
 	self closeInGameMenu();

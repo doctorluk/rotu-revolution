@@ -537,15 +537,6 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 	// Apply the player related damage claculations
 	if(isDefined(eAttacker) && isPlayer(eAttacker))
 	{
-		// Check for insta-explosive grenades		TODO: Remove this and come up with a more useful function
-		if(eAttacker.chargedGrenades)
-		{
-			if(sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp")
-			{
-				eInflictor detonate();
-				return;
-			}
-		}
 		
 		// Explosive Crossbow sticking to the zombie
 		if(sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp")
@@ -580,28 +571,6 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		
 		if(self.isBot)
 			self addToAssist(eAttacker, iDamage);
-	}
-
-	// check for Incendiary/Poisonous Ammo
-	if(isDefined(eAttacker.bulletMod) && randomFloat(1) <= 0.05		// apply fire or poison only if the attacker has it and with a 5% chance
-	&& self.type != "boss" && self.type != "halfboss"					// don't apply it to boss or halfboss zombies
-	&& !self.isPoisoned && !self.isOnFire								// don't apply it twice or both
-	&& !self.isZombie													// don't apply it to infected players
-	&& (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) && !scripts\players\_weapons::isExplosive(sWeapon))		// only apply it with the primary or secondary, non explosive weapon
-	{
-		// apply incendiary ammo
-		if(eAttacker.bulletMod == "incendiary" && self.type != "burning" && self.type != "napalm" && self.type != "hellhound")
-		{
-			self igniteBot(eAttacker);
-			eAttacker.stats["ignitions"]++;
-		}
-		
-		// apply poisonous ammo
-		if(eAttacker.bulletMod == "poison" && self.type != "toxic")
-		{
-			self poisonBot(eAttacker);
-			eAttacker.stats["poisons"]++;
-		}
 	}
 
 	// disable knockback without a damage direction
@@ -721,7 +690,7 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		attacker thread scripts\players\_rank::giveRankXP("kill");
 		attacker thread scripts\players\_spree::checkSpree();
 		
-		if (attacker.curClass=="stealth" && !attacker.isDown) {
+		if (attacker.curClass=="specialist" && !attacker.isDown) {
 			attacker scripts\players\_abilities::rechargeSpecial(5);
 		}
 		// if (attacker.curClass == "medic" && !attacker.isDown)
