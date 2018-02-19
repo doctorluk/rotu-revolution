@@ -22,9 +22,6 @@ LANG_ENGLISH        "Medkit"
 REFERENCE           MAGNUM
 LANG_ENGLISH        ".44 Magnum"
 
-REFERENCE           L96
-LANG_ENGLISH        "L96"
-
 REFERENCE           MP5K
 LANG_ENGLISH        "MP5K"
 // LANG_ENGLISH        "MPFUNFK"
@@ -33,8 +30,23 @@ REFERENCE           MTAR
 LANG_ENGLISH        "MTAR-21"
 // LANG_ENGLISH        "JEEROS-21"
 
+REFERENCE           CAR101
+LANG_ENGLISH        "C.A.R. 101"
+
 REFERENCE           F2000
 LANG_ENGLISH        "FN F2000"
+
+REFERENCE           SCAR_H
+LANG_ENGLISH        "SCAR-H"
+
+REFERENCE           M40A5
+LANG_ENGLISH        "M40A5"
+
+REFERENCE           KRABER
+LANG_ENGLISH        "Kraber AP"
+
+REFERENCE           USAS12
+LANG_ENGLISH        "USAS-12"
 
 REFERENCE			RAYGUN
 LANG_ENGLISH		"Raygun"
@@ -44,18 +56,6 @@ LANG_ENGLISH        "Wunderwaffe DG-2"
 
 REFERENCE           MINIGUN
 LANG_ENGLISH        "Deathmachine"
-
-REFERENCE           SCAR_H
-LANG_ENGLISH        "SCAR-H"
-
-REFERENCE           KNIFE
-LANG_ENGLISH        "Knife"
-
-REFERENCE           KRABER
-LANG_ENGLISH        "Kraber AP"
-
-REFERENCE           CAR101
-LANG_ENGLISH        "C.A.R. 101"
 
 ENDMARKER
 

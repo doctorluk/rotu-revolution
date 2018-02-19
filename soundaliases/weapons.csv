@@ -58,6 +58,20 @@ weap_tar21_mag_out_plr,,weapons/mtar21/wpfoly_tavor_reload_clipout_v1.wav,0.55,0
 weap_tar21_tap_plr,,weapons/mtar21/wpfoly_tavor_reload_lift_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
 weap_tar21_bolt_back_plr,,weapons/mtar21/wpfoly_tavor_reload_chamber_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
 
+# M40A5/USR
+weap_usr_fire_plr,,weapons/usr/weap_usr_slst_04.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,local,,,,0.85,,,,,weapon2,,,,
+weap_usr_fire_npc,,weapons/usr/weap_usr_slmn_04.wav,0.84,0.9,wpnai,1,1,35,10920,weapon,,,,0.7,all_mp,,,,weapon4
+weap_usr_clipin_plr,,weapons/usr/wpfoly_usr_reload_clipin_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+weap_usr_clipout_plr,,weapons/usr/wpfoly_usr_reload_clipout_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+weap_usr_bolt_open_plr,,weapons/usr/wpfoly_usr_reload_bolt_open_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+weap_usr_bolt_close_plr,,weapons/usr/wpfoly_usr_reload_bolt_close_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+
+
+# USAS12
+weap_usas12_clipin_plr,,weapons/usas12/wpfoly_usas12_reload_clipin_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+weap_usas12_clipout_plr,,weapons/usas12/wpfoly_usas12_reload_clipout_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+weap_usas12_chamber_plr,,weapons/usas12/wpfoly_usas12_reload_chamber_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100
+
 # Monkey Bomb
 monk_cymb_1,1,weapons/monkey/monk_cymb_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,
 monk_cymb_2,2,weapons/monkey/monk_cymb_01.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,,,,,,

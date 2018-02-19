@@ -623,6 +623,61 @@ xanim,viewmodel_tavor_ads_fire
 xanim,viewmodel_tavor_ads_up
 xanim,viewmodel_tavor_ads_down
 
+// ## M40A5
+xmodel,viewmodel_bf4_m40a5
+// xmodel,weapon_bf4_m40a5
+
+xanim,viewmodel_usr_idle
+xanim,viewmodel_usr_pullout
+xanim,viewmodel_usr_pullout_fast
+xanim,viewmodel_usr_putaway
+xanim,viewmodel_usr_putaway_fast
+xanim,viewmodel_usr_first_pullout
+xanim,viewmodel_usr_reload
+xanim,viewmodel_usr_reload_empty
+xanim,viewmodel_usr_sprint_in
+xanim,viewmodel_usr_sprint_loop
+xanim,viewmodel_usr_sprint_out
+xanim,viewmodel_usr_ads_fire
+xanim,viewmodel_usr_ads_rechamber
+xanim,viewmodel_usr_ads_up
+xanim,viewmodel_usr_ads_down
+
+// ## USAS12
+xmodel,viewmodel_bf4_usas12
+// xmodel,weapon_bf4_usas12
+
+xanim,viewmodel_usas12_idle
+xanim,viewmodel_usas12_pullout
+xanim,viewmodel_usas12_pullout_first
+xanim,viewmodel_usas12_pullout_quick
+xanim,viewmodel_usas12_putaway
+xanim,viewmodel_usas12_putaway_quick
+xanim,viewmodel_usas12_fire
+xanim,viewmodel_usas12_reload
+xanim,viewmodel_usas12_reload_empty
+xanim,viewmodel_usas12_sprint_in
+xanim,viewmodel_usas12_sprint_loop
+xanim,viewmodel_usas12_sprint_out
+xanim,viewmodel_usas12_ads_fire
+xanim,viewmodel_usas12_ads_up
+xanim,viewmodel_usas12_ads_down
+
+xanim,viewmodel_usas12_grip_idle
+xanim,viewmodel_usas12_grip_pullout
+xanim,viewmodel_usas12_grip_pullout_first
+xanim,viewmodel_usas12_grip_pullout_quick
+xanim,viewmodel_usas12_grip_putaway
+xanim,viewmodel_usas12_grip_putaway_quick
+xanim,viewmodel_usas12_grip_fire
+xanim,viewmodel_usas12_grip_reload
+xanim,viewmodel_usas12_grip_reload_empty
+xanim,viewmodel_usas12_grip_sprint_in
+xanim,viewmodel_usas12_grip_sprint_loop
+xanim,viewmodel_usas12_grip_sprint_out
+xanim,viewmodel_usas12_grip_ads_fire
+
+
 // Sentry Turrets
 xmodel,bo2_turret_sentry_gun
 xmodel,mw3_sentry_gl_base
