@@ -643,6 +643,8 @@ xanim,viewmodel_usr_ads_rechamber
 xanim,viewmodel_usr_ads_up
 xanim,viewmodel_usr_ads_down
 
+xanim,viewmodel_m40a5_acog_ads_up
+
 // ## USAS12
 xmodel,viewmodel_bf4_usas12
 // xmodel,weapon_bf4_usas12
