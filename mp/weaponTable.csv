@@ -102,12 +102,12 @@ id,class,script,console
 100,weapon_explosive,monkey_mp,frag_grenade_short_mp
 101,weapon_equipment,medic_mp,radar_mp
 102,weapon_equipment,supply_mp,airstrike_mp
-103,weapon_projectile,rpg7_mp,rpg_mp
-104,weapon_projectile,smaw_mp,location_selector_mp
+103,weapon_equipment,forcefield_mp,helicopter_mp
+104,weapon_projectile,rpg7_mp,rpg_mp
 105,weapon_special,raygun_mp,defaultweapon_mp
 106,weapon_special,thundergun_mp,brick_blaster_mp
 107,weapon_special,gl_mp,gl_mp
-108,weapon_special,raygunmk2_mp,helicopter_mp
+108,weapon_special,raygunmk2_mp,location_selector_mp
 109,weapon_special,minigun_mp,artillery_mp
 110,weapon_grenade,frag_grenade_mp,frag_grenade_mp
 111,weapon_grenade,smoke_grenade_mp,smoke_grenade_mp

@@ -74,7 +74,7 @@ loadAbilityStats_specialist(){
 loadAbilityStats_armored(){
 	
 	// Throwable forcefield
-	level.special["armoredforcefield"]["radius"] = 128 / 2.54; // 500cm in Maya to inches
+	level.special["armoredforcefield"]["radius"] = 128;
 	level.special["armoredforcefield"]["recharge_time"] = 180;
 	level.special["armoredforcefield"]["duration"] = 30;
 	level.special["armoredforcefield"]["damagereduction"] = 0.6;
@@ -564,14 +564,12 @@ ARMORED_PRIMARY(ability)
 	switch (ability)
 	{
 		case "AB1":
-			// self giveWeapon("m60e4_reflex_mp");
-			// self giveMaxAmmo("m60e4_reflex_mp");
-			// self setActionSlot(3, "weapon", "m60e4_reflex_mp");
-			self giveWeapon("c4_mp");
-			self giveMaxAmmo("c4_mp");
-			self setActionSlot(3, "weapon", "c4_mp");
+			self giveWeap( "forcefield_mp" );
+			self setWeapAmmoClip( "forcefield_mp", 0 );
+			self setActionSlot( 3, "weapon", level.weaponKeyS2C["forcefield_mp"] );
 			self thread watchArmoredForcefield();
-			// self.actionslotweapons[self.actionslotweapons.size] = "m60e4_reflex_mp";
+			self thread restoreArmoredForcefield(level.special["armoredforcefield"]["recharge_time"]);
+			self thread restoreArmoredForcefield(level.special["armoredforcefield"]["recharge_time"]);
 		break;
 		
 		case "AB2":
@@ -722,7 +720,7 @@ watchArmoredForcefield()
 	while(1)
 	{
 		self waittill("grenade_fire", shield, weaponName);
-		if(weaponName == "c4_mp") /* TODO: INSERT PROPER WEAPON */ 
+		if( weaponName == level.weaponKeyS2C["forcefield_mp"] )
 		{
 			shield.owner = self;
 			shield thread beArmoredForcefield(level.special["armoredforcefield"]["duration"]);
@@ -780,7 +778,7 @@ restoreArmoredForcefield(time)
 	self addTimer(&"ZOMBIE_ARMOREDFORCEFIELD_IN", "", time);
 	wait time;
 
-	self setWeapAmmoClip("c4_mp", self getWeapAmmoClip("c4_mp") + 1);
+	self setWeapAmmoClip( "forcefield_mp", self getWeapAmmoClip("forcefield_mp") + 1 );
 }
 
 restoreSmokeGrenade(time)
