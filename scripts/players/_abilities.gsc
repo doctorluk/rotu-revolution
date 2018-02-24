@@ -31,7 +31,7 @@ init()
 	precache();
 	loadAbilityStats();
 	level.weapons["flash"] = "usp_silencer_mp"; // We change the actual Flash Grenade to the Monkey Bomb, so we can use it as "Special Grenade" with instant-throw
-	level.armoredDomes = [];
+	level.armoredForcefields = [];
 }
 
 precache()
@@ -40,7 +40,7 @@ precache()
 	level.heal_glow_effect 		= loadfx("misc/heal_glow");
 	level.healingEffect    		= loadfx("misc/healing");
 	
-	precacheModel("armored_dome");
+	precacheModel("armored_forcefield");
 	
 	precacheShader("icon_medkit_placed");
 	precacheShader("icon_ammobox_placed");
@@ -73,11 +73,11 @@ loadAbilityStats_specialist(){
 
 loadAbilityStats_armored(){
 	
-	// TODO: Throwable or F-Special?
-	level.special["armoredshield"]["radius"] = 500 / 2.54; // 500cm in Maya to inches
-	level.special["armoredshield"]["recharge_time"] = 25;
-	level.special["armoredshield"]["duration"] = 60;
-	level.special["armoredshield"]["damagereduction"] = 0.6;
+	// Throwable forcefield
+	level.special["armoredforcefield"]["radius"] = 128 / 2.54; // 500cm in Maya to inches
+	level.special["armoredforcefield"]["recharge_time"] = 180;
+	level.special["armoredforcefield"]["duration"] = 30;
+	level.special["armoredforcefield"]["damagereduction"] = 0.6;
 	
 	// F-Special
 	level.special["invincible"]["recharge_time"] = 60;
@@ -570,7 +570,7 @@ ARMORED_PRIMARY(ability)
 			self giveWeapon("c4_mp");
 			self giveMaxAmmo("c4_mp");
 			self setActionSlot(3, "weapon", "c4_mp");
-			self thread watchArmoredDome();
+			self thread watchArmoredForcefield();
 			// self.actionslotweapons[self.actionslotweapons.size] = "m60e4_reflex_mp";
 		break;
 		
@@ -713,7 +713,7 @@ giveArmoredHud()
 	self.armored_hud setShader("overlay_armored", 640, 480);
 }
 
-watchArmoredDome()
+watchArmoredForcefield()
 {
 	self endon("reset_abilities");
 	self endon("downed");
@@ -725,8 +725,8 @@ watchArmoredDome()
 		if(weaponName == "c4_mp") /* TODO: INSERT PROPER WEAPON */ 
 		{
 			shield.owner = self;
-			shield thread beArmoredDome(level.special["armoredshield"]["duration"]);
-			self thread restoreArmoredDome(level.special["armoredshield"]["recharge_time"]);
+			shield thread beArmoredForcefield(level.special["armoredforcefield"]["duration"]);
+			self thread restoreArmoredForcefield(level.special["armoredforcefield"]["recharge_time"]);
 			// self playsound("take_medkit"); /* TODO: INSERT PROPER "DEPLOYING SHIELD" SOUND */
 		}
 	}
@@ -770,14 +770,14 @@ watchAmmobox()
 	}
 }
 
-restoreArmoredDome(time)
+restoreArmoredForcefield(time)
 {
 	self endon("reset_abilities");
 	self endon("downed");
 	self endon("death");
 	self endon("disconnect");
 
-	self addTimer(&"ZOMBIE_ARMOREDDOME_IN", "", time);
+	self addTimer(&"ZOMBIE_ARMOREDFORCEFIELD_IN", "", time);
 	wait time;
 
 	self setWeapAmmoClip("c4_mp", self getWeapAmmoClip("c4_mp") + 1);
@@ -922,7 +922,7 @@ beMedkit(time, heal)
 }
 
 /* TODO: MODIFY TO BE USED WITHOUT A THROWABLE OBJECT */
-beArmoredDome(duration)
+beArmoredForcefield(duration)
 {	
 	self waitTillNotMoving();
 	
@@ -938,21 +938,21 @@ beArmoredDome(duration)
 	targetDestination = self.origin;
 	
 	self hide();
-	dome = spawn("script_model", targetDestination);
-	dome.owner = self.owner;
+	ff = spawn("script_model", targetDestination);
+	ff.owner = self.owner;
 	wait 0.05;
-	dome setModel("armored_dome");
-	dome notSolid();
+	ff setModel("armored_forcefield");
+	ff notSolid();
 	
 	if(isDefined(self))
 		self delete();
 	
-	level.armoredDomes[level.armoredDomes.size] = dome;
+	level.armoredForcefields[level.armoredForcefields.size] = ff;
 	
 	wait duration;
 	
-	level.armoredDomes = removeFromArray(level.armoredDomes, dome);
-	dome delete();
+	level.armoredForcefields = removeFromArray(level.armoredForcefields, ff);
+	ff delete();
 }
 
 quickEscape() // When health gets below 25% we give ourselves a speedboost - for Specialist class

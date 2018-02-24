@@ -227,8 +227,8 @@ LANG_ENGLISH		"Press ^3[{+attack}] ^7or ^3[{+melee}] ^7to vote!"
 REFERENCE			WAVE_NUMBER
 LANG_ENGLISH		"Wave #&&1"
 
-REFERENCE			ARMOREDDOME_IN
-LANG_ENGLISH		"Protective Dome in:"
+REFERENCE			ARMOREDFORCEFIELD_IN
+LANG_ENGLISH		"Protective Forcefield in:"
 
 REFERENCE			MEDKIT_IN
 LANG_ENGLISH		"Medkit in:"
