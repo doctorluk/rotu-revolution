@@ -970,15 +970,27 @@ spawnSpectateViewEntity()
 */
 getSpectateViewCoords(coords, type)
 {
+	// set some default values, we're dealing with user input here
+	if( !isDefined(type) )
+		type = "origin";
+
+	text = [];
+	pos = "0,0,0";
+	angle = "0,0,0";
+
 	// Coordinates are saved as
 	// "Origin x, Origin y, Origin z; Angle roll, Angle pitch, Angle yaw"
 	// Example: "739,-990,1999;46,124,0"
 	// Split those two by the separator ';'
-	text = strTok(coords, ";");
-	
+	if( isDefined(coords) )
+		text = strTok(coords, ";");
+
 	// Split pos (origin) in [0] and angle in [1] after separating
-	pos = strTok(text[0], ",");
-	angle = strTok(text[1], ",");
+	if( isDefined(text[0]) )
+		pos = strTok(text[0], ",");
+
+	if( isDefined(text[1]) )
+		angle = strTok(text[1], ",");
 	
 	// Convert these strings to numbers and put them into a vector
 	origin = (int(pos[0]), int(pos[1]), int(pos[2]));
@@ -987,6 +999,7 @@ getSpectateViewCoords(coords, type)
 	// Return what was requested
 	if(type == "origin")
 		return origin;
+
 	if(type == "angle")
 		return angle;
 }
