@@ -1206,13 +1206,13 @@ healPlayer(player, heal)
 
 restoreAmmoClip(player)
 {
-	wep = player getCurrentWeapon();//gets the name of the current weapon of the player holding
+	wep = player getCurrentWeap();//gets the name of the current weapon of the player holding
 	
 	if (!scripts\players\_weapons::canRestoreAmmo(wep))//if it's a special weapon, it won't restore it's ammo E.g = raygun,tesla...
 		return;
 	
-	stockAmmo = player getWeaponAmmoStock(wep);//gets the total ammount of ammo it has at the moment, not the clip but the stock like 95
-	stockMax = weaponMaxAmmo(wep);//gets the total ammount of ammo the certain weapon has (not clip) E.g = MaxAmmo of ak47 is 180
+	stockAmmo = player getWeapAmmoStock(wep);//gets the total ammount of ammo it has at the moment, not the clip but the stock like 95
+	stockMax = weapMaxAmmo(wep);//gets the total ammount of ammo the certain weapon has (not clip) E.g = MaxAmmo of ak47 is 180
 	
 	tenthOfMax = int(stockMax / 10);//E.g AK47= 180/10 = 18, 18 is an int so no need to round the number(17.5>18)
 	
@@ -1224,16 +1224,16 @@ restoreAmmoClip(player)
 	if (perc > 1)
 		perc = 1;
 
-	if (stockAmmo < stockMax)
+	if(stockAmmo < stockMax)
 	{
-		if((stockAmmo + tenthOfMax) > stockMax)
+		if( (stockAmmo + tenthOfMax) > stockMax )
 			tenthOfMax = stockMax - stockAmmo;
-			
+		
 		stockAmmo += tenthOfMax;
-		if (stockAmmo > stockMax)
+		if( stockAmmo > stockMax )
 			stockAmmo = stockMax;
 		
-		player setWeaponAmmoStock(wep, stockAmmo);
+		player setWeapAmmoStock(wep, stockAmmo);
 		player thread screenFlash((0, 0, 0.65), 0.5, 0.4);
 		player playLocalSound("weap_pickup");
 		
@@ -1242,8 +1242,7 @@ restoreAmmoClip(player)
 			self scripts\players\_players::incUpgradePoints(int(2 * perc) * level.dvar["game_rewardscale"]);
 			self.stats["ammoGiven"] += tenthOfMax;
 			self scripts\players\_abilities::rechargeSpecial(8 * perc);
-		}
-		
+		}	
 	}
 }
 

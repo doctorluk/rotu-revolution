@@ -72,9 +72,9 @@ weap_usas12_clipout_plr,,weapons/usas12/wpfoly_usas12_reload_clipout_v1.wav,0.55
 weap_usas12_chamber_plr,,weapons/usas12/wpfoly_usas12_reload_chamber_v1.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100,,,
 
 # Raygun
-weap_raygun_fire_plr,,weapons/raygun/weap_raygun_shot_plr.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,local,,,,0.85,,,,weap_raygun_fire_plr_lyr,weapon2,,,,
-weap_raygun_fire_plr_lyr,,weapons/raygun/weap_raygun_shot_lyr_plr.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,local2,,,,0.85,,,,weap_raygun_fire_plr_flux,weapon2,,,,
-weap_raygun_fire_plr_flux,,weapons/raygun/weap_ray_flux.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,auto2d,,,,0.85,,,,,weapon2,,,,
+weap_raygun_fire_plr,,weapons/raygun/weap_raygun_shot_plr.wav,0.41,0.47,wpnplyr,0.95,1.05,500000,,local,,,,0.85,,,,weap_raygun_fire_plr_layer,weapon2,,,,
+weap_raygun_fire_plr_layer,,weapons/raygun/weap_raygun_shot_lyr_plr.wav,0.41,0.47,wpnplyr,0.95,1.05,500000,,local2,,,,0.85,,,,weap_raygun_fire_plr_flux,weapon2,,,,
+weap_raygun_fire_plr_flux,,weapons/raygun/weap_ray_flux.wav,0.31,0.37,wpnplyr,0.95,1.05,500000,,auto2d,,,,0.85,,,,,weapon2,,,,
 weap_raygun_fire_npc,,weapons/raygun/weap_raygun_shot_npc.wav,0.84,0.9,wpnai,1,1,35,10920,weapon,,,,0.7,all_mp,,,,weapon4,,,,
 weap_raygun_reload_open_plr,,weapons/raygun/wpfoly_ray_reload_open.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100,,,
 weap_raygun_reload_close_plr,,weapons/raygun/wpfoly_ray_reload_close.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100,,,
@@ -86,10 +86,10 @@ weap_rgunmk2_raise_plr,,weapons/raygun/wpfoly_ray_activate.wav,0.55,0.6,wpnplyr,
 weap_dryfire_raygun_plr,,weapons/raygun/weap_raygun_act_plr.wav,0.6,0.65,wpnplyr,1,1,7,500,reload2d,,,,0.85,,,,,weapon2,,,,
 weap_dryfire_raygun_npc,,weapons/raygun/weap_raygun_act_npc.wav,0.4,0.45,wpnai,0.95,0.95,7,500,reload,,,,0.7,,,,,weapon1,,,,
 
-weap_raygun_loop,,weapons/raygun/weap_ray_loop.wav,0.95,1,wpnplyr,1.35,1.45,10,5000,effects1,,,looping,0.85,,,,,weapon2,,,,
+weap_raygun_loop,,weapons/raygun/weap_ray_loop.wav,0.65,0.5,wpnplyr,1.35,1.45,10,5000,effects1,,,looping,0.85,,,,,weapon2,,,,
 raygun_explode_default,,weapons/raygun/weap_raygun_exp.wav,0.93,1,explosion,0.9,1,200,6000,effects1,,,,0.5,,,,raygun_explode_layer,,,,,
 raygun_explode_layer,,weapons/raygun/weap_raygun_exp_lyr.wav,0.85,1,explosion,1,1.5,200,4500,effects2,,,,0.5,,,,raygun_explode_flux,,,,,
-raygun_explode_flux,,weapons/raygun/weap_ray_flux.wav,0.85,1,explosion,1,1.5,200,4500,effects2,,,,0.5,,,,,,,,,
+raygun_explode_flux,,weapons/raygun/weap_ray_flux.wav,0.75,0.9,explosion,1,1.5,200,4500,effects2,,,,0.5,,,,,,,,,
 
 # Monkey Bomb
 monk_cymb_1,1,weapons/monkey/monk_cymb_00.mp3,1,,music,,,,,auto2d,streamed,,,master,all_mp,,,,,,music,nowetlevel fulldrylevel,

@@ -132,14 +132,17 @@ givePlayerWeapons()
 	}
 }
 
-canRestoreAmmo(wep)
+canRestoreAmmo( weapon )
 {
-	// TODO: Rework this
-	if(wep == "helicopter_mp" || wep == "airstrike_mp" || scripts\players\_weapons::isSpecialWeap(wep) || wep == "m14_reflex_mp" /* Ammobox */ || wep == "none" || wep == level.weapons["flash"] /* Monkey Bomb */)
-	{
+	// check if the weapon is valid for restoreing ammo
+	if( weapon == "none" ||
+	isSpecialWeap( weapon ) ||
+	weapon == "monkey_mp" ||
+	weapon == "medic_mp" ||
+	weapon == "supply_mp" ||
+	weapon == "forcefield_mp" )
 		return false;
-	}
-		
+
 	return true;
 }
 

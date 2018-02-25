@@ -24,22 +24,23 @@ init()
 	if (getdvar("surv_unlock_mp") == "")
 	setdvar("surv_unlock_mp", 10);
 	
-	// TODO: Check all these dvars for integrity
+	// assault, primaries
 	if (getdvar("surv_soldier_unlockprimary0") == "")
 	setdvar("surv_soldier_unlockprimary0", "m16_mp");
 	
 	if (getdvar("surv_soldier_unlockprimary1") == "")
-	setdvar("surv_soldier_unlockprimary1", "ak47_mp");
+	setdvar("surv_soldier_unlockprimary1", "g3_mp");
 	
 	if (getdvar("surv_soldier_unlockprimary2") == "")
-	setdvar("surv_soldier_unlockprimary2", "g3_mp");
+	setdvar("surv_soldier_unlockprimary2", "ak47_reflex_mp");
 	
 	if (getdvar("surv_soldier_unlockprimary3") == "")
-	setdvar("surv_soldier_unlockprimary3", "m14_acog_mp");
+	setdvar("surv_soldier_unlockprimary3", "scar_reflex_mp");
 	
 	if (getdvar("surv_soldier_unlockprimary4") == "")
-	setdvar("surv_soldier_unlockprimary4", "m4_acog_mp");
-		
+	setdvar("surv_soldier_unlockprimary4", "r101_mp");
+	
+	// assault, secondaries
 	if (getdvar("surv_soldier_unlocksecondary0") == "")
 	setdvar("surv_soldier_unlocksecondary0", "beretta_mp");
 		
@@ -50,23 +51,25 @@ init()
 	setdvar("surv_soldier_unlocksecondary2", "colt45_mp");
 		
 	if (getdvar("surv_soldier_unlocksecondary3") == "")
-	setdvar("surv_soldier_unlocksecondary3", "g36c_gl_mp");
+	setdvar("surv_soldier_unlocksecondary3", "deserteagle_mp");
 		
+	// specialist, primaries
 	if (getdvar("surv_specialist_unlockprimary0") == "")
-	setdvar("surv_specialist_unlockprimary0", "skorpion_silencer_mp");
+	setdvar("surv_specialist_unlockprimary0", "skorpion_mp");
 		
 	if (getdvar("surv_specialist_unlockprimary1") == "")
-	setdvar("surv_specialist_unlockprimary1", "mp5_silencer_mp");
+	setdvar("surv_specialist_unlockprimary1", "ak74u_mp");
 		
 	if (getdvar("surv_specialist_unlockprimary2") == "")
-	setdvar("surv_specialist_unlockprimary2", "ak74u_silencer_mp");
+	setdvar("surv_specialist_unlockprimary2", "p90_silencer_mp");
 	
 	if (getdvar("surv_specialist_unlockprimary3") == "")
-	setdvar("surv_specialist_unlockprimary3", "p90_silencer_mp");
+	setdvar("surv_specialist_unlockprimary3", "f2000_silencer_mp");
 		
 	if (getdvar("surv_specialist_unlockprimary4") == "")
-	setdvar("surv_specialist_unlockprimary4", "m21_acog_mp");
-		
+	setdvar("surv_specialist_unlockprimary4", "car101_mp");
+	
+	// specialist, secondaries
 	if (getdvar("surv_specialist_unlocksecondary0") == "")
 	setdvar("surv_specialist_unlocksecondary0", "beretta_silencer_mp");
 		
@@ -77,24 +80,25 @@ init()
 	setdvar("surv_specialist_unlocksecondary2", "colt45_silencer_mp");
 		
 	if (getdvar("surv_specialist_unlocksecondary3") == "")
-	setdvar("surv_specialist_unlocksecondary3", "mp5_acog_mp");
+	setdvar("surv_specialist_unlocksecondary3", "magnum_mp");
 	
-		
+	// armored, primaries
 	if (getdvar("surv_armored_unlockprimary0") == "")
-	setdvar("surv_armored_unlockprimary0", "g36c_acog_mp");
+	setdvar("surv_armored_unlockprimary0", "winchester1200_mp");
 		
 	if (getdvar("surv_armored_unlockprimary1") == "")
 	setdvar("surv_armored_unlockprimary1", "rpd_mp");
 		
 	if (getdvar("surv_armored_unlockprimary2") == "")
-	setdvar("surv_armored_unlockprimary2", "m60e4_grip_mp");
+	setdvar("surv_armored_unlockprimary2", "m1014_grip_mp");
 		
 	if (getdvar("surv_armored_unlockprimary3") == "")
-	setdvar("surv_armored_unlockprimary3", "saw_reflex_mp");
+	setdvar("surv_armored_unlockprimary3", "m60e4_grip_mp");
 	
 	if (getdvar("surv_armored_unlockprimary4") == "")
-	setdvar("surv_armored_unlockprimary4", "rpd_acog_mp");
-		
+	setdvar("surv_armored_unlockprimary4", "spitfire_mp");
+	
+	// armored, secondaries
 	if (getdvar("surv_armored_unlocksecondary0") == "")
 	setdvar("surv_armored_unlocksecondary0", "beretta_mp");
 		
@@ -105,37 +109,38 @@ init()
 	setdvar("surv_armored_unlocksecondary2", "colt45_mp");
 		
 	if (getdvar("surv_armored_unlocksecondary3") == "")
-	setdvar("surv_armored_unlocksecondary3", "winchester1200_mp");
+	setdvar("surv_armored_unlocksecondary3", "deserteagle_mp");
 	
-		
+	// engineer, primaries
 	if (getdvar("surv_engineer_unlockprimary0") == "")
-	setdvar("surv_engineer_unlockprimary0", "mp44_mp");
+	setdvar("surv_engineer_unlockprimary0", "winchester1200_mp");
 		
 	if (getdvar("surv_engineer_unlockprimary1") == "")
-	setdvar("surv_engineer_unlockprimary1", "winchester1200_grip_mp");
+	setdvar("surv_engineer_unlockprimary1", "ak74u_mp");
 		
 	if (getdvar("surv_engineer_unlockprimary2") == "")
 	setdvar("surv_engineer_unlockprimary2", "m1014_grip_mp");
 		
 	if (getdvar("surv_engineer_unlockprimary3") == "")
-	setdvar("surv_engineer_unlockprimary3", "m1014_reflex_mp");
+	setdvar("surv_engineer_unlockprimary3", "mtar_reflex_mp");
 	
 	if (getdvar("surv_engineer_unlockprimary4") == "")
-	setdvar("surv_engineer_unlockprimary4", "m60e4_acog_mp");
+	setdvar("surv_engineer_unlockprimary4", "usas12_grip_mp");
 		
+	// engineer, secondaries
 	if (getdvar("surv_engineer_unlocksecondary0") == "")
-	setdvar("surv_engineer_unlocksecondary0", "claymore_mp");
+	setdvar("surv_engineer_unlocksecondary0", "beretta_mp");
 		
 	if (getdvar("surv_engineer_unlocksecondary1") == "")
-	setdvar("surv_engineer_unlocksecondary1", "c4_mp");
+	setdvar("surv_engineer_unlocksecondary1", "colt45_mp");
 		
 	if (getdvar("surv_engineer_unlocksecondary2") == "")
-	setdvar("surv_engineer_unlocksecondary2", "rpg_mp");
+	setdvar("surv_engineer_unlocksecondary2", "rpg7_mp");
 		
 	if (getdvar("surv_engineer_unlocksecondary3") == "")
-	setdvar("surv_engineer_unlocksecondary3", "at4_mp");
+	setdvar("surv_engineer_unlocksecondary3", "mp5k_mp");
 	
-		
+	// medic, primaries
 	if (getdvar("surv_medic_unlockprimary0") == "")
 	setdvar("surv_medic_unlockprimary0", "skorpion_mp");
 		
@@ -149,8 +154,9 @@ init()
 	setdvar("surv_medic_unlockprimary3", "ak74u_mp");
 	
 	if (getdvar("surv_medic_unlockprimary4") == "")
-	setdvar("surv_medic_unlockprimary4", "p90_acog_mp");
-		
+	setdvar("surv_medic_unlockprimary4", "p90_silencer_mp");
+	
+	// medic, secondaries
 	if (getdvar("surv_medic_unlocksecondary0") == "")
 	setdvar("surv_medic_unlocksecondary0", "beretta_mp");
 		
@@ -161,8 +167,9 @@ init()
 	setdvar("surv_medic_unlocksecondary2", "colt45_mp");
 		
 	if (getdvar("surv_medic_unlocksecondary3") == "")
-	setdvar("surv_medic_unlocksecondary3", "deserteaglegold_mp");
-		
+	setdvar("surv_medic_unlocksecondary3", "magnum_mp");
+	
+	// prices, primaries
 	if (getdvar("surv_unlockprimary1_points") == "")
 	setdvar("surv_unlockprimary1_points", 500);
 		
@@ -175,6 +182,7 @@ init()
 	if (getdvar("surv_unlockprimary4_points") == "")
 	setdvar("surv_unlockprimary4_points", 2000);
 		
+	// prices, secondaries
 	if (getdvar("surv_unlocksecondary1_points") == "")
 	setdvar("surv_unlocksecondary1_points", 250);
 	
@@ -187,6 +195,7 @@ init()
 	if (getdvar("surv_unlocksecondary3_points") == "")
 	setdvar("surv_unlocksecondary3_points", 750);
 	
+	// prices, extras
 	if (getdvar("surv_unlockextra1_points") == "")
 	setdvar("surv_unlockextra1_points", 2000);
 	
@@ -196,17 +205,18 @@ init()
 	if (getdvar("surv_unlockspecial3_points") == "")
 	setdvar("surv_unlockspecial3_points", 4000);
 	
+	// unlocks, extras
 	if (getdvar("surv_extra_unlock1") == "")
-	setdvar("surv_extra_unlock1", "barrett_acog_mp");
+	setdvar("surv_extra_unlock1", "raygun_mp");
 		
 	if (getdvar("surv_extra_unlock2") == "")
-	setdvar("surv_extra_unlock2", "skorpion_acog_mp");
+	setdvar("surv_extra_unlock2", "gl_mp");
 		
 	if (getdvar("surv_extra_unlock3") == "")
-	setdvar("surv_extra_unlock3", "ak74u_acog_mp");
+	setdvar("surv_extra_unlock3", "raygunmk2_mp");
 	
 	if (getdvar("surv_extra_unlock4") == "")
-	setdvar("surv_extra_unlock4", "saw_acog_mp");
+	setdvar("surv_extra_unlock4", "minigun_mp");
 
 	i = 0;
 	while (1) {
