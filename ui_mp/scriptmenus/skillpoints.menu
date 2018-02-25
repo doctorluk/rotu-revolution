@@ -104,8 +104,8 @@
 
 		CHOICE_BUTTON_BG( 3, 1 )
 		CHOICE_HIGHLIGHT( 3, 1 )
-		CHOICE_BUTTON_VIS_NOHI( 3, "Assassin ("+(stat(431)+1)+")", scriptMenuResponse "upgr_stealth";, when( dvarint("ui_skillpoints") > 0&& stat(431) < 29 ) )
-		CHOICE_DBUTTON_VIS_NOHI( 3, "Assassin ("+(stat(431)+1)+")", when( dvarint("ui_skillpoints") == 0 || stat(431) >= 29 ) )
+		CHOICE_BUTTON_VIS_NOHI( 3, "Specialist ("+(stat(431)+1)+")", scriptMenuResponse "upgr_specialist";, when( dvarint("ui_skillpoints") > 0&& stat(431) < 29 ) )
+		CHOICE_DBUTTON_VIS_NOHI( 3, "Specialist ("+(stat(431)+1)+")", when( dvarint("ui_skillpoints") == 0 || stat(431) >= 29 ) )
 		
 		CHOICE_BUTTON_BG( 4, 1 )
 		CHOICE_HIGHLIGHT( 4, 1 )
@@ -119,13 +119,8 @@
 		
 		CHOICE_BUTTON_BG( 6, 1 )
 		CHOICE_HIGHLIGHT( 6, 1 )
-		CHOICE_BUTTON_VIS_NOHI( 6, "Scout ("+(stat(434)+1)+")", scriptMenuResponse "upgr_scout";, when( dvarint("ui_skillpoints") > 0 && stat(434) < 29 ) )
-		CHOICE_DBUTTON_VIS_NOHI( 6, "Scout ("+(stat(434)+1)+")", when( dvarint("ui_skillpoints") == 0 || stat(434) >= 29 ) )
-		
-		CHOICE_BUTTON_BG( 7, 1 )
-		CHOICE_HIGHLIGHT( 7, 1 )
-		CHOICE_BUTTON_VIS_NOHI( 7, "Medic ("+(stat(435)+1)+")", scriptMenuResponse "upgr_medic";, when( dvarint("ui_skillpoints") > 0 && stat(435) < 29 ) )
-		CHOICE_DBUTTON_VIS_NOHI( 7, "Medic ("+(stat(435)+1)+")", when( dvarint("ui_skillpoints") == 0 || stat(435) >= 29 ) )
+		CHOICE_BUTTON_VIS_NOHI( 6, "Medic ("+(stat(435)+1)+")", scriptMenuResponse "upgr_medic";, when( dvarint("ui_skillpoints") > 0 && stat(435) < 29 ) )
+		CHOICE_DBUTTON_VIS_NOHI( 6, "Medic ("+(stat(435)+1)+")", when( dvarint("ui_skillpoints") == 0 || stat(435) >= 29 ) )
 
 
 		#include "ui/safearea.menu"
