@@ -23,6 +23,7 @@
 #include scripts\include\useful;
 #include scripts\include\entities;
 #include scripts\include\data;
+#include scripts\include\codx_wrapper;
 
 initZomModels()
 {
@@ -160,6 +161,7 @@ initZomModels()
 	// addZomModel("zombified_player", "skeleton", "");
 	level.bossIsOnFire = false;
 	initGroupedSettings();
+	initSeasonalFeatures();
 }
 
 initGroupedSettings(){
@@ -193,6 +195,27 @@ initGroupedSettings(){
 	/* Limit the amount of bullet-damageable bosses on the server, because too many can be.... quite.... devastating */
 	level.bossBulletLimit = level.dvar["game_difficulty"];
 	level.bossBulletCount = 0;
+}
+
+/**
+*	Initializes the seasonal features in case they are to be loaded by server config
+*	Currently applies santa hats during 1st of December until 31st of January
+*/
+initSeasonalFeatures(){
+	level.seasonalFeature = "";
+	
+	if(!level.dvar["surv_seasonal_features"])
+		return;
+		
+	seconds = _GetRealTime();
+	if(seconds == -1)
+		return;
+		
+	date = getCurrentMonthAndDay(seconds);
+	month = date[1];
+	
+	if(month == 1 || month == 12)
+		level.seasonalFeature = "santa";
 }
 
 getTotalZombieProbability(){ // In case it exceeds "100%" in total
@@ -242,15 +265,28 @@ loadZomModel(type)
 		self.head = head;
 		self attach(head);
 	}
-	
-	if(level.dvar["surv_seasonal_features"])
-		addSantaHat(type);
+
+	onSeasonalFeatures(type);
 }
 
-addSantaHat(type){
+/**
+*	Applies seasonal features
+*	@type: String, defining the type of zombie that is being spawned
+*/
+onSeasonalFeatures(type){
 
-	if(type != "boss" && type != "helldog" && type != "dog")
-		self attach("santa_hat");
+	switch(level.seasonalFeature){
+		
+		// Santa will run from 01.12.xx till 01.01.xx
+		case "santa":
+			if(type != "boss" && type != "helldog" && type != "dog")
+				self attach("santa_hat");
+			break;
+			
+		default:
+			break;
+	}
+	
 }
 
 
