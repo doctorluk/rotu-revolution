@@ -663,7 +663,7 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 			self.lastHurtTime = getTime();
 		}
 		
-		// Reduce damage dealt to players within the dome
+		// Reduce damage dealt to players within the forcefield
 		if(level.armoredForcefields.size)
 		{
 			for(i = 0; i < level.armoredForcefields.size; i++)
@@ -676,7 +676,7 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 				if((playerPos[2] + 15) >= ffPos[2] && distance(ffPos, playerEye) <= level.special["armoredforcefield"]["radius"])
 				{
 					previousIDamage = iDamage;
-					iDamage = int(1 - level.special["armoredforcefield"]["damagereduction"] * iDamage);
+					iDamage = int((1 - level.special["armoredforcefield"]["damagereduction"]) * iDamage);
 					self iprintln("Damage reduced by " + (previousIDamage - iDamage) + " to " + iDamage + " for being in forcefield"); 
 					break;
 				}
