@@ -690,6 +690,45 @@ xanim,viewmodel_usas12_grip_sprint_loop
 xanim,viewmodel_usas12_grip_sprint_out
 xanim,viewmodel_usas12_grip_ads_fire
 
+// ## Raygun
+xmodel,viewmodel_raygun
+xmodel,weapon_raygun
+
+xanim,viewmodel_raygun_idle
+xanim,viewmodel_raygun_fire
+xanim,viewmodel_raygun_pullout
+xanim,viewmodel_raygun_pullout_first
+xanim,viewmodel_raygun_putaway
+xanim,viewmodel_raygun_reload
+xanim,viewmodel_raygun_sprint_in
+xanim,viewmodel_raygun_sprint_loop
+xanim,viewmodel_raygun_sprint_out
+xanim,viewmodel_raygun_ads_up
+xanim,viewmodel_raygun_ads_down
+
+fx,raygun/raygun_muzzle_v
+fx,raygun/raygun_muzzle_w
+fx,raygun/raygun_impact
+fx,raygun/trail_raygun_geotrail
+
+// ## Raygun Mk2
+xmodel,viewmodel_raygun2
+xmodel,weapon_raygun2
+
+xanim,viewmodel_raygun_mk2_idle
+xanim,viewmodel_raygun_mk2_fire
+xanim,viewmodel_raygun_mk2_pullout
+xanim,viewmodel_raygun_mk2_pullout_quick
+xanim,viewmodel_raygun_mk2_pullout_first
+xanim,viewmodel_raygun_mk2_putaway
+xanim,viewmodel_raygun_mk2_reload
+xanim,viewmodel_raygun_mk2_sprint_in
+xanim,viewmodel_raygun_mk2_sprint_loop
+xanim,viewmodel_raygun_mk2_sprint_out
+xanim,viewmodel_raygun_mk2_ads_fire
+xanim,viewmodel_raygun_mk2_ads_up
+xanim,viewmodel_raygun_mk2_ads_down
+
 // Sentry Turrets
 xmodel,bo2_turret_sentry_gun
 xmodel,mw3_sentry_gl_base
