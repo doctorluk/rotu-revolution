@@ -808,15 +808,12 @@ Callback_PlayerLastStand(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, 
 	weaponslist = self getWeaponslist();
 	for(i = 0; i < weaponslist.size; i++)
 	{
-		weapon = weaponslist[i];
-		
-		if (weapon == self.secondary )
-		{
-			self switchToWeapon(weapon);
-			continue;
-		}
+		weapon = level.weaponKeyC2S[weaponslist[i]];
+		self iprintln( weapon );
+		if( weapon == self.secondary )
+			self switchToWeap(weapon);
 		else
-		self takeWeapon(weapon);
+			self takeWeap(weapon);
 	}
 	
 	// Notify other players that this player is down

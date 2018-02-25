@@ -729,6 +729,18 @@ xanim,viewmodel_raygun_mk2_ads_fire
 xanim,viewmodel_raygun_mk2_ads_up
 xanim,viewmodel_raygun_mk2_ads_down
 
+// ## Minigun
+xmodel,viewmodel_minigun
+xmodel,weapon_minigun
+
+xanim,viewmodel_minigun_idle
+xanim,viewmodel_minigun_fire
+xanim,viewmodel_minigun_pullout
+xanim,viewmodel_minigun_putaway
+xanim,viewmodel_minigun_walk
+xanim,viewmodel_minigun_ads_up
+xanim,viewmodel_minigun_ads_down
+
 // Sentry Turrets
 xmodel,bo2_turret_sentry_gun
 xmodel,mw3_sentry_gl_base
