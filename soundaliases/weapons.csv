@@ -74,7 +74,7 @@ weap_usas12_chamber_plr,,weapons/usas12/wpfoly_usas12_reload_chamber_v1.wav,0.55
 # Raygun
 weap_raygun_fire_plr,,weapons/raygun/weap_raygun_shot_plr.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,local,,,,0.85,,,,weap_raygun_fire_plr_lyr,weapon2,,,,
 weap_raygun_fire_plr_lyr,,weapons/raygun/weap_raygun_shot_lyr_plr.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,local2,,,,0.85,,,,weap_raygun_fire_plr_flux,weapon2,,,,
-weap_raygun_fire_plr_flux,,weapons/raygun/weap_ray_flux_l.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,auto2d,,,,0.85,,,,,weapon2,,,,
+weap_raygun_fire_plr_flux,,weapons/raygun/weap_ray_flux.wav,0.81,0.87,wpnplyr,0.95,1.05,500000,,auto2d,,,,0.85,,,,,weapon2,,,,
 weap_raygun_fire_npc,,weapons/raygun/weap_raygun_shot_npc.wav,0.84,0.9,wpnai,1,1,35,10920,weapon,,,,0.7,all_mp,,,,weapon4,,,,
 weap_raygun_reload_open_plr,,weapons/raygun/wpfoly_ray_reload_open.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100,,,
 weap_raygun_reload_close_plr,,weapons/raygun/wpfoly_ray_reload_close.wav,0.55,0.6,wpnplyr,1,1,7,500,reload2d,streamed,,,0.85,,,,,weapon2,100,,,
