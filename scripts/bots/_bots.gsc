@@ -803,94 +803,54 @@ doSplatter(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc,
 	return false;
 }
 
+/**
+*	Gives assist upgradepoints and XP to people who shot self (the zombie that died)
+*	@killer: Entity, the entity that killed that zombie
+*/
 giveAssists(killer)
 {
-	// for (i=0; i<self.damagedBy.size; i++)
-	// {
-		// struct = self.damagedBy[i];
-		// if (isdefined(struct.player))
-		// {
-			// if (struct.player.isActive && struct.player != killer)
-			// {
-				// struct.player.assists ++;
-				// if (struct.damage > 400)
-				// {
-					// struct.player thread scripts\players\_rank::giveRankXP("assist5");
-					// struct.player thread scripts\players\_players::incUpgradePoints(10*level.rewardScale);
-				// }
-				// else if (struct.damage > 200)
-				// {
-					// struct.player thread scripts\players\_rank::giveRankXP("assist4");
-					// struct.player thread scripts\players\_players::incUpgradePoints(7*level.rewardScale);
-				// }
-				// else if (struct.damage > 100)
-				// {
-					// struct.player thread scripts\players\_rank::giveRankXP("assist3");
-					// struct.player thread scripts\players\_players::incUpgradePoints(5*level.rewardScale);
-				// }
-				// else if (struct.damage > 50)
-				// {
-					// struct.player thread scripts\players\_rank::giveRankXP("assist2");
-					// struct.player thread scripts\players\_players::incUpgradePoints(3*level.rewardScale);
-				// }
-				// else if (struct.damage > 25)
-				// {
-					// struct.player thread scripts\players\_rank::giveRankXP("assist1");
-					// struct.player thread scripts\players\_players::incUpgradePoints(3*level.rewardScale);
-				// }
-				// else if (struct.damage > 0)
-				// {
-					// struct.player thread scripts\players\_rank::giveRankXP("assist0");
-					// struct.player thread scripts\players\_players::incUpgradePoints(2*level.rewardScale);
-				// }
-			// }
-		// }
-	// }
-	for (i=0; i<self.damagedBy.size; i++)
+	// Loop through all players that have damaged the zombie
+	for (i = 0; i < self.damagedBy.size; i++)
 	{
 		struct = self.damagedBy[i];
 		health = self.maxhealth;
-		// Make it so that people get a percentage of upgradepoints for the same percentage that they dealt damage with
-		if (isdefined(struct.player))
+		
+		// Check existing player in list
+		if (isDefined(struct.player))
 		{
 			if (struct.player.isActive && struct.player != killer)
 			{
-				struct.player.assists ++;
+				// Stats for assists
+				struct.player.assists++;
 				struct.player.stats["assists"]++;
-				damagePercentage = struct.damage/self.maxhealth;
-				rewardMP = 1;
-				if(!isDefined(self.rewardMultiplier)){
-					iprintln("Reward Multiplier is not defined for " + self.type);
-				}
-				else
-					rewardMP = self.rewardMultiplier;
-				// if(damagePercentage > 1)
-					// iprintlnbold("More than 100 percent damage by " + struct.player.name + " on " + self.name + ".... wtf?");
-				// iprintln(struct.player.name + " got an assist with " + int(damagePercentage*100) + " Percent damage!");
 				
+				// Get percentage damage dealt
+				damagePercentage = struct.damage / self.maxhealth;
+				rewardMP = 1;
+				
+				Assert(isDefined(self.rewardMultiplier));
+				rewardMP = self.rewardMultiplier;
+				
+				// Give player the amount of upgradepoints directly connected to the % of damage dealt to this zombie
 				struct.player thread scripts\players\_players::incUpgradePoints(int((10 * level.rewardScale * rewardMP) * damagePercentage));
-				if (damagePercentage*100 > 85)
-				{
+				
+				// Give XP depending on the amount of damage dealt
+				if (damagePercentage * 100 > 85){
 					struct.player thread scripts\players\_rank::giveRankXP("assist5");
 				}
-				else if (damagePercentage*100 > 75)
-				{
+				else if (damagePercentage * 100 > 75){
 					struct.player thread scripts\players\_rank::giveRankXP("assist4");
 				}
-				else if (damagePercentage*100 > 50)
-				{
+				else if (damagePercentage * 100 > 50){
 					struct.player thread scripts\players\_rank::giveRankXP("assist3");
 				}
-				else if (damagePercentage*100 > 30)
-				{
+				else if (damagePercentage * 100 > 30){
 					struct.player thread scripts\players\_rank::giveRankXP("assist2");
 				}
-				else if (damagePercentage*100 > 15)
-				{
+				else if (damagePercentage * 100 > 15){
 					struct.player thread scripts\players\_rank::giveRankXP("assist1");
 				}
-				else if (damagePercentage*100 > 0)
-				{
+				else if (damagePercentage * 100 > 0){
 					struct.player thread scripts\players\_rank::giveRankXP("assist0");
 				}
 			}

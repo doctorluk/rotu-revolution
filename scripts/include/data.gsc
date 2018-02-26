@@ -14,7 +14,7 @@
 */
 
 /**
-* Converts the string to float.
+*	Converts the string to float.
 *
 *	@string: string to be converted
 */
@@ -28,7 +28,7 @@ atof(string)
 }
 
 /**
-* Converts the string to integer.
+*	Converts the string to integer.
 *	NOTE: This is obsolete as int(string) does the exeac same thing without a dvar
 *
 *	@string: string to be converted
@@ -87,7 +87,7 @@ arrayContains(array, item)
 }
 
 /**
-* Seperates the string by spaces.
+*	Seperates the string by spaces.
 *	NOTE: This function is obsolete as strTok(string, " ") will do exectly the same
 *	ToDo: Remove this function and replace it in the code
 *
@@ -122,7 +122,7 @@ getDaytime(seconds){
 /**
 *	Returns an array of the current day and month
 *
-*	@seconds: Int, current time in seconds
+*	@seconds: Int, current time in seconds since 2012-01-01
 *	@return: Array, 0: Int, Days into the month
 *					1: Int, Months into the year
 */
@@ -242,7 +242,7 @@ getCurrentMonthAndDay(seconds){
 /**
 *	Returns current year
 *
-*	@seconds: Int, current time in seconds
+*	@seconds: Int, current time in seconds since 2012-01-01
 *	@return: Int, Current year
 */
 getCurrentYear(seconds){
