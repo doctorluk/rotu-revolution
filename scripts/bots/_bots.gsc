@@ -1,23 +1,23 @@
-//
-// vim: set ft=cpp:
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: scripts\bots\_bots.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
+
+/***
+*
+*	TODO: Add file description
+*
+*/
 
 #include scripts\include\waypoints;
 #include scripts\include\entities;
@@ -515,7 +515,7 @@ followTarget(target, arealDifference){
 */
 Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime)
 {
-	// don't damage clients that are imune or dead
+	// don't damage clients that are immune or dead
 	if(!isAlive(self) || isDefined(self.damageoff))
 		return;
 	
@@ -526,7 +526,7 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 	// convert the weapon name to the script name
 	sWeapon = level.weaponKeyC2S[sWeapon];
 	
-	// don't damage clients that are imune to this type of damage
+	// don't damage clients that are immune to this type of damage
 	if(!self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker))
 		return;
 
@@ -537,15 +537,6 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 	// Apply the player related damage claculations
 	if(isDefined(eAttacker) && isPlayer(eAttacker))
 	{
-		// Check for insta-explosive grenades		TODO: Remove this and come up with a more useful function
-		if(eAttacker.chargedGrenades)
-		{
-			if(sMeansofDeath == "MOD_IMPACT" && sWeapon == "frag_grenade_mp")
-			{
-				eInflictor detonate();
-				return;
-			}
-		}
 		
 		// Explosive Crossbow sticking to the zombie
 		if(sMeansofDeath == "MOD_IMPACT" && sWeapon == "dragunov_acog_mp")
@@ -580,28 +571,6 @@ Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeap
 		
 		if(self.isBot)
 			self addToAssist(eAttacker, iDamage);
-	}
-
-	// check for Incendiary/Poisonous Ammo
-	if(isDefined(eAttacker.bulletMod) && randomFloat(1) <= 0.05		// apply fire or poison only if the attacker has it and with a 5% chance
-	&& self.type != "boss" && self.type != "halfboss"					// don't apply it to boss or halfboss zombies
-	&& !self.isPoisoned && !self.isOnFire								// don't apply it twice or both
-	&& !self.isZombie													// don't apply it to infected players
-	&& (sWeapon == eAttacker.primary || sWeapon == eAttacker.secondary) && !scripts\players\_weapons::isExplosive(sWeapon))		// only apply it with the primary or secondary, non explosive weapon
-	{
-		// apply incendiary ammo
-		if(eAttacker.bulletMod == "incendiary" && self.type != "burning" && self.type != "napalm" && self.type != "hellhound")
-		{
-			self igniteBot(eAttacker);
-			eAttacker.stats["ignitions"]++;
-		}
-		
-		// apply poisonous ammo
-		if(eAttacker.bulletMod == "poison" && self.type != "toxic")
-		{
-			self poisonBot(eAttacker);
-			eAttacker.stats["poisons"]++;
-		}
 	}
 
 	// disable knockback without a damage direction
@@ -721,7 +690,7 @@ Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, 
 		attacker thread scripts\players\_rank::giveRankXP("kill");
 		attacker thread scripts\players\_spree::checkSpree();
 		
-		if (attacker.curClass=="stealth" && !attacker.isDown) {
+		if (attacker.curClass=="specialist" && !attacker.isDown) {
 			attacker scripts\players\_abilities::rechargeSpecial(5);
 		}
 		// if (attacker.curClass == "medic" && !attacker.isDown)
@@ -1478,7 +1447,7 @@ zomMoveTowards(target_position)
 		{
 			//time = GetTime();
 			/* This way may not be the safest and most reliable */
-			if(level.waypointLoops > 100000 && level.dvar["zom_antilagmonitor"]){
+			if(level.waypointLoops > 100000 && level.dvar["dev_antilagmonitor"]){
 				// logPrint("DEBUG: Caught > 200000 loops in level.waypointLoops!\n");
 				// logPrint("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
 				// iprintln("Caught > 200000 loops, mitigating load to more frames...");

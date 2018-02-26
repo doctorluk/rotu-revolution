@@ -20,7 +20,7 @@ REFERENCE           CLASS1
 LANG_ENGLISH        "Soldier"
 
 REFERENCE           CLASS2
-LANG_ENGLISH        "Assassin"
+LANG_ENGLISH        "Specialist"
 
 REFERENCE           CLASS3
 LANG_ENGLISH        "Armored"
@@ -29,9 +29,6 @@ REFERENCE           CLASS4
 LANG_ENGLISH        "Engineer"
 
 REFERENCE           CLASS5
-LANG_ENGLISH        "Scout"
-
-REFERENCE           CLASS6
 LANG_ENGLISH        "Medic"
 
 REFERENCE           DEFAULT_ASSAULT

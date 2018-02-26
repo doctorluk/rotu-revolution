@@ -23,11 +23,11 @@ LANG_ENGLISH        "Soldier"
 REFERENCE           SOLDIER_FULL
 LANG_ENGLISH        "Soldier (^1FULL^7)"
 
-REFERENCE           STEALTH
-LANG_ENGLISH        "Assassin"
+REFERENCE           SPECIALIST
+LANG_ENGLISH        "Specialist"
 
-REFERENCE           STEALTH_FULL
-LANG_ENGLISH        "Assassin (^1FULL^7)"
+REFERENCE           SPECIALIST_FULL
+LANG_ENGLISH        "Specialist (^1FULL^7)"
 
 REFERENCE           ARMORED
 LANG_ENGLISH        "Armored"
@@ -40,12 +40,6 @@ LANG_ENGLISH        "Engineer"
 
 REFERENCE           ENGINEER_FULL
 LANG_ENGLISH        "Engineer (^1FULL^7)"
-
-REFERENCE           SCOUT
-LANG_ENGLISH        "Scout"
-
-REFERENCE           SCOUT_FULL
-LANG_ENGLISH        "Scout (^1FULL^7)"
 
 REFERENCE           MEDIC
 LANG_ENGLISH        "Medic"
@@ -233,8 +227,8 @@ LANG_ENGLISH		"Press ^3[{+attack}] ^7or ^3[{+melee}] ^7to vote!"
 REFERENCE			WAVE_NUMBER
 LANG_ENGLISH		"Wave #&&1"
 
-REFERENCE			ARMOREDDOME_IN
-LANG_ENGLISH		"Protective Dome in:"
+REFERENCE			ARMOREDFORCEFIELD_IN
+LANG_ENGLISH		"Protective Forcefield in:"
 
 REFERENCE			MEDKIT_IN
 LANG_ENGLISH		"Medkit in:"

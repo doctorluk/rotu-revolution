@@ -38,12 +38,12 @@ Useable paramaters:
 
 PIHN_VERSIONFULL		-	Version (incl. "RotU-Revolution")
 PIHN_VERSIONSHORT		-	Version number only
+PIHN_BUILD				-	Build number
 PIHN_PLAYERS			-	Amount of Players
 PIHN_SOLDIERS			-	Amount of Soldiers
-PIHN_ASSASSINS			-	Amount of Assassins
+PIHN_SPECIALISTS		-	Amount of Specialists
 PIHN_ARMOREDS			-	Amount of Armoreds
 PIHN_ENGINEERS			-	Amount of Engineers
-PIHN_SCOUTS				-	Amount of Scouts
 PIHN_MEDICS				-	Amount of Medics
 PIHN_MAXPLAYERS			-	Slots (without bots)
 PIHN_ALIVEPLAYERS		-	Players alive
@@ -85,12 +85,12 @@ GetNewHostname()
 	//iPrintln("Getting new hostname: " + string);
 	string = CheckString("PIHN_VERSIONFULL", string);
 	string = CheckString("PIHN_VERSIONSHORT", string);
+	string = CheckString("PIHN_BUILD", string);
 	string = CheckString("PIHN_PLAYERS", string);
 	string = CheckString("PIHN_SOLDIERS", string);
-	string = CheckString("PIHN_ASSASSINS", string);
+	string = CheckString("PIHN_SPECIALISTS", string);
 	string = CheckString("PIHN_ARMOREDS", string);
 	string = CheckString("PIHN_ENGINEERS", string);
-	string = CheckString("PIHN_SCOUTS", string);
 	string = CheckString("PIHN_MEDICS", string);
 	string = CheckString("PIHN_MAXPLAYERS", string);
 	string = CheckString("PIHN_ALIVEPLAYERS", string);
@@ -155,18 +155,18 @@ ReplaceString(replace)
 			return level.rotuVersion_hostname;
 		case "PIHN_VERSIONSHORT":
 			return level.rotuVersion_hostname_short;
+		case "PIHN_BUILD":
+			return level.buildnumber;
 		case "PIHN_PLAYERS":
 			return level.activePlayers;
 		case "PIHN_SOLDIERS":
 			return level.classcount["soldier"];
-		case "PIHN_ASSASSINS":
-			return level.classcount["stealth"];
+		case "PIHN_SPECIALISTS":
+			return level.classcount["specialist"];
 		case "PIHN_ARMOREDS":
 			return level.classcount["armored"];
 		case "PIHN_ENGINEERS":
 			return level.classcount["engineer"];
-		case "PIHN_SCOUTS":
-			return level.classcount["scout"];
 		case "PIHN_MEDICS":
 			return level.classcount["medic"];
 		case "PIHN_MAXPLAYERS":

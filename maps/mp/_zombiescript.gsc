@@ -83,7 +83,7 @@ buildAmmoStock(targetname, loadtime)
 
 setWeaponHandling(id)
 {
-	level.onGiveWeapons = id;
+	printLn( "Called deprecated function \"setWeaponHandling\"" );
 }
 
 setSpawnWeapons(primary, secondary)

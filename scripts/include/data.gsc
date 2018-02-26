@@ -98,3 +98,159 @@ dissect(string)
 	// forward to the strTok function
 	return strTok(string, " ");
 }
+
+/**
+*	Returns an array of the current hour and minutes
+*
+*	@seconds: Int, current time in seconds
+*	@return: Array, 0: Int, Minutes of current hour
+*					1: Int, Current daytime hour
+*/
+getDaytime(seconds){
+
+	minutes = int(seconds / 60) % 60;
+	hours = int(seconds / 3600) % 24;
+	
+	daytime = [];
+	daytime[0] = minutes;
+	daytime[1] = hours;
+	
+	return daytime;
+}
+
+
+/**
+*	Returns an array of the current day and month
+*
+*	@seconds: Int, current time in seconds
+*	@return: Array, 0: Int, Days into the month
+*					1: Int, Months into the year
+*/
+getCurrentMonthAndDay(seconds){
+
+	if(getCurrentYear(seconds) % 4 == 0)
+		leapday = 1;
+	else
+		leapday = 0;
+		
+	dayandmonth = [];
+	dayandmonth[0] = 0;
+	dayandmonth[1] = 0;
+		
+	// Get remaining days in the current year
+	minutes = int(seconds / 60);
+	hours = int(minutes / 60);
+	days = int(hours / 24);
+	additionalDays = int(days / 365 / 4);
+	days -= additionalDays;
+	days = days % (365 + leapday);
+	
+	// January has 31 days
+	if(days < 31){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 1;
+		return dayandmonth;
+	}
+	days -= 31;
+
+	// February has 28 days (29 if leapday)
+	if(days < (28 + leapday)){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 2;
+		return dayandmonth;
+	}
+	days -= 28 + leapday;
+	
+	// March has 31 days
+	if(days < 31){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 3;
+		return dayandmonth;
+	}
+	days -= 31;
+	
+	// April has 30 days
+	if(days < 30){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 4;
+		return dayandmonth;
+	}
+	days -= 30;
+	
+	// May has 31 days
+	if(days < 31){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 5;
+		return dayandmonth;
+	}
+	days -= 31;
+	
+	// June has 30 days
+	if(days < 30){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 6;
+		return dayandmonth;
+	}
+	days -= 30;
+	
+	// July has 31 days
+	if(days < 31){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 7;
+		return dayandmonth;
+	}
+	days -= 31;
+	
+	// August has 31 days
+	if(days < 31){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 8;
+		return dayandmonth;
+	}
+	days -= 31;
+	
+	// September has 30 days
+	if(days < 30){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 9;
+		return dayandmonth;
+	}
+	days -= 30;
+	
+	// October has 31 days
+	if(days < 31){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 10;
+		return dayandmonth;
+	}
+	days -= 31;
+	
+	// November has 30 days
+	if(days < 30){
+		dayandmonth[0] = days;
+		dayandmonth[1] = 11;
+		return dayandmonth;
+	}
+	days -= 30;
+	
+	// December has 31 days
+	dayandmonth[0] = days;
+	dayandmonth[1] = 12;
+	return dayandmonth;
+}
+
+/**
+*	Returns current year
+*
+*	@seconds: Int, current time in seconds
+*	@return: Int, Current year
+*/
+getCurrentYear(seconds){
+
+	minutes = int(seconds / 60);
+	hours = int(minutes / 60);
+	days = int(hours / 24);
+	additionalDays = int(days / 365 / 4);
+	days += additionalDays;
+	return 2012 + int(days / 365);
+}

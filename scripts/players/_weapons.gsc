@@ -13,13 +13,12 @@
 * Based on Reign of the Undead 2.1 created by Bipo and Etheross
 */
 
-
 /***
 *
-* 	_weapons.gsc
-*	TODO: Description
+*	TODO: Add file description
 *
 */
+
 
 #include scripts\include\entities;
 #include scripts\include\weapons;
@@ -27,15 +26,14 @@
 
 init()
 {
-	level.onGiveWeapons = -1;
 	level.spawnPrimary = "none";
 	level.spawnSecondary = "none";
-	level.monkeyEntitiesIndex = 0;
-	
+
+	// array for the special weapons, e.g raygun
 	level.specialWeps = [];
 	
-	// number of weapons for players
-	max_weapon_num = 110;
+	// number of weapons for players, should match the ID in weaponTable.csv
+	max_weapon_num = 111;
 
 	// generating weaponlist array
 	level.weaponList = [];
@@ -43,7 +41,7 @@ init()
 	level.weaponKeyC2S = [];
 	for(i = 0; i < max_weapon_num; i++)
 	{
-		weapon_name = tableLookup("mp/weaponTable.csv", 0, i, 2);
+		weapon_name = tableLookup( "mp/weaponTable.csv", 0, i, 2 );
 		if(!isDefined(weapon_name) || weapon_name == "")
 			continue;
 		
@@ -53,16 +51,16 @@ init()
 		level.weaponKeyS2C[weapon_name] = console_name;
 		level.weaponKeyC2S[console_name] = weapon_name;
 		
-		if(weapon_name == "none")
-			continue;
-		
 		// this array stores various infos about the weapons as tableLookup is a demanding function and we don't want to call it whenever
-		// maybe we will need it later, for now we don't really bother
+		// this is a multi dimensional array to be expandeable later on
 		level.weaponList[weapon_name] = [];
 		level.weaponList[weapon_name]["class"] = tableLookup("mp/weaponTable.csv", 0, i, 1);
 		
+		if(weapon_name == "none" || weapon_name == "turret_mp")
+			continue;
+		
 		precacheItem(console_name);
-		print("Precached weapon: " + weapon_name + " (" + console_name + ")\n");	
+		printLn( "Precached weapon: " + weapon_name + " (" + console_name + ")" );
 	}
 
 	precacheShellShock("default");
@@ -70,22 +68,25 @@ init()
 
 	level.monkeyEffect = loadfx("monkey_grenade/monkey_grenade_onfloor");
 	level.monkeyEntities = [];
+	level.monkeyEntitiesIndex = 0;
 
+	// TODO: move this to the _claymore.gsc and actually make use of it again
 	claymoreDetectionConeAngle = 70;
 	level.claymoreDetectionDot = cos(claymoreDetectionConeAngle);
 	level.claymoreDetectionMinDist = 20;
 	level.claymoreDetectionGracePeriod = 0.75;
 	level.claymoreDetonateRadius = 150;
-
-	level.C4explodeThisFrame = false;
-	level.C4FXid = loadfx("bo_crossbow/light_crossbow_blink");//For the new crossbow, we need to replace this
-	//level.C4FXid = loadfx("misc/light_c4_blink"); //Old One
 	level.claymoreFXid = loadfx("misc/claymore_laser");
-}
+	
+	// TODO: check if needed and adjust
+	level.C4explodeThisFrame = false;
+	level.C4FXid = loadfx("bo_crossbow/light_crossbow_blink");	//For the new crossbow, we need to replace this
+	//level.C4FXid = loadfx("misc/light_c4_blink"); //Old One
+}	/* init */
 
 isSpecialWeap(weap)
 {
-	for(i = 0; i < level.specialWeps.size; i++)
+	for( i = 0; i < level.specialWeps.size; i++)
 	{
 		if(level.specialWeps[i] == weap)
 			return true;
@@ -131,13 +132,17 @@ givePlayerWeapons()
 	}
 }
 
-canRestoreAmmo(wep)
+canRestoreAmmo( weapon )
 {
-	if(wep == "helicopter_mp" || wep == "airstrike_mp" || scripts\players\_weapons::isSpecialWeap(wep) || wep == "m14_reflex_mp" /* Ammobox */ || wep == "none" || wep == level.weapons["flash"] /* Monkey Bomb */)
-	{
+	// check if the weapon is valid for restoreing ammo
+	if( weapon == "none" ||
+	isSpecialWeap( weapon ) ||
+	weapon == "monkey_mp" ||
+	weapon == "medic_mp" ||
+	weapon == "supply_mp" ||
+	weapon == "forcefield_mp" )
 		return false;
-	}
-		
+
 	return true;
 }
 
@@ -264,7 +269,7 @@ isActionslotWeapon(weapon)
 
 swapWeapons(type, weapon)
 {
-	switch (type)
+	switch(type)
 	{
 	case "primary":
 		if(self.primary != "none" && self.primary != "")
@@ -308,6 +313,7 @@ swapWeapons(type, weapon)
 	case "grenade":
 		self giveWeap(weapon); 
 		self giveWeapMaxAmmo(weapon);
+		// TODO do we need to set the weapon into any slot?
 		break;
 	}
 }
@@ -382,18 +388,19 @@ watchThrowable()
 	
 	while(1)
 	{
-		self waittill("grenade_fire", c4, weapname);
-		if(weapname == "c4" || weapname == "c4_mp")
+		self waittill( "grenade_fire", c4, weapon );
+		
+		if( weapon == "c4_mp" )
 		{
 			//if (!self.c4array.size)
 			//	self thread watchC4AltDetonate();
-			if(self.c4array.size >= level.dvar["game_max_c4"])
+			if( self.c4array.size >= level.dvar["game_max_c4"] )
 			{
 				for(i = 0; i < self.c4array.size; i++)
 					if(!isDefined(self.c4array[i]))
 						self.c4array = removeFromArray(self.c4array, self.c4array[i]);
 			}
-			if(self.c4array.size >= level.dvar["game_max_c4"])
+			if( self.c4array.size >= level.dvar["game_max_c4"] )
 			{
 				c4 delete();
 				self iprintlnbold("You can only put down " + level.dvar["game_max_c4"] + " C4 max.!");
@@ -410,8 +417,8 @@ watchThrowable()
 			c4 thread c4Damage();
 			c4 thread playC4Effects();
 		}
-		else if(weapname == "frag_grenade_mp")
-			self playsound("throw_grenade");
+		else if( weapon == "frag_grenade_mp" )
+			self playSound( "throw_grenade" );
 	}
 }
 
@@ -422,10 +429,10 @@ watchMonkey()
 	
 	while(1)
 	{
-		self waittill("grenade_fire", monkey, weapname);
-		weapname = level.weaponKeyS2C[weapname];
+		self waittill( "grenade_fire", monkey, weapon );
 		
-		if(weapname == "monkey_mp")	// monkey bomb
+		weapon = level.weaponKeyC2S[weapon];
+		if( weapon == "monkey_mp" )
 		{
 			level.monkeyEntities[level.monkeyEntities.size] = monkey;
 			

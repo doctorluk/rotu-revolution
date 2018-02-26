@@ -83,8 +83,7 @@ precache()
 	precacheStatusIcon("icon_medic");
 	precacheStatusIcon("icon_engineer");
 	precacheStatusIcon("icon_soldier");
-	precacheStatusIcon("icon_stealth");
-	precacheStatusIcon("icon_scout");
+	precacheStatusIcon("icon_specialist");
 	precacheStatusIcon("icon_armored");
 	precacheStatusIcon("icon_down");
 	precacheStatusIcon(	"icon_spec");
@@ -664,21 +663,21 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 			self.lastHurtTime = getTime();
 		}
 		
-		// Reduce damage dealt to players within the dome
-		if(level.armoredDomes.size)
+		// Reduce damage dealt to players within the forcefield
+		if(level.armoredForcefields.size)
 		{
-			for(i = 0; i < level.armoredDomes.size; i++)
+			for(i = 0; i < level.armoredForcefields.size; i++)
 			{
-				dome = level.armoredDomes[i];
-				domePos = dome.origin;
+				ff = level.armoredForcefields[i];
+				ffPos = ff.origin;
 				playerEye = self getEye();
 				playerPos = self getOrigin();
 				
-				if((playerPos[2] + 15) >= domePos[2] && distance(domePos, playerEye) <= level.special["armoredshield"]["radius"])
+				if((playerPos[2] + 15) >= ffPos[2] && distance(ffPos, playerEye) <= level.special["armoredforcefield"]["radius"])
 				{
 					previousIDamage = iDamage;
-					iDamage = int(1 - level.special["armoredshield"]["damagereduction"] * iDamage);
-					self iprintln("Damage reduced by " + (previousIDamage - iDamage)); 
+					iDamage = int((1 - level.special["armoredforcefield"]["damagereduction"]) * iDamage);
+					self iprintln("Damage reduced by " + (previousIDamage - iDamage) + " to " + iDamage + " for being in forcefield"); 
 					break;
 				}
 			}
@@ -809,15 +808,12 @@ Callback_PlayerLastStand(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, 
 	weaponslist = self getWeaponslist();
 	for(i = 0; i < weaponslist.size; i++)
 	{
-		weapon = weaponslist[i];
-		
-		if (weapon == self.secondary )
-		{
-			self switchToWeapon(weapon);
-			continue;
-		}
+		weapon = level.weaponKeyC2S[weaponslist[i]];
+		self iprintln( weapon );
+		if( weapon == self.secondary )
+			self switchToWeap(weapon);
 		else
-		self takeWeapon(weapon);
+			self takeWeap(weapon);
 	}
 	
 	// Notify other players that this player is down

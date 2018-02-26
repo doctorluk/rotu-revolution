@@ -26,11 +26,11 @@ REFERENCE           SOLDIER_DESCRIPTION_TITLE
 LANG_ENGLISH        "Soldier Description"
 
 
-REFERENCE           STEALTH_DESCRIPTION
-LANG_ENGLISH        "The Assassin can hide from the Zombies by being silent for a certain amount of time.\nHis ^3Special ^7makes him invisible, thus untargetable for the Zombie horde for a short period of time."
+REFERENCE           SPECIALIST_DESCRIPTION
+LANG_ENGLISH        "TODO: SPECIALIST_DESCRIPTION"
 
-REFERENCE           STEALTH_DESCRIPTION_TITLE
-LANG_ENGLISH        "Assassin Description"
+REFERENCE           SPECIALIST_DESCRIPTION_TITLE
+LANG_ENGLISH        "TODO: SPECIALIST_DESCRIPTION_TITLE"
 
 
 REFERENCE           ARMORED_DESCRIPTION
@@ -45,12 +45,6 @@ LANG_ENGLISH        "Engineers provide ammo for their team to sustain in long fi
 
 REFERENCE           ENGINEER_DESCRIPTION_TITLE
 LANG_ENGLISH        "Engineer Description"
-
-REFERENCE           SCOUT_DESCRIPTION
-LANG_ENGLISH        "Providing intel for their team and being able to distract the Zombies makes them valuable for the whole team.\nAn incredible speed bonus gained by the ^3Special^7 provides them with the capability to escape the Zombie hordes quickly."
-
-REFERENCE           SCOUT_DESCRIPTION_TITLE
-LANG_ENGLISH        "Scout Description"
 
 
 REFERENCE           MEDIC_DESCRIPTION

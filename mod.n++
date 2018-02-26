@@ -1,0 +1,10 @@
+<NotepadPlus>
+    <Session activeView="0">
+        <mainView activeIndex="0">
+            <File firstVisibleLine="621" xOffset="0" scrollWidth="1232" startPos="17583" endPos="17583" selMode="0" lang="Normaler Text" encoding="-1" filename="E:\CoD4Modding\CoD4Modtools\mods\rotur_dev\mod.csv" backupFilePath="" originalFileLastModifTimestamp="1519495262" mapFirstVisibleDisplayLine="621" mapFirstVisibleDocLine="621" mapLastVisibleDocLine="700" mapNbLine="79" mapHigherPos="-1" mapWidth="414" mapHeight="237" mapKByteInDoc="18" mapWrapIndentMode="1" mapIsWrap="no" />
+            <File firstVisibleLine="49" xOffset="0" scrollWidth="1872" startPos="7300" endPos="7300" selMode="0" lang="Normaler Text" encoding="-1" filename="E:\CoD4Modding\CoD4Modtools\mods\rotur_dev\soundaliases\weapons.csv" backupFilePath="" originalFileLastModifTimestamp="1519066998" mapFirstVisibleDisplayLine="49" mapFirstVisibleDocLine="49" mapLastVisibleDocLine="128" mapNbLine="79" mapHigherPos="-1" mapWidth="414" mapHeight="237" mapKByteInDoc="15" mapWrapIndentMode="1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="762" startPos="1297" endPos="1297" selMode="0" lang="COD String" encoding="-1" filename="E:\CoD4Modding\CoD4Modtools\mods\rotur_dev\english\localizedstrings\weapon.str" backupFilePath="" originalFileLastModifTimestamp="1519066570" mapFirstVisibleDisplayLine="0" mapFirstVisibleDocLine="0" mapLastVisibleDocLine="75" mapNbLine="75" mapHigherPos="-1" mapWidth="394" mapHeight="225" mapKByteInDoc="1" mapWrapIndentMode="1" mapIsWrap="no" />
+        </mainView>
+        <subView activeIndex="0" />
+    </Session>
+</NotepadPlus>

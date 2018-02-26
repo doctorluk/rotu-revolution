@@ -353,6 +353,7 @@ upgradeHud(points)
 /**
 *	Similar to the upgradepoint gaining display, we show a text indicating we're hurting zombies using poison or fire
 *	@type: String type of the damage
+*	TODO: REMOVE OR RECYCLE
 */
 bulletModFeedback(type)
 {

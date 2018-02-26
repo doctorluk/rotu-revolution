@@ -1,23 +1,23 @@
-//
-// vim: set ft=cpp:
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: scripts\players\_abilities.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
+
+/***
+*
+*	TODO: Add file description
+*
+*/
 
 #include scripts\include\hud;
 #include scripts\include\data;
@@ -31,7 +31,7 @@ init()
 	precache();
 	loadAbilityStats();
 	level.weapons["flash"] = "usp_silencer_mp"; // We change the actual Flash Grenade to the Monkey Bomb, so we can use it as "Special Grenade" with instant-throw
-	level.armoredDomes = [];
+	level.armoredForcefields = [];
 }
 
 precache()
@@ -40,7 +40,7 @@ precache()
 	level.heal_glow_effect 		= loadfx("misc/heal_glow");
 	level.healingEffect    		= loadfx("misc/healing");
 	
-	precacheModel("armored_dome");
+	precacheModel("armored_forcefield");
 	
 	precacheShader("icon_medkit_placed");
 	precacheShader("icon_ammobox_placed");
@@ -48,17 +48,11 @@ precache()
 
 loadAbilityStats()
 {
-
-	// TODO: Move to Assassin and use same data format as the other classes
-	level.special_quickescape_duration = 6;
-	level.special_quickescape_intermission = 15;
-	level.special_stealthmove_intermission = 10;
 	
 	loadAbilityStats_soldier();
-	loadAbilityStats_assassin();
+	loadAbilityStats_specialist();
 	loadAbilityStats_armored();
 	loadAbilityStats_engineer();
-	loadAbilityStats_scout();
 	loadAbilityStats_medic();
 	
 }
@@ -71,24 +65,19 @@ loadAbilityStats_soldier(){
 	
 }
 
-loadAbilityStats_assassin(){
-
-	// TODO: They are not used
-	level.special["fake_death"]["recharge_time"] = 55;
-	level.special["fake_death"]["duration"] = 15;
+loadAbilityStats_specialist(){
 	
-	// TODO: They are not used
-	level.special["smoke_grenade"]["recharge_time"] = 5; // TODO: This is for debugging, get a more realistic time
+	// TODO: Fill with stats
 	
 }
 
 loadAbilityStats_armored(){
 	
-	// TODO: Throwable or F-Special?
-	level.special["armoredshield"]["radius"] = 500 / 2.54; // 500cm in Maya to inches
-	level.special["armoredshield"]["recharge_time"] = 25;
-	level.special["armoredshield"]["duration"] = 60;
-	level.special["armoredshield"]["damagereduction"] = 0.6;
+	// Throwable forcefield
+	level.special["armoredforcefield"]["radius"] = 128;
+	level.special["armoredforcefield"]["recharge_time"] = 180;
+	level.special["armoredforcefield"]["duration"] = 30;
+	level.special["armoredforcefield"]["damagereduction"] = 0.6;
 	
 	// F-Special
 	level.special["invincible"]["recharge_time"] = 60;
@@ -103,17 +92,6 @@ loadAbilityStats_engineer(){
 	
 	// Throwable Special
 	level.special["ammo"]["recharge_time"] = 75;
-	
-}
-
-loadAbilityStats_scout(){
-
-	// TODO: They are not used
-	level.special["escape"]["recharge_time"] = 40;
-	level.special["escape"]["duration"] = 10;
-	
-	// Throwable Special
-	level.special["monkey_bomb"]["recharge_time"] = 65;
 	
 }
 
@@ -156,7 +134,6 @@ resetAbilities()
 	self.revivetime = level.dvar["surv_revivetime"];
 	
 	self clearPerks();
-	self setStableMissile(0);
 	
 	if(isDefined(self.armored_hud))
 		self.armored_hud destroy();
@@ -164,9 +141,6 @@ resetAbilities()
 	self.canAssasinate = false;
 	self.isHitman = false;
 	self.focus = -1;
-	self.weaponMod = "";
-	self.knifeMod = "";
-	self.bulletMod = "";
 	self.knifeDamageMP = 1;
 	self.weaponNoiseMP = 1;
 	self.immune = false;
@@ -183,8 +157,6 @@ resetAbilities()
 	self.damageDoneMP = 1;
 	self.infectionMP = 1;
 	self.canZoom = true;
-	self.chargedGrenades = false;
-	self.headshotMP = 1;
 	self.medkitTime = 12;
 	self.medkitHealing = 25;
 	self.auraHealing = 35;
@@ -208,85 +180,6 @@ getDamageModifier(weapon, means, target, damage)
 		return 1;
 
 	MP = 1.00;
-
-	// class damage modifiers
-	if(isSubStr(self.weaponMod, "soldier"))
-	{
-		if(scripts\players\_weapons::isRifle(weapon))
-			MP += .1;
-	}
-	
-	if(isSubStr(self.weaponMod, "assassin"))		// would a else if also do, or can you actually have multiple?
-	{
-		if(!WeaponIsBoltAction(weapon) && !WeaponIsSemiAuto(weapon))
-			MP -= .15;
-		else
-			MP += .05;
-		
-		if(!scripts\players\_weapons::isSilenced(weapon))
-			MP -= .15;
-		else
-			MP += .05;
-	}
-	
-	if(isSubStr(self.weaponMod, "hitman"))
-	{
-		if(!WeaponIsBoltAction(weapon) && !WeaponIsSemiAuto(weapon) && means == "MOD_HEAD_SHOT")
-			MP += .45;
-		
-		if(!target scripts\bots\_bots::zomSpot(self))
-			MP += .15;
-	}
-	
-	if(isSubStr(self.weaponMod, "strength"))
-	{
-		if(means == "MOD_MELEE")
-			MP += .35;
-	}
-	
-	if(isSubStr(self.weaponMod, "engineer"))
-	{
-		if(means == "MOD_EXPLOSIVE")
-			MP += .1;
-		if(scripts\players\_weapons::isLMG(weapon) || scripts\players\_weapons::isRifle(weapon))
-			MP += .05;
-		if(scripts\players\_weapons::isShotgun(weapon))
-			MP += .1;
-	}
-	
-	if(isSubStr(self.weaponMod, "armored"))
-	{
-		if(scripts\players\_weapons::isLMG(weapon))
-			MP += .15;
-		if(scripts\players\_weapons::isSniper(weapon) || scripts\players\_weapons::isPistol(weapon) || scripts\players\_weapons::isSMG(weapon))
-			MP -= .15;
-	}
-	
-	if(isSubStr(self.weaponMod, "lmg"))
-	{
-		if (scripts\players\_weapons::isLMG(weapon))
-			MP += .5;
-	}
-	
-	if(isSubStr(self.weaponMod, "scout"))
-	{
-		if(scripts\players\_weapons::isLMG(weapon) || scripts\players\_weapons::isRifle(weapon))
-			MP -= .15;
-		if(scripts\players\_weapons::isSniper(weapon) || scripts\players\_weapons::isPistol(weapon) || scripts\players\_weapons::isSMG(weapon))
-			MP += .1;
-	}
-	
-	if(isSubStr(self.knifeMod, "assassin"))
-	{
-		if(means == "MOD_MELEE")
-			MP += 1;
-	}
-	
-	if(isSubStr(self.knifeMod, "armored"))
-	{
-		if(means == "MOD_MELEE")
-			MP += 0.35;
-	}
 	
 	// weapon upgrade damage modifiers
 	wpnlvl = 0;
@@ -300,7 +193,6 @@ getDamageModifier(weapon, means, target, damage)
 	if(getDvar("surv_unlock" + wpnlvl + "_damagemulti") != "")
 		MP += getDvarFloat("surv_unlock" + wpnlvl + "_damagemulti");
 
-//	self iPrintLn("MP = ", MP);
 	return MP;
 }
 
@@ -405,7 +297,8 @@ loadGeneralAbilities(class)
 			self.maxhealth = 115;
 		break;
 		
-		case "stealth":
+		// TODO: Okay?
+		case "specialist":
 			self.maxhealth = 100;
 			self setPerk("specialty_quieter");
 			self.speed = 1.02;
@@ -413,12 +306,6 @@ loadGeneralAbilities(class)
 		
 		case "medic":
 			self.maxhealth = 110;
-		break;
-		
-		case "scout":
-			self.maxhealth = 90;
-			self setPerk("specialty_longersprint");
-			self.speed = 1.08;
 		break;
 		
 		case "amored":
@@ -452,8 +339,8 @@ loadAbility(class, type, ability)
 			loadSoldierAbility(type, ability);
 		break;
 		
-		case "stealth":
-			loadStealthAbility(type, ability);
+		case "specialist":
+			loadSpecialistAbility(type, ability);
 		break;
 		
 		case "medic":
@@ -466,10 +353,6 @@ loadAbility(class, type, ability)
 		
 		case "engineer":
 			loadEngineerAbility(type, ability);
-		break;
-		
-		case "scout":
-			loadScoutAbility(type, ability);
 		break;
 	}
 
@@ -506,7 +389,7 @@ SOLDIER_PRIMARY(ability)
 		break;
 		
 		case "AB3":
-			self setStableMissile(1);
+		
 		break;
 	}
 }
@@ -516,7 +399,7 @@ SOLDIER_PASSIVE(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self.weaponMod += "soldier";
+			
 		break;
 		
 		case "AB2":
@@ -536,65 +419,60 @@ SOLDIER_PASSIVE(ability)
 	}
 }
 
-loadStealthAbility(type, ability)
+loadSpecialistAbility(type, ability)
 {
 	switch (type)
 	{
 		case "PR":
-			self thread STEALTH_PRIMARY(ability);
+			self thread SPECIALIST_PRIMARY(ability);
 		break;
 		
 		case "PS":
-			self thread STEALTH_PASSIVE(ability);
+			self thread SPECIALIST_PASSIVE(ability);
 		break;
 	}
 }
 
-///////////////
-//	STEALTH  //
-///////////////
+//////////////////
+//	SPECIALIST  //
+//////////////////
 
-STEALTH_PRIMARY(ability)
+SPECIALIST_PRIMARY(ability)
 {
 	switch (ability)
 	{
 		case "AB1":
-			self giveWeap("smoke_grenade_mp");
-			self setWeapAmmoClip("smoke_grenade_mp", 0);
-			self setOffhandSecondaryClass("smoke");
-			self thread watchSmokeGrenades();
-			self thread restoreSmokeGrenade(level.special["smoke_grenade"]["recharge_time"]);
+			
 		break;
 		
 		case "AB2":
-			self loadSpecialAbility("fake_death");
+			
 		break;
 		
 		case "AB3":
 			self thread quickEscape();
-			self SetMoveSpeedScale(self.speed + .2);
 		break;
 	}
 }
 
-STEALTH_PASSIVE(ability)
+SPECIALIST_PASSIVE(ability)
 {
 	switch (ability)
 	{
 		case "AB1":
-			self.weaponMod += "assassin";
+			
 		break;
 		
 		case "AB2":
-			self.knifeMod += "assassin";
+			
 		break;
 		
 		case "AB3":
-			self thread stealthMovement();
+			
 		break;
 		
 		case "AB4":
-			// The explosive crossbow was here
+			self.hasRadar = true;
 		break;
 	}
 }
@@ -631,7 +509,7 @@ MEDIC_PRIMARY(ability)
 		break;
 		
 		case "AB2":
-			self loadSpecialAbility("aura");
+			
 		break;
 		
 		case "AB3":
@@ -658,7 +536,7 @@ MEDIC_PASSIVE(ability)
 		break;
 		
 		case "AB4":
-			self.bulletMod = "poison";
+			
 		break;
 	}
 }
@@ -686,14 +564,12 @@ ARMORED_PRIMARY(ability)
 	switch (ability)
 	{
 		case "AB1":
-			// self giveWeapon("m60e4_reflex_mp");
-			// self giveMaxAmmo("m60e4_reflex_mp");
-			// self setActionSlot(3, "weapon", "m60e4_reflex_mp");
-			self giveWeapon("c4_mp");
-			self giveMaxAmmo("c4_mp");
-			self setActionSlot(3, "weapon", "c4_mp");
-			self thread watchArmoredDome();
-			// self.actionslotweapons[self.actionslotweapons.size] = "m60e4_reflex_mp";
+			self giveWeap( "forcefield_mp" );
+			self setWeapAmmoClip( "forcefield_mp", 0 );
+			self setActionSlot( 3, "weapon", level.weaponKeyS2C["forcefield_mp"] );
+			self thread watchArmoredForcefield();
+			self thread restoreArmoredForcefield(level.special["armoredforcefield"]["recharge_time"]);
+			self thread restoreArmoredForcefield(level.special["armoredforcefield"]["recharge_time"]);
 		break;
 		
 		case "AB2":
@@ -712,17 +588,16 @@ ARMORED_PASSIVE(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self.weaponMod += "armored";
-			// self setclientdvar("ui_armored", 1);
+			
 		break;
 		
 		case "AB2":
 			self setPerk("specialty_bulletaccuracy");
-			self.knifeMod += "armored";
+			
 		break;
 		
 		case "AB3":
-			self reloadForArmored();
+			
 		break;
 		
 		case "AB4":
@@ -779,7 +654,7 @@ ENGINEER_PASSIVE(ability)
 	switch (ability)
 	{
 		case "AB1":
-			self.weaponMod += "engineer";
+			
 		break;
 		
 		case "AB2":
@@ -790,68 +665,7 @@ ENGINEER_PASSIVE(ability)
 		break;
 		
 		case "AB4":
-			self.bulletMod = "incendiary";
-		break;
-	}
-}
-
-loadScoutAbility(type, ability)
-{
-	switch (type)
-	{
-		case "PR":
-			self thread SCOUT_PRIMARY(ability);
-		break;
-		
-		case "PS":
-			self thread SCOUT_PASSIVE(ability);
-		break;
-	}
-}
-
-///////////////
-//	SCOUT    //
-///////////////
-
-SCOUT_PRIMARY(ability)
-{
-	switch (ability)
-	{
-		case "AB1":
-			self loadSpecialAbility("escape");
-		break;
-		
-		case "AB2":
-			self setPerk("specialty_holdbreath");
-		break;
-		
-		case "AB3":
-			self giveWeapon("usp_silencer_mp");
-			self setOffhandSecondaryClass("flash");
-			self setWeaponAmmoClip("usp_silencer_mp", 0);
-			self thread restoreMonkey(level.special["monkey_bomb"]["recharge_time"]);
-		break;
-	}
-}
-
-SCOUT_PASSIVE(ability)
-{
-	switch (ability)
-	{
-		case "AB1":
-			self.weaponMod += "scout";
-		break;
-		
-		case "AB2":
-			self.headshotMP = 2;
-		break;
-		
-		case "AB3":
-			self.chargedGrenades = true;
-		break;
-		
-		case "AB4":
-			self.hasRadar = true;
+			
 		break;
 	}
 }
@@ -897,7 +711,7 @@ giveArmoredHud()
 	self.armored_hud setShader("overlay_armored", 640, 480);
 }
 
-watchArmoredDome()
+watchArmoredForcefield()
 {
 	self endon("reset_abilities");
 	self endon("downed");
@@ -906,33 +720,12 @@ watchArmoredDome()
 	while(1)
 	{
 		self waittill("grenade_fire", shield, weaponName);
-		if(weaponName == "c4_mp") /* TODO: INSERT PROPER WEAPON */ 
+		if( weaponName == level.weaponKeyS2C["forcefield_mp"] )
 		{
 			shield.owner = self;
-			shield thread beArmoredDome(level.special["armoredshield"]["duration"]);
-			self thread restoreArmoredDome(level.special["armoredshield"]["recharge_time"]);
+			shield thread beArmoredForcefield(level.special["armoredforcefield"]["duration"]);
+			self thread restoreArmoredForcefield(level.special["armoredforcefield"]["recharge_time"]);
 			// self playsound("take_medkit"); /* TODO: INSERT PROPER "DEPLOYING SHIELD" SOUND */
-		}
-	}
-}
-
-watchSmokeGrenades()
-{
-	self endon("reset_abilities");
-	self endon("downed");
-	self endon("death");
-	self endon("disconnect");
-
-	while(1)
-	{
-		self waittill ("grenade_fire", nade, weaponName);
-		
-		if(weaponName == level.weaponKeyS2C["smoke_grenade_mp"])
-		{
-			nade.owner = self;
-			nade thread beSmokeGrenade(self.smokeTime);
-			self thread restoreSmokeGrenade(level.special["smoke_grenade"]["recharge_time"]);
-			self playSound("throw_smoke");
 		}
 	}
 }
@@ -975,17 +768,17 @@ watchAmmobox()
 	}
 }
 
-restoreArmoredDome(time)
+restoreArmoredForcefield(time)
 {
 	self endon("reset_abilities");
 	self endon("downed");
 	self endon("death");
 	self endon("disconnect");
 
-	self addTimer(&"ZOMBIE_ARMOREDDOME_IN", "", time);
+	self addTimer(&"ZOMBIE_ARMOREDFORCEFIELD_IN", "", time);
 	wait time;
 
-	self setWeapAmmoClip("c4_mp", self getWeapAmmoClip("c4_mp") + 1);
+	self setWeapAmmoClip( "forcefield_mp", self getWeapAmmoClip("forcefield_mp") + 1 );
 }
 
 restoreSmokeGrenade(time)
@@ -1037,7 +830,7 @@ restoreMonkey(time)
 	self addTimer(&"ZOMBIE_MONKEY_IN", "", time);
 	wait time;
 
-	// Why not just give one...?
+	// TODO: Why not just give one...?
 	self takeWeapon("usp_silencer_mp");
 	self giveWeapon("usp_silencer_mp");
 }
@@ -1064,7 +857,7 @@ beAmmobox(time)
 	if(!isDefined(self))
 		return;
 	
-	self thread scripts\gamemodes\_hud::createHeadiconKits(self.origin+(0, 0, 15), "icon_ammobox_placed", 0.5); // 2D Icon above the ammobox
+	self thread scripts\gamemodes\_hud::createHeadiconKits(self.origin + (0, 0, 15), "icon_ammobox_placed", 0.5); // 2D Icon above the ammobox
 	self thread scripts\gamemodes\_hud::createRadarIcon("icon_ammobox_radar"); // Radar Icon
 	
 	wait 1;
@@ -1089,32 +882,6 @@ beAmmobox(time)
 		wait 1;
 	}
 	self delete();
-}
-
-beSmokeGrenade(time)
-{
-//	self waittill("explode");		this will not work...
-	origin = self.origin;
-	while(isDefined(self))
-	{
-		// so we work around by grabbing the origin while the grenade exists
-		if(origin != self.origin)
-			origin = self.origin;
-			
-		wait 0.05;
-	}
-
-	// these should match the fx values
-	radius = 250;
-	height = 150;
-	duration = 30;
-	
-	// TODO: Make the trigger grow over time
-	trigger = spawn("trigger_radius", origin, 0, radius, height);
-	trigger setContents(2); // so zombies can't see through
-
-	wait duration;
-	trigger delete();
 }
 
 beMedkit(time, heal)
@@ -1153,7 +920,7 @@ beMedkit(time, heal)
 }
 
 /* TODO: MODIFY TO BE USED WITHOUT A THROWABLE OBJECT */
-beArmoredDome(duration)
+beArmoredForcefield(duration)
 {	
 	self waitTillNotMoving();
 	
@@ -1169,101 +936,24 @@ beArmoredDome(duration)
 	targetDestination = self.origin;
 	
 	self hide();
-	dome = spawn("script_model", targetDestination);
-	dome.owner = self.owner;
+	ff = spawn("script_model", targetDestination);
+	ff.owner = self.owner;
 	wait 0.05;
-	dome setModel("armored_dome");
-	dome notSolid();
+	ff setModel("armored_forcefield");
+	ff notSolid();
 	
 	if(isDefined(self))
 		self delete();
 	
-	level.armoredDomes[level.armoredDomes.size] = dome;
+	level.armoredForcefields[level.armoredForcefields.size] = ff;
 	
 	wait duration;
 	
-	level.armoredDomes = removeFromArray(level.armoredDomes, dome);
-	dome delete();
+	level.armoredForcefields = removeFromArray(level.armoredForcefields, ff);
+	ff delete();
 }
 
-//For assassin = makes ur screen 24/7 green, zombies can't see u
-stealthMovement()
-{
-	self thread interruptStealthMovement();
-	self thread stealthMovementWait();
-	self thread restoreInvisibility(level.special_stealthmove_intermission);
-}
-
-interruptStealthMovement()
-{
-	self endon("reset_abilities");
-	self endon("death");
-	self endon("disconnect");
-	while(1)
-	{
-		self waittill_any("weapon_fired", "grenade_fire", "detonated", "used_usable");
-		self notify("end_trance");
-		self.canHaveStealth = false;
-		wait 0.05;
-	}
-}
-
-stealthMovementWait()
-{
-	self endon("reset_abilities");
-	self endon("death");
-	self endon("disconnect");
-	i = 0;
-	while(1)
-	{
-		if(!self.canHaveStealth || self.isDown)
-		{
-			i = 0;
-			self.canHaveStealth = true;
-			
-			if(!self.isDown)
-				self thread restoreInvisibility(level.special_stealthmove_intermission);
-		}
-		else if(i >= level.special_stealthmove_intermission && !self.inTrance && self.visible)
-		{
-			self thread trance_stealthmove();
-			self thread trance_stealthmove_end();
-		}
-		i += 0.1;
-		wait 0.1;
-	}
-
-}
-
-trance_stealthmove()
-{
-	self endon("end_trance");
-	self endon("death");
-	self endon("disconnect");
-	
-	while(self.inTrance)
-		wait .5;
-	
-	self.trance = "stealthmove";
-	self.inTrance = true;
-	self.visible = false;
-	self playerFilmTweaks(1, 0, 0, "0 1 0",  "0 1 2", 0, 1.1, 1);//1, 0, .75, ".25 1 .5",  "25 1 .7", .20, 1.4, 1
-		
-	self waittill("end_trance");
-}
-
-trance_stealthmove_end()
-{
-	self endon("death");
-	self endon("disconnect");
-	self waittill("end_trance");
-	self.inTrance = false;
-	self.trance = "";
-	self playerFilmTweaksOff();
-	self.visible = true;
-}
-
-quickEscape() // When health gets below 25% we give ourselves a speedboost - for Assassin class
+quickEscape() // When health gets below 25% we give ourselves a speedboost - for Specialist class
 {
 	self endon("reset_abilities");
 	self endon("death");
@@ -1350,26 +1040,6 @@ heal(x)
 	self updateHealthHud(self.health / self.maxhealth);
 }
 
-reloadForArmored()
-{
-	self endon("disconnect");
-	self endon("death");
-	
-	while(1)
-	{
-		if (self.curClass != "armored" || self.sessionstate == "spectator")
-			return;
-			
-		self waittill("weapon_change");
-		
-		wep = self getCurrentWeapon();
-		
-		if (scripts\players\_weapons::isLMG(wep))
-			self setPerk("specialty_fastreload");
-		else
-			self unsetPerk("specialty_fastreload");
-	}
-}
 
 dynamicAccuracy()
 {
@@ -1423,6 +1093,9 @@ accuracyChangeDown()
 	}
 }
 
+/*
+* TODO: Monitor Special-Grenade button instead of USE
+*/
 watchSpecialAbility()
 {
 	self endon("disconnect");
@@ -1467,42 +1140,27 @@ onSpecialAbility()
 	
 	switch (self.special["ability"])
 	{
-		case "aura":
-			self thread specialAura(self.special["duration"]);
-			iprintln(self.name + "^7 has placed a ^2Healing Aura^7!");
-			self resetSpecial();
-		break;
-		
+		// SOLDIER
 		case "rampage":
 			self doRampage(self.special["duration"]);
 			iprintln(self.name + "^7 activated their ^1Rampage^7!");
 			self resetSpecial();
 		break;
 		
+		// ARMORED
 		case "invincible":
 			self doInvincible(self.special["duration"]);
 			iprintln(self.name + "^7 has become ^3Invincible^7!");
 			self resetSpecial();
 		break;
 		
+		// ENGINEER
 		case "augmentation":
 			if (self doAugmentation())
 			{
 				iprintln(self.name + "^7 ^3augmented ^7their ^3Turrets^7!");
 				self resetSpecial();
 			}
-		break;
-		
-		case "escape":
-			self doEscape(self.special["duration"]);
-			iprintln(self.name + "^7 ^5sped ^7themself up^7!");
-			self resetSpecial();
-		break;
-		
-		case "fake_death":
-			self doNinja(self.special["duration"]);
-			iprintln(self.name + "^7 is temporarily ^5untargetable^7!");
-			self resetSpecial();
 		break;
 	}
 }
@@ -1512,68 +1170,6 @@ resetSpecial()
 	self.canUseSpecial = false;
 	self.specialRecharge = 0;
 	self setClientDvars("ui_specialtext", "^1Special Recharging", "ui_specialrecharge", 0);
-}
-
-//*****************************************************************************************
-// 										 Aura Special
-//*****************************************************************************************
-
-specialAura(time)
-{
-	self endon("disconnect");
-	self endon("killed_player");
-	
-	origin = self.origin;
-	trace = bulletTrace(self.origin + (0, 0, 50), self.origin + (0, 0, -200), false, self);
-  
-    if(trace["fraction"] < 1)
-       origin = trace["position"];
-
-	healObject = spawnHealFX(origin, level.healingEffect);
-	healObject.healing = self.auraHealing;
-	healObject.owner = self;	
-	healObject thread healObjectHeal(time);
-	self playsound("aura_spawn");
-}
-
-spawnHealFX(groundpoint, fx)
-{
-	effect = spawnFx(fx, groundpoint, getGroundTilt(groundpoint));
-	triggerFx(effect);
-	
-	return effect;
-}
-
-healObjectHeal(time)
-{
-	wait 2;
-	timePassed = 0;
-	while (timePassed < time)
-	{
-		for (i = 0; i <= level.players.size; i++)
-		{
-			player = level.players[i];
-			
-			if (isDefined(player) && player.isAlive && distance(self.origin, player.origin) <= 240 && player.health < player.maxhealth)
-				self thread healThread(player);				
-		}
-		timePassed += 2;
-		wait 2;
-	}
-	
-	self delete();
-}
-
-healThread(player)
-{
-	player endon("disconnect");
-
-	// send out a glowing ball that follows the player around
-	self thread glow_heal_ball_out(player);
-
-	// once the ball reached him we heal him
-	player waittill("glow_ball_reached");
-	self.owner thread healPlayer(player, self.healing);
 }
 
 healPlayer(player, heal)
@@ -1610,13 +1206,13 @@ healPlayer(player, heal)
 
 restoreAmmoClip(player)
 {
-	wep = player getCurrentWeapon();//gets the name of the current weapon of the player holding
+	wep = player getCurrentWeap();//gets the name of the current weapon of the player holding
 	
 	if (!scripts\players\_weapons::canRestoreAmmo(wep))//if it's a special weapon, it won't restore it's ammo E.g = raygun,tesla...
 		return;
 	
-	stockAmmo = player getWeaponAmmoStock(wep);//gets the total ammount of ammo it has at the moment, not the clip but the stock like 95
-	stockMax = weaponMaxAmmo(wep);//gets the total ammount of ammo the certain weapon has (not clip) E.g = MaxAmmo of ak47 is 180
+	stockAmmo = player getWeapAmmoStock(wep);//gets the total ammount of ammo it has at the moment, not the clip but the stock like 95
+	stockMax = weapMaxAmmo(wep);//gets the total ammount of ammo the certain weapon has (not clip) E.g = MaxAmmo of ak47 is 180
 	
 	tenthOfMax = int(stockMax / 10);//E.g AK47= 180/10 = 18, 18 is an int so no need to round the number(17.5>18)
 	
@@ -1628,16 +1224,16 @@ restoreAmmoClip(player)
 	if (perc > 1)
 		perc = 1;
 
-	if (stockAmmo < stockMax)
+	if(stockAmmo < stockMax)
 	{
-		if((stockAmmo + tenthOfMax) > stockMax)
+		if( (stockAmmo + tenthOfMax) > stockMax )
 			tenthOfMax = stockMax - stockAmmo;
-			
+		
 		stockAmmo += tenthOfMax;
-		if (stockAmmo > stockMax)
+		if( stockAmmo > stockMax )
 			stockAmmo = stockMax;
 		
-		player setWeaponAmmoStock(wep, stockAmmo);
+		player setWeapAmmoStock(wep, stockAmmo);
 		player thread screenFlash((0, 0, 0.65), 0.5, 0.4);
 		player playLocalSound("weap_pickup");
 		
@@ -1646,8 +1242,7 @@ restoreAmmoClip(player)
 			self scripts\players\_players::incUpgradePoints(int(2 * perc) * level.dvar["game_rewardscale"]);
 			self.stats["ammoGiven"] += tenthOfMax;
 			self scripts\players\_abilities::rechargeSpecial(8 * perc);
-		}
-		
+		}	
 	}
 }
 
@@ -1750,42 +1345,6 @@ doRampage(time)
 }
 
 //*****************************************************************************************
-// 										 Fake Death Special
-//*****************************************************************************************
-
-doNinja(time)
-{
-	self endon("death");
-	self endon("downed");
-	self endon("disconnect");
-	self notify("end_trance");
-	
-	wait 0.1;
-	
-	self setClientDvar("ui_specialtext", "^5Special Activated!");
-	self.canUseSpecial = false;
-	self.trance = "stealthmove";
-	self.inTrance = true;
-	self.visible = false;
-	self thread screenFlash((0.1, 0.1, 0.65), 0.5, 0.6);
-	//(enable, invert, desaturation, darktint,  lighttint, brightness, contrast, fovscale)
-	self playerFilmTweaks(1, 0, 0, "2 2 0",  "1 2 2", 0, 1.1, 1);
-	
-	wait time;
-	
-	self.trance = "";
-	self.inTrance = false;
-	self.visible = true;
-	self playerFilmTweaksOff();
-	self thread screenFlash((0.1, 0.1, 0.65), 0.5, 0.6);
-	
-	wait 0.1;
-	
-	self notify("end_trance");
-
-}
-
-//*****************************************************************************************
 // 										 Invincible Special
 //*****************************************************************************************
 
@@ -1840,41 +1399,6 @@ doInvincibleHud()
 }
 
 //*****************************************************************************************
-// 										 Escape Special
-//*****************************************************************************************
-
-doEscape(time)
-{
-	self endon("downed");
-	self endon("death");
-	self endon("disconnect");
-	
-	if(self.inTrance)
-		self notify("end_trance");
-	
-	self endon("end_trance");
-	
-	self setClientDvar("ui_specialtext", "^5Special Activated!");
-	self.canUseSpecial = false;
-	self.trance = "quick_escape";
-	self.inTrance = true;
-	self.visible = true;
-	
-	self setMoveSpeedScale(self.speed + 0.25);
-	
-	self thread screenFlash((0.1, 0.1, 0.65), 0.5, 0.6);
-	self playerFilmTweaks(1, 0, 0, "0 1 2",  "2 2 1", 0, 1, 1);//1, 0, .75, ".25 .5 1",  ".25 .7 1", .20, 1.4, 1.25
-	
-	wait time;
-	
-	self.inTrance = false;
-	self playerFilmTweaksOff();
-	self thread screenFlash((0.1, 0.1, 0.65), 0.5, 0.6);
-	self setMoveSpeedScale(self.speed);
-	self notify("end_trance");
-}
-
-//*****************************************************************************************
 // 									Augmented Turrets
 //*****************************************************************************************
 
@@ -1905,17 +1429,3 @@ doAugmentation()
 		
 	return true;
 }
-
-
-// doAmmoSpecial()
-// {
-	// weapon = self GetCurrentWeapon();
-	// if (weapon == self.primary || weapon == self.secondary)
-	// {
-		// self playlocalsound("weap_pickup");
-		// self GiveMaxAmmo(weapon);
-		// return 1;
-	// }
-	// self iprintln("^1Invalid weapon!");
-	// return 0;
-// }

@@ -1,23 +1,23 @@
-//
-// vim: set ft=cpp:
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: scripts\client\_clients.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
+
+/***
+*
+*	TODO: Add file description
+*
+*/
 
 #include scripts\include\data;
 init()
@@ -102,16 +102,14 @@ Callback_PlayerConnect()
 							"ui_spawnqueue_show", 1,
 							"ui_rotuversion_short", level.rotuVersion,
 							"ui_classcount_soldier", level.classcount["soldier"],
-							"ui_classcount_stealth", level.classcount["stealth"],
+							"ui_classcount_specialist", level.classcount["specialist"],
 							"ui_classcount_armored", level.classcount["armored"],
 							"ui_classcount_engineer", level.classcount["engineer"],
-							"ui_classcount_scout", level.classcount["scout"],
 							"ui_classcount_medic", level.classcount["medic"],
 							"ui_soldier_unlocked", (level.classcount["soldier"] < level.dvar["game_max_soldiers"]),
-							"ui_assassin_unlocked", (level.classcount["stealth"] < level.dvar["game_max_assassins"]),
+							"ui_specialist_unlocked", (level.classcount["specialist"] < level.dvar["game_max_specialists"]),
 							"ui_armored_unlocked", (level.classcount["armored"] < level.dvar["game_max_armored"]),
 							"ui_engineer_unlocked", (level.classcount["engineer"] < level.dvar["game_max_engineers"]),
-							"ui_scout_unlocked", (level.classcount["scout"] < level.dvar["game_max_scouts"]),
 							"ui_medic_unlocked", (level.classcount["medic"] < level.dvar["game_max_medics"]),
 							"ui_damagereduced", 0
 							);

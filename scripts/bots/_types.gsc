@@ -1,28 +1,29 @@
-//
-// vim: set ft=cpp:
-// ########   #######  ######## ##     ##         ########  ######## ##     ##  #######  ##       ##     ## ######## ####  #######  ##    ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ###   ## 
-// ##     ## ##     ##    ##    ##     ##         ##     ## ##       ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ####  ## 
-// ########  ##     ##    ##    ##     ## ####### ########  ######   ##     ## ##     ## ##       ##     ##    ##     ##  ##     ## ## ## ## 
-// ##   ##   ##     ##    ##    ##     ##         ##   ##   ##        ##   ##  ##     ## ##       ##     ##    ##     ##  ##     ## ##  #### 
-// ##    ##  ##     ##    ##    ##     ##         ##    ##  ##         ## ##   ##     ## ##       ##     ##    ##     ##  ##     ## ##   ### 
-// ##     ##  #######     ##     #######          ##     ## ########    ###     #######  ########  #######     ##    ####  #######  ##    ## 
-//
-// Reign of the Undead - Revolution by Luk and 3aGl3
-// Code contains parts made by Luk, Bipo, Etheross, Brax, Viking, Rycoon and Activision (no shit)
-// (Please keep in mind that I'm not the best coder and some stuff might be really dirty)
-// If you consider yourself more skilled at coding and would enjoy further developing this, contact me and we could improve this mod even further! (Xfire: lukluk1992 or at http://puffyforum.com)
-//
-// You may modify this code to your liking (since I - Luk - learned scripting the same way)
-// You may also reuse code you find here, as long as you give credit to those who wrote it (5 lines above)
-//
-// Based on Reign of the Undead 2.1 created by Bipo and Etheross
-//
+/**
+* vim: set ft=cpp:
+* file: scripts\bots\_types.gsc
+*
+* authors: Luk, 3aGl3, Bipo, Etheross
+* team: SOG Modding
+*
+* project: RotU - Revolution
+* website: http://survival-and-obliteration.com/
+*
+* Reign of the Undead - Revolution by Luk and 3aGl3
+* You may modify this code to your liking or reuse it, as long as you give credit to those who wrote it
+* Based on Reign of the Undead 2.1 created by Bipo and Etheross
+*/
+
+/***
+*
+*	TODO: Add file description
+*
+*/
 
 #include scripts\include\hud;
 #include scripts\include\useful;
 #include scripts\include\entities;
 #include scripts\include\data;
+#include scripts\include\codx_wrapper;
 
 initZomModels()
 {
@@ -160,6 +161,7 @@ initZomModels()
 	// addZomModel("zombified_player", "skeleton", "");
 	level.bossIsOnFire = false;
 	initGroupedSettings();
+	initSeasonalFeatures();
 }
 
 initGroupedSettings(){
@@ -193,6 +195,27 @@ initGroupedSettings(){
 	/* Limit the amount of bullet-damageable bosses on the server, because too many can be.... quite.... devastating */
 	level.bossBulletLimit = level.dvar["game_difficulty"];
 	level.bossBulletCount = 0;
+}
+
+/**
+*	Initializes the seasonal features in case they are to be loaded by server config
+*	Currently applies santa hats during 1st of December until 31st of January
+*/
+initSeasonalFeatures(){
+	level.seasonalFeature = "";
+	
+	if(!level.dvar["surv_seasonal_features"])
+		return;
+		
+	seconds = _GetRealTime();
+	if(seconds == -1)
+		return;
+		
+	date = getCurrentMonthAndDay(seconds);
+	month = date[1];
+	
+	if(month == 1 || month == 12)
+		level.seasonalFeature = "santa";
 }
 
 getTotalZombieProbability(){ // In case it exceeds "100%" in total
@@ -242,14 +265,28 @@ loadZomModel(type)
 		self.head = head;
 		self attach(head);
 	}
-	
-	addSantaHat(type);
+
+	onSeasonalFeatures(type);
 }
 
-addSantaHat(type){
+/**
+*	Applies seasonal features
+*	@type: String, defining the type of zombie that is being spawned
+*/
+onSeasonalFeatures(type){
 
-	if(type != "boss" && type != "helldog" && type != "dog")
-		self attach("santa_hat");
+	switch(level.seasonalFeature){
+		
+		// Santa will run from 01.12.xx till 01.01.xx
+		case "santa":
+			if(type != "boss" && type != "helldog" && type != "dog")
+				self attach("santa_hat");
+			break;
+			
+		default:
+			break;
+	}
+	
 }
 
 
@@ -1174,8 +1211,6 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 						}
 						eAttacker.lastBossHit = self.number;
 						if (sMeansOfDeath == "MOD_MELEE"){
-							if (isSubStr(eAttacker.knifeMod, "assassin"))
-								iDamage *= 2;
 							iDamage = int(iDamage*.5);
 							eAttacker scripts\players\_players::incUpgradePoints(1*level.dvar["game_rewardscale"]);
 						}
@@ -1198,8 +1233,6 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 			{
 				if (sMeansOfDeath == "MOD_MELEE")
 				{
-					if (isSubStr(eAttacker.knifeMod, "assassin"))
-						iDamage *= 2;
 					eAttacker scripts\players\_players::incUpgradePoints(5*level.dvar["game_rewardscale"]);
 					level.bossDamageDone[level.bossPhase] += iDamage;
 					newval = int(level.bossDamageDone[level.bossPhase]*100/level.bossDamageToDo[level.bossPhase]);
@@ -1217,9 +1250,6 @@ onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
 					eAttacker thread resetBossHit();
 					return 0;
 				}
-				if (sMeansOfDeath == "MOD_MELEE")
-					if (isSubStr(eAttacker.knifeMod, "assassin"))
-						iDamage *= 2;
 				eAttacker.lastBossHit = self.number;
 				eAttacker scripts\players\_players::incUpgradePoints(int(level.dvar["game_rewardscale"]/20 * iDamage));
 				level.bossDamageDone[level.bossPhase] += idamage;
