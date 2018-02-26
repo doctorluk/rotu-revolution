@@ -79,8 +79,8 @@ getSkillpoints(rank)
 	spent = self.rank["soldier"] + self.rank["specialist"] + self.rank["medic"] + self.rank["armored"] + self.rank["engineer"];
 	self.skillpoints = modRank - spent;
 	
-	if (self.rankHacker)
-		self.skillpoints = 0;
+	// if (self.rankHacker)
+		// self.skillpoints = 0;
 
 	if (modRank > 144)
 		self.skillpoints = 144 - spent;

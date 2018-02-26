@@ -71,6 +71,42 @@ dotProduct(vec1, vec2){
 	return(vec1[0] * vec2[0], vec1[1] * vec2[1], vec1[2] * vec2[2]);
 }
 
+/**
+*	Rounds up x
+*/
+ceil(x){
+	if(int(x) < x)
+		return int(x + 1);
+	else
+		return x;
+}
+
+/**
+*	Rounds down x
+*/
+floor(x){
+	return int(x);
+}
+
+/**
+*	Returns the bigger number
+*/
+max(x, y){
+	if(x > y)
+		return x;
+	else
+		return y;
+}
+
+/**
+*	Returns the smaller number
+*/
+min(x, y){
+	if(x < y)
+		return x;
+	else
+		return y;
+}
 
 sqrt(x) // Using Newton's iterative approximation
 {

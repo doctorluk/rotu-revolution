@@ -25,6 +25,7 @@
 
 init()
 {
+	// Saves all xp-giving events via registerScoreInfo("eventname", value)
 	level.scoreInfo = [];
 	level.rankTable = [];
 	
@@ -51,55 +52,61 @@ init()
 	registerScoreInfo("cheat", 5000);
 	registerScoreInfo("suicide", 0);
 	registerScoreInfo("teamkill", 0);
-
-	
 	registerScoreInfo("challenge", 250);
 
 	level.maxRank = int(tableLookup("mp/rankTable.csv", 0, "maxrank", 1));
 	level.maxPrestige = int(tableLookup("mp/rankIconTable.csv", 0, "maxprestige", 1));
 	
-	pId = 0;
-	rId = 0;
+	pId = 0; // PrestigeID
+	rId = 0; // RankID
 	for (pId = 0; pId <= level.maxPrestige; pId++)
 	{
 		for (rId = 0; rId <= level.maxRank; rId++)
-			precacheShader(tableLookup("mp/rankIconTable.csv", 0, rId, pId+1));
+			precacheShader(tableLookup("mp/rankIconTable.csv", 0, rId, pId + 1)); // Loads all rank and prestige icons
 	}
 
+	// Loads first existing rank name
 	rankId = 0;
 	rankName = tableLookup("mp/ranktable.csv", 0, rankId, 1);
 	assert(isDefined(rankName) && rankName != "");
-		
+	
+	// Loads all existing 
 	while (isDefined(rankName) && rankName != "")
 	{
-		level.rankTable[rankId][1] = tableLookup("mp/ranktable.csv", 0, rankId, 1);
-		level.rankTable[rankId][2] = tableLookup("mp/ranktable.csv", 0, rankId, 2);
-		level.rankTable[rankId][3] = tableLookup("mp/ranktable.csv", 0, rankId, 3);
-		level.rankTable[rankId][7] = tableLookup("mp/ranktable.csv", 0, rankId, 7);
+		level.rankTable[rankId][1] = tableLookup("mp/ranktable.csv", 0, rankId, 1); // Rank Name
+		level.rankTable[rankId][2] = tableLookup("mp/ranktable.csv", 0, rankId, 2); // Minimum XP
+		level.rankTable[rankId][3] = tableLookup("mp/ranktable.csv", 0, rankId, 3); // XP Range (max - min)
+		level.rankTable[rankId][7] = tableLookup("mp/ranktable.csv", 0, rankId, 7); // Maximum XP
 
-		precacheString(tableLookupIString("mp/ranktable.csv", 0, rankId, 16));
-
+		precacheString(tableLookupIString("mp/ranktable.csv", 0, rankId, 16)); // Precache localized string of given rank
+		
+		// Setup next loop
 		rankId++;
 		rankName = tableLookup("mp/ranktable.csv", 0, rankId, 1);		
 	}
 
-	level.statOffsets = [];
-	level.statOffsets["weapon_assault"] = 290;
-	level.statOffsets["weapon_lmg"] = 291;
-	level.statOffsets["weapon_smg"] = 292;
-	level.statOffsets["weapon_shotgun"] = 293;
-	level.statOffsets["weapon_sniper"] = 294;
-	level.statOffsets["weapon_pistol"] = 295;
-	level.statOffsets["perk1"] = 296;
-	level.statOffsets["perk2"] = 297;
-	level.statOffsets["perk3"] = 298;
-
-	level.numChallengeTiers	= 10;
+	// TODO: They are not used
+	// Setup stats saving offsets
+	// level.statOffsets = [];
+	// level.statOffsets["weapon_assault"] = 290;
+	// level.statOffsets["weapon_lmg"] = 291;
+	// level.statOffsets["weapon_smg"] = 292;
+	// level.statOffsets["weapon_shotgun"] = 293;
+	// level.statOffsets["weapon_sniper"] = 294;
+	// level.statOffsets["weapon_pistol"] = 295;
+	// level.statOffsets["perk1"] = 296;
+	// level.statOffsets["perk2"] = 297;
+	// level.statOffsets["perk3"] = 298;
+	// level.numChallengeTiers	= 10;
 	
 	//buildChallegeInfo();
 }
 
-
+/**
+*	Checks whether an XP-giving event exists
+*	@type: String, the name of the event
+*	@return: Boolean, whether it exists or not
+*/
 isRegisteredEvent(type)
 {
 	if (isDefined(level.scoreInfo[type]))
@@ -108,46 +115,91 @@ isRegisteredEvent(type)
 		return false;
 }
 
+/**
+*	Registers a given XP-award-event
+*	@type: String, the name of the event
+*	@value: Int, the base amount of XP received
+*/
 registerScoreInfo(type, value)
 {
 	level.scoreInfo[type]["value"] = value;
 }
 
+/**
+*	Returns the base amount of XP registered to this event
+*	@type: String, the name of the event
+*	@return: Int, the base amount of XP given by that event
+*/
 getScoreInfoValue(type)
 {
 	return (level.scoreInfo[type]["value"]);
 }
 
+/**
+*	Returns the label of the event
+*	@type: String, the name of the event
+*	@return: Int, the base amount of XP given by that event
+*	TODO: Doesn't seem to be used, remove?
+*/
 getScoreInfoLabel(type)
 {
 	return (level.scoreInfo[type]["label"]);
 }
 
+/**
+*	Returns the minimum amount of XP for given rankID
+*	@rankId: Int, the ID of the rank to check
+*	@return: Int, the minimum amount of XP for the given rank ID
+*/
 getRankInfoMinXP(rankId)
 {
 	return int(level.rankTable[rankId][2]);
 }
 
+/**
+*	Returns the difference between min and max XP for given rankID
+*	@rankId: Int, the ID of the rank to check
+*	@return: Int, the difference between min and max XP for given rankID
+*/
 getRankInfoXPAmt(rankId)
 {
 	return int(level.rankTable[rankId][3]);
 }
 
+/**
+*	Returns the maximum amount of XP for given rankID
+*	@rankId: Int, the ID of the rank to check
+*	@return: Int, the maximum amount of XP for the given rank ID
+*/
 getRankInfoMaxXp(rankId)
 {
 	return int(level.rankTable[rankId][7]);
 }
 
+/**
+*	Returns the localized string for the given rank ID
+*	@rankId: Int, the ID of the rank to check
+*	@return: IString, the localized string for the given rank ID
+*/
 getRankInfoFull(rankId)
 {
 	return tableLookupIString("mp/ranktable.csv", 0, rankId, 16);
 }
 
+/**
+*	Returns the material name (rank icon) of the given rank ID and prestige ID
+*	@rankId: Int, the ID of the rank to check
+*	@prestigeId: Int, the ID of the prestige to check
+*	@return: String, the material name for the given combination of rank ID and prestige ID
+*/
 getRankInfoIcon(rankId, prestigeId)
 {
-	return tableLookup("mp/rankIconTable.csv", 0, rankId, prestigeId+1);
+	return tableLookup("mp/rankIconTable.csv", 0, rankId, prestigeId + 1);
 }
 
+
+// STOCK _rank.gsc FUNCTIONS
+// TODO: They appear unused. Remove?
 getRankInfoUnlockWeapon(rankId)
 {
 	return tableLookup("mp/ranktable.csv", 0, rankId, 8);
@@ -182,77 +234,85 @@ getRankInfoLevel(rankId)
 {
 	return int(tableLookup("mp/ranktable.csv", 0, rankId, 13));
 }
+// END STOCK _rank.gsc FUNCTIONS
+
 
 /**
- * Load the rank for every player that connects
- */
-
+*	Load player rank/prestige on connect
+*/
 onPlayerConnect()
 {
-	//for(;;)
-	//{
-	//	level waittill("connected", player);
+	self endon("disconnect");
+
+	// Load player XP
+	self.pers["rankxp"] = self scripts\players\_persistence::statGet("rankxp");
 	
-		self endon("disconnect"); //A user can lose connection exactly after connecting
-
-		self.pers["rankxp"] = self scripts\players\_persistence::statGet("rankxp");
-		rankId = self getRankForXp(self getRankXP());
-		self.pers["rank"] = rankId;
-		self.pers["participation"] = 0;
-
-		self scripts\players\_persistence::statSet("rank", rankId);
-		self scripts\players\_persistence::statSet("minxp", getRankInfoMinXp(rankId));
-		self scripts\players\_persistence::statSet("maxxp", getRankInfoMaxXp(rankId));
-		self scripts\players\_persistence::statSet("lastxp", self.pers["rankxp"]);
-		
-		prestige = self getPrestigeLevel();
-		
-		self.rankHacker = false;
-		if (prestige>1) {
-			stat = self getstat(253);
-			if (rankId>stat) {
-				if (rankId<20) {
-					self setstat(253, rankId);
-				} else {
-					self.rankHacker = true;
-					iprintln(self.name + " was kicked for rank hacking.");
-					Kick(self getEntityNumber());
-				}
-			} else { if (stat != rankId) self setstat(253, rankId); }
-		}
-		self.rankUpdateTotal = 0;
-		
-		// for keeping track of rank through stat#251 used by menu script
-		// attempt to move logic out of menus as much as possible
-		self.cur_rankNum = rankId;
-		assertex(isdefined(self.cur_rankNum), "rank: "+ rankId + " does not have an index, check mp/ranktable.csv");
-		self setStat(251, self.cur_rankNum);
-		
-		
-		
-		if (prestige!=self getstat(210)) {
-			self.rankHacker = true;
-			iprintln(self.name + " was kicked for prestige hacking.");
-			Kick(self getEntityNumber());
-		}
-		
-		self setRank(rankId, prestige);
-		self.pers["prestige"] = prestige;
-		
-		self setclientdvar("ui_lobbypopup", "");
-		
-		
-		//player updateChallenges();
-		//player.stats["explosiveKills"][0] = 0;
-		self.xpGains = [];
-		
-		self thread onJoinedTeam();
-		self thread scripts\players\_classes::getSkillpoints(rankId);
-		logPrint("LOG_ROTU_RANK_RESTORE;" + self getGuid() + ";" + self getEntityNumber() + "\n");
-	//}
+	// Load player rank according to his XP
+	rankId = self getRankForXp(self.pers["rankxp"]);
+	
+	// Save his rank
+	self.pers["rank"] = rankId;
+	self.pers["participation"] = 0;
+	
+	// Set rank, min-xp of rank, max-xp of rank and his current XP as of now
+	self scripts\players\_persistence::statSet("rank", rankId);
+	self scripts\players\_persistence::statSet("minxp", getRankInfoMinXp(rankId));
+	self scripts\players\_persistence::statSet("maxxp", getRankInfoMaxXp(rankId));
+	self scripts\players\_persistence::statSet("lastxp", self.pers["rankxp"]);
+	
+	prestige = self getPrestigeLevel();
+	
+	// TODO: Remove rank hacker check? I mean... whoever wants to hack their rank in a 10+ year old game... I don't mind.
+	// self.rankHacker = false;
+	// if (prestige>1) {
+		// stat = self getstat(253);
+		// if (rankId>stat) {
+			// if (rankId<20) {
+				// self setstat(253, rankId);
+			// } else {
+				// self.rankHacker = true;
+				// iprintln(self.name + " was kicked for rank hacking.");
+				// Kick(self getEntityNumber());
+			// }
+		// } else { if (stat != rankId) self setstat(253, rankId); }
+	// }
+	
+	// TODO: Appears unused. Remove?
+	self.rankUpdateTotal = 0;
+	
+	// for keeping track of rank through stat#251 used by menu script
+	// attempt to move logic out of menus as much as possible
+	self.cur_rankNum = rankId;
+	assertex(isdefined(self.cur_rankNum), "rank: "+ rankId + " does not have an index, check mp/ranktable.csv");
+	self setStat(251, self.cur_rankNum);
+	
+	
+	
+	// if (prestige!=self getstat(210)) {
+		// self.rankHacker = true;
+		// iprintln(self.name + " was kicked for prestige hacking.");
+		// Kick(self getEntityNumber());
+	// }
+	
+	// Set current rank/prestige
+	self setRank(rankId, prestige);
+	self.pers["prestige"] = prestige;
+	
+	// TODO: Does this do anything? Only found here.
+	self setclientdvar("ui_lobbypopup", "");
+	
+	// Saves XP's gained by each individual type
+	self.xpGains = [];
+	
+	// TODO: See next function below
+	self thread onJoinedTeam();
+	
+	// Load skillpoints for current rank
+	self thread scripts\players\_classes::getSkillpoints(rankId);
 }
 
-
+// TODO:
+// joined_team is never triggered, removeRankHUD() is also empty
 onJoinedTeam()
 {
 	self endon("disconnect");
@@ -264,7 +324,8 @@ onJoinedTeam()
 	}
 }
 
-
+// TODO:
+// joined_team is never triggered, removeRankHUD() is also empty
 onJoinedSpectators()
 {
 	self endon("disconnect");
@@ -276,83 +337,32 @@ onJoinedSpectators()
 	}
 }
 
-
+/**
+*	Set starting spree value
+*/
 onPlayerSpawned()
 {
 	self endon("disconnect");
 
 	self.spree = 0;
-	
-	/*for(;;)
-	{
-		self waittill("spawned_player");
-		self.spree = 0;
-		if(!isdefined(self.hud_rankscroreupdate))
-		{
-			self.hud_rankscroreupdate = newClientHudElem(self);
-			self.hud_rankscroreupdate.horzAlign = "center";
-			self.hud_rankscroreupdate.vertAlign = "middle";
-			self.hud_rankscroreupdate.alignX = "center";
-			self.hud_rankscroreupdate.alignY = "middle";
-	 		self.hud_rankscroreupdate.x = 0;
-			self.hud_rankscroreupdate.y = -60;
-			self.hud_rankscroreupdate.font = "default";
-			self.hud_rankscroreupdate.fontscale = 2.0;
-			self.hud_rankscroreupdate.archived = false;
-			self.hud_rankscroreupdate.color = (0.5,0.5,0.5);
-			self.hud_rankscroreupdate maps\mp\gametypes\_hud::fontPulseInit();
-		}
-	}*/
-}
-
-roundUp(floatVal)
-{
-	if (int(floatVal) != floatVal)
-		return int(floatVal+1);
-	else
-		return int(floatVal);
 }
 
 giveRankXP(type, value)
 {
 	self endon("disconnect");
 	
-	if (self.rankHacker)
-	return;
+	// if (self.rankHacker)
+	// return;
 
-	/*if (level.teamBased && (!level.playerCount["allies"] || !level.playerCount["axis"]))
-		return;
-	else if (!level.teamBased && (level.playerCount["allies"] + level.playerCount["axis"] < 2))
-		return;*/
-
+	// Get XP value from previously defined event if value isn't given
 	if (!isDefined(value))
 		value = getScoreInfoValue(type);
 	
+	// Initialize this type in self.xpGains[]
 	if (!isDefined(self.xpGains[type]))
 		self.xpGains[type] = 0;
-
-	/*switch(type)
-	{
-		case "kill":
-		case "headshot":
-		case "suicide":
-		case "teamkill":
-		case "assist":
-		case "capture":
-		case "defend":
-		case "return":
-		case "pickup":
-		case "assault":
-		case "plant":
-		case "defuse":
-			if (level.numLives >= 1)
-			{
-				multiplier = max(1,int(10/level.numLives));
-				value = int(value * multiplier);
-			}
-			break;
-	}*/
 	
+	// Multiply by server's XP multiplier setting
 	value *= level.dvar["game_xpmultiplier"]; // Multiply XP Gain
 	
 	self.xpGains[type] += value;
@@ -572,7 +582,7 @@ resetRank(delay) {
 
 updateRank(useWait)
 {
-	if (self.rankHacker || isdefined(self.updatingrank))
+	if (/*self.rankHacker || */isdefined(self.updatingrank))
 		return false;
 	
 	self.updatingrank = true;
