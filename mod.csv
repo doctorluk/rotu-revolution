@@ -21,7 +21,7 @@ ignore,mod_ignore
 // sounds
 sound,abilities,,all_mp
 sound,turrets,,all_mp
-sound,zombies_windows,,all_mp
+sound,zombies,,all_mp
 sound,voice,,all_mp
 sound,weapons,,all_mp
 
