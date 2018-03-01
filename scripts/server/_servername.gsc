@@ -170,7 +170,7 @@ ReplaceString(replace)
 		case "PIHN_MEDICS":
 			return level.classcount["medic"];
 		case "PIHN_MAXPLAYERS":
-			return (getDvarInt("bot_count") - getDvarInt("sv_maxClients"));
+			return (getDvarInt("sv_maxClients") - getDvarInt("bot_count"));
 		case "PIHN_ALIVEPLAYERS":
 			return level.alivePlayers;
 		case "PIHN_DOWNEDPLAYERS":
