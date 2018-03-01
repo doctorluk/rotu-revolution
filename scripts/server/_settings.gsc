@@ -323,8 +323,8 @@ loadSettings()
 	// Stuck-Zombie killer
 	dvarBool(	"surv",			"find_stuck",			1);
 	
-	// Tollerance for stuck zombies
-	dvarInt(	"surv",			"stuck_tollerance",		30,		10,		360);
+	// Tolerance for stuck zombies
+	dvarInt(	"surv",			"stuck_tolerance",		30,		10,		360);
 	
 	// Adjust finale difficulty by game_difficulty
 	dvarBool(	"surv",			"dynamic_finale_difficulty",	1);

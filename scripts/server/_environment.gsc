@@ -315,32 +315,32 @@ lightningBossFX()
 *	@name String, Name of the currently running wave
 *	@time Float, Duration of the transition (Note: This is buggy as soon as several players are playing, it is actually ineffective)
 */
-setFog(name, time)
+setFog(name)
 {
 	switch (name)
 	{
 		case "toxic":
-			setExpFog(256, 1024, 0.2, 0.4, 0.2, time);
+			setExpFog(256, 1024, 0.2, 0.4, 0.2, 0);
 			break;
 			
 		case "boss":
-			setExpFog(512, 1024, 0, 0, 0, time);
+			setExpFog(512, 1024, 0, 0, 0, 0);
 			break;
 			
 		case "scary":
-			setExpFog(128, 200, 0, 0, 0, time);
+			setExpFog(128, 200, 0, 0, 0, 0);
 			break;
 			
 		case "grouped":
-			setExpFog(300, 700, .4, 0, 0, time);
+			setExpFog(300, 700, .4, 0, 0, 0);
 			break;
 			
 		case "tank":
-			setExpFog(300, 700, .5, .5, .5, time);
+			setExpFog(300, 700, .5, .5, .5, 0);
 			break;
 			
 		case "finale":
-			setExpFog(128, 2048, .5, .1, .1, time);
+			setExpFog(128, 2048, .5, .1, .1, 0);
 			break;
 			
 		default:
@@ -352,11 +352,11 @@ setFog(name, time)
 					level.dvar["env_fog_red"] / 255,
 					level.dvar["env_fog_green"] / 255,
 					level.dvar["env_fog_blue"] / 255,
-					time
+					0
 					);
 			}
 			else
-				setExpFog(999999, 9999999, 0, 0, 0, time);
+				setExpFog(999999, 9999999, 0, 0, 0, 0);
 			break;
 	}
 }
