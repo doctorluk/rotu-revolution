@@ -551,7 +551,7 @@ endMap(endReasontext, win)
 	
 	// Clean up wave-specific effects
 	scripts\server\_environment::resetVision(1);
-	scripts\server\_environment::setFog("default", 1);
+	scripts\server\_environment::setFog("default");
 	
 	// If a boss is on the map, remove the Health display
 	if(isDefined(level.bossOverlay))

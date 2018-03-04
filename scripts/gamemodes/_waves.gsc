@@ -535,7 +535,7 @@ waveAmbient(type, reset){
 		if(type != "normal"){
 			scripts\server\_environment::resetVision(10);
 			thread scripts\server\_environment::setBlur(level.dvar["env_blur"], 7);
-			scripts\server\_environment::setFog("default", 10);
+			scripts\server\_environment::setFog("default");
 			level notify("global_fx_end");
 			level.lastSpecialWave = type;
 			level.bossIsOnFire = 0;
