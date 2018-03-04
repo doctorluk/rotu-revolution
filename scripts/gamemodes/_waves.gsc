@@ -654,73 +654,79 @@ trySpawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 	type = typeOverride;
 	
 	// Decide how to spawn a zombie
-	switch(spawntype){
-	
-		// Spawning from "hell" (from above)
-		case 1:
+	if(spawntype > 0)
+		switch(spawntype){
+		
+			// Spawning from "hell" (from above)
+			case 1:
 
-			if(level.waypoints.size < 2) // Fix for maps without waypoints
-				spawn = getRandomSpawn();
-			else
-				spawn = level.waypoints[randomint(level.waypoints.size)];
-				
-			thread soulSpawn(type, spawn, bot);
-			return bot;
-		
-		// Spawning somewhere random with ground FX
-		case 2:
+				if(level.waypoints.size < 2) // Fix for maps without waypoints
+					spawn = getRandomSpawn();
+				else
+					spawn = level.waypoints[randomint(level.waypoints.size)];
+					
+				thread soulSpawn(type, spawn, bot);
+				return bot;
+			
+			// Spawning somewhere random with ground FX
+			case 2:
 
-			if(level.waypoints.size < 2) // Fix for maps without waypoints
-				spawn = getRandomSpawn();
-			else
+				if(level.waypoints.size < 2) // Fix for maps without waypoints
+					spawn = getRandomSpawn();
+				else
+					spawn = level.waypoints[randomint(level.waypoints.size)];
+				thread groundSpawn(type, spawn, bot);
+				return bot;
+			
+			// Spawning "away" from players
+			case 3:
+			
+				spawn = scripts\bots\_types::getScarySpawnpoint();
+				thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
+				return bot;
+			
+			// Spawning somewhere random
+			case 4:
+			
 				spawn = level.waypoints[randomint(level.waypoints.size)];
-			thread groundSpawn(type, spawn, bot);
-			return bot;
-		
-		// Spawning "away" from players
-		case 3:
-		
-			spawn = scripts\bots\_types::getScarySpawnpoint();
-			thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
-			return bot;
-		
-		// Spawning somewhere random
-		case 4:
-		
-			spawn = level.waypoints[randomint(level.waypoints.size)];
-			thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
-			return bot;
-		
-		// Spawn zombie at a prioritized spawnpoint
-		case 5:
-		
-			if(!isDefined(type))
-				type = scripts\gamemodes\_gamemodes::getRandomType();
-			spawn = getPrioritizedSpawn();
-			thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
-			return bot;
-	}
+				thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
+				return bot;
+			
+			// Spawn zombie at a prioritized spawnpoint
+			case 5:
+			
+				if(!isDefined(type))
+					type = scripts\gamemodes\_gamemodes::getRandomType();
+				spawn = getPrioritizedSpawn();
+				thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
+				return bot;
+		}
 	
-	// TODO: Do we even get here?
-	iprintln("Tell Luk or 3aGl3 that we actually get here!");
-	if (forcePrioritizedSpawning) { // Selected Spawn from random spawn function
+	// Selected Spawn from random spawn function
+	if (forcePrioritizedSpawning){ 
+	
 		if(isDefined(typeOverride))
 			type = typeOverride;
 		else
 			type = scripts\gamemodes\_gamemodes::getRandomType();
 		spawn = getPrioritizedSpawn();
+		
 		return scripts\bots\_bots::spawnZombie(type, spawn);
-	}else{
-		if (isdefined(typeOverride))
-		{
+		
+	}
+	else{
+		if (isDefined(typeOverride)){
+		
 			type = typeOverride;
 			spawn = getRandomSpawn();
+			
 			return scripts\bots\_bots::spawnZombie(type, spawn);
 		}
-		else
-		{
+		else{
+		
 			type = scripts\gamemodes\_gamemodes::getRandomType();
 			spawn = getRandomSpawn();
+			
 			return scripts\bots\_bots::spawnZombie(type, spawn);
 		}
 	}
