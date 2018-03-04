@@ -192,7 +192,7 @@ removePart()
 {
 	self moveto(self.origin + (0, 0, -128), 1, .1, 0);
 	wait 1;
-} 
+}
 
 
 barrelDeath()
@@ -204,10 +204,12 @@ barrelDeath()
 	{
 		playFX(level.explodeFX, self.origin);
 		self playSound("explo_metal_rand");
-		self thread scripts\players\_players::doAreaDamage(200, 1000, self.owner);
+		
+		if(isReallyPlaying(self.owner))
+			self thread scripts\players\_players::doAreaDamage(200, 1000, self.owner);
 	}
 
-	wait .01;
+	wait 0.05;
 	self delete();
 }
 
