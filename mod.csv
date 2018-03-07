@@ -200,6 +200,7 @@ material,overlay_armored
 //material,overlay_shocked
 
 // stringtables
+stringtable,mp/playerStatsTable.csv
 stringtable,mp/rankTable.csv
 stringtable,mp/rankIconTable.csv
 // stringtable,mp/didYouKnow.csv
