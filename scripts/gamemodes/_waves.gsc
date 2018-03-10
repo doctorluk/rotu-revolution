@@ -645,16 +645,17 @@ trySpawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 		
 	if(!isDefined(forcePrioritizedSpawning))
 		forcePrioritizedSpawning = false;
-		
-	bot = scripts\bots\_bots::getAvailableBot();
-	if (!isDefined(bot))
-		return undefined;
-		
-	bot.hasSpawned = true;
-	type = typeOverride;
 	
 	// Decide how to spawn a zombie
-	if(spawntype > 0)
+	if(spawntype >= 1 && spawntype <= 5){
+	
+		bot = scripts\bots\_bots::getAvailableBot();
+		if (!isDefined(bot))
+			return undefined;
+			
+		bot.hasSpawned = true;
+		type = typeOverride;
+		
 		switch(spawntype){
 		
 			// Spawning from "hell" (from above)
@@ -701,6 +702,7 @@ trySpawnZombie(typeOverride, spawntype, forcePrioritizedSpawning)
 				thread scripts\bots\_bots::spawnZombie(type, spawn, bot);
 				return bot;
 		}
+	}
 	
 	// Selected Spawn from random spawn function
 	if (forcePrioritizedSpawning){ 
