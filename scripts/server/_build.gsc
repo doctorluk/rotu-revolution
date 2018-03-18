@@ -1,4 +1,4 @@
-//620
+//622
 init(){
-	level.buildnumber = 620;
+	level.buildnumber = 622;
 }

@@ -248,9 +248,8 @@ incRankXP(amount){
 }
 
 /**
-*	Returns if the player can increase his prestige by 1
+*	@returns: Boolean, wheather the player can increase his prestige by 1
 */
-
 canPrestige(){
 
 	return (self getRank() == level.maxRank && self.pers["prestige"] < level.maxPrestige);
@@ -259,7 +258,7 @@ canPrestige(){
 
 /**
 *	Set prestige to newPrestige
-*	@newPrestige: Int, new prestige level to useWait
+*	@newPrestige: Int, new prestige level
 */
 setPrestige(newPrestige){
 
@@ -340,7 +339,7 @@ checkRankup(){
 }
 
 /**
-*	Display rank-up text to player
+*	Display rank-up text to player and to others
 */
 updateRankAnnounceHUD()
 {
