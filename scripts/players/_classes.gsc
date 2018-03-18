@@ -21,12 +21,21 @@
 
 init()
 {
-	level.player_stat_rank["soldier"] = 430;
-	level.player_stat_rank["specialist"] = 431;
-	level.player_stat_rank["armored"] = 432;
-	level.player_stat_rank["engineer"] = 433;
-	// level.player_stat_rank["scout"] = 434; //TODO: We shouldn't change this variable to keep stats
-	level.player_stat_rank["medic"] = 435;
+	level.statOffsets["class"] = [];
+	level.statOffsets["class"]["soldier"] = 430;
+	level.statOffsets["class"]["specialist"] = 431;
+	level.statOffsets["class"]["armored"] = 432;
+	level.statOffsets["class"]["engineer"] = 433;
+	// level.statOffsets["class"]["scout"] = 434; //TODO: We shouldn't change this variable to keep stats
+	level.statOffsets["class"]["medic"] = 435;
+	
+	level.statOffsets["mastery"] = [];
+	level.statOffsets["mastery"]["soldier"] = 440;
+	level.statOffsets["mastery"]["specialist"] = 441;
+	level.statOffsets["mastery"]["armored"] = 442;
+	level.statOffsets["mastery"]["engineer"] = 443;
+	// level.statOffsets["mastery"]["scout"] = 444; //TODO: We shouldn't change this variable to keep stats
+	level.statOffsets["mastery"]["medic"] = 445;
 	updateGlobalClassCounts();
 }
 
@@ -39,23 +48,36 @@ resetSkillpoints(){
 		self setclientdvar("ui_skillpoints", self.skillpoints);
 		return;
 	}
+	
 	self.rank["soldier"] = 0;
 	self.rank["specialist"] = 0;
 	self.rank["medic"] = 0;
 	self.rank["armored"] = 0;
 	self.rank["engineer"] = 0;
-	self setstat(level.player_stat_rank["soldier"], 0);
-	self setstat(level.player_stat_rank["specialist"], 0);
-	self setstat(level.player_stat_rank["medic"], 0);
-	self setstat(level.player_stat_rank["armored"], 0);
-	self setstat(level.player_stat_rank["engineer"], 0);
+	
+	self setStat(level.statOffsets["class"]["soldier"], 0);
+	self setStat(level.statOffsets["class"]["specialist"], 0);
+	self setStat(level.statOffsets["class"]["medic"], 0);
+	self setStat(level.statOffsets["class"]["armored"], 0);
+	self setStat(level.statOffsets["class"]["engineer"], 0);
+	
+	self setStat(level.statOffsets["mastery"]["soldier"], 0);
+	self setStat(level.statOffsets["mastery"]["specialist"], 0);
+	self setStat(level.statOffsets["mastery"]["medic"], 0);
+	self setStat(level.statOffsets["mastery"]["armored"], 0);
+	self setStat(level.statOffsets["mastery"]["engineer"], 0);
 	self.skillpoints = 0;
 	
 	self skillPointsNotify(self.skillpoints);
 	self setclientdvar("ui_skillpoints", self.skillpoints);
 }
 
-getSkillpoints(rank)
+hasMastery(class){
+	
+	return self getStat(level.statOffsets["mastery"][class]);
+}
+
+updateSkillpoints(rank)
 {
 	self endon("disconnect");
 	modRank = rank + 60 * self.pers["prestige"]; // Get 60 additional skillpoints per prestige
@@ -63,18 +85,18 @@ getSkillpoints(rank)
 	{
 		self.skillpoints = 0;
 		self skillPointsNotify(self.skillpoints);
-		self setclientdvar("ui_skillpoints", self.skillpoints);
+		self setClientDvar("ui_skillpoints", self.skillpoints);
 		return;
 	}
-	self.rank["soldier"] = self getstat(level.player_stat_rank["soldier"]);
-	wait 0.05;
-	self.rank["specialist"] = self getstat(level.player_stat_rank["specialist"]);
-	wait 0.05;
-	self.rank["medic"] = self getstat(level.player_stat_rank["medic"]);
-	wait 0.05;
-	self.rank["armored"] = self getstat(level.player_stat_rank["armored"]);
-	wait 0.05;
-	self.rank["engineer"] = self getstat(level.player_stat_rank["engineer"]);
+	self.rank["soldier"] = self getstat(level.statOffsets["class"]["soldier"]);
+	// wait 0.05;
+	self.rank["specialist"] = self getstat(level.statOffsets["class"]["specialist"]);
+	// wait 0.05;
+	self.rank["medic"] = self getstat(level.statOffsets["class"]["medic"]);
+	// wait 0.05;
+	self.rank["armored"] = self getstat(level.statOffsets["class"]["armored"]);
+	// wait 0.05;
+	self.rank["engineer"] = self getstat(level.statOffsets["class"]["engineer"]);
 	self.skillpoints = 0;
 	spent = self.rank["soldier"] + self.rank["specialist"] + self.rank["medic"] + self.rank["armored"] + self.rank["engineer"];
 	self.skillpoints = modRank - spent;
@@ -116,26 +138,26 @@ skillPointsNotify(points)
 	}
 	else
 	{
-		if (isdefined(self.sptxt))
+		if(isdefined(self.sptxt))
 		self.sptxt destroy();
 	}
 }
 
 incClassRank(type)
 {
-	if (!level.dvar["game_class_ranks"])
-	return ;
+	if(!level.dvar["game_class_ranks"])
+		return;
 	
-	if (self.skillpoints > 0)
+	if(self.skillpoints > 0)
 	{
 		newrank = self.rank[type] + 1;
 		if (isdefined(newrank) && newrank < 30)
 		{
-			self.rank[type] = newrank;
+			self.rank["class"][type] = newrank;
 			self.skillpoints -= 1;
 			self skillPointsNotify(self.skillpoints);
 			self setclientdvar("ui_skillpoints", self.skillpoints);
-			self setstat(level.player_stat_rank[type], newrank);
+			self setstat(level.statOffsets["class"][type], newrank);
 		}
 	}
 }
@@ -196,7 +218,7 @@ pickClass(class)
 		else
 			self.oldclass = "none";
 		
-		self setclientdvars("ui_class_rank", level.player_stat_rank[class]);
+		self setclientdvars("ui_class_rank", level.statOffsets["class"][class]);
 		self.class = class;
 		self.pers["class"] = class;
 		self setclientdvars("ui_loadout_class", class,
@@ -211,8 +233,8 @@ pickClass(class)
 
 isValidClass(class)
 {
-	if (class == "soldier" || class == "specialist" || class == "armored" || class == "medic" || class == "engineer")
-	return true;
+	if(class == "soldier" || class == "specialist" || class == "armored" || class == "medic" || class == "engineer")
+		return true;
 	
 	return false;
 }
@@ -259,5 +281,5 @@ getClassRank(class)
 	if (!level.dvar["game_class_ranks"])
 	return 29;
 	else
-	return self getStat(level.player_stat_rank[class]);
+	return self getStat(level.statOffsets["class"][class]);
 }

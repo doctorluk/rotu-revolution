@@ -92,8 +92,8 @@
 #define MAX_PRESTIGE	int(tableLookup( "mp/rankIconTable.csv", 0, "maxprestige", 1))
 
 #define PRESTIGE_AVAIL (stat(2326) < MAX_PRESTIGE && stat(2301) == int(tableLookup("mp/rankTable.csv",0,MAX_RANK,7)))
-#define PRESTIGE_NEXT (stat(2326) < MAX_PRESTIGE && stat(252) == MAX_RANK)
+#define PRESTIGE_NEXT (stat(2326) < MAX_PRESTIGE && stat(2350) == MAX_RANK)
 #define PRESTIGE_FINISH (stat(2326) == MAX_PRESTIGE)
 
-#define CAN_RANK_UP	(stat(252) < MAX_RANK || stat(2326) < MAX_PRESTIGE)
+#define CAN_RANK_UP	(stat(2350) < MAX_RANK || stat(2326) < MAX_PRESTIGE)
 

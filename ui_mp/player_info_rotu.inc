@@ -123,9 +123,9 @@ itemDef { \
 	//PREPROC_TEXT_DRAW_ALIGNED_EXP( 0 12 270 28 RIGHTITEM_ALIGN VERTICAL_ALIGN_TOP, ORIGIN_PLAYERSTATS, dvarString( name ), TEXTSIZE_SMALL, 0, 0, ITEM_ALIGN_CENTER, 1 1 1 0.8 visible when( dvarString( clanName ) == "" ) )
 	
 	PREPROC_LABEL( "@MPUI_RANK_PRE", 1 )				
-	//PREPROC_VALUE_TEXT_LEFT_ALIGNED( "@"+tablelookup("mp/ranktable.csv",0,stat(252),5), 2, SUB_LABEL_INDENT, LABEL_TITLECOLOR )
-	PREPROC_VALUE_TEXT( locString( "@MPUI_LEVEL_N", int(tablelookup("mp/ranktable.csv",0,stat(252),14)) ), 1, -24, LABEL_TITLECOLOR )
-	PREPROC_RANK_ICON( 1, tablelookup( "mp/rankIconTable.csv", 0, stat(252), stat(2326)+1 ), -4 )
+	//PREPROC_VALUE_TEXT_LEFT_ALIGNED( "@"+tablelookup("mp/ranktable.csv",0,stat(2350),5), 2, SUB_LABEL_INDENT, LABEL_TITLECOLOR )
+	PREPROC_VALUE_TEXT( locString( "@MPUI_LEVEL_N", int(tablelookup("mp/ranktable.csv",0,stat(2350),14)) ), 1, -24, LABEL_TITLECOLOR )
+	PREPROC_RANK_ICON( 1, tablelookup( "mp/rankIconTable.csv", 0, stat(2350), stat(2326)+1 ), -4 )
 	
 	PREPROC_LABEL( "@INEXT_GUID", 2 )
 	PREPROC_VALUE_TEXT( dvarstring("ui_wci_guid"), 2, -24, LABEL_TEXTCOLOR )
@@ -137,24 +137,24 @@ itemDef { \
 	PREPROC_DIVIDER( 4 )
 	PREPROC_LABEL( "@MPUI_NEXT_RANK_PRE", 5 )
 	/* rank name */
-	PREPROC_VALUE_TEXT_VIS( "@"+tablelookup("mp/ranktable.csv",0,stat(252)+1,5), 6, SUB_LABEL_INDENT, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ), ITEM_ALIGN_MIDDLE_LEFT )
+	PREPROC_VALUE_TEXT_VIS( "@"+tablelookup("mp/ranktable.csv",0,stat(2350)+1,5), 6, SUB_LABEL_INDENT, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ), ITEM_ALIGN_MIDDLE_LEFT )
 	PREPROC_VALUE_TEXT_VIS( "@MPUI_PRESTIGE", 6, SUB_LABEL_INDENT, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT ), ITEM_ALIGN_MIDDLE_LEFT )
 	PREPROC_VALUE_TEXT_VIS( "@MPUI_NONE", 6, SUB_LABEL_INDENT, LABEL_TITLECOLOR, when( CAN_RANK_UP==0 ), ITEM_ALIGN_MIDDLE_LEFT )
 	
 	/* display level */
-	PREPROC_VALUE_TEXT_VIS( locString( "@MPUI_LEVEL_N", int(tablelookup("mp/ranktable.csv",0,stat(252)+1,14)) ), 5, -24, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ), ITEM_ALIGN_MIDDLE_RIGHT )
+	PREPROC_VALUE_TEXT_VIS( locString( "@MPUI_LEVEL_N", int(tablelookup("mp/ranktable.csv",0,stat(2350)+1,14)) ), 5, -24, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ), ITEM_ALIGN_MIDDLE_RIGHT )
 	PREPROC_VALUE_TEXT_VIS( locString( "@MPUI_LEVEL_N", 1 ), 5, -24, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT ), ITEM_ALIGN_MIDDLE_RIGHT )
 	
 	/* next rank icon */
-	PREPROC_RANK_ICON_VIS( 5, tablelookup( "mp/rankIconTable.csv", 0, stat(252)+1, stat(2326)+1 ), -4, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ) )
+	PREPROC_RANK_ICON_VIS( 5, tablelookup( "mp/rankIconTable.csv", 0, stat(2350)+1, stat(2326)+1 ), -4, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ) )
 	PREPROC_RANK_ICON_VIS( 5, tablelookup( "mp/rankIconTable.csv", 0, 0, stat(2326)+2 ), -4, when( CAN_RANK_UP && PRESTIGE_NEXT ) )
 
 	PREPROC_SUB_LABEL_VIS( "@MPUI_XP_REQUIRED_PRE", 7, when( CAN_RANK_UP ) )
 	/* standard xp */
-	PREPROC_VALUE_TEXT_VIS( int(tableLookup( "mp/rankTable.csv", 0, stat(252), 7) - stat( 2301 )), 7, -86, LABEL_TEXTCOLOR, when( CAN_RANK_UP ), ITEM_ALIGN_MIDDLE_RIGHT )
+	PREPROC_VALUE_TEXT_VIS( int(tableLookup( "mp/rankTable.csv", 0, stat(2350), 7) - stat( 2301 )), 7, -86, LABEL_TEXTCOLOR, when( CAN_RANK_UP ), ITEM_ALIGN_MIDDLE_RIGHT )
 
 	PREPROC_SHADER_DRAW_ALIGNED_VIS( 180 127 60 14 RIGHTITEM_ALIGN VERTICAL_ALIGN_TOP, ORIGIN_PLAYERSTATS, "white", 0.1 0.1 0.1 0.35, 1, 1, 1 1 1 0.2,  when( CAN_RANK_UP ) )
-	PREPROC_SHADER_DRAW_ADV_VIS( (PLAYERSTATS_X+182), (PLAYERSTATS_Y+93+36), -58*((int(tableLookup( "mp/rankTable.csv", 0, stat(252), 2 )) - stat(2301)) / int(tableLookup( "mp/rankTable.csv", 0, stat(252), 3 ))), 12, "gradient_fadein", 1 0.9 0.5 0.6, 0, 1, 1 1 1 1 rect 0 0 0 0  RIGHTITEM_ALIGN VERTICAL_ALIGN_TOP, when( CAN_RANK_UP ) )
+	PREPROC_SHADER_DRAW_ADV_VIS( (PLAYERSTATS_X+182), (PLAYERSTATS_Y+93+36), -58*((int(tableLookup( "mp/rankTable.csv", 0, stat(2350), 2 )) - stat(2301)) / int(tableLookup( "mp/rankTable.csv", 0, stat(2350), 3 ))), 12, "gradient_fadein", 1 0.9 0.5 0.6, 0, 1, 1 1 1 1 rect 0 0 0 0  RIGHTITEM_ALIGN VERTICAL_ALIGN_TOP, when( CAN_RANK_UP ) )
 	
 	PREPROC_DIVIDER( 8 )	
 	PREPROC_LABEL( "@MPUI_SCORE_PRE", 9)	

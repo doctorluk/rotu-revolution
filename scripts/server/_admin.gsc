@@ -38,11 +38,11 @@ init()
 	addCmd("setspectator", ::setSpec);
 	addCmd("getendview", ::getplayerangles);
 	addCmd("saybold", ::saybold);
-	addCmd("resetlevel", scripts\players\_rank::fullResetRcon);
-	addCmd("setrank", scripts\players\_rank::overwriteRank);
-	addCmd("setprestige", scripts\players\_rank::overwritePrestige);
-	addCmd("restorerank", ::restoreRank);
-	addCmd("getprestige", ::getPrestige);
+	// addCmd("resetlevel", scripts\players\_rank::fullResetRcon);
+	// addCmd("setrank", scripts\players\_rank::overwriteRank);
+	// addCmd("setprestige", scripts\players\_rank::overwritePrestige);
+	// addCmd("restorerank", ::restoreRank);
+	// addCmd("getprestige", ::getPrestige);
 	addCmd("readconfig", ::readconfig);
 	// addCmd("slap", ::slap);
 	addCmd("kill_zombies", ::killZombies);
@@ -95,8 +95,8 @@ restoreRank(args){
 	rank[1] = args[2];
 	rank[2] = args[3];
 	
-	scripts\players\_rank::overwritePrestige(prestige);
-	scripts\players\_rank::overwriteRank(rank);
+	// scripts\players\_rank::overwritePrestige(prestige);
+	// scripts\players\_rank::overwriteRank(rank);
 	
 }
 /* 	Prints out the entered text as iprintlnbold on the screen

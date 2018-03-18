@@ -148,7 +148,7 @@ itemDef { \
 	PREPROC_LABEL( "@MPUI_RANK_PRE", 1 )				
 	PREPROC_VALUE_TEXT_LEFT_ALIGNED( "@"+tablelookup("mp/ranktable.csv",0,stat(dvarint(ui_class_rank)),5), 2, SUB_LABEL_INDENT, LABEL_TITLECOLOR )
 	PREPROC_VALUE_TEXT( locString( "@MPUI_LEVEL_N", int(tablelookup("mp/ranktable.csv",0,stat(dvarint(ui_class_rank)),14)) ), 1, -24, LABEL_TITLECOLOR )
-	PREPROC_RANK_ICON( 1, tablelookup( "mp/rankIconTable.csv", 0, stat(252), stat(2326)+1 ), -4 )
+	PREPROC_RANK_ICON( 1, tablelookup( "mp/rankIconTable.csv", 0, stat(2350), stat(2326)+1 ), -4 )
 	
 	/*PREPROC_SUB_LABEL( "@MPUI_XP_PRE", 3 )
 	PREPROC_VALUE_TEXT( stat( dvarint(ui_class_xp) ), 3, -24, LABEL_TEXTCOLOR )
@@ -156,7 +156,7 @@ itemDef { \
 	PREPROC_DIVIDER( 4 )
 	PREPROC_LABEL( "@MPUI_NEXT_RANK_PRE", 5 )
 	/* rank name */
-	//PREPROC_VALUE_TEXT_VIS( "@"+tablelookup("mp/ranktable.csv",0,stat(252)+1,5), 6, SUB_LABEL_INDENT, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ), ITEM_ALIGN_MIDDLE_LEFT )
+	//PREPROC_VALUE_TEXT_VIS( "@"+tablelookup("mp/ranktable.csv",0,stat(2350)+1,5), 6, SUB_LABEL_INDENT, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ), ITEM_ALIGN_MIDDLE_LEFT )
 	//PREPROC_VALUE_TEXT_VIS( "@MPUI_PRESTIGE", 6, SUB_LABEL_INDENT, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT ), ITEM_ALIGN_MIDDLE_LEFT )
 	//PREPROC_VALUE_TEXT_VIS( "@MPUI_NONE", 6, SUB_LABEL_INDENT, LABEL_TITLECOLOR, when( CAN_RANK_UP==0 ), ITEM_ALIGN_MIDDLE_LEFT )
 	
@@ -165,7 +165,7 @@ itemDef { \
 	//PREPROC_VALUE_TEXT_VIS( locString( "@MPUI_LEVEL_N", 1 ), 5, -24, LABEL_TITLECOLOR, when( CAN_RANK_UP && PRESTIGE_NEXT ), ITEM_ALIGN_MIDDLE_RIGHT )
 	
 	/* next rank icon */
-	//PREPROC_RANK_ICON_VIS( 5, tablelookup( "mp/rankIconTable.csv", 0, stat(252)+1, stat(2326)+1 ), -4, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ) )
+	//PREPROC_RANK_ICON_VIS( 5, tablelookup( "mp/rankIconTable.csv", 0, stat(2350)+1, stat(2326)+1 ), -4, when( CAN_RANK_UP && PRESTIGE_NEXT==0 ) )
 	//PREPROC_RANK_ICON_VIS( 5, tablelookup( "mp/rankIconTable.csv", 0, 0, stat(2326)+2 ), -4, when( CAN_RANK_UP && PRESTIGE_NEXT ) )
 
 	/*PREPROC_SUB_LABEL_VIS( "@MPUI_XP_REQUIRED_PRE", 7, when( CAN_RANK_UP ) )

@@ -122,7 +122,8 @@ onMenuResponse()
 		if (response == "prestige") {
 			self closeMenu();
 			self closeInGameMenu();
-			self scripts\players\_rank::prestigeUp();
+			if(self scripts\players\_rank::canPrestige())
+				self scripts\players\_rank::setPrestige(self.pers["prestige"] + 1);
 		}	
 		if (response == "back")
 		{
