@@ -248,7 +248,7 @@ incRankXP(amount){
 }
 
 /**
-*	@returns: Boolean, wheather the player can increase his prestige by 1
+*	@returns: Boolean, whether the player can increase his prestige by 1
 */
 canPrestige(){
 
