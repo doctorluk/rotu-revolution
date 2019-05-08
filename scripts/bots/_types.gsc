@@ -15,7 +15,7 @@
 
 /***
 *
-*	TODO: Add file description
+*	Handles loading and applying of zombie types.
 *
 */
 
@@ -25,8 +25,12 @@
 #include scripts\include\data;
 #include scripts\include\codx_wrapper;
 
+/**
+* Loads and precaches all zombie bodies and heads
+*/
 initZomModels()
 {
+	// create an array to hold all the models
 	level.zom_models = [];
 	
 	/* Make all possible variations between bodies and heads */
@@ -126,30 +130,6 @@ initZomModels()
 	bodies = [];
 	heads = [];
 	
-	// addZomModel("electric", "bo2_c_zom_avagadro_fb", "");
-	
-	// OLD WAS COMPLETELY COMMENTED OUT
-	// addZomModel("zombie", "body_sp_russian_loyalist_a_dead", "head_sp_loyalist_alex_helmet_body_a_dead");
-	// addZomModel("zombie", "body_sp_russian_loyalist_b_dead", "head_sp_loyalist_alex_helmet_body_a_dead");
-	// addZomModel("zombie", "body_sp_russian_loyalist_a_dead", "head_sp_loyalist_alex_helmet_body_a_dead");
-	// addZomModel("zombie", "body_sp_russian_loyalist_b_dead", "head_sp_loyalist_mackey_hat_body_b_dead");
-	// addZomModel("zombie", "body_sp_russian_loyalist_c_dead", "head_sp_loyalist_josh_helmet_body_c_dead");
-	// addZomModel("zombie", "body_sp_russian_loyalist_d_dead", "head_sp_loyalist_tom_hat_body_d_dead");
-	
-	
-	// OLD
-	/*
-	addZomModel("zombie_all", "izmb_zombie1_body", "izmb_zombie2_head");
-	addZomModel("zombie_all", "izmb_zombie2_body", "izmb_zombie2_head");
-	addZomModel("zombie_all", "izmb_zombie3", "");
-	addZomModel("zombie_all", "body_complete_sp_russian_farmer", ""); //
-	addZomModel("zombie_all", "body_complete_sp_vip", ""); //""
-	addZomModel("zombie_all", "body_complete_sp_zakhaevs_son", "");
-	addZomModel("zombie", "izmb_zombie1_body", "izmb_zombie2_head");
-	addZomModel("zombie", "izmb_zombie2_body", "izmb_zombie2_head");
-	addZomModel("zombie", "izmb_zombie3", "");
-	*/
-	
 	addZomModel("quad", "bo_quad", "");
 	// addZomModel("dog", "german_sheperd_dog", "");
 	addZomModel("dog", "zombie_wolf", "");
@@ -164,9 +144,11 @@ initZomModels()
 	initSeasonalFeatures();
 }
 
+/**
+* Initializes the zombie probabilities
+*/
 initGroupedSettings(){
-	/* Give zombie types a certain percentage chance to be spawned  */
-	
+	// Give zombie types a certain percentage chance to be spawned
 	level.zombieProbability = [];
 	level.zombieProbability[0] = 5; // Zombie
 	level.zombieProbability[1] = 5; // Dog
@@ -178,6 +160,7 @@ initGroupedSettings(){
 	level.zombieProbability[7] = 5; // Helldoge
 	// level.zombieProbability[7] = 5; // Electric
 	
+	// Adjust zombie chance on a per wave base
 	level.zombieProbabilityScenario = [];
 	setZombieProbabilityScenario(0, "normal zombies", 35, 10, 10, 10, 10, 0, 5, 5/*, 0*/);
 	setZombieProbabilityScenario(1, "burning only", 0, 0, 0, randomint(2)+1, 0, 0, randomint(2), randomint(2)/*, 0*/);
@@ -192,14 +175,14 @@ initGroupedSettings(){
 	setZombieProbabilityScenario(10, "dogs + helldogs", 0, 1, 0, 0, 0, 0, 0, 1/*, 0*/);
 	// setZombieProbabilityScenario(0, "test", 0, 0, 0, 0, 0, 0, 1);
 	
-	/* Limit the amount of bullet-damageable bosses on the server, because too many can be.... quite.... devastating */
+	// Limit the amount of bullet-damageable bosses on the server, because too many can be.... quite.... devastating
 	level.bossBulletLimit = level.dvar["game_difficulty"];
 	level.bossBulletCount = 0;
 }
 
 /**
-*	Initializes the seasonal features in case they are to be loaded by server config
-*	Currently applies santa hats during 1st of December until 31st of January
+* Initializes the seasonal features in case they are to be loaded by server config
+*	Currently applies santa hats during December
 */
 initSeasonalFeatures(){
 	level.seasonalFeature = "";
@@ -218,6 +201,9 @@ initSeasonalFeatures(){
 		level.seasonalFeature = "santa";
 }
 
+/**
+* Calculates the value of all zombie probabilities
+*/
 getTotalZombieProbability(){ // In case it exceeds "100%" in total
 	total = 0;
 	for(i = 0; i < level.zombieProbability.size; i++)
@@ -226,7 +212,10 @@ getTotalZombieProbability(){ // In case it exceeds "100%" in total
 	return total;
 }
 
-addZomModel(type, body, head)
+/**
+* Adds the given head and body combination for the given zombie type
+*/
+addZomModel( type, body, head )
 {
 	if (isdefined(level.zom_models[type]))
 	{
@@ -239,8 +228,15 @@ addZomModel(type, body, head)
 		level.zom_models[type][0] = body;
 		level.zom_models_head[type][0] = head;
 	}
+	
+	precacheModel( body );
+	if( isDefined(head) && head != "" )
+		precacheModel( head );
 }
 
+/**
+* Clears all zombie models and heads for the given type
+*/
 clearZomModel(type){
 
 	if (isDefined(level.zom_models[type])){
@@ -253,43 +249,60 @@ clearZomModel(type){
 	}
 }
 
+/**
+* Applies a random zombie model for the given type
+*/
 loadZomModel(type)
 {
+	// detach all previous models
 	self DetachAll(); 
 
+	// get the model type for the given zombie type
 	modelType = level.zom_types[type].modelType;
-	id = randomint(level.zom_models[modelType].size);
-	self setmodel(level.zom_models[modelType][id]);
+	
+	// get a random model id from the available ones
+	id = randomInt(level.zom_models[modelType].size);
+	
+	// set the zombie body model
+	self setModel(level.zom_models[modelType][id]);
+	
+	// get the head model for the given body
 	head = level.zom_models_head[modelType][id];
-	if (head != ""){
+	
+	// apply the head if any
+	if( head != "" )
+	{
 		self.head = head;
-		self attach(head);
+		self attach( head );
 	}
+	else
+		self.head = undefined;
 
-	onSeasonalFeatures(type);
+	// apply seasonal features like hats
+	onSeasonalFeatures( type );
 }
 
 /**
-*	Applies seasonal features
+* Applies seasonal features like hats
 *	@type: String, defining the type of zombie that is being spawned
 */
 onSeasonalFeatures(type){
-
-	switch(level.seasonalFeature){
-		
+	// check which seasonal feature is enabled
+	switch(level.seasonalFeature)
+	{
 		// Santa will run from 01.12.xx till 01.01.xx
 		case "santa":
-			if(type != "boss" && type != "helldog" && type != "dog")
-				self attach("santa_hat");
+			if( type != "boss" && type != "helldog" && type != "dog" )
+				self attach( "santa_hat" );
 			break;
-			
 		default:
 			break;
 	}
-	
 }
 
-
+/**
+* Applies the animation weapon for the given zombie type
+*/
 loadAnimTree(type)
 {
 	animTree = level.zom_types[type].animTree;

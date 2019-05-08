@@ -386,36 +386,17 @@ xmodel,bo1_c_zom_cosmo_spetznaz_body
 // xmodel,bo2_c_zom_avagadro_fb
 
 // ## Invisible Hitbox model
-material,lambert1
 xmodel,player_sp_rig_empty
-
-// ## Gore-Splatter Effects
-xmodel,fx_char_gib_chunk_fat
-xmodel,fx_char_gib_chunk_flesh01
-xmodel,fx_char_gib_chunk_flesh02
-xmodel,fx_char_gib_chunk_flesh03
-xmodel,fx_char_gib_chunk_meat01
-xmodel,fx_char_gib_chunk_meat02
-xmodel,fx_char_gib_chunk_meat03
-
-xmodel,char_ger_pnzrgren_body1_g_llegspawn
-xmodel,char_usa_marine_body1_m_g_rarmspawn
-xmodel,char_usa_marine_wet_body1_g_larmspawn
-
-// ## Gore-Splatter Effects BO1
-xmodel,bo1_fx_char_gib_chunk_bone02
-xmodel,bo1_fx_char_gib_chunk_bone03
-xmodel,bo1_fx_char_gib_chunk_fat
-xmodel,bo1_fx_char_gib_chunk_flesh01
-xmodel,bo1_fx_char_gib_chunk_flesh02
-xmodel,bo1_fx_char_gib_chunk_flesh03
-xmodel,bo1_fx_char_gib_chunk_meat01
-xmodel,bo1_fx_char_gib_chunk_meat02
 
 // ## Crawler Zombie
 xmodel,bo_quad
 
+// ## Boss
+xmodel,cyclops
+
 // ## Player models
+xmodel,viewmodel_base_viewhands
+
 xmodel,body_complete_mp_spetsnaz_vlad
 xmodel,body_mp_opforce_support
 xmodel,body_mp_sas_urban_specops
@@ -426,10 +407,7 @@ xmodel,body_mp_usmc_woodland_support
 xmodel,body_mp_usmc_woodland_recon
 xmodel,body_mp_usmc_woodland_specops
 xmodel,body_mp_usmc_sniper
-xmodel,ch_tombstone3
-xmodel,com_barrel_metal
-xmodel,com_barrel_benzin
-xmodel,cyclops
+
 xmodel,head_sp_usmc_zach_zach_body_goggles
 xmodel,head_sp_usmc_sami_goggles_zach_body
 xmodel,head_mp_usmc_ghillie
@@ -747,10 +725,10 @@ xmodel,bo2_turret_sentry_gun
 xmodel,mw3_sentry_gl_base
 xmodel,mw3_sentry_gl_turret
 
-// Wounded Viewhands
-xmodel,viewmodel_base_viewhands
-
-// Needed for tradespawns
+// misc models
+xmodel,ch_tombstone3
+xmodel,com_barrel_metal
+xmodel,com_barrel_benzin
 xmodel,com_stove
 xmodel,com_vending_can_new1_lit
 

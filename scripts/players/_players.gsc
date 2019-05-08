@@ -809,7 +809,7 @@ Callback_PlayerLastStand(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, 
 	for(i = 0; i < weaponslist.size; i++)
 	{
 		weapon = level.weaponKeyC2S[weaponslist[i]];
-		self iprintln( weapon );
+		
 		if( weapon == self.secondary )
 			self switchToWeap(weapon);
 		else

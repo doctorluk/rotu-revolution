@@ -10,7 +10,8 @@ set COMPILEDIR=%CD%
 set MAINDIR=%CD%../..
 set color=0A
 set modName=rotur_dev
-set mapname=mp_surv_village
+set mapname=mp_shipment
+set serverip=127.0.0.1
 set configfile=server
 color %color%
 
@@ -31,7 +32,8 @@ echo    2. Build .iwd files
 echo    3. Build mod.ff
 echo    4. Start Game
 echo    5. Start Game in developer mode
-echo    6. Start game with custom command line
+echo    6. Start Game with custom command line
+echo    7. Start Game and connect to sandbox
 echo.
 echo    0. Exit
 echo.
@@ -43,6 +45,7 @@ if "%main_option%"=="3" goto CHOOSE_LANG
 if "%main_option%"=="4" goto START_GAME
 if "%main_option%"=="5" goto START_GAME_DEV
 if "%main_option%"=="6" goto START_GAME_CHOOSE
+if "%main_option%"=="7" goto START_GAME_CLIENT
 if "%main_option%"=="0" goto FINAL
 goto START
 
@@ -379,6 +382,14 @@ set /p additions=:
 REM if "%start_option%"=="5"
 REM if "%start_option%"=="9"
 set commandline=%commandline% %additions%
+goto START_GAME_CUSTOM
+
+:START_GAME_CLIENT
+echo _________________________________________________________________
+echo.
+echo  Connecting to server %serverip%...
+echo.
+set commandline=+connect %serverip%
 goto START_GAME_CUSTOM
 
 :START_GAME_CUSTOM
