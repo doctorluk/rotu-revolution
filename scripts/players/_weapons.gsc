@@ -33,7 +33,7 @@ init()
 	level.specialWeps = [];
 	
 	// number of weapons for players, should match the ID in weaponTable.csv
-	max_weapon_num = 111;
+	max_weapon_num = 129;
 
 	// generating weaponlist array
 	level.weaponList = [];
@@ -42,7 +42,7 @@ init()
 	for(i = 0; i < max_weapon_num; i++)
 	{
 		weapon_name = tableLookup( "mp/weaponTable.csv", 0, i, 2 );
-		if(!isDefined(weapon_name) || weapon_name == "")
+		if( !isDefined(weapon_name) || weapon_name == "" )
 			continue;
 		
 		console_name = tableLookup("mp/weaponTable.csv", 0, i, 3);
@@ -56,7 +56,7 @@ init()
 		level.weaponList[weapon_name] = [];
 		level.weaponList[weapon_name]["class"] = tableLookup("mp/weaponTable.csv", 0, i, 1);
 		
-		if(weapon_name == "none" || weapon_name == "turret_mp")
+		if( weapon_name == "none" || weapon_name == "turret_mp" )
 			continue;
 		
 		precacheItem(console_name);

@@ -21,42 +21,6 @@ main
 		// Shooting anims
 		//
 		//*********
-		// Zombie COD 5 animaties
-		//ai_zombie_attack_v1
-		ai_zombie_attack_v2
-		//ai_zombie_attack_v3
-		ai_zombie_attack_v4
-		//ai_zombie_attack_v5
-		//ai_zombie_attack_v6
-		//ai_zombie_attack_v7
-		//ai_zombie_attack_v8
-		//ai_zombie_sprint_v1
-		//ai_zombie_sprint_v2
-		//ai_zombie_sprint_v3
-		ai_zombie_sprint_v4
-		ai_zombie_sprint_v5
-
-		ai_zombie_walk_v1
-		//ai_zombie_walk_v2
-		ai_zombie_walk_v3
-		ai_zombie_walk_v4
-		//ai_zombie_walk_v5
-		//ai_zombie_walk_v6
-		//ai_zombie_walk_v7
-		//ai_zombie_walk_v8
-		ai_zombie_walk_v9
-		
-		//ai_zombie_taunts_11 // Halfboss Test
-		
-		ai_zombie_jump_down_40
-
-
-		
-		//*********
-		ai_zombie_quad_idle
-		ai_zombie_quad_crawl_sprint
-		ai_zombie_quad_crawl
-		ai_zombie_quad_attack
 		
 		//
 		// Minigun anims
@@ -108,9 +72,6 @@ main
 		pt_stand_shoot_shotgun
 		pt_hold_throw
 		pt_hold_prone_throw
-
-		
-
 
 		//
 		// Reload anims
@@ -210,6 +171,67 @@ main
 	//
 	legs
 	{
+		//
+		// Zombie anims
+		//
+		ai_zombie_attack_crawl
+		ai_zombie_attack_crawl_lunge
+		ai_zombie_attack_forward_v1
+		ai_zombie_attack_forward_v2
+		ai_zombie_attack_v1
+		ai_zombie_attack_v2
+		
+		ai_zombie_crawl
+		ai_zombie_crawl_death_v1
+		ai_zombie_crawl_death_v2
+		ai_zombie_crawl_sprint
+		ai_zombie_crawl_v1
+		
+		ai_zombie_death_v1
+		ai_zombie_death_v2
+		
+		ai_zombie_idle_crawl
+		ai_zombie_idle_v1
+		
+		ai_zombie_jump_down_40
+		
+		ai_zombie_quad_idle
+		ai_zombie_quad_crawl_sprint
+		ai_zombie_quad_crawl
+		ai_zombie_quad_attack
+		
+		ai_zombie_run_v1
+		ai_zombie_run_v2
+		ai_zombie_run_v3
+		ai_zombie_run_v4
+		
+		ai_zombie_shot_arm_left
+		ai_zombie_shot_arm_right
+		ai_zombie_shot_leg_left_2_crawl
+		ai_zombie_shot_leg_right_2_crawl
+		
+		ai_zombie_sprint_v1
+		ai_zombie_sprint_v2
+		ai_zombie_sprint_v3
+		ai_zombie_sprint_v4
+		ai_zombie_sprint_v5
+
+		// ai_zombie_taunts_11
+		
+		ai_zombie_walk_fast_v1
+		ai_zombie_walk_fast_v2
+		ai_zombie_walk_fast_v3
+		
+		ai_zombie_walk_v1
+		ai_zombie_walk_v2
+		ai_zombie_walk_v3
+		ai_zombie_walk_v4
+		// ai_zombie_walk_v5
+		// ai_zombie_walk_v6
+		// ai_zombie_walk_v7
+		// ai_zombie_walk_v8
+		// ai_zombie_walk_v9
+	
 		//
 		// Minigun
 		//

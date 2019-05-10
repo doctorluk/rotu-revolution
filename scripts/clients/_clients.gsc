@@ -75,7 +75,7 @@ Callback_PlayerConnect()
 	//self.sessionstate = "spectator";
 	self.pers["team"] = "free";
 	
-	if (!self.isBot)
+	if( !self.isBot )
 	{
 		self scripts\players\_weapons::initPlayerWeapons();
 		
@@ -133,8 +133,8 @@ Callback_PlayerConnect()
 
 Callback_PlayerDisconnect()
 {
-	if (self.isBot || !self.hasBegun)
-	return;
+	if( self.isBot || !self.hasBegun )
+		return;
 	
 	// if(isReallyPlaying(self))
 		// self.persData.lastPlayedWave = level.currentWave;
@@ -170,7 +170,10 @@ Callback_PlayerDisconnect()
 
 Callback_PlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime)
 {
-	if (self.isBot)
+	// convert the weapon name to the script name
+	sWeapon = level.weaponKeyC2S[sWeapon];
+
+	if( self.isBot )
 		self thread scripts\bots\_bots::Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
 	else
 		self thread scripts\players\_players::onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
@@ -178,7 +181,10 @@ Callback_PlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sW
 
 Callback_PlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration)
 {
-	if (self.isBot)
+	// convert the weapon name to the script name
+	sWeapon = level.weaponKeyC2S[sWeapon];
+
+	if( self.isBot )
 		self thread scripts\bots\_bots::Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration);
 	else
 		self thread scripts\players\_players::onPlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration);

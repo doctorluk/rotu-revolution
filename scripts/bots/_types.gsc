@@ -305,47 +305,17 @@ onSeasonalFeatures(type){
 */
 loadAnimTree(type)
 {
-	animTree = level.zom_types[type].animTree;
-	switch(animTree)
+	switch(type)
 	{
-		case "zombie":
-			self.animation["stand"] = "bot_zombie_stand_mp";		// bot_zom_stand
-			self.animation["walk"] = "bot_zombie_walk_mp";			// bot_zom_walk
-			self.animation["sprint"] = "bot_zombie_run0_mp";		// bot_zom_run0 and bot_zom_run1
-			
-			if(randomInt(2))
-				self.animation["melee"] = "bot_zombie_melee0_mp";	// bot_zom_melee0
-			else
-				self.animation["melee"] = "bot_zombie_melee1_mp";	// bot_zom_melee1
-			break;
-		case "zombiefast":
-			self.animation["stand"] = "bot_zombie_stand_mp";		// bot_zom_stand
-			self.animation["walk"] = "bot_zombie_walk_mp";			// bot_zom_walk
-			self.animation["sprint"] = "bot_zombie_run1_mp";		// bot_zom_runfast
-			
-			if(randomInt(2))
-				self.animation["melee"] = "bot_zombie_melee0_mp";	// bot_zom_melee0
-			else
-				self.animation["melee"] = "bot_zombie_melee1_mp";	// bot_zom_melee1
+		case "toxic":
+			self.pers["weapon"] = "concussion_grenade_mp";
 			break;
 		case "dog":
 		case "helldog":
-			self.animation["stand"] = "bot_dog_idle_mp";			// bot_dog_idle
-			self.animation["sprint"] = "bot_dog_run_mp";			// bot_dog_run
-			self.animation["melee"] = "bot_dog_attack_mp";			// bot_dog_attack
+			self.pers["weapon"] = "dog_mp";
 			break;
-		case "boss":
-			self.animation["stand"] = "bot_zombie_stand_mp";		// bot_zom_stand
-			self.animation["sprint"] = "bot_zombie_run0_mp";		// bot_zom_run0 and bot_zom_run1
-			self.animation["melee"] = "bot_zombie_melee0_mp";		// bot_zom_melee
-			self.animation["jump"] = "bot_boss_jump_mp";			// bot_boss_jump
-			break;
-		case "quad":
-			self.animation["stand"] = "flash_grenade_mp"; 			// bot_quad_idle
-			self.animation["walk"] = "concussion_grenade_mp";		// bot_quad_crawl
-			self.animation["sprint"] = "bot_quad_sprint_mp";		// bot_quad_sprint
-			self.animation["melee"] = "bot_quad_attack_mp";			// bot_quad_attack
-			break;
+		default:
+			self.pers["weapon"] = "flash_grenade_mp";
 	}
 }
 
@@ -1205,9 +1175,9 @@ kill_ball_out(p)
 }
 
 
-onDamage(type, sMeansOfDeath, sWeapon, iDamage, eAttacker)
+onDamage( type, sMeansOfDeath, sWeapon, iDamage, eAttacker )
 {
-	switch (type)
+	switch( type )
 	{
 		case "boss":
 			self.health = 10000;

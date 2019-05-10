@@ -232,46 +232,76 @@ menufile,ui_mp/scriptmenus/skillpoints.menu
 menufile,ui_mp/scriptmenus/team_marinesopfor.menu
 
 // custom weapons
-weapon,mp/bot_zombie_walk_mp
-weapon,mp/bot_zombie_stand_mp
-weapon,mp/bot_zombie_run0_mp
-weapon,mp/bot_zombie_run1_mp
-weapon,mp/bot_zombie_melee0_mp
-weapon,mp/bot_zombie_melee1_mp
+weapon,mp/dog_mp
 
-weapon,mp/bot_dog_run_mp
-weapon,mp/bot_dog_idle_mp
-weapon,mp/bot_dog_attack_mp
-
-weapon,mp/bot_quad_attack_mp
-weapon,mp/bot_quad_sprint_mp
-
-weapon,mp/bot_boss_jump_mp
+weapon,mp/sticky_grenade_mp
 
 // animations
 // zombies
+xanim,ai_zombie_attack_crawl
+xanim,ai_zombie_attack_crawl_lunge
+xanim,ai_zombie_attack_forward_v1
+xanim,ai_zombie_attack_forward_v2
+xanim,ai_zombie_attack_v1
 xanim,ai_zombie_attack_v2
-xanim,ai_zombie_attack_v4
+
+xanim,ai_zombie_crawl
+xanim,ai_zombie_crawl_death_v1
+xanim,ai_zombie_crawl_death_v2
+xanim,ai_zombie_crawl_sprint
+xanim,ai_zombie_crawl_v1
+
+xanim,ai_zombie_death_v1
+xanim,ai_zombie_death_v2
+
+xanim,ai_zombie_idle_crawl
+xanim,ai_zombie_idle_v1
+
+xanim,ai_zombie_jump_down_40
+
 xanim,ai_zombie_quad_idle
 xanim,ai_zombie_quad_crawl_sprint
 xanim,ai_zombie_quad_crawl
 xanim,ai_zombie_quad_attack
+
+xanim,ai_zombie_run_v1
+xanim,ai_zombie_run_v2
+xanim,ai_zombie_run_v3
+xanim,ai_zombie_run_v4
+
+xanim,ai_zombie_shot_arm_left
+xanim,ai_zombie_shot_arm_right
+xanim,ai_zombie_shot_leg_left_2_crawl
+xanim,ai_zombie_shot_leg_right_2_crawl
+
+xanim,ai_zombie_sprint_v1
+xanim,ai_zombie_sprint_v2
+xanim,ai_zombie_sprint_v3
 xanim,ai_zombie_sprint_v4
 xanim,ai_zombie_sprint_v5
+
+// xanim,ai_zombie_taunts_11
+
+xanim,ai_zombie_walk_fast_v1
+xanim,ai_zombie_walk_fast_v2
+xanim,ai_zombie_walk_fast_v3
+
 xanim,ai_zombie_walk_v1
+xanim,ai_zombie_walk_v2
 xanim,ai_zombie_walk_v3
 xanim,ai_zombie_walk_v4
-xanim,ai_zombie_walk_v9
+// xanim,ai_zombie_walk_v5
+// xanim,ai_zombie_walk_v6
+// xanim,ai_zombie_walk_v7
+// xanim,ai_zombie_walk_v8
+// xanim,ai_zombie_walk_v9
 
-xanim,ai_zombie_jump_down_40
+// old, TODO sort through
+// xanim,death_stand_dropinplace
 
-xanim,ai_zombie_taunts_11
-
-xanim,death_stand_dropinplace
-
-xanim,hunted_dazed_walk_A_zombie
-xanim,standunarmed_idle_loop
-xanim,unarmed_panickedrun_loop_V1
+// xanim,hunted_dazed_walk_A_zombie
+// xanim,standunarmed_idle_loop
+// xanim,unarmed_panickedrun_loop_V1
 
 xanim,noweapon
 

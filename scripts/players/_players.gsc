@@ -601,6 +601,13 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 	if(self.sessionteam == "spectator")
 		return;
 	
+	// adjust zombie damage
+	if( sWeapon == "zombie_mp" || sWeapon == "quad_mp" || sWeapon == "dog_mp" )
+	{
+		if( eAttacker.damage )
+			iDamage = int(eAttacker.damage*level.dif_zomDamMod);
+	}
+	
 	// Check for damage between regular and zombified players
 	if(isDefined(eAttacker) && isPlayer(eAttacker) && eAttacker.team == self.team)
 	{
@@ -694,11 +701,12 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 			return;
 		
 		// Calculation is done, make the actual damage happen
-		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
+		self finishPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, level.weaponKeyS2C[sWeapon], vPoint, vDir, sHitLoc, psOffsetTime );
 		
 		// Update the health bar of that player
 		updateHealthHud(self.health / self.maxhealth);
 	}
+	// TODO what if iDFLAGS_NO_PROTECTION is set...?
 }
 
 /**
