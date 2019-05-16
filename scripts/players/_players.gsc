@@ -598,7 +598,7 @@ testloopOnSpawn()
 onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime)
 {
 	// Prevent damage on Spectator Entities
-	if(self.sessionteam == "spectator")
+	if( self.sessionteam == "spectator" )
 		return;
 	
 	// adjust zombie damage

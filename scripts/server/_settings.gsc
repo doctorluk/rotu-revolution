@@ -57,6 +57,12 @@ loadSettings()
 	// Alternative logfile setting
 	dvarInt(	"logfile",			"2",				3,		0,		3);
 	
+	/*
+	* ZOMBIE SETTINGS
+	*/
+	// Zombie debug mode
+	dvarBool(	"zom",			"developer",			0);
+	
 	
 	/*
 	* ROTU GAMETYPE SETTINGS

@@ -24,71 +24,38 @@
 #include scripts\include\physics;
 #include scripts\include\hud;
 
+/**
+* Loads all zombie elements
+*/
 init()
 {
-	precache();
-	
-	loadWaypoints();
-	
-	scripts\bots\_types::initZomTypes();
-	scripts\bots\_types::initZomModels();
-	
-	level.bots = [];
-	level.botsAlive = 0;
-	level.zomInterval = .2;
-	level.zomSpeedScale = .2/level.zomInterval;
-	level.zomPreference = 64 * 64;
-	level.zombieSight = 2048;
-	level.zomIdleBehavior = "";
-	level.zomTarget = "player_closest";
-	level.loadBots = 1;
-	level.botsLoaded = false;
-	level.zomTargets = [];
-	level.slowBots = 1;
-	level.lastBossJump = 0;
-	level.nextBossJump = 0;
-	level.freezeBots = false;
-	level.silenceZombies = false;
-	
-	level.botsLookingForWaypoints = 0;
-	
-	if(getDvar("max_waypoint_bots") == "")
-		setDvar("max_waypoint_bots", 10);
-	if(getDvar("debug_max_waypoint_bots") == "")
-		setDvar("debug_max_waypoint_bots", 0);
+	// declare all bot variables
+	level.bots = [];					// array of known bots
+	level.slowBots = 1;					// chance bots won't run, decreases after waves
+	level.botsAlive = 0;				// number of bots currently alive
+	level.botsLoaded = 0;				// number of bots connected to the server
+	level.freezeBots = false;			// freeze all bots
+	level.bossIsOnFire = false;			// TODO move this to the boss zombie, if possible
+	level.silenceZombies = false;		// disable zombie sound
 
-	wait 1;
-	if(level.loadBots)
-		thread loadBots(level.dvar["bot_count"]);
+	// precache zombie weapons
+//	precacheItem( "dog_mp" );
+//	precacheItem( "flash_grenade_mp" );			// zombie_mp
+//	precacheItem( "concussion_grenade_mp" );	// crawler_mp
 	
-	level.botsLoaded = true;
-	
-	thread onMonkeyExplosion();
-	thread scripts\bots\_debug::init();
+	// precache additional models
+	precacheModel( "santa_hat" );
 
-	//thread drawWP();
-}
+	precacheShellshock( "boss" );
+	precacheShellshock( "toxic_gas_mp" );
+	// preCacheShellshock("frag_grenade_mp");
 
-
-precache()
-{
-	// zombie weapons
-	precacheItem( "dog_mp" );
-	precacheItem( "flash_grenade_mp" );			// zombie_mp
-	precacheItem( "concussion_grenade_mp" );	// crawler_mp
-
-	// seasonal models
-	precacheModel("santa_hat");
-
-	preCacheShellShock("boss");
-	preCacheShellShock("toxic_gas_mp");
-	// preCacheShellShock("frag_grenade_mp");
-
+	// load all zombie effects
 	level.burningFX = loadfx("fire/firelp_med_pm_atspawn");
 	// level.burningdogFX = loadfx("fire/dog_onfire");
 	level.bossFireFX = loadfx("fire/boss_onfire");
 	level.bossShockwaveFX = loadfx("zombies/boss_shockwave");
-	level.splatterFX = loadfx("impacts/zombie_crit_splatter_nograv");
+	
 	level.napalmTummyGlowFX = loadfx("misc/napalm_zombie_tummyglow");
 	// level.lightningdogFX = loadfx("light/dog_lightning");
 	level.toxicFX = loadfx("misc/toxic_gas");
@@ -97,59 +64,104 @@ precache()
 	level.groundSpawnFX = loadfx("misc/ground_rising");
 	// level.cloudSpawnFX = loadfx("zombies/thunderspawn");
 	level.soulspawnFX = loadfx("misc/soulspawn");
-	level.incendiary_FX = loadfx("misc/zombie_incendiary_effect");
-	level.poisoned_FX = loadfx("misc/zombie_poison_effect");
-	level.eye_le_fx = loadfx("zombies/eye_glow_le");
-	level.eye_ri_fx = loadfx("zombies/eye_glow_ri");
-}
+	level.incendiaryFX = loadfx("misc/zombie_incendiary_effect");
+	level.poisonedFX = loadfx("misc/zombie_poison_effect");
+	level.righteyeFX = loadfx("zombies/eye_glow_ri"); 
+	level.lefteyeFX = loadfx("zombies/eye_glow_le");
+	
+	level._effect["zom_gib_expl"] = loadFx( "gibbing/zombie1_explode" );
+	level._effect["zom_gib_head"] = loadFx( "gibbing/zombie1_head" );
+	level._effect["zom_gib_larm"] = loadFx( "gibbing/zombie1_larm" );
+	level._effect["zom_gib_lleg"] = loadFx( "gibbing/zombie1_lleg" );
+	level._effect["zom_gib_rarm"] = loadFx( "gibbing/zombie1_rarm" );
+	level._effect["zom_gib_rleg"] = loadFx( "gibbing/zombie1_rleg" );
+	
+	// init bot realated scripts
+	thread loadWaypoints();
+	thread scripts\bots\_types::init();
+
+	// waypoint debugging
+	level.botsLookingForWaypoints = 0;	// number of bots runnuing A* at the moment
+	if( getDvar( "max_waypoint_bots" ) == "" )
+		setDvar( "max_waypoint_bots", 10 );
+
+	// wait for reconnecting bots
+	wait 1;
+	
+	thread loadBots( level.dvar["bot_count"] - level.botsLoaded );
+	
+	thread onMonkeyExplosion();
+	thread scripts\bots\_debug::init();
+
+	//thread drawWP();
+}	/* init */
 
 // LOADING BOTS
 
-loadBots(amount)
+/**
+* Creates the given amount of bots
+*/
+loadBots( amount )
 {
-	for(i=0; i<amount; i++)
+	// check if bots are already loaded
+	if( amount < 0 )
+	{
+		level notify( "bots_loaded" );
+		return;
+	}
+
+	for( i=0; i<amount; i++ )
 	{
 		bot = addTestClient();
-		if(!isDefined(bot)) {
-			println("Could not add bot");
-			i = i -1;
+		if( !isDefined(bot) )
+		{
+			printLn( "Could not add bot!" );
+			i--;
+			
 			wait 1;
 			continue;
 		}
 		
-		bot loadBot(); // No thread, wanna do this one by one.
+		// initialize the bot
+		bot loadBot();
+		level.botsLoaded++;
 	}
 
-	level notify("bots_loaded");
-}
+	level notify( "bots_loaded" );
+}	/* loadBots */
 
+/**
+* Initializes the client as a bot
+*/
 loadBot()
 {
+	// put the bot into the bots array
 	level.bots[level.bots.size] = self;
 
 	self.isBot = true;
 	self.hasSpawned = false;
-	self.spawnPoint  = undefined;
 	
-	while(!isdefined(self.pers["team"])) // Wait till properly connected
-	wait .05;
+	// wait until the bot has properly connected
+	while( !isDefined(self.pers["team"]) )
+		wait .05;
 	
-	self botJoinAxis();
-	
+	// push the bot into the axis team
+	self.team = "axis";
+	self.sessionteam = self.team;
+	self.pers["team"] = self.team;
+
 	wait .1;
-	self setStat(512, 100); // Yes we are indeed a bot
-	self setrank(255, 0);
-//	self.linkObj = spawn("script_model", (0,0,0));
-}
 
-botJoinAxis()
-{
-	self.sessionteam = "axis";
-		
-	self.pers["team"] = "axis";
-}
+	// mark the bot, in case he reconnects
+	self setStat( 512, 100 );
+	
+	// disable the rank icon by setting an invalid rank
+	self setRank( 255, 0 );
+}	/* loadBot */
 
-//SPAWNING BOTS
+/**
+* Returns a currently available bot
+*/
 getAvailableBot()
 {
 	for(i=0; i<level.bots.size; i++)
@@ -157,26 +169,22 @@ getAvailableBot()
 		if(level.bots[i].hasSpawned == false)
 			return level.bots[i];
 	}
-}
+}	/* getAvailableBot */
 
-spawnPartner(spawnpoint, bot){
+/**
+* Spawns a partner bot for huge bosses
+*/
+spawnPartner(spawnpoint, bot)
+{
+	// TODO we can hopefully get rid of this...
+	/*
 	type = "boss";
 	bot.hasSpawned = true;
 	bot.currentTarget = undefined;
 	bot.targetPosition = undefined;
 	bot.type = type;
 	bot.head = undefined;
-	
-	bot.team = bot.pers["team"];
-	
-	assert(isDefined(bot.team));
-	
-	if(!isDefined(bot.team)){
-		bot.hasSpawned = false;
-		return undefined;
-	}
-	
-	bot.sessionteam = bot.team;
+
 	bot.sessionstate = "playing";
 	bot.spectatorclient = -1;
 	bot.killcamentity = -1;
@@ -227,7 +235,7 @@ spawnPartner(spawnpoint, bot){
 	
 	wait 0.05;
 	
-	bot detachall();
+	bot detachAll();
 	bot.head = "";
 	bot setmodel("player_sp_rig_empty");
 	
@@ -242,135 +250,127 @@ spawnPartner(spawnpoint, bot){
 //	bot setanim("stand");
 	
 	bot thread rotateWithParent();
-}
+	*/
+}	/* spawnPartner */
 
 rotateWithParent(){
-	self        endon("death");
+	self endon("death");
 	self.parent endon("death");
+
 	level endon("wave_finished");
 	level endon("game_ended");
-	while(isDefined(self.parent)){
-		self setPlayerAngles(self.parent.angles);
+
+	while( isDefined(self) && isDefined(self.parent) )
+	{
+		self setPlayerAngles( self.parent.angles );
 		wait 0.05;
 	}
 }
 
-spawnZombie(type, spawnpoint, bot)
+/**
+* Spawn a bot as the given type at the given spawnpoint
+*
+*	@param type, String zombie type to spawn
+*	@param spawnpoint, Spawnpoint to spawn the zombie at
+*	@param bot, Bot entity to use as zombie
+*/
+spawnZombie( type, spawnpoint, bot )
 {
-	if(!isDefined(bot))
+	// aquire a free bot if required
+	if( !isDefined(bot) || bot.hasSpawned )
 	{
 		bot = getAvailableBot();
-		if(!isDefined(bot))
+		if( !isDefined(bot) )	// nothing we can do without a bot
 			return;
 	}
 
-	bot.hasSpawned = true;
-	bot.currentTarget = undefined;
-	bot.targetPosition = undefined;
+	// apply the zombie type and mark as used
 	bot.type = type;
-	bot.head = undefined;
+	bot.hasSpawned = true;
 
-	bot.team = bot.pers["team"];
-	
-	assert(isDefined(bot.team));
-	if(!isDefined(bot.team))
-	{
-		// The question is if we'll reach this due to the assert above
-		bot.hasSpawned = false;
-		return;
-	}
-	
-	bot.sessionteam = bot.team;
+	// apply cod sessionstate and killcam variables
 	bot.sessionstate = "playing";
-	bot.spectatorclient = -1;
+	bot.spectatorclient = -1;		// TODO is this really needed?
 	bot.killcamentity = -1;
 	bot.archivetime = 0;
 	bot.psoffsettime = 0;
 	bot.statusicon = "";
-	bot.untargetable = false;
-	bot.isZombie = false;
+
+	// reset flags
+	bot.god = undefined;			// godmode, used for boss partners
+	bot.quake = false;				// earthquakes while walking
+	bot.suicided = undefined;		// flag to check if a bot suicided, to control death effects
+	bot.isOnFire = false;			// burned by a player
+	bot.isPoisoned = false;			// poisoned by player
+	
+	bot.damagedBy = [];				// damage tracking for assists
+	bot.damagePerLoc = [];			// damage tracking for gibbing
+	
+	bot.isZombie = false;			// infected player tracking
+	bot.untargetable = false;		// allow turret tracking
+
+	bot.incdammod = 1;				// damage increase for spawn protection TODO rename
+
+	// reset AI values
+	bot.alertLevel = 0;				// Has this zombie been alerted? 
+
+	// TODO rework to something more general in new AI
 	bot.wasInfluencedByMonkeyBomb = false;
 	bot.influencedByMonkeyBomb = undefined;
-	bot.suicided = undefined;
-	bot.damagePerLoc = [];
 
-	bot scripts\bots\_types::loadZomStats(type);
-	bot.incdammod = 1;
-	if(!isDefined(bot.meleeSpeed))
-	{
-		iPrintLnBold("ERROR");
-		setdvar("error_0", type);
-		setdvar("error_1", bot.name);
-		wait 5;
-	}
+	// apply the selected types data
+	bot scripts\bots\_types::loadZomType();
+	bot scripts\bots\_types::loadZomWeapon();
 
-	bot.maxHealth = int(bot.maxHealth * level.dif_zomHPMod);
-	bot.health = bot.maxHealth;
-
-	bot.isDoingMelee = false;
-
-	bot.damagedBy = [];
-	
-	bot.alertLevel = 0; // Has this zombie been alerted? 
-	bot.myWaypoint = undefined;
-	bot.underway = false;
-	bot.canTeleport = true;
-	bot.quake = false;
-	bot.isOnFire = false;
-	bot.isPoisoned = false;
-	bot.playIdleSound = true;
-	if(randomfloat(1) > bot.sprintChance)
+	// TODO randomly pick movement speed based on run- and sprintChance
+	if( randomFloat(1) > bot.runChance )
+		bot.sprinting = true;
+	else if( randomFloat(1) > bot.sprintChance )
 		bot.sprinting = false;
 	else
 		bot.sprinting = true;
 	
-	bot scripts\bots\_types::loadAnimTree(type);
+	// spawn the bot out of sigth to prevent bugged spawn animation
+	bot spawn( (0,0,-10000), (0,0,0) );
 	
-//	bot.animWeapon = bot.animation["stand"];
-//	bot.pers["weapon"] = bot.animWeapon;
+	// apply a zombie model
+	bot scripts\bots\_types::loadZomModel();
 	
-	if( isDefined(spawnpoint.angles) )
-		bot spawn( spawnpoint.origin, spawnpoint.angles );
-	else
-		bot spawn( spawnpoint.origin, (0,0,0) );
-
+	// stop all bot actions
+	bot botStop();
+	
+	// apply the animation weapon
 	bot TakeAllWeapons();
 	bot giveWeapon( bot.pers["weapon"] );
 	bot giveMaxAmmo( bot.pers["weapon"] );
 	bot setSpawnWeapon( bot.pers["weapon"] );
 	bot switchToWeapon( bot.pers["weapon"] );
-		
+	
+	// increase bots alive counter
+	level.botsAlive++;
 	if( bot.type == "halfboss" )
 		level.bossBulletCount++;
 	
-	level.botsAlive++;
-	
+	// wait for the bot to spawn
 	wait 0.05;
 	
-	bot scripts\bots\_types::loadZomModel(type);
-	
-//	bot freezeControls(true);
-	bot botStop();
-	
-//	bot.linkObj.origin = bot.origin;
-//	bot.linkObj.angles = bot.angles;
-	
-	if ((bot.type != "tank" && bot.type != "boss") || (level.dvar["zom_spawnprot_tank"]))
+	// apply spawnprotection if necessary
+	if( level.dvar["zom_spawnprot"] && ((bot.type != "tank" && bot.type != "boss") || level.dvar["zom_spawnprot_tank"]) )
 	{
-		if (level.dvar["zom_spawnprot"])
-		{
-			bot.incdammod = 0;
-			bot thread endSpawnProt(level.dvar["zom_spawnprot_time"], level.dvar["zom_spawnprot_decrease"]);
-		}
+		bot.incdammod = 0;
+		bot thread endSpawnProtection( level.dvar["zom_spawnprot_time"], level.dvar["zom_spawnprot_decrease"] );
 	}
 	
-	wait 0.05;
-	bot scripts\bots\_types::onSpawn(type);
+	// apply effects to the zombie
+	bot scripts\bots\_types::onSpawn( type );
 	
-//	bot linkto(bot.linkObj);
+	// 'spawn' the bot at the given spawnpoint
+	bot setOrigin( spawnpoint.origin );
+	if( isDefined(spawnpoint.angles) )
+		bot setPlayerAngles( spawnpoint.angles );
 	
-	bot zomGoIdle();
-	
+	// TODO start AI as threads
+	/*
 	bot thread zomMain();
 	
 	bot thread zomGroan();
@@ -379,30 +379,19 @@ spawnZombie(type, spawnpoint, bot)
 	bot thread freezeBot();
 	
 	bot thread monkeyOverride();
-	
-	/*if (level.zomTarget != "")
-	{
-		if (level.zomTarget == "player_closest")
-		{
-			ent = bot getClosestPlayer();
-			if (isdefined(ent))
-			bot zomSetTarget(ent.origin);
-		}
-		else
-		bot zomSetTarget(bot getClosestEntity(level.zomTarget).origin);
-	}*/
-	//if (isdefined(spawnpoint.target))
-	//bot zomSetTarget(bot getRandomEntity(spawnpoint.target).origin);
-	
-	
+	*/
 	return bot;
-}
+}	/* spawnZombie */
 
-endSpawnProt(time, decrease)
+/**
+* Disables or fades out the spawn protection
+*/
+endSpawnProtection( time, decrease )
 {
-	self endon("death");
-	
-	if (decrease)
+	self endon( "death" );
+
+	// fade out the spawn protection
+	if( decrease )
 	{
 		for (i=0; i<10; i++)
 		{
@@ -410,25 +399,12 @@ endSpawnProt(time, decrease)
 			self.incdammod += .1;
 		}
 	}
-	else
+	else	// disable spawn protection after time
 	{
 		wait time;
 		self.incdammod = 1;
 	}
-}
-
-followTarget(target, arealDifference){
-	self endon("death");
-	target endon("death");
-	
-	if(!isDefined(arealDifference))
-		arealDifference = (0,0,0);
-	
-	while(isDefined(self) && isAlive(target)){
-		self.origin = (target.origin + arealDifference);
-		wait 0.05;
-	}
-}
+}	/* endSpawnProtection */
 
 /**
 * Calculates and applies the damage done to bots.
@@ -440,27 +416,27 @@ followTarget(target, arealDifference){
 *	@sMeansOfDeath: String, type of damage
 *	@sWeapon: String, name of the weapon
 *	@vPoint: Vector, point of impact
-*	@vDir: Vector, irection of impact
+*	@vDir: Vector, direction of impact
 *	@sHitLoc: String, name of the hit location
 *	@psOffsetTime: Float, time to wait before the damage is done???
 */
 Callback_BotDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime )
 {
-	// Debug print for figuring out what the shit is happening when we get errors related to undefined variables
-	printLn( eAttacker.name + " damaged " + self.name );
+	// don't damage clients that are immune or dead/spectating
+	if( !isAlive(self) || isDefined(self.god) || self.sessionteam == "spectator" )
+		return;
 
-	// don't damage clients that are immune or dead
-	if( !isAlive(self) || isDefined(self.damageoff) )
-		return;
-	
-	// don't damage spectator clients
-	if( self.sessionteam == "spectator" )
-		return;
-	
 	// don't damage other bots
 	if( eAttacker.isBot )
 		return;
-	
+
+	// disable damage on missing limbs
+	if( ( (self.legStatus == 1 || self.legStatus == 3) && (sHitLoc == "left_leg_lower" || sHitLoc == "left_foot") ) ||		// left leg missing
+		( (self.legStatus == 2 || self.legStatus == 3) && (sHitLoc == "right_leg_lower" || sHitLoc == "right_foot") ) ||	// right leg missing
+		( (self.bodyStatus == 1 || self.bodyStatus == 3) && (sHitLoc == "left_arm_lower" || sHitLoc == "left_hand") ) ||	// left arm missing
+		( (self.bodyStatus == 2 || self.bodyStatus == 3) && (sHitLoc == "right_arm_lower" || sHitLoc == "right_hand") ) )	// right arm missing
+		return;
+		
 	// don't damage clients that are immune to this type of damage
 	if( !self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker) )
 		return;
@@ -524,56 +500,351 @@ Callback_BotDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWea
 			
 		// Medic Transfusion
 		if( isDefined(eAttacker) && isPlayer(eAttacker) && eInflictor == eAttacker && isDefined(eAttacker.lastTransfusion) )
+		{
 			if( !eAttacker.isDown && eAttacker.health < eAttacker.maxhealth && eAttacker.transfusion && (eAttacker.lastTransfusion + 1000 < getTime()) && randomfloat(1) <= 0.2 )
 			{
 				eAttacker.lastTransfusion = getTime();
 				eAttacker scripts\players\_players::healPlayer(eAttacker.maxhealth * 0.03);
 			}
+		}
 
-		if( isDefined(self.damagePerLoc) && isDefined (sHitLoc) )
+		if( isDefined(sHitLoc) && isDefined(self.damagePerLoc) )
 		{
-			if(!isDefined(self.damagePerLoc[sHitLoc]))
+			// track damage per location
+			if( !isDefined(self.damagePerLoc[sHitLoc]) )
 				self.damagePerLoc[sHitLoc] = iDamage;
 			else
 				self.damagePerLoc[sHitLoc] += iDamage;
+			
+			// TODO possibly move this into a thread, if it is too performance heavy
+			// check for gibbing when shooting a bodypart
+			if( isSubStr(sMeansOfDeath, "BULLET") )
+			{
+				// check if we should gib an arm
+				if( (isSubStr(sHitLoc, "arm") || isSubStr(sHitLoc, "hand")) && self.bodyStatus == 0 )
+				{
+					// check left side
+					if( (isSubStr(sHitLoc, "left_arm") || sHitLoc == "left_hand") && isDefined(level.zom_models[self.body].torsoLOff) )
+					{
+						// calculate cumulative damage to the limb
+						damage = 0;
+						if( isDefined(self.damagePerLoc["left_hand"]) )
+							damage += self.damagePerLoc["left_hand"];
+						
+						if( isDefined(self.damagePerLoc["left_arm_lower"]) )
+							damage += self.damagePerLoc["left_arm_lower"];
+							
+						if( isDefined(self.damagePerLoc["left_arm_upper"]) )
+							damage += self.damagePerLoc["left_arm_upper"];
+						
+						// gib the arm when damage exceeds 40% of total health
+						if( (damage/self.maxHealth) > 0.4 )
+						{
+							self.bodyStatus = 1;
+							self setModel( level.zom_models[self.body].torsoLOff );
+							
+							self playSound( "zom_splatter" );
+							playFx( level._effect["zom_gib_larm"], self getTagOrigin("j_elbow_le") );
+						}
+					}
+					// check right side
+					else if( (isSubStr(sHitLoc, "right_arm") || sHitLoc == "right_hand") && isDefined(level.zom_models[self.body].torsoROff) )
+					{
+						// calculate cumulative damage to the limb
+						damage = 0;
+						if( isDefined(self.damagePerLoc["right_hand"]) )
+							damage += self.damagePerLoc["right_hand"];
+						
+						if( isDefined(self.damagePerLoc["right_arm_lower"]) )
+							damage += self.damagePerLoc["right_arm_lower"];
+							
+						if( isDefined(self.damagePerLoc["right_arm_upper"]) )
+							damage += self.damagePerLoc["right_arm_upper"];
+						
+						// gib the arm when damage exceeds 40% of total health
+						if( (damage/self.maxHealth) > 0.4 )
+						{
+							self.bodyStatus = 2;
+							self setModel( level.zom_models[self.body].torsoROff );
+							
+							self playSound( "zom_splatter" );
+							playFx( level._effect["zom_gib_rarm"], self getTagOrigin("j_elbow_ri") );
+						}
+					}
+				}
+				// check if we should gib a leg
+				else if( (isSubStr(sHitLoc, "leg") || isSubStr(sHitLoc, "foot")) && self.legStatus != 3 )
+				{
+					// check left side
+					if( self.legStatus != 1 && (isSubStr(sHitLoc, "left_leg") || sHitLoc == "left_foot") && isDefined(level.zom_models[self.body].legsLOff) )
+					{
+						// calculate cumulative damage to the limb
+						damage = 0;
+						if( isDefined(self.damagePerLoc["left_foot"]) )
+							damage += self.damagePerLoc["left_foot"];
+						
+						if( isDefined(self.damagePerLoc["left_leg_lower"]) )
+							damage += self.damagePerLoc["left_leg_lower"];
+							
+						if( isDefined(self.damagePerLoc["left_leg_upper"]) )
+							damage += self.damagePerLoc["left_leg_upper"];
+						
+						// gib the leg when damage exceeds 40% of total health
+						if( (damage/self.maxHealth) > 0.4 )
+						{
+							self detach( self.legs );
+							
+							// set the apropriate leg status and legs
+							if( self.legStatus == 0 )
+							{
+								self.legStatus = 1;
+								self.legs = level.zom_models[self.body].legsLOff;
+							}
+							else if( isDefined(level.zom_models[self.body].legsOff) )
+							{
+								self.legStatus = 3;
+								self.legs = level.zom_models[self.body].legsOff;
+							}
+							// NOTE if legsOff should be undefined, we'll just attach the old legs model again
+							
+							self attach( self.legs );
+							
+							// play splatter sound
+							self playSound( "zom_splatter" );
+							
+							// play an effect for the left leg
+							playFx( level._effect["zom_gib_lleg"], self getTagOrigin("j_knee_le") );
+							
+							// let the AI know we just lost a leg
+							self notify( "lost_leg" );
+						}
+					}
+					// check right side
+					else if( self.legStatus != 2 && (isSubStr(sHitLoc, "right_leg") || sHitLoc == "right_foot") && isDefined(level.zom_models[self.body].legsROff) )
+					{
+						// calculate cumulative damage to the limb
+						damage = 0;
+						if( isDefined(self.damagePerLoc["right_foot"]) )
+							damage += self.damagePerLoc["right_foot"];
+						
+						if( isDefined(self.damagePerLoc["right_leg_lower"]) )
+							damage += self.damagePerLoc["right_leg_lower"];
+							
+						if( isDefined(self.damagePerLoc["right_leg_upper"]) )
+							damage += self.damagePerLoc["right_leg_upper"];
+						
+						// gib the leg when damage exceeds 40% of total health
+						if( (damage/self.maxHealth) > 0.4 )
+						{
+							self detach( self.legs );
+							
+							// set the apropriate leg status and legs
+							if( self.legStatus == 0 )
+							{
+								self.legStatus = 2;
+								self.legs = level.zom_models[self.body].legsROff;
+							}
+							else if( isDefined(level.zom_models[self.body].legsOff) )
+							{
+								self.legStatus = 3;
+								self.legs = level.zom_models[self.body].legsOff;
+							}
+							// NOTE if legsOff should be undefined, we'll just attach the old legs model again
+							
+							self attach( self.legs );
+							
+							// play splatter sound
+							self playSound( "zom_splatter" );
+							
+							// play an effect for the left leg
+							playFx( level._effect["zom_gib_rleg"], self getTagOrigin("j_knee_ri") );
+							
+							// let the AI know we just lost a leg
+							self notify( "lost_leg" );
+						}
+					}
+				}
+			}
+			// check for gibbing when blowing zombie up
+			else if( isExplosiveDamage(sMeansOfDeath) )
+			{
+				// gib legs based on how much damage we've dealt, relative to remaining health if the explosion was 'below'
+				if( closer(vPoint, self getTagOrigin("j_spinelower"), self getTagOrigin("j_spineupper")) && (iDamage/self.health) > randomFloat(1) )
+				{
+					// check if at least one leg is left and if we have models for missing legs
+					if( self.legStatus != 3 && (isDefined(level.zom_models[self.body].legsOff) || isDefined(level.zom_models[self.body].legsLOff) || isDefined(level.zom_models[self.body].legsROff)) )
+					{
+						// check if the explosion was closer to the left leg
+						left = closer( vPoint, self getTagOrigin("j_knee_le"), self getTagOrigin("j_knee_ri") );
+						
+						// 50% chance to rip off both legs, if we have a model
+						both = (randomFloat(1) > 0.5) && isDefined(level.zom_models[self.body].legsOff);
+						
+						// gib the left leg, if both legs still there and it was closer to explosion
+						if( !both && self.legStatus == 0 && level.zom_models[self.body].legsLOff && left )
+						{
+							// set left leg missing status
+							self.legStatus = 1;
+								
+							// detach clean legs
+							self detach( self.legs );
+							
+							// set left leg off model
+							self.legs = level.zom_models[self.body].legsLOff;
+							self attach( self.legs );
+							
+							// play splatter sound
+							self playSound( "zom_splatter" );
+							
+							// play an effect for the left leg
+							if( randomFloat(1) > 0.2 )	// 80% chance to spawn a torn off part, 20% just pieces
+								playFx( level._effect["zom_gib_lleg"], self getTagOrigin("j_knee_le") );
+							else
+								playFx( level._effect["zom_gib_head"], self getTagOrigin("j_knee_le") );
+							
+							// let the AI know we just lost a leg
+							self notify( "lost_leg" );
+						}
+						// gib the right leg, if both legs still there
+						else if( !both && self.legStatus == 0 && level.zom_models[self.body].legsROff )
+						{
+							// set right leg missing status
+							self.legStatus = 2;
+							
+							// detach clean legs
+							self detach( self.legs );
+							
+							// set right leg off model
+							self.legs = level.zom_models[self.body].legsROff;
+							self attach( self.legs );
+							
+							// play splatter sound
+							self playSound( "zom_splatter" );
+							
+							// play an effect for the left leg
+							if( randomFloat(1) > 0.2 )	// 80% chance to spawn a torn off part, 20% just pieces
+								playFx( level._effect["zom_gib_rleg"], self getTagOrigin("j_knee_ri") );
+							else
+								playFx( level._effect["zom_gib_head"], self getTagOrigin("j_knee_ri") );
+							
+							// let the AI know we just lost a leg
+							self notify( "lost_leg" );
+						}
+						// gib the other leg, if one is already gone or we rolled override
+						else if( level.zom_models[self.body].legsOff )
+						{
+							// cache leg status to play currect effect
+							oldLegs = self.legStatus;
+							
+							// set both legs missing status
+							self.legStatus = 3;
+								
+							// detach right leg missing
+							self detach( self.legs );
+							
+							// set both legs off model
+							self.legs = level.zom_models[self.body].legsOff;
+							self attach( self.legs );
+							
+							// play splatter sound
+							self playSound( "zom_splatter" );
+							
+							// play an effect for the right leg
+							if( oldLegs == 0 || oldLegs == 1 )
+							{
+								if( randomFloat(1) > 0.2 )	// 80% chance to spawn a torn off part, 20% just pieces
+									playFx( level._effect["zom_gib_rleg"], self getTagOrigin("j_knee_ri") );
+								else
+									playFx( level._effect["zom_gib_head"], self getTagOrigin("j_knee_ri") );
+							}
+							
+							// play an effect for the left leg
+							if( oldLegs == 0 || oldLegs == 2 )
+							{
+								if( randomFloat(1) > 0.2 )	// 80% chance to spawn a torn off part, 20% just pieces
+									playFx( level._effect["zom_gib_lleg"], self getTagOrigin("j_knee_le") );
+								else
+									playFx( level._effect["zom_gib_head"], self getTagOrigin("j_knee_le") );
+							}
+							
+							// let the AI know we just lost a leg
+							self notify( "lost_leg" );
+						}
+					}
+				}
+			}
 		}
 
-		self finishPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, level.weaponKeyS2C[sWeapon], vPoint, vDir, sHitLoc, psOffsetTime);
+		// actually apply the damage to the bot
+		self finishPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, level.weaponKeyS2C[sWeapon], vPoint, vDir, sHitLoc, psOffsetTime );
 	}
 	// TODO what if level.iDFLAGS_NO_PROTECTION is set?
-}
+}	/* Callback_BotDamage */
 
-igniteBot(eAttacker){
+/**
+* Returns true if the given damage is explosive
+*/
+isExplosiveDamage( sMeansOfDeath )
+{
+	if( sMeansOfDeath == "MOD_EXPLOSIVE" || sMeansOfDeath == "MOD_PROJECTILE_SPLASH" || sMeansOfDeath == "MOD_GRENADE_SPLASH" )
+		return true;
+	
+	return false;
+}	/* isExplosiveDamage */
+
+/**
+* Makes the entity follow the given target entity
+*/
+followTarget( target, offset )
+{
+	self endon( "death" );
+	target endon( "death" );
+
+	if(!isDefined(offset))
+		offset = (0,0,0);
+	
+	while( isDefined(self) && isAlive(target) )
+	{
+		self.origin = (target.origin + offset);
+		wait 0.05;
+	}
+}	/* followTarget */
+
+igniteBot( eAttacker )
+{
 	self.isOnFire = true;
 	self thread damageOverTime(eAttacker, (self.maxhealth * 0.05), 1, "fire");
 	if(self.type != "dog" && self.type != "helldog")
 		self thread scripts\bots\_types::createEffectEntity(level.incendiary_FX, "j_spinelower");
 	else
 		self thread scripts\bots\_types::createEffectEntity(level.incendiary_FX, "j_head", (0,0,-35)); // Prevent effect from being too far up above the head
-}
+}	/* igniteBot */
 
-poisonBot(eAttacker){
+poisonBot(eAttacker)
+{
 	self.isPoisoned = true;
 	self thread damageOverTime(eAttacker, (self.maxhealth * 0.05), 1, "poison");
 	if(self.type != "dog" && self.type != "helldog")
 		self thread scripts\bots\_types::createEffectEntity(level.poisoned_FX, "j_spinelower");
 	else
 		self thread scripts\bots\_types::createEffectEntity(level.poisoned_FX, "j_head", (0,0,-35)); // Prevent effect from being too far up above the head
-}
+}	/* poisonBot */
 
-damageOverTime(eAttacker, damage, time, type){
+damageOverTime(eAttacker, damage, time, type)
+{
 	self endon("disconnect");
 	self endon("death");
-	while(isDefined(eAttacker)){
-		wait time + randomfloat(2);
+	while( isDefined(eAttacker) )
+	{
+		wait time + randomFloat( 2 );
 		self Callback_BotDamage(eAttacker, eAttacker, int(damage), 0, "MOD_RIFLE_BULLET", "none", eAttacker.origin, vectornormalize(self.origin - eAttacker.origin), "none", 0);
 
-		if (type == "poison")
+		if( type == "poison" )
 			eAttacker thread bulletModFeedback("poison");
-		if(type == "fire")
+		if( type == "fire" )
 			eAttacker thread bulletModFeedback("fire");
 	}
-}
+}	/* damageOverTime */
 
 addToAssist(player, damage)
 {
@@ -592,159 +863,265 @@ addToAssist(player, damage)
 	self.damagedBy[self.damagedBy.size] = struct;
 	struct.player = player;
 	struct.damage = damage;
-}
+}	/* addToAssist */
 
-Callback_BotKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration)
+/**
+* Handles all bot deaths, awarding points etc.
+*
+*	@eInflictor: Entity that dealth the damage
+*	@attacker: Player entity that is responsible for the damage
+*	@iDamage: Integer, base amount of damage dealth
+*	@iDFlags: Integer, damage flags applied describing the type of damage
+*	@sMeansOfDeath: String, type of damage
+*	@sWeapon: String, name of the weapon
+*	@vPoint: Vector, point of impact
+*	@vDir: Vector, irection of impact
+*	@sHitLoc: String, name of the hit location
+*	@psOffsetTime: Float, time to wait before the damage is done???
+*/
+Callback_BotKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
 {
-	self unlink();
-	
-	if(self.sessionteam == "spectator")
+	// don't do anything for spectators, if we even get here at all
+	if( self.sessionteam == "spectator" )
 		return;
 
-	if((sHitLoc == "head" || sHitLoc == "helmet") && sMeansOfDeath != "MOD_MELEE")
+	// apply headshots
+	if( (sHitLoc == "head" || sHitLoc == "helmet") && sMeansOfDeath != "MOD_MELEE" )
 		sMeansOfDeath = "MOD_HEAD_SHOT";
 
-	if(sMeansOfDeath == "MOD_HEAD_SHOT")
-		attacker.stats["headshotKills"]++;
+	// print a obituary message
+	if( level.dvar["zom_orbituary"] )
+		obituary( self, attacker, sWeapon, sMeansOfDeath );
 
-	if(level.dvar["zom_orbituary"])
-		obituary(self, attacker, sWeapon, sMeansOfDeath);
-
+	// set the bot as dead and notify scripts
 	self.sessionstate = "dead";
-	self notify("killed");
+	self notify( "killed" );
 
+	// check if we have a valid attacker
 	if( isPlayer(attacker) && attacker != self )
 	{
+		// increase the attackers scoreboard kills
 		attacker.kills++;
+		
+		// apply the apropriate attackers stats
 		attacker.stats["kills"]++;
 		
-		if(isDefined(attacker.stats["killedZombieTypes"][self.type])){
+		if( isDefined(eInflictor.isTurret) )
+			attacker.stats["turretKills"]++;
+		
+		if( scripts\players\_weapons::isExplosive(sWeapon) && sMeansOfDeath != "MOD_MELEE" && !attacker.isDown )
+			attacker.stats["explosiveKills"]++;
+		
+		if( sMeansOfDeath == "MOD_MELEE" )
+			attacker.stats["knifeKills"]++;
+		else if( sMeansOfDeath == "MOD_HEAD_SHOT" )
+			attacker.stats["headshotKills"]++;
+		
+		if( isDefined(attacker.stats["killedZombieTypes"][self.type]) )
 			attacker.stats["killedZombieTypes"][self.type]++;
-		}
 		else
-			logPrint("LUK_DEBUG;killedZombieTypes for " + self.type + " aint defined, bro\n");
+			logPrint( "LUK_DEBUG;killedZombieTypes for " + self.type + " aint defined, bro\n" );
 			
-		attacker thread scripts\players\_rank::giveRankXP("kill");
+		// give XP and UPoints to the attacker and assistants
+		attacker thread scripts\players\_rank::giveRankXP( "kill" );
+		
+		assert( isDefined(self.rewardMultiplier) );
+		attacker scripts\players\_players::incUpgradePoints(int(10 * level.rewardScale * self.rewardMultiplier));
+		
+		self giveAssists( attacker );
+		
+		// apply killing sprees for the attacker
 		attacker thread scripts\players\_spree::checkSpree();
 		
-		if (attacker.curClass=="specialist" && !attacker.isDown) {
-			attacker scripts\players\_abilities::rechargeSpecial(5);
-		}
-		// if (attacker.curClass == "medic" && !attacker.isDown)
-			// attacker scripts\players\_abilities::heal(5);
-		//attacker.score+=10;
-		assert(isDefined(self.rewardMultiplier));
-		attacker scripts\players\_players::incUpgradePoints(int(10 * level.rewardScale * self.rewardMultiplier));
-		giveAssists(attacker);
+		// calculate attackers on kill abilities
+		if( attacker.curClass == "specialist" && !attacker.isDown )
+			attacker scripts\players\_abilities::rechargeSpecial( 5 );
 		
-		/* STATS MONITOR */
-		if(isDefined(eInflictor.isTurret))
-			attacker.stats["turretKills"]++;
-			
-		if(scripts\players\_weapons::isExplosive(sWeapon) && sMeansOfDeath != "MOD_MELEE" && !attacker.isDown)
-			attacker.stats["explosiveKills"]++;
-			
-		if(sMeansOfDeath == "MOD_MELEE")
-			attacker.stats["knifeKills"]++;
-			
-		if (attacker.curClass=="scout" && sMeansOfDeath == "MOD_HEAD_SHOT" && !attacker.isDown) {
-				attacker scripts\players\_abilities::rechargeSpecial(10);
-			}
+		if( attacker.curClass == "scout" && sMeansOfDeath == "MOD_HEAD_SHOT" && !attacker.isDown )
+			attacker scripts\players\_abilities::rechargeSpecial(10);
+		
 		// if(sWeapon == "bulletmod_poison")
 			// attacker iprintlnbold("Killed with POISON!");
 			// attacker.poisonKills++;
 		// else if(sWeapon == "bulletmod_fire")
 			// attacker iprintlnbold("Killed with FIRE!");
 			// attacker.incendiaryKills++;
-		/*          */
-		
 	}
 	
-	corpse = self scripts\bots\_types::onCorpse(self.type);
+	// play a death sound
+	if( self.soundType == "zombie" )
+		self playSound( "zom_death" );
+	else if( self.soundType == "dog" )
+		self playSound( "dog_death" );
 	
-	if (self.soundType == "zombie")
-		self playsound("zom_death");
-	else if(self.soundType == "dog")
-		self playsound("dog_death");
-		
-	if(!self doSplatter(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration)){
-		if (corpse > 0)
+	// play gore effects and create a ragdoll if needed
+	corpse = self scripts\bots\_types::onCorpse();
+	if( !self doSplatter( attacker, sMeansOfDeath, sWeapon, sHitLoc ) )
+	{
+		if( corpse > 0 )
 		{
-			body = self clonePlayer(deathAnimDuration);
-			
-			if (corpse > 1)
+			body = self clonePlayer( deathAnimDuration );
+			if( corpse > 1 )
 			{
-				thread delayStartRagdoll(body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath);
+				thread delayStartRagdoll( body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath );
 			}
 		}
 	}
-	self setorigin((0,0,-10000));
+	
+	self setOrigin( (0,0,-10000) );	// TODO is this required?
 	self.untargetable = true;
 	
-	if(self.type == "halfboss")
+	if( self.type == "halfboss" )
 		level.bossBulletCount--;
 	
 	level.dif_killedLast5Sec++;
 	level.killedZombies++;
 
 	// Remove effect on death
-	if(isDefined(self.effect))
+	if( isDefined(self.effect) )
 		self.effect delete();
-		
+	
 	wait 0.1;
+
 	self.hasSpawned = false;
 	self.parent = undefined;
 	self.number = undefined;
-	level.botsAlive -= 1;
+	
+	level.botsAlive--;
 	
 	//level.zom_deaths ++;
 	level notify("bot_killed");
+}	/* Callback_BotKilled */
 
-}
-/* Checks if the zombie has taken critical damage to the head, thus resulting in it's bodyparts to be blown up as seen with the FX */
-doSplatter(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration){
-	if(!isDefined(attacker))
+/**
+* Checks if the zombie has taken critical damage to the head, thus resulting in it's head being blown up
+*/
+doSplatter( attacker, sMeansOfDeath, sWeapon, sHitLoc )
+{
+	// make sure we have a valid attacker
+	if( !isDefined(attacker) || !isDefined(attacker.primary) || !isDefined(attacker.secondary) )
 		return false;
-	if(!isDefined(attacker.primary) || !isDefined(attacker.secondary))
-		return false;
-		
+	
+	// accumulate damage dealt to the head region
 	damage = 0;
-	if(isDefined(self.damagePerLoc["head"]))
+	if( isDefined(self.damagePerLoc["head"]) )
 		damage += self.damagePerLoc["head"];
 	
-	if(isDefined(self.damagePerLoc["neck"]))
+	if( isDefined(self.damagePerLoc["neck"]) )
 		damage += self.damagePerLoc["neck"];
 	
-	if(isDefined(self.damagePerLoc["helmet"]))
+	if( isDefined(self.damagePerLoc["helmet"]) )
 		damage += self.damagePerLoc["helmet"];
-		
-	if(damage > self.maxhealth)
-		damage = self.maxhealth;
-	// if(isDefined(attacker) && self.type != "dog")
-	// if((sWeapon == attacker.primary || sWeapon == attacker.secondary))
-	// if(	((iDamage > self.maxhealth * 0.6 && randomfloat(1) < 0.3) || (iDamage > self.maxhealth && randomfloat(1) < 0.9)))
-	// if((sHitLoc == "head" || sHitLoc == "neck") && sMeansOfDeath != "MOD_MELEE"){
-		// self playsound("zom_splatter");
-		// playfx(level.splatterFX, self getTagOrigin("j_spinelower"));
-		// attacker iprintln("^1CRITICAL HIT ON " + self.name);
-		// return true;
-	// }	
-	if(self.type != "dog" && self.type != "helldog" && self.type != "burning" && self.type != "napalm")
-		if((sWeapon == attacker.primary || sWeapon == attacker.secondary))
-			if((damage/self.maxhealth) > 0.8 && sMeansOfDeath != "MOD_MELEE" && (sHitLoc == "head" || sHitLoc == "neck" || sHitLoc == "helmet")){
-				self playsound("zom_splatter");
-				playfx(level.splatterFX, self getTagOrigin("j_spinelower"));
-		// attacker iprintln("^1CRITICAL HIT ON " + self.name);
-		return true;
+	
+	// make sure the damage doesn't exceed maxHealth
+	if( damage > self.maxHealth )
+		damage = self.maxHealth;
+	
+	// don't play splatter effects for dogs or exploding zombies
+	if( self.type != "dog" && self.type != "helldog" && self.type != "burning" && self.type != "napalm" )
+	{
+		// play a zombie splatter effect for explosive damage
+		if( scripts\players\_weapons::isExplosive(sWeapon) )
+		{
+			// play apropriate exploding effect
+			self zomExplodeBody();
+			
+			// let the script know we exploded the whole zombie
+			return true;
+		}
+		else
+		{
+			// make sure damage was dealt with the primary or secondary weapon
+			if( sWeapon == attacker.primary || sWeapon == attacker.secondary )
+			{
+				// make sure zombie received at least 80% damage to the head and killing blow was to the head
+				if( (damage/self.maxhealth) > 0.8 && sMeansOfDeath != "MOD_MELEE" && (sHitLoc == "head" || sHitLoc == "neck" || sHitLoc == "helmet") )
+				{
+					// check if we have a neck stump model
+					if( isDefined(level.zom_models[self.body].headOff) )
+					{
+						// play splatter sound
+						self playSound( "zom_splatter" );
+						
+						// play head splatter effect
+						playFx( level._effect["zom_gib_head"], self getTagOrigin("j_head") );
+						
+						// detach the current head model
+						self detach( self.head );
+						
+						// set and attach the neck stump model
+						self.head = level.zom_models[self.body].headOff;
+						self attach( self.head );
+					}
+					else
+					{
+						// play apropriate exploding effect
+						self zomExplodeBody();
+						
+						// let the script know we exploded the whole zombie
+						return true;
+					}
+				}
+			}
+		}
 	}
+
+	// let the script know to spawn a ragdoll
 	return false;
-}
+}	/* doSplatter */
+
+/**
+* Explodes the zombies body and spawns apropriate bodyparts
+*/
+zomExplodeBody()
+{
+	// play splatter sound
+	self playSound( "zom_splatter" );
+
+	// play main splatter effect
+	playFx( level._effect["zom_gib_expl"], self getTagOrigin("j_spinelower") );
+	
+	// play head splatter effect
+	playFx( level._effect["zom_gib_head"], self getTagOrigin("j_head") );
+	
+	// play arm splatter effect(s)
+	if( self.bodyStatus == 1 )			// left arm missing
+		playFx( level._effect["zom_gib_rarm"], self getTagOrigin("j_elbow_ri") );
+	else if( self.bodyStatus == 2 )		// right arm missing
+		playFx( level._effect["zom_gib_larm"], self getTagOrigin("j_elbow_le") );
+	else if( self.bodyStatus == 0 )		// no arm missing
+	{
+		playFx( level._effect["zom_gib_larm"], self getTagOrigin("j_elbow_le") );
+		playFx( level._effect["zom_gib_rarm"], self getTagOrigin("j_elbow_ri") );
+	}
+	
+	// play leg splatter effect(s)
+	if( self.legStatus == 1 )			// left leg missing
+		playFx( level._effect["zom_gib_rleg"], self getTagOrigin("j_knee_ri") );
+	else if( self.legStatus == 2 )		// right leg missing
+		playFx( level._effect["zom_gib_lleg"], self getTagOrigin("j_knee_le") );
+	else if( self.legStatus == 0 )		// no leg missing
+	{
+		playFx( level._effect["zom_gib_lleg"], self getTagOrigin("j_knee_le") );
+		playFx( level._effect["zom_gib_rleg"], self getTagOrigin("j_knee_ri") );
+	}
+	
+	// play extra effects for bosses
+	if( self.type == "boss" || self.type == "halfboss" )
+	{
+		playFx( level._effect["zom_gib_head"], self getTagOrigin("j_head") );
+		playFx( level._effect["zom_gib_head"], self getTagOrigin("j_elbow_le") );
+		playFx( level._effect["zom_gib_head"], self getTagOrigin("j_elbow_ri") );
+		playFx( level._effect["zom_gib_head"], self getTagOrigin("j_knee_le") );
+		playFx( level._effect["zom_gib_head"], self getTagOrigin("j_knee_ri") );
+	}
+}	/* zomExplodeBody */
 
 /**
 *	Gives assist upgradepoints and XP to people who shot self (the zombie that died)
 *	@killer: Entity, the entity that killed that zombie
 */
-giveAssists(killer)
+giveAssists( killer )
 {
 	// Loop through all players that have damaged the zombie
 	for (i = 0; i < self.damagedBy.size; i++)
@@ -753,19 +1130,19 @@ giveAssists(killer)
 		health = self.maxhealth;
 		
 		// Check existing player in list
-		if (isDefined(struct.player))
+		if( isDefined(struct.player) )
 		{
-			if (struct.player.isActive && struct.player != killer)
+			if( struct.player.isActive && struct.player != killer )
 			{
 				// Stats for assists
 				struct.player.assists++;
 				struct.player.stats["assists"]++;
 				
 				// Get percentage damage dealt
-				damagePercentage = struct.damage / self.maxhealth;
+				damagePercentage = struct.damage / self.maxHealth;
 				rewardMP = 1;
 				
-				Assert(isDefined(self.rewardMultiplier));
+				Assert( isDefined(self.rewardMultiplier) );
 				rewardMP = self.rewardMultiplier;
 				
 				// Give player the amount of upgradepoints directly connected to the % of damage dealt to this zombie
@@ -793,8 +1170,10 @@ giveAssists(killer)
 			}
 		}
 	}
+	
+	// reset the assist tracking array
 	self.damagedBy = undefined;
-}
+}	/* giveAssists */
 
 onMonkeyExplosion(){
 	self endon("death");
@@ -909,7 +1288,6 @@ freezeBot(){
 		self thread zomMain();
 	}
 }
-
 
 zomMain()
 {
@@ -1479,7 +1857,8 @@ pushout(org)
 */
 }
 
-zomExplode(){
+zomExplode()
+{
 	self endon("disconnect");
 	self endon("death");
 	
@@ -1488,16 +1867,18 @@ zomExplode(){
 	wait 0.5;
 	self botAction( "-melee" );
 	
-	PlayFX(level.explodeFX, self.origin);
+	PlayFX( level.explodeFX, self.origin );
 	self PlaySound("explo_metal_rand");
 	self scripts\bots\_bots::zomAreaDamage(self.damage);
+	
+	self zomExplodeBody();
 	
 	self setorigin((0,0,-10000));
 	self.untargetable = true;
 	self.suicided = true;
 	
 	self suicide();
-}
+}	/* zomExplode */
 
 getMeleePreTime(){
 	switch(self getCurrentWeapon()){
@@ -1899,3 +2280,20 @@ alertZombies(origin, distance, alertPower, ignoreEnt)
 }
 
 
+/**
+* NEW ZOMBIE AI
+*	All parts below are used in the new zombie AI.
+*/
+
+/**
+* Main zombie ai algorithm.
+*/
+zThink()
+{
+	self endon( "death" );
+	self endon( "killed" );
+	self endon( "kill_ai" );
+	self endon( "disconnect" );
+
+	
+}

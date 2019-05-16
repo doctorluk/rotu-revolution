@@ -26,123 +26,216 @@
 #include scripts\include\codx_wrapper;
 
 /**
-* Loads and precaches all zombie bodies and heads
+* Initializes all zombie type and model related data.
 */
-initZomModels()
+init()
 {
-	// create an array to hold all the models
-	level.zom_models = [];
-	
-	/* Make all possible variations between bodies and heads */
-	bodies = [];
-	heads = [];
-	
-	bodies[bodies.size] = "body_sp_russian_loyalist_a_dead";
-	bodies[bodies.size] = "body_sp_russian_loyalist_b_dead";
-	bodies[bodies.size] = "body_sp_russian_loyalist_d_dead";
-	
-	heads[heads.size] = "head_sp_loyalist_alex_helmet_body_a_dead";
-	heads[heads.size] = "head_sp_loyalist_mackey_hat_body_b_dead";
-	heads[heads.size] = "head_sp_loyalist_tom_hat_body_d_dead";
+	// declare zombie type and model variables
+	level.zom_types = [];		// registred zombie types
+	level.zom_heads = [];		// registred zombie heads
+	level.zom_models = [];		// registred zombie models
 
-	for(i = 0; i < bodies.size; i++)
-		for(ii = 0; ii < heads.size; ii++){
-			addZomModel("zombie", bodies[i], heads[ii]);
-			addZomModel("zombie_all", bodies[i], heads[ii]);
-		}
-			
-	bodies = [];
-	heads = [];
+	// register all zombie types
+//	addZomType( name,		animType,	soundType,	moveSpeed,	meleeSpeed,	damage,	maxHealth,	runChance,	sprintChance,	infectionChance,	rewardMultiplier )
+	addZomType( "zombie",	"zombie",	"zombie",	0.8,		1.6,		30,		200,		0.0,		0.0,			0.075,				1.0 );
+	addZomType( "burning",	"zombie",	"zombie",	0.8,		1.6,		30, 	200,		0.8,		1.0,			0.0,				0.8 );
+	addZomType( "napalm",	"zombie",	"zombie",	0.8,		1.6,		100,	100,		0.8,		1.0,			0.0,				0.75 );
+	addZomType( "scary",	"zombie",	"zombie",	0.9,		1.6,		30,		200,		0.8,		0.3,			0.01,				0.8 );
+	addZomType( "toxic",	"quad",		"zombie",	0.4,		1.4,		30,		180,		0.6,		0.5,			0.15,				1.0 );
+	addZomType( "fat",		"zombie",	"zombie",	0.8,		1.4,		40,		275,		0.8,		0.2,			0.05,				1.2 );
+	addZomType( "fast",		"zombie",	"zombie",	1.0,		0.8,		30,		150,		0.7,		1.0,			0.075,				0.8 );
+	addZomType( "tank",		"zombie",	"zombie",	0.8,		2.0,		35,		800,		0.8,		0.4,			0.05,				1.35 );
+	addZomType( "dog",		"dog",		"dog",		1.0,		2.5,		30,		125,		0.8,		1.0,			0.08,				0.5 );
+	addZomType( "helldog",	"dog",		"dog",		1.0,		2.5,		20,		150,		0.8,		1.0,			0.08,				0.5 );
 	
-	bodies[bodies.size] = "char_ger_honorgd_bodyz1_1";
-	bodies[bodies.size] = "char_ger_honorgd_bodyz2_1";
-	bodies[bodies.size] = "char_ger_honorgd_bodyz2_2";
-	bodies[bodies.size] = "bo1_c_usa_pent_zombie_scientist_body";
+	// bosses
+	// maxHealth was meant to be calculated like this: 5000 + (2000 * level.activePlayers)	--> this is actually pretty overkill!
+	addZomType( "halfboss", "zombie",	"zombie",	0.8,		2.0,		70,		5000,		0.8,		0.6,			0.0,				3.0 );
+	addZomType( "boss",		"zombie",	"zombie", 	1.0,		3.0,		80,		10000,		1.0,		0.0,			0.0,				3.0 );
+	// TODO more boss zombies!!!
 	
-	heads[heads.size] = "char_ger_honorgd_zombiehead1_1";
-	heads[heads.size] = "char_ger_honorgd_zombiehead1_2";
-	heads[heads.size] = "char_ger_honorgd_zombiehead1_3";
-	heads[heads.size] = "char_ger_honorgd_zombiehead1_4";
-	heads[heads.size] = "bo1_c_ger_zombie_head1";
-	heads[heads.size] = "bo1_c_ger_zombie_head2";
-	heads[heads.size] = "bo1_c_ger_zombie_head3";
-	heads[heads.size] = "bo1_c_ger_zombie_head4";
+	// register zombie models
+//	addZomModel( name, torso, headOff, torsoROff, torsoLOff, legs, legsROff, legsLOff, legsOff )
+//	addZomHead( head, models )
+
+	// BO2 Tranzit
+	models = [];
+	models[models.size] = addZomModel( "zom_zombie1_torso", "zom_head_off", "zom_zombie1_torso_rarmoff", "zom_zombie1_torso_larmoff", "zom_zombie1_legs", "zom_zombie1_legs_rlegoff", "zom_zombie1_legs_llegoff", "zom_zombie1_legs_legsoff" );
+	models[models.size] = addZomModel( "zom_zombie2_body", "zom_head_off" );	// TODO
 	
-	for(i = 0; i < bodies.size; i++)
-		for(ii = 0; ii < heads.size; ii++){
-			addZomModel("zombie", bodies[i], heads[ii]);
-			addZomModel("zombie_all", bodies[i], heads[ii]);
-		}
-	bodies = [];
-	heads = [];
+	// register heads
+	addZomHead( "zom_head_a", models );
+	addZomHead( "zom_head_b", models );
+	addZomHead( "zom_head_c", models );
+	addZomHead( "zom_head_d", models );
 	
-	// These combinations are unique, since the body does not include arms and needs a head that also attaches arms
-	addZomModel("zombie", "body_sp_russian_loyalist_c_dead", "head_sp_loyalist_josh_helmet_body_c_dead");
-	addZomModel("zombie_all", "body_sp_russian_loyalist_c_dead", "head_sp_loyalist_josh_helmet_body_c_dead");
+	// register to zombie types
+	addZomTypeModels( "zombie", models );
+	addZomTypeModels( "burning", models );
+	addZomTypeModels( "napalm", models );
+	addZomTypeModels( "scary", models );
+	addZomTypeModels( "fat", models );
+	addZomTypeModels( "fast", models );
+	addZomTypeModels( "tank", models );
 	
-	//
-	addZomModel("zombie", "bo1_c_viet_zombie_female", "bo1_c_viet_zombie_female_head");
-	addZomModel("zombie_all", "bo1_c_viet_zombie_female", "bo1_c_viet_zombie_female_head");
+	// quad 	TODO rework model
+	models = [];
+	models[models.size] = addZomModel( "bo_quad" );
 	
-	addZomModel("zombie", "bo1_c_viet_zombie_nva1_body", "bo1_c_viet_zombie_nva1_head1");
-	addZomModel("zombie_all", "bo1_c_viet_zombie_nva1_body", "bo1_c_viet_zombie_nva1_head1");
+	addZomTypeModels( "toxic", models );
 	
-	addZomModel("napalm", "bo1_c_viet_zombie_napalm", "bo1_c_viet_zombie_napalm_head");
+	// doge		TODO rework model
+	models = [];
+	models[models.size] = addZomModel( "zombie_wolf" );
 	
+	addZomTypeModels( "dog", models );
+	addZomTypeModels( "helldog", models );
 	
-	// Tank
-	bodies[bodies.size] = "bo1_c_zom_cosmo_cosmonaut_body";
-	heads[heads.size] = "bo1_c_zom_cosmo_head1";
-	heads[heads.size] = "bo1_c_zom_cosmo_head2";
-	heads[heads.size] = "bo1_c_zom_cosmo_head3";
-	heads[heads.size] = "bo1_c_zom_cosmo_head4";
-	for(i = 0; i < bodies.size; i++)
-		for(ii = 0; ii < heads.size; ii++){
-			addZomModel("tank", bodies[i], heads[ii]);
-		}
-	bodies = [];
-	heads = [];
+	// boss models
+	models = [];
+	models[models.size] = addZomModel( "zom_george_romero" );
 	
-	// Fast
-	bodies[bodies.size] = "bo1_c_usa_pent_zombie_officeworker_body";
-	heads[heads.size] = "char_ger_honorgd_zombiehead1_1";
-	heads[heads.size] = "char_ger_honorgd_zombiehead1_2";
-	heads[heads.size] = "char_ger_honorgd_zombiehead1_3";
-	heads[heads.size] = "char_ger_honorgd_zombiehead1_4";
-	for(i = 0; i < bodies.size; i++)
-		for(ii = 0; ii < heads.size; ii++){
-			addZomModel("fast", bodies[i], heads[ii]);
-		}
-	bodies = [];
-	heads = [];
+	addZomTypeModels( "boss", models );
+	addZomTypeModels( "halfboss", models );	
 	
-	// Fat
-	bodies[bodies.size] = "bo1_c_usa_pent_zombie_militarypolice_body";
-	bodies[bodies.size] = "bo1_c_zom_cosmo_spetznaz_body";
-	heads[heads.size] = "bo1_c_zom_head_1";
-	heads[heads.size] = "bo1_c_zom_head_2";
-	heads[heads.size] = "bo1_c_zom_head_3";
-	heads[heads.size] = "bo1_c_zom_head_4";
-	for(i = 0; i < bodies.size; i++)
-		for(ii = 0; ii < heads.size; ii++){
-			addZomModel("fat", bodies[i], heads[ii]);
-		}
-	bodies = [];
-	heads = [];
-	
-	addZomModel("quad", "bo_quad", "");
-	// addZomModel("dog", "german_sheperd_dog", "");
-	addZomModel("dog", "zombie_wolf", "");
-	addZomModel("helldog", "zombie_wolf", "");
-	// addZomModel("halfboss", "bo1_c_zom_george_romero_zombiefied_fb", "");
-	addZomModel("halfboss", "zom_george_romero", "");
-	// addZomModel("boss", "body_sp_russian_loyalist_a_dead", "head_sp_loyalist_alex_helmet_body_a_dead");
-	addZomModel("boss", "cyclops", "");
-	// addZomModel("zombified_player", "skeleton", "");
-	level.bossIsOnFire = false;
+	// init other type related things
 	initGroupedSettings();
 	initSeasonalFeatures();
-}
+}	/* init */
+
+/**
+* Adds the given zombie type to the list of spawnable zombies
+*/
+addZomType( name, animType, soundType, moveSpeed, meleeSpeed, damage, maxHealth, runChance, sprintChance, infectionChance, rewardMultiplier )
+{
+	// create a struct to save the data in
+	ztype = spawnStruct();
+	
+	// add the given data to the struct
+	ztype.animType = animType;					// animation type, can be zombie, quad or dog
+	ztype.soundType = soundType;				// sound type, can be zombie or dog
+	ztype.moveSpeed = moveSpeed;				// move speed multiplier
+	ztype.meleeSpeed = meleeSpeed;				// timeout between melee attacks
+	ztype.maxHealth	= maxHealth;				// max health of the bot
+	ztype.damage = damage;						// damage dealt per attack
+	ztype.runChance = runChance;				// chance this bot starts as a runner
+	ztype.sprintChance = sprintChance;			// chance this bot starts as a sprinter
+	ztype.infectionChance = infectionChance;	// chance to be infected when hit by this bot
+	ztype.rewardMultiplier = rewardMultiplier;	// multiplier for all rewards earned by killing this bot
+	
+	// add variables for data added later
+	ztype.models = [];		// array for compatible models
+	
+	// save the zombie type in the zom_types array
+	level.zom_types[name] = ztype;
+}	/* addZomType */
+
+/**
+* Adds the given models to the given zombie type
+*
+*	@param type, String name of the zombie model
+*	@param models, Array of models to add
+*/
+addZomTypeModels( ztype, models )
+{
+	for( i=0; i<models.size; i++ )
+	{
+		type = level.zom_types[ztype];
+		type.models[type.models.size] = models[i];
+	}
+}	/* addZomTypeModels */
+
+/**
+* Adds the given models for zombies to use
+*
+*	@param torso
+*	@param headOff
+*	@param torsoROff
+*	@param torsoLOff
+*	@param legs
+*	@param legsROff
+*	@param legsLOff
+*	@param legsOff
+*/
+addZomModel( torso, headOff, torsoROff, torsoLOff, legs, legsROff, legsLOff, legsOff )
+{
+	// check for required variables
+	assert( isDefined(torso), "Can't register zombie model without a body!" );
+
+	// create a struct to save the data in
+	model = spawnStruct();
+	
+	// clean torso or full body model
+	model.torso = torso;
+	precacheModel( torso );
+	
+	// right arm off torso or full body model
+	model.torsoROff = torsoROff;
+	if( isDefined(torsoROff) )
+		precacheModel( torsoROff );
+		
+	// left arm off torso or full body model
+	model.torsoLOff = torsoLOff;
+	if( isDefined(torsoLOff) )
+		precacheModel( torsoLOff );
+	
+	// clean legs model
+	model.legs = legs;
+	if( isDefined(legs) )
+		precacheModel( legs );
+	
+	// right leg off model
+	model.legsROff = legsROff;
+	if( isDefined(legsROff) )
+		precacheModel( legsROff );
+	
+	// left leg off model
+	model.legsLOff = legsLOff;
+	if( isDefined(legsLOff) )
+		precacheModel( legsLOff );
+	
+	// both legs off model
+	model.legsOff = legsOff;
+	if( isDefined(legsOff) )
+		precacheModel( legsOff );
+	
+	// popped head model
+	model.headOff = headOff;
+	if( isDefined(headOff) )
+		precacheModel( headOff );
+	
+	// array for compatible heads
+	model.heads = [];
+
+	// save the model in the zom_models array
+	level.zom_models[torso] = model;
+	
+	return torso;
+}	/* addZomModel */
+
+/**
+* Adds the given model as a head for the zombie model
+*
+*	@param model, String modelname of the head
+*	@param models, Array of valid models
+*/
+addZomHead( head, models )
+{
+	// precache the head model if not already done
+	if( !isDefined(level.zom_heads[head]) )
+	{
+		precacheModel( head );
+		level.zom_heads[head] = true;
+	}
+	
+	// go through all models that the head is meant for
+	for( i=0; i<models.size; i++ )
+	{
+		// add the head to the models heads array
+		zmdl = level.zom_models[models[i]];
+		zmdl.heads[zmdl.heads.size] = head;
+	}
+}	/* addZomHead */
 
 /**
 * Initializes the zombie probabilities
@@ -187,7 +280,7 @@ initGroupedSettings(){
 initSeasonalFeatures(){
 	level.seasonalFeature = "";
 	
-	if(!level.dvar["surv_seasonal_features"])
+	if( !level.dvar["surv_seasonal_features"] )
 		return;
 		
 	seconds = _GetRealTime();
@@ -203,8 +296,9 @@ initSeasonalFeatures(){
 
 /**
 * Calculates the value of all zombie probabilities
+*	In case it exceeds "100%" in total
 */
-getTotalZombieProbability(){ // In case it exceeds "100%" in total
+getTotalZombieProbability(){
 	total = 0;
 	for(i = 0; i < level.zombieProbability.size; i++)
 		total += level.zombieProbability[i];
@@ -213,133 +307,110 @@ getTotalZombieProbability(){ // In case it exceeds "100%" in total
 }
 
 /**
-* Adds the given head and body combination for the given zombie type
+* Applies the zombie type data to the given zombie
 */
-addZomModel( type, body, head )
+loadZomType()
 {
-	if (isdefined(level.zom_models[type]))
-	{
-		size = level.zom_models[type].size;
-		level.zom_models[type][size] = body;
-		level.zom_models_head[type][size] = head;
-	}
-	else
-	{
-		level.zom_models[type][0] = body;
-		level.zom_models_head[type][0] = head;
-	}
+	// get the data for the zombies type
+	struct = level.zom_types[self.type];
 	
-	precacheModel( body );
-	if( isDefined(head) && head != "" )
-		precacheModel( head );
-}
+	// apply all data to the zombie
+	self.animType = struct.animType;
+	self.soundType = struct.soundType;
+	self.moveSpeed = struct.moveSpeed;
+	self.meleeSpeed = struct.meleeSpeed;
+	self.maxHealth = int(struct.maxHealth * level.dif_zomHPMod);
+	self.health = self.maxHealth;
+	self.damage = struct.damage;
+	self.runChance = struct.runChance;
+	self.sprintChance = struct.sprintChance;
+	self.infectionChance = struct.infectionChance;
+	self.rewardMultiplier = struct.rewardMultiplier;
 
-/**
-* Clears all zombie models and heads for the given type
-*/
-clearZomModel(type){
-
-	if (isDefined(level.zom_models[type])){
-	
-		for(i = 0; i < level.zom_models[type].size; i++) // Remove bodies
-			level.zom_models[type][i] = undefined;
-			
-		for(i = 0; i < level.zom_models_head[type].size; i++) // Remove heads
-			level.zom_models_head[type][i] = undefined;
-	}
-}
+	// apply walk only, if this is a walk only wave
+	if( randomFloat(1) > level.slowBots )
+		self.walkOnly = true;
+}	/* loadZomType */
 
 /**
 * Applies a random zombie model for the given type
 */
-loadZomModel(type)
+loadZomModel()
 {
 	// detach all previous models
 	self DetachAll(); 
 
-	// get the model type for the given zombie type
-	modelType = level.zom_types[type].modelType;
+	// get all models for the zombie type
+	models = level.zom_types[self.type].models;
 	
-	// get a random model id from the available ones
-	id = randomInt(level.zom_models[modelType].size);
+	// get a random model from the available ones
+	model = level.zom_models[models[randomInt(models.size)]];
 	
-	// set the zombie body model
-	self setModel(level.zom_models[modelType][id]);
+	// set the main body model or torso
+	self.bodyStatus = 0;		// clean torso status for gibbing
+	self.body = model.torso;
+	self setModel( self.body );
 	
-	// get the head model for the given body
-	head = level.zom_models_head[modelType][id];
-	
-	// apply the head if any
-	if( head != "" )
+	// apply clean leg model
+	self.legStatus = 0;			// clean leg status for gibbing
+	if( isDefined(model.legs) )
 	{
-		self.head = head;
-		self attach( head );
+		self.legs = model.legs;
+		self attach( self.legs );
+	}
+	else
+		self.legs = undefined;
+	
+	// apply a random head model
+	if( model.heads.size > 0 )
+	{
+		self.head = model.heads[randomInt(model.heads.size)];
+		self attach( self.head );
 	}
 	else
 		self.head = undefined;
 
 	// apply seasonal features like hats
-	onSeasonalFeatures( type );
+	self onSeasonalFeatures();
 }
 
 /**
 * Applies seasonal features like hats
-*	@type: String, defining the type of zombie that is being spawned
 */
-onSeasonalFeatures(type){
+onSeasonalFeatures()
+{
 	// check which seasonal feature is enabled
 	switch(level.seasonalFeature)
 	{
 		// Santa will run from 01.12.xx till 01.01.xx
 		case "santa":
-			if( type != "boss" && type != "helldog" && type != "dog" )
+			if( self.type != "boss" && self.type != "helldog" && self.type != "dog" )
 				self attach( "santa_hat" );
 			break;
 		default:
 			break;
 	}
-}
+}	/* onSeasonalFeatures */
 
 /**
 * Applies the animation weapon for the given zombie type
 */
-loadAnimTree(type)
+loadZomWeapon()
 {
-	switch(type)
+	switch( self.animType )
 	{
-		case "toxic":
-			self.pers["weapon"] = "concussion_grenade_mp";
-			break;
 		case "dog":
-		case "helldog":
 			self.pers["weapon"] = "dog_mp";
+			break;
+		case "quad":
+			self.pers["weapon"] = "concussion_grenade_mp";
 			break;
 		default:
 			self.pers["weapon"] = "flash_grenade_mp";
+			break;
 	}
-}
+}	/* loadZomWeapon */
 
-
-// TYPES
-
-initZomTypes()
-{
-	level.zom_types = [];
-	// addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintChance, infectionChance, soundType, rewardMultiplier)
-	addZomType("zombie", "zombie", "zombie",	 	16, 40, 20, 70 , 30 , 200  , .8, 0  , .075 , "zombie", 1); // Default zombie
-	addZomType("burning", "zombie_all", "zombie",	16, 36, 20, 70 , 30 , 200  , .8, 1  , 0    , "zombie", 0.8); // Code handled
-	addZomType("napalm", "napalm", "zombie",	 	16, 36, 20, 50 , 100, 100  , .8, 1  , 0    , "zombie", 0.75); // Code handled
-	addZomType("scary", "zombie_all", "zombie",	 	18, 36, 20, 70 , 30 , 200  , .8, 0.3, 0.01 , "zombie", 0.8); // Code handled
-	addZomType("toxic", "quad", "quad",		 		 8, 32, 16, 70 , 30 , 180  , .6, 0.5, 0.15 , "zombie", 1); // Code handled
-	addZomType("fat", "fat", "zombie",			 	16, 42, 16, 100, 40 , 275  , .8, 0.2, 0.05 , "zombie", 1.2);
-	addZomType("fast", "fast", "zombiefast",	 	20, 55, 24, 80 , 30 , 150  , .7, 1  , 0.075, "zombie", 0.8);
-	addZomType("tank", "tank", "zombie", 		 	16, 40, 20, 100, 35 , 800  , .8, 0.4, 0.05 , "zombie", 1.35);
-	addZomType("dog", "dog", "dog", 			 	18, 58, 30, 50 , 30 , 125  , .8, 1  , 0.08 , "dog"   , 0.5); // Dog zombie
-	addZomType("helldog", "dog", "dog", 			18, 58, 30, 50 , 20 , 150  , .8, 1  , 0.08 , "dog"   , 0.5); // Burning Dog zombie
-	
-	addZomType("halfboss", "halfboss", "zombie",	16, 40, 20, 120, 70 , 5000 + (2000 * level.activePlayers), .8, 0.6, .0 , "zombie", 3); // Default zombie
-	addZomType("boss", "boss", "boss", 		 		20, 58, 30, 160, 80 , 10000, 1 , 1  , 0    , "zombie", 1);
-}
 
 getBlurForType(type)
 {
@@ -819,106 +890,55 @@ getFxForType(type)
 	}
 }
 
-addZomType(name, modelType, animTree, walkSpeed, runSpeed, meleeSpeed, meleeRange, damage, maxHealth, meleeTime, sprintChance, infectionChance, soundType, rewardMultiplier)
+/**
+* Applies the effect for the given type
+*/
+onSpawn( type )
 {
-	struct = spawnstruct();
-	level.zom_types[name] = struct;
-	struct.modelType = modelType;
-	struct.animTree = animTree;
-	struct.walkSpeed = walkSpeed;
-	struct.runSpeed = runSpeed;
-	struct.meleeSpeed = meleeSpeed;
-	struct.meleeRange = meleeRange;
-	struct.damage = damage;
-	struct.maxHealth = maxHealth;
-	struct.meleeTime = meleeTime;
-	struct.sprintChance = sprintChance;
-	struct.infectionChance = infectionChance;
-	struct.soundType = soundType;
-	struct.barricadeDamage = damage;
-	struct.spawnFX = undefined;
-	struct.rewardMultiplier = rewardMultiplier;
-	
-}
-
-loadZomStats(type)
-{
-	struct = level.zom_types[type];
-	
-	self.walkSpeed = struct.walkSpeed;
-	self.runSpeed = struct.runSpeed;
-	self.meleeSpeed = struct.meleeSpeed;
-	self.meleeRange = struct.meleeRange;
-	self.damage = struct.damage;
-	self.barricadeDamage = struct.barricadeDamage;
-	self.meleeTime = struct.meleeTime;
-	self.sprintChance = struct.sprintChance;
-	self.maxHealth = int(struct.maxHealth);
-	self.infectionChance = struct.infectionChance;
-	self.soundType = struct.soundType;
-	self.rewardMultiplier = struct.rewardMultiplier;
-	
-	self.walkOnly = false;
-	if (randomfloat(1) > level.slowBots)
+	switch( type )
 	{
-		self.walkOnly = true;
-	}
-}
-
-onSpawn(type)
-{
-	switch (type)
-	{
-		case "burning":
-			self thread createEffectEntity(level.burningFX, "j_spinelower");
-			self playloopsound("fire_wood_medium");
-			break;
-		case "helldog":
-			self thread createEffectEntity(level.burningFX, "tag_origin");
-			self playloopsound("fire_wood_medium");
-			break;
-		case "zombie":
-				PlayFXOnTag(level.eye_le_fx, self, "j_eyeball_le");
-				PlayFXOnTag(level.eye_ri_fx, self, "j_eyeball_ri");
-			break;
-		case "fat":
-				PlayFXOnTag(level.eye_le_fx, self, "j_eyeball_le");
-				PlayFXOnTag(level.eye_ri_fx, self, "j_eyeball_ri");
-			break;
-		case "fast":
-				PlayFXOnTag(level.eye_le_fx, self, "j_eyeball_le");
-				PlayFXOnTag(level.eye_ri_fx, self, "j_eyeball_ri");
-			break;
-		case "scary":
-				PlayFXOnTag(level.eye_le_fx, self, "j_eyeball_le");
-				PlayFXOnTag(level.eye_ri_fx, self, "j_eyeball_ri");
-		case "dog":
-			// self thread createEffectEntity(level.burningFX, "j_head");
-			break;
-		case "toxic":
-			//PlayFXOnTag(level.toxicFX, self, "j_head");
-			break;
-		case "boss":
-			level.bossPhases = 1;
-			level.bossPhase = getRandomBossPhase();
-			label = getLabelForBoss();
-			colour = getColourForPhase();
-			level.bossOverlay = overlayMessage(label, "", colour);
-			level.bossOverlay setvalue(0);
-			level.bossOverlay.alpha = 0;
-			level.bossOverlay fadeOverTime(1);
-			level.bossOverlay.alpha = 1;
-			level.bossDamageDone[level.bossPhase] = 0;
-			level.bossDamageToDo[level.bossPhase] = calculateBossHP();
-			self.quake = true;
-			self thread bossSpecialAttack();
-			self thread spawnHitboxBot();
+	case "burning":
+		self thread createEffectEntity( level.burningFX, "j_spinelower" );
+		self playLoopSound( "fire_wood_medium" );
 		break;
-		case "napalm":
-			PlayFXOnTag(level.napalmTummyGlowFX, self, "j_spineupper");
-			break;
+	case "helldog":
+		self thread createEffectEntity( level.burningFX, "tag_origin" );
+		self playLoopSound( "fire_wood_medium" );
+		break;
+	case "napalm":
+		PlayFXOnTag( level.napalmTummyGlowFX, self, "j_spineupper" );
+		break;		// TODO maybe we want glowing eyes too?
+	case "zombie":
+	case "scary":
+	case "fast":
+	case "fat":
+		PlayFXOnTag( level.leftEyeFx, self, "j_eyeball_le" );
+		PlayFXOnTag( level.rightEyeFX, self, "j_eyeball_ri" );
+		break;
+	case "dog":
+		// self thread createEffectEntity(level.burningFX, "j_head");
+		break;
+	case "toxic":
+		// PlayFXOnTag(level.toxicFX, self, "j_head");
+		break;
+	case "boss":
+		level.bossPhases = 1;
+		level.bossPhase = getRandomBossPhase();
+		label = getLabelForBoss();
+		colour = getColourForPhase();
+		level.bossOverlay = overlayMessage( label, "", colour );
+		level.bossOverlay.alpha = 0;
+		level.bossOverlay setValue( 0 );
+		level.bossOverlay fadeOverTime( 1 );
+		level.bossOverlay.alpha = 1;
+		level.bossDamageDone[level.bossPhase] = 0;
+		level.bossDamageToDo[level.bossPhase] = calculateBossHP();
+		self.quake = true;
+		self thread bossSpecialAttack();
+	//	self thread spawnHitboxBot();	NOTE unclear if we have to do this, needs testing
+		break;
 	}
-}
+}	/* onSpawn */
 
 spawnHitboxBot(){
 	wait 0.1;
@@ -1293,18 +1313,18 @@ nextBossStatus()
 }
 
 dieDelay(){
-	self.damageoff = true;
-	self.child.damageoff = true;
+	self.god = true;
+	self.child.god = true;
 	wait 0.05;
 	if(isDefined(self.child)){
 		self.child suicide();
-		self.child.damageoff = undefined;
+		self.child.god = undefined;
 		if(isDefined(self.attachment))
 			self.attachment delete();
 	}
 	else
 		iprintln("^1ERROR^7: Boss' child undefined!");
-	self.damageoff = undefined;
+	self.god = undefined;
 	self suicide();
 }
 
@@ -1386,37 +1406,47 @@ onAttack(type, target)
 	}
 }
 
-onCorpse(type)
+/**
+* Handles ragdoll creation for bots
+*/
+onCorpse()
 {
-	switch (type)
+	switch( self.type )
 	{
-		case "burning":
-			PlayFX(level.explodeFX, self.origin);
-			self PlaySound("explo_metal_rand");
-			self scripts\bots\_bots::zomAreaDamage(160);
+	case "burning":
+		self playSound( "explo_metal_rand" );
+		playFX( level._effect["zom_explode"], self.origin );
+		self scripts\bots\_bots::zomExplodeBody();
+		
+		self scripts\bots\_bots::zomAreaDamage( 160 );
 		return 0;
-		case "helldog":
-			PlayFX(level.explodeFX, self.origin);
-			self PlaySound("explo_metal_rand");
-			self scripts\bots\_bots::zomAreaDamage(120);
+	case "helldog":
+		self playSound( "explo_metal_rand" );
+		playFX( level._effect["zom_explode"], self.origin );
+		self scripts\bots\_bots::zomExplodeBody();
+		
+		self scripts\bots\_bots::zomAreaDamage( 120 );
 		return 0;
-		case "napalm":
-			if(!isDefined(self.suicided)){
-				PlayFX(level.explodeFX, self.origin);
-				self PlaySound("explo_metal_rand");
-				self scripts\bots\_bots::zomAreaDamage(60);
-			}
+	case "napalm":
+		if( !isDefined(self.suicided) )
+		{
+			self playSound( "explo_metal_rand" );
+			playFX( level._effect["zom_explode"], self.origin );
+			self scripts\bots\_bots::zomExplodeBody();
+			
+			self scripts\bots\_bots::zomAreaDamage( 60 );
+		}
 		return 0;
-		case "dog":
+	case "dog":
 		return 1;
-		case "toxic":
-			if (randomfloat(1) < .15)
-				thread toxicCloud(self.origin, 10);
+	case "toxic":
+		if( randomFloat(1) < .15 )
+			thread toxicCloud( self.origin, 10 );
 		return 1;
-		default:
+	default:
 		return 2;
 	}
-}
+}	/* onCorpse */
 
 toxicCloud(org, time) {
 	ent = spawn("script_origin", org);

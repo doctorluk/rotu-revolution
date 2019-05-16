@@ -7,11 +7,12 @@
 /script_trim
 /sound_original
 /screenshots
-/*.cfg
 /testserver
+missingasset.csv
+/*.cfg
+*.ff
 *.iwd
-/*.ff
 *.log
 *.bak
-missingasset.csv
+*.old
 *.ini

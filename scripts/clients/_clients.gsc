@@ -20,61 +20,55 @@
 */
 
 #include scripts\include\data;
+
+/**
+* Initializes client related variables
+*/
 init()
 {
-	precache();
-	
+//	precacheStatusIcon("hud_status_connecting");	TODO can we use this again, now that we have only 5 classes?
+
 	level.players = [];
 	level.activePlayers = 0;
-	SetupCallbacks();
-	
-}
 
-precache()
-{
-	// precacheStatusIcon("hud_status_connecting");
-}
-
-SetupCallbacks()
-{
+	// define callbacks
 	level.callbackPlayerConnect = ::Callback_PlayerConnect;
 	level.callbackPlayerDisconnect = ::Callback_PlayerDisconnect;
 	level.callbackPlayerDamage = ::Callback_PlayerDamage;
 	level.callbackPlayerKilled = ::Callback_PlayerKilled;
-}
+}	/* init */
 
-catchBot()
-{
-	if(self getStat(512) == 100) //RELOADING ZOMBIE :]
-	{
-		level.loadBots = 0;
-		self.isBot = true;
-		self thread scripts\bots\_bots::loadBot();
-
-		return 1;
-	}
-	
-	return 0;
-}
-
+/**
+* Handles all connecting clients (players and bots alike)
+*/
 Callback_PlayerConnect()
 {
+	// assume this is a player
 	self.isBot = false;
 	
-	self catchBot();
+	// catch any reconnecting bots
+	if( self getStat(512) == 100 )
+	{
+		// increase loaded bots number
+		level.botsLoaded++;
+		
+		// initialize the bot
+		self.isBot = true;
+		self thread scripts\bots\_bots::loadBot();
+	}
 
 	self.statusicon = "";
 	self.hasBegun = false;
-	self waittill("begin");
+	self waittill( "begin" );
 	self.hasBegun = true;
 	
 	//self setclientdvars("rotu2_publickey", getsubstr(level.str,5), "rotu2_baseurl", getdvar("sv_wwwbaseurl"));
 	
 	self.statusicon = "";
-	//self.sessionteam = "spectator";
+	//self.sessionteam = "spectator";	// TODO why are we not using spectator?
 	//self.sessionstate = "spectator";
 	self.pers["team"] = "free";
-	
+
 	if( !self.isBot )
 	{
 		self scripts\players\_weapons::initPlayerWeapons();

@@ -15,7 +15,7 @@
 // ignore assets already in the base game
 ignore,mod_ignore
 
-// include mod scripts for a standalone version
+// include all scripts into mod.ff file
 // include,mod_scripts
 
 // sounds
@@ -69,7 +69,6 @@ fx,turrets/augmented_turret
 fx,fire/emb_burst_a
 fx,fire/firelp_med_pm_atspawn
 fx,fire/boss_onfire
-fx,impacts/zombie_crit_splatter_nograv
 fx,misc/ground_rising
 fx,misc/healing
 fx,misc/heal_glow
@@ -85,6 +84,16 @@ fx,misc/zombie_poison_effect
 fx,weather/lightning
 fx,zombies/boss_shockwave
 
+// ## Gibbing
+fx,gibbing/zombie1_explode
+fx,gibbing/zombie1_head
+fx,gibbing/zombie1_larm
+fx,gibbing/zombie1_lleg
+fx,gibbing/zombie1_rarm
+fx,gibbing/zombie1_rleg
+// ## Old effects, may want to enable later
+// fx,impacts/zombie_crit_splatter
+// fx,impacts/zombie_crit_splatter_nograv
 
 // ## Flashlight Glow by Rycoon, modified by Luk
 fx,light/flashlight_glow
@@ -197,7 +206,7 @@ material,rank_prestige_44
 material,rank_prestige_45
 
 material,overlay_armored
-//material,overlay_shocked
+// material,overlay_shocked
 
 // stringtables
 stringtable,mp/playerStatsTable.csv
@@ -232,12 +241,14 @@ menufile,ui_mp/scriptmenus/skillpoints.menu
 menufile,ui_mp/scriptmenus/team_marinesopfor.menu
 
 // custom weapons
+// ## Zombies
 weapon,mp/dog_mp
 
+// ## Players
 weapon,mp/sticky_grenade_mp
 
 // animations
-// zombies
+// ## Zombies
 xanim,ai_zombie_attack_crawl
 xanim,ai_zombie_attack_crawl_lunge
 xanim,ai_zombie_attack_forward_v1
@@ -258,11 +269,6 @@ xanim,ai_zombie_idle_crawl
 xanim,ai_zombie_idle_v1
 
 xanim,ai_zombie_jump_down_40
-
-xanim,ai_zombie_quad_idle
-xanim,ai_zombie_quad_crawl_sprint
-xanim,ai_zombie_quad_crawl
-xanim,ai_zombie_quad_attack
 
 xanim,ai_zombie_run_v1
 xanim,ai_zombie_run_v2
@@ -296,22 +302,19 @@ xanim,ai_zombie_walk_v4
 // xanim,ai_zombie_walk_v8
 // xanim,ai_zombie_walk_v9
 
-// old, TODO sort through
-// xanim,death_stand_dropinplace
+// ## Quads
+xanim,ai_zombie_quad_idle
+xanim,ai_zombie_quad_crawl_sprint
+xanim,ai_zombie_quad_crawl
+xanim,ai_zombie_quad_attack
 
-// xanim,hunted_dazed_walk_A_zombie
-// xanim,standunarmed_idle_loop
-// xanim,unarmed_panickedrun_loop_V1
-
-xanim,noweapon
-
-// dogs
+// ## Dogs
 xanim,german_shepherd_sitting_looking_idle
 xanim,zombie_dog_run
 xanim,zombie_dog_run_attack
 xanim,zombie_dog_death_front
 
-// 3rdp Player
+// ## Player 3rd person
 xanim,pb_minigun_standjump_land
 xanim,pb_minigun_runjump_land
 xanim,pb_minigun_standjump_takeoff
@@ -333,98 +336,40 @@ xanim,pt_rifle_stand_reload_rearclip
 xanim,pt_rifle_prone_reload_rearclip
 xanim,pt_rifle_crouch_reload_rearclip
 
-// player/zombie models
+// Models
+// ## Invisible Hitbox model
+xmodel,player_sp_rig_empty
+
 // ## ZOMBIE WOLF
 xmodel,zombie_wolf
 
-// ## Stock dead-model
-xmodel,body_sp_russian_loyalist_a_dead
-xmodel,body_sp_russian_loyalist_b_dead
-xmodel,body_sp_russian_loyalist_c_dead
-xmodel,body_sp_russian_loyalist_d_dead
-xmodel,head_sp_loyalist_alex_helmet_body_a_dead
-xmodel,head_sp_loyalist_mackey_hat_body_b_dead
-xmodel,head_sp_loyalist_josh_helmet_body_c_dead
-xmodel,head_sp_loyalist_tom_hat_body_d_dead
-
-// ## German Nazi Zombie Body 1_1
-xmodel,char_ger_honorgd_bodyz1_1
-
-// ## German Nazi Zombie Body 2_1
-xmodel,char_ger_honorgd_bodyz2_1
-
-// ## German Nazi Zombie Body 2_2
-xmodel,char_ger_honorgd_bodyz2_2
-
-// ## German Nazi Zombie Head 1_1
-xmodel,char_ger_honorgd_zombiehead1_1
-
-// ## German Nazi Zombie Head 1_2
-xmodel,char_ger_honorgd_zombiehead1_2
-
-// ## German Nazi Zombie Head 1_3
-xmodel,char_ger_honorgd_zombiehead1_3
-
-// ## German Nazi Zombie Head 1_4
-xmodel,char_ger_honorgd_zombiehead1_4
-
-// ## BO1 Zombie Scientist
-xmodel,bo1_c_usa_pent_zombie_scientist_body
-
-// ## BO1 Napalm Zombie
-xmodel,bo1_c_viet_zombie_napalm
-xmodel,bo1_c_viet_zombie_napalm_head
-
-// ## BO1 Cosmonaut HELL REPLACEMENT
-xmodel,bo1_c_zom_cosmo_cosmonaut_body
-xmodel,bo1_c_zom_cosmo_head1
-xmodel,bo1_c_zom_cosmo_head2
-xmodel,bo1_c_zom_cosmo_head3
-xmodel,bo1_c_zom_cosmo_head4
-
-// ## BO1 bo1_c_zom_george_romero_zombiefied_fb also known as BIG SEMI BOSS
+// ## BOSS ZOMBIE
 xmodel,zom_george_romero
-
-// ## BO1 officeworker replacing FAST ZOMBIES
-xmodel,bo1_c_usa_pent_zombie_officeworker_body
-
-// ## BO1 Generic Normal Zombie Heads
-xmodel,bo1_c_ger_zombie_head1
-xmodel,bo1_c_ger_zombie_head2
-xmodel,bo1_c_ger_zombie_head3
-xmodel,bo1_c_ger_zombie_head4
-xmodel,bo1_c_zom_head_1
-xmodel,bo1_c_zom_head_2
-xmodel,bo1_c_zom_head_3
-xmodel,bo1_c_zom_head_4
-
-// ## BO1 Militarypolice replacing FAT ZOMBIE
-xmodel,bo1_c_usa_pent_zombie_militarypolice_body
-
-// ## BO1 Female Zombie (GENERIC)
-xmodel,bo1_c_viet_zombie_female
-xmodel,bo1_c_viet_zombie_female_head
-
-// ## BO1 NVA1 Zombie (GENERIC)
-xmodel,bo1_c_viet_zombie_nva1_body
-xmodel,bo1_c_viet_zombie_nva1_head1
-
-// ## Tanky Speznaz Zombie body
-xmodel,bo1_c_zom_cosmo_spetznaz_body
-
-// ## BO2 Avagadro Veins&Arteries Body model (electric zombie)
-// xmodel,bo2_c_zom_avagadro_fb
-
-// ## Invisible Hitbox model
-xmodel,player_sp_rig_empty
 
 // ## Crawler Zombie
 xmodel,bo_quad
 
-// ## Boss
-xmodel,cyclops
+// ## GERIC ZOMBIE
+xmodel,zom_zombie1_torso
+xmodel,zom_zombie1_torso_larmoff
+xmodel,zom_zombie1_torso_rarmoff
+xmodel,zom_zombie1_legs
+xmodel,zom_zombie1_legs_llegoff
+xmodel,zom_zombie1_legs_rlegoff
+xmodel,zom_zombie1_legs_legsoff
 
-// ## Player models
+// NOTE testing only
+xmodel,zom_zombie2_body
+
+xmodel,zom_head_off
+xmodel,zom_head_a
+xmodel,zom_head_b
+xmodel,zom_head_c
+xmodel,zom_head_d
+
+xmodel,bo2_c_zom_avagadro_fb
+
+// ## Player Models
 xmodel,viewmodel_base_viewhands
 
 xmodel,body_complete_mp_spetsnaz_vlad
@@ -448,6 +393,21 @@ xmodel,head_sp_sas_woodland_peter
 xmodel,head_sp_sas_woodland_todd
 xmodel,head_sp_sas_woodland_hugh
 xmodel,head_sp_spetsnaz_collins_vladbody
+
+// ## Sentry Turrets
+xmodel,bo2_turret_sentry_gun
+xmodel,mw3_sentry_gl_base
+xmodel,mw3_sentry_gl_turret
+
+// ## Misc Models
+xmodel,ch_tombstone3
+xmodel,com_barrel_metal
+xmodel,com_barrel_benzin
+xmodel,com_stove
+xmodel,com_vending_can_new1_lit
+
+// ## Seasonal Models
+xmodel,santa_hat
 
 // Custom Weapons
 // ## .44 Magnum
@@ -749,19 +709,3 @@ xanim,viewmodel_minigun_putaway
 xanim,viewmodel_minigun_walk
 xanim,viewmodel_minigun_ads_up
 xanim,viewmodel_minigun_ads_down
-
-// Sentry Turrets
-xmodel,bo2_turret_sentry_gun
-xmodel,mw3_sentry_gl_base
-xmodel,mw3_sentry_gl_turret
-
-// misc models
-xmodel,ch_tombstone3
-xmodel,com_barrel_metal
-xmodel,com_barrel_benzin
-xmodel,com_stove
-xmodel,com_vending_can_new1_lit
-
-// Seasonal xmodels
-xmodel,santa_hat
-
