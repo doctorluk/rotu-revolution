@@ -231,6 +231,8 @@ robocopy maps ..\..\raw\maps /E /NS /NC /NFL /NDL /NJH /NJS > NUL
 robocopy material_properties ..\..\raw\material_properties /E /NS /NC /NFL /NDL /NJH /NJS > NUL
 robocopy materials ..\..\raw\materials /E /NS /NC /NFL /NDL /NJH /NJS > NUL
 robocopy mp ..\..\raw\mp /E /NS /NC /NFL /NDL /NJH /NJS > NUL
+robocopy physic ..\..\raw\physic /E /NS /NC /NFL /NDL /NJH /NJS > NUL
+robocopy physic ..\..\share\main\physic /E /NS /NC /NFL /NDL /NJH /NJS > NUL
 robocopy scripts ..\..\raw\scripts /E /NS /NC /NFL /NDL /NJH /NJS > NUL
 robocopy shock ..\..\raw\shock /E /NS /NC /NFL /NDL /NJH /NJS > NUL
 robocopy sound ..\..\raw\sound /E /NS /NC /NFL /NDL /NJH /NJS > NUL
