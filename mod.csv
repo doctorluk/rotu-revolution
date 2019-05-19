@@ -99,8 +99,6 @@ fx,gibbing/zombie1_rleg
 fx,light/flashlight_glow
 
 // ## Fog Effects by susel
-material,gfx_fxt_smk_spiral_detail
-material,gfx_fxt_smk_gen
 fx,zombies/fx_fog_zombie_amb
 fx,zombies/fx_zombie_fog_static_xlg
 
@@ -359,7 +357,13 @@ xmodel,zom_zombie1_legs_rlegoff
 xmodel,zom_zombie1_legs_legsoff
 
 // NOTE testing only
-xmodel,zom_zombie2_body
+xmodel,zom_zombie2_torso
+xmodel,zom_zombie2_torso_larmoff
+xmodel,zom_zombie2_torso_rarmoff
+xmodel,zom_zombie2_legs
+xmodel,zom_zombie2_legs_llegoff
+xmodel,zom_zombie2_legs_rlegoff
+xmodel,zom_zombie2_legs_legsoff
 
 xmodel,zom_head_off
 xmodel,zom_head_a
@@ -367,7 +371,7 @@ xmodel,zom_head_b
 xmodel,zom_head_c
 xmodel,zom_head_d
 
-xmodel,bo2_c_zom_avagadro_fb
+xmodel,zom_avagadro_body
 
 // ## Player Models
 xmodel,viewmodel_base_viewhands

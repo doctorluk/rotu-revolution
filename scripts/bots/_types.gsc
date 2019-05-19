@@ -61,7 +61,7 @@ init()
 	// BO2 Tranzit
 	models = [];
 	models[models.size] = addZomModel( "zom_zombie1_torso", "zom_head_off", "zom_zombie1_torso_rarmoff", "zom_zombie1_torso_larmoff", "zom_zombie1_legs", "zom_zombie1_legs_rlegoff", "zom_zombie1_legs_llegoff", "zom_zombie1_legs_legsoff" );
-	models[models.size] = addZomModel( "zom_zombie2_body", "zom_head_off" );	// TODO
+	models[models.size] = addZomModel( "zom_zombie2_torso", "zom_head_off", "zom_zombie2_torso_rarmoff", "zom_zombie2_torso_larmoff", "zom_zombie2_legs", "zom_zombie2_legs_rlegoff", "zom_zombie2_legs_llegoff", "zom_zombie2_legs_legsoff" );
 	
 	// register heads
 	addZomHead( "zom_head_a", models );
@@ -93,9 +93,13 @@ init()
 	
 	// boss models
 	models = [];
-	models[models.size] = addZomModel( "zom_george_romero" );
+	models[models.size] = addZomModel( "zom_avagadro_body" );
 	
 	addZomTypeModels( "boss", models );
+	
+	models = [];
+	models[models.size] = addZomModel( "zom_george_romero" );
+	
 	addZomTypeModels( "halfboss", models );	
 	
 	// init other type related things
