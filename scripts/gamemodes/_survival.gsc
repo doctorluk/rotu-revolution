@@ -27,6 +27,13 @@
 
 initGame()
 {
+	level.freezeProgress = false;
+	level.forceWaveNumber = false;
+	level.forceWaveType = false;
+	
+	level.gameState = "idle";
+	level.abortWave = false;
+
 	level.currentWave = 1;
 	level.ambient = "zom_ambient0";
 	level.flashlightEnabled = false;
@@ -188,18 +195,22 @@ mainGametype()
 	
 	rotatePrioritizedSpawn(false);
 	thread survivorsHUD();
-	level thread doWaveHud();
+	thread doWaveHud();
 	
-	i = 0;
 	level.weStartedAtLeastOneGame = false;
-	while(isDefined(level.waves[i])){
+	while(isDefined(level.waves[level.currentWave-1])){
 	
 		if(level.lastSpecialWave == "finale") // Whenever we had a finale, we end the game
 			break;
+		
+		if( level.forceWaveType )
+			config_wavetype = level.forceWaveType;
+		else
+			config_wavetype = level.waves[level.currentWave-1];
 			
 		type = "";
 		
-		switch(level.waves[i]){
+		switch(config_wavetype){
 			case "": type = ""; break;
 			case "0": type = "normal"; break;
 			case "1": type = "dog"; break;
@@ -214,8 +225,9 @@ mainGametype()
 			// case "8": iprintlnbold("Finale is currently disabled!"); break;
 			case "?": type = scripts\bots\_types::getRandomSpecialWaveType(true); break;
 			case "20": increaseDifficulty(); break;
-			default: iprintlnbold("^1Error: ^7Bad server configuration of dvar 'surv_waves'! Invalid type: '" + level.waves[i] + "'"); break;
+			default: iprintlnbold("^1Error: ^7Bad server configuration of dvar 'surv_waves'! Invalid type: '" + config_wavetype + "'"); break;
 		}
+		
 		
 		/* Add zombie type that wasn't there before to the normal wave.... */
 		if (scripts\bots\_types::addToSpawnTypes(type))
@@ -233,14 +245,13 @@ mainGametype()
 			case "": break;
 			default: startSpecialWave(type); break;
 		}
-		// startFinalWave();
-		// increaseDifficulty();
-		// startSpecialWave("tank");
-		// startSpecialWave("grouped");
-		// startRegularWave();
-		// startSpecialWave("electric");
-		i++;
-	
+
+		// Force a certain wave number (a number in the order of the wave config)
+		if( level.forceWaveNumber )
+			level.currentWave = level.forceWaveNumber;
+		else if( !level.freezeProgress )
+			level.currentWave++;
+		
 	}
 	
 	// IN CASE THERE WAS NO WAVE

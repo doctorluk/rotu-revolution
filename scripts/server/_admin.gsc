@@ -27,6 +27,9 @@ init()
 	level.cmd = [];
 	thread watchCmd();
 	
+	addCmd( "abortwave", ::abortWave );
+	addCmd( "freezeprogress", ::freezeProgress );
+	
 	addCmd("kill", ::kill);
 	addCmd("change_map", ::changemap);
 	addCmd("rename", ::rename);
@@ -71,6 +74,20 @@ watchCmd()
 		}
 		wait 0.25;
 	}
+}
+
+abortWave(args)
+{
+	scripts\gamemodes\_waves::abortWave();
+}
+
+freezeProgress(args)
+{
+	level.freezeProgress = !level.freezeProgress;
+	if( level.freezeProgress )
+		iprintlnbold("Wave progress has been frozen!");
+	else
+		iprintlnbold("Wave progress has been unfrozen!");
 }
 
 restoreRank(args){

@@ -29,6 +29,7 @@
 */
 startRegularWave(){
 	level endon("game_ended");
+	level endon("abort_wave");
 	wavetype = "normal";
 	type = "normal";
 	
@@ -41,8 +42,10 @@ startRegularWave(){
 	// Type of spawning the zombies (from the sky, from spawn points, somewhere random etc.)
 	spawntype = 0;
 
+	level.gameState = "running";
+	
 	// Spawn all zombies of the wave one after another
-	for(i = 0; i < level.waveSize;){
+	for(;level.spawnedInWave < level.waveSize;){
 		// Only allow spawning when the limit of alive zombies isn't hit
 		if(level.botsAlive < level.dif_zomMax && !level.spawningDisabled){
 			// TODO: This was for testing purposes. Keep testing and remove.
@@ -50,13 +53,13 @@ startRegularWave(){
 				spawntype = 5;
 			// We look for bots that can be used to spawn. If none are found, we start over
 			if(isDefined(trySpawnZombie(undefined, spawntype)))
-				i++;
+				level.spawnedInWave++;
 		}
 		wait level.dif_zomSpawnRate;
 	}
 	
 	// Once the wave has ended, we clean up our stuff
-	postWave(wavetype, type);	
+	watchPostWave(wavetype, type);	
 }
 
 /**
@@ -74,6 +77,7 @@ startRegularWave(){
 */
 startSpecialWave(type){
 	level endon("game_ended");
+	level endon("abort_wave");
 	wavetype = "special";
 	type = type;
 	
@@ -82,9 +86,11 @@ startSpecialWave(type){
 	
 	// Start announcing the wave after the countdown
 	preWave(wavetype, type);
+	
+	level.gameState = "running";
 
 	// Spawn all zombies of the wave one after another
-	for (i = 0; i < level.waveSize;){
+	for (;level.spawnedInWave < level.waveSize;){
 	
 		// Only allow spawning when the limit of alive zombies isn't hit
 		if (level.botsAlive < level.dif_zomMax && !level.spawningDisabled){
@@ -96,14 +102,14 @@ startSpecialWave(type){
 			
 			// We look for bots that can be used to spawn. If none are found, we start over
 			if (isDefined(trySpawnZombie(toSpawn, toSpawnSpawntype))){
-				i++;
+				level.spawnedInWave++;
 			}
 		}
 		wait level.dif_zomSpawnRate;
 	}
 	
 	// Once the wave has ended, we clean up our stuff
-	postWave(wavetype, type);
+	watchPostWave(wavetype, type);
 }
 
 /**
@@ -132,7 +138,7 @@ startFinalWave(){
 	thread burstSpawner(level.burstSpawned);
 	
 	// Clean up after the wave
-	postWave(wavetype, type);
+	watchPostWave(wavetype, type);
 }
 
 /**
@@ -147,6 +153,8 @@ preIntermission(wavetype, type){
 		level.weStartedAtLeastOneGame = true;
 
 	level.intermission = 1;
+	
+	level.spawnedInWave = 0;
 	
 	// Get the wave size for the amount of waves played and amount of players for the given type of zombie
 	level.waveSize = getWaveSize(level.currentWave, type);
@@ -174,6 +182,9 @@ preIntermission(wavetype, type){
 *	@wavetype: String, defines the type of wave ("normal", "special" or "finale")
 */
 waveCountdown(wavetype){
+
+	level.gameState = "countdown";
+	
 	switch(wavetype){
 	
 		// Normal wave timer settings
@@ -458,11 +469,13 @@ preWave(wavetype, type){
 }
 
 /**
-*	Once a wave has been finished, we clean up everything for the next wave
+*	Waiting for the wave to end to start cleanup
 *	@wavetype: String, defines the type of wave ("normal", "special" or "finale")
 *	@type: String, the type of specialwave-zombies that appear 
 */
-postWave(wavetype, type){
+watchPostWave(wavetype, type){
+	level endon("abort_wave");
+
 	// Once we're through with spawning the zombies, watch if any of the remaining ones aren't getting killed
 	if(type != "boss")
 		thread killBuggedZombies();
@@ -470,6 +483,17 @@ postWave(wavetype, type){
 	// Wait until the wave is actually over
 	level waittill("wave_finished");
 	
+	postWave(wavetype, type);
+}
+
+/**
+*	Once a wave has been finished, we clean up everything for the next wave
+*	@wavetype: String, defines the type of wave ("normal", "special" or "finale")
+*	@type: String, the type of specialwave-zombies that appear 
+*/
+postWave(wavetype, type){
+	
+	iprintln("postWave!");
 	// Remove lights from players
 	if(type == "scary"){
 		level.flashlightEnabled = false;
@@ -484,9 +508,6 @@ postWave(wavetype, type){
 	
 	// Resets the environment (second argument is true)
 	waveAmbient(type, true);
-	
-	// Increment wave counter
-	level.currentWave++;
 }
 
 /**
@@ -500,7 +521,7 @@ waveAmbient(type, reset){
 	if(!isDefined(reset))
 		reset = false;
 	
-	// 
+	
 	if(!reset){
 		switch(type){
 		
@@ -627,7 +648,7 @@ burstSpawner(i){
 				wait 0.05;
 		}
 		
-		// Recalculate the mount of zombies once a burst is done
+		// Recalculate the amount of zombies once a burst is done
 		level notify("burst_done");
 	}
 }
@@ -902,6 +923,24 @@ watchWaveProgress()
 			break;
 	}
 	level notify("wave_finished");
+}
+
+/**
+*	Forcing the current wave to be aborted (only works while a wave is active!)
+*/
+abortWave()
+{
+	if( level.gameState == "running" )
+	{
+		iprintlnbold("Forcing current wave to end!");
+		level notify("abort_wave");
+		level notify("wave_finished");
+		
+		for (i = 0; i < level.bots.size; i++)
+			level.bots[i] suicide();
+			
+		postWave(level.waveType, level.currentType);	
+	}
 }
 
 /**

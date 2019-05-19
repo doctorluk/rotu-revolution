@@ -267,6 +267,9 @@ rotateWithParent(){
 
 spawnZombie(type, spawnpoint, bot)
 {
+	if( level.gameState != "running" )
+		return;
+		
 	if(!isDefined(bot))
 	{
 		bot = getAvailableBot();

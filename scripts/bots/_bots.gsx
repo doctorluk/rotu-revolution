@@ -276,6 +276,9 @@ rotateWithParent(){
 */
 spawnZombie( type, spawnpoint, bot )
 {
+	if( level.gameState != "running" )
+		return;
+		
 	// aquire a free bot if required
 	if( !isDefined(bot) || bot.hasSpawned )
 	{
