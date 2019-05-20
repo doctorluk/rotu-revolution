@@ -59,7 +59,6 @@ init()
 	level.napalmTummyGlowFX = loadfx("misc/napalm_zombie_tummyglow");
 	// level.lightningdogFX = loadfx("light/dog_lightning");
 	level.toxicFX = loadfx("misc/toxic_gas");
-	level.explodeFX = Loadfx("explosions/pyromaniac");
 	level.soulFX = loadfx("misc/soul");
 	level.groundSpawnFX = loadfx("misc/ground_rising");
 	// level.cloudSpawnFX = loadfx("zombies/thunderspawn");
@@ -69,6 +68,7 @@ init()
 	level.righteyeFX = loadfx("zombies/eye_glow_ri"); 
 	level.lefteyeFX = loadfx("zombies/eye_glow_le");
 	
+	level._effect["zom_explode"] = loadFX( "explosions/pyromaniac" );
 	level._effect["zom_gib_expl"] = loadFx( "gibbing/zombie1_explode" );
 	level._effect["zom_gib_head"] = loadFx( "gibbing/zombie1_head" );
 	level._effect["zom_gib_larm"] = loadFx( "gibbing/zombie1_larm" );
@@ -315,23 +315,24 @@ spawnZombie( type, spawnpoint, bot )
 	bot.incdammod = 1;				// damage increase for spawn protection TODO rename
 
 	// reset AI values
-	bot.alertLevel = 0;				// Has this zombie been alerted? 
-
-	// TODO rework to something more general in new AI
-	bot.wasInfluencedByMonkeyBomb = false;
-	bot.influencedByMonkeyBomb = undefined;
+	bot.zRage = 0;
+	bot.zInterest = 0;
+	bot.zWaypoint = undefined;
+	bot.zTarget = undefined;
+	bot.zTargetOrigin = undefined;
+	bot.zTargetWaypoint = undefined;
+	bot.zTargetOverride = false;
 
 	// apply the selected types data
 	bot scripts\bots\_types::loadZomType();
 	bot scripts\bots\_types::loadZomWeapon();
-
-	// TODO randomly pick movement speed based on run- and sprintChance
+	
+	// randomly pick movement speed based on run- and sprintChance
+	bot.zMovetype = "walk";
 	if( randomFloat(1) > bot.runChance )
-		bot.sprinting = true;
+		bot.zMovetype = "run";
 	else if( randomFloat(1) > bot.sprintChance )
-		bot.sprinting = false;
-	else
-		bot.sprinting = true;
+		bot.zMovetype = "sprint";
 	
 	// spawn the bot out of sigth to prevent bugged spawn animation
 	bot spawn( (0,0,-10000), (0,0,0) );
@@ -372,17 +373,9 @@ spawnZombie( type, spawnpoint, bot )
 	if( isDefined(spawnpoint.angles) )
 		bot setPlayerAngles( spawnpoint.angles );
 	
-	// TODO start AI as threads
-	/*
-	bot thread zomMain();
-	
-	bot thread zomGroan();
-	
-	bot thread freezeBotOnLC();
-	bot thread freezeBot();
-	
-	bot thread monkeyOverride();
-	*/
+	// start zombie AI thread
+	bot thread zThink();
+
 	return bot;
 }	/* spawnZombie */
 
@@ -941,7 +934,7 @@ Callback_BotKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir,
 			attacker scripts\players\_abilities::rechargeSpecial( 5 );
 		
 		if( attacker.curClass == "scout" && sMeansOfDeath == "MOD_HEAD_SHOT" && !attacker.isDown )
-			attacker scripts\players\_abilities::rechargeSpecial(10);
+			attacker scripts\players\_abilities::rechargeSpecial( 10 );
 		
 		// if(sWeapon == "bulletmod_poison")
 			// attacker iprintlnbold("Killed with POISON!");
@@ -971,7 +964,7 @@ Callback_BotKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir,
 		}
 	}
 	
-	self setOrigin( (0,0,-10000) );	// TODO is this required?
+//	self setOrigin( (0,0,-10000) );	// TODO is this required?
 	self.untargetable = true;
 	
 	if( self.type == "halfboss" )
@@ -984,7 +977,7 @@ Callback_BotKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir,
 	if( isDefined(self.effect) )
 		self.effect delete();
 	
-	wait 0.1;
+	wait (deathAnimDuration + 0.1);
 
 	self.hasSpawned = false;
 	self.parent = undefined;
@@ -993,7 +986,7 @@ Callback_BotKilled( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir,
 	level.botsAlive--;
 	
 	//level.zom_deaths ++;
-	level notify("bot_killed");
+	level notify( "bot_killed" );
 }	/* Callback_BotKilled */
 
 /**
@@ -2289,7 +2282,8 @@ alertZombies(origin, distance, alertPower, ignoreEnt)
 */
 
 /**
-* Main zombie ai algorithm.
+* Main zombie ai algorithm, tracks zombie target and makes him move and attack
+*	NOTE I did additional comments on ending brackets in an effort to make this a little more readable
 */
 zThink()
 {
@@ -2298,5 +2292,321 @@ zThink()
 	self endon( "kill_ai" );
 	self endon( "disconnect" );
 
+	bored = 0;				// time the zombie has no target
+	targetTime = undefined;	// time the target was last seen
 	
-}
+	nextWaypoint = undefined;
+	
+	/**
+	* AI variables
+	*	zTarget, Entity|Struct current target
+	*	zTargetOrigin, Vector3 last known target origin
+	*	zTargetWaypoint, Integer id of the last valid target waypoint
+	*	zTargetOverride, Bool if the current target is forced, e.g Money Bomb
+	*	zInterest, Integer interest value in the current target
+	*	zRage, Integer value of the current anger
+	*	zWaypoint, Integer id of the current waypoint
+	*	zMovetype, String movetype, crawl, walk, run, sprint
+	*/
+	
+	// start sub ai threads
+	self thread zMonitorLegs();			// monitor legs being shot off
+	
+	// get the current waypoint, if needed
+	if( !isDefined(self.zWaypoint) )
+		self.zWaypoint = getNearestEntityWp( self );
+	
+	// main thinking loop, updates the zombie target every tick
+	for(;;)
+	{
+		//
+		// TARGET AQUISITION & TRACKING
+		//
+		// check if we have a target and if it's still valid
+		if( isDefined(self.zTarget) )
+		{
+			// check if we can still see the target
+			if( self zSpot() )
+			{
+				// update the last known target origin
+				self.zTargetOrigin = self.zTarget.origin;
+				
+				// try to get the waypoint closest to the target
+				waypoint = getNearestEntityWp( self.zTarget );
+				
+				if( isDefined(waypoint) )
+				{
+					// update the current target waypoint, if required
+					if( !isDefined(self.zTargetWaypoint) || self.zTargetWaypoint != waypoint )
+					{
+						// update the target waypoint
+						self.zTargetWaypoint = waypoint;
+						
+						/#
+						if( level.dvar["zom_developer"] )
+							printLn( self.name, " new target waypoint" );
+						#/
+					}
+				}
+			}
+			else // loose the target
+			{
+				// memorize the time the target was lost
+				if( !isDefined(targetTime) )
+					targetTime = getTime();
+				else
+				{
+					// get the time difference when the zombie was lost
+					lostTime = (getTime() - targetTime)/10;
+					
+					// loose the target, if it's lost longer than zInterest*zRage
+					if( lostTime > self.zInterest*self.zRage )
+					{
+						targetTime = undefined;
+						self.zTarget = undefined;
+						
+						/#
+						if( level.dvar["zom_developer"] )
+							printLn( self.name, " target lost" );
+						#/
+					}
+				}
+			}
+		}	/* if( isDefined(self.zTarget) ) */
+		
+		// attempt to aquire a target, if we don't have one
+		if( !isDefined(self.zTarget) )
+		{
+			// try to get a suitable target
+			target = self zFindTarget();
+			if( isDefined(target) )
+			{
+				self.zTarget = target;
+				
+				/#
+				if( level.dvar["zom_developer"] )
+					printLn( self.name, " target found: ", self.zTarget );
+				#/
+			}
+			else
+			{
+				// aquire a random target, if idle for too long
+				if( randomInt(1000) <= bored )	// TODO adjustable, to make zombies bored faster/slower
+				{
+					if( isDefined(level.zomIdleBehavior) && level.zomIdleBehavior == "magic" )
+						self.zTarget = self zFindClosestTarget();
+					else
+					{
+						// get a random waypoint as target origin
+						self.zTargetWaypoint = level.waypoints[randomInt(level.waypointCount)];
+						self.zTargetOrigin = self.zTargetWaypoint.origin;
+					}
+					
+					/#
+					if( level.dvar["zom_developer"] )
+						printLn( self.name, " random target" );
+					#/
+				}
+				
+				// increase bored every frame we have no target and no target origin
+				if( !isDefined(self.zTargetOrigin) )
+					bored++;
+			}
+		}	/* if( !isDefined(self.zTarget) ) */
+		else
+			bored = 0;	// reset bored time
+		
+		// TODO check for barricades
+		
+		//
+		// WAYPOINTING & MOVEMENT
+		//
+		// check if we have anywhere to go
+		if( isDefined(self.zTargetOrigin) )
+		{
+			// get the distance to our target origin
+			tDist = distance( self.origin, self.zTargetOrigin );
+			
+			// check if we have arrived
+			if( tDist < 4 )
+			{
+				// clear the target origin
+				self.zTargetOrigin = undefined;
+				self botStop();
+			}
+			else
+			{
+				// make sure we have a target waypoint
+				if( !isDefined(self.zTargetWaypoint) )
+				{
+					waypoint = getNearestWp(self.zTargetOrigin);
+					if( waypoint > -1 )
+						self.zTargetWaypoint = waypoint;
+				}
+				
+				// get the AStarPath to the next waypoint
+				if( !isDefined(nextWaypoint) && isDefined(self.zTargetWaypoint) )
+					nextWaypoint = AStarSearch( self.zWaypoint, self.zTargetWaypoint );
+				
+				wDist = undefined;
+				if( nextWaypoint > -1 )
+				{
+					// get the distance to the next waypoint
+					wDist = distance( self.origin, level.waypoints[nextWaypoint].origin );
+					
+					// check if we have already arrive at the waypoint
+					if( wDist < 4 )
+					{
+						// set the waypoint as our current
+						self.zWaypoint = nextWaypoint;
+						// clear the nextWaypoint
+						nextWaypoint = undefined;
+					}
+				}
+				
+				// move to the next waypoint or the target origin
+				if( !isDefined(wDist) || tDist < wDist )
+					self zMove( self.zTargetOrigin );
+				else
+					if( isDefined(nextWaypoint) )
+						self zMove( level.waypoints[nextWaypoint].origin );
+			}
+		}
+		
+		// wait for the next server frame
+		wait 0.05;
+	}	/* for(;;) */
+}	/* zThink */
+
+/**
+* Waits for the zombie to loose a leg, making him go prone
+*/
+zMonitorLegs()
+{
+	self endon( "death" );
+	self endon( "killed" );
+	self endon( "kill_ai" );
+	self endon( "disconnect" );
+	
+	// make sure the zombie isn't already crawling
+	if( self.zMovetype == "crawl" )
+		return;
+	
+	// wait for the zombie to loose a leg
+	self waittill( "lost_leg" );
+	
+	/#
+	if( level.dvar["zom_developer"] )
+		printLn( self, " lost a leg!" );
+	#/
+	
+	// put the zombie into prone/crawl stance and save it
+	self botAction( "+goprone" );
+	self.zMovetype = "crawl";
+}	/* zMonitorLegs */
+
+/**
+* Calculates the visibility of the given or current zombie target
+*/
+zSpot( target )
+{
+	// default to the currently locked on target
+	if( !isDefined(target) )
+		target = self.zTarget;
+	
+	// make sure we have a target now
+	if( !isDefined(target) )
+		return;
+
+	// assume the target is not visible
+	visible = 0.0;
+	
+	// get the zombies eye position
+	eye = self getTagOrigin( "tag_eye" );
+	
+	// check how visible a player is
+	if( isPlayer(target) )
+		visible = target sightConeTrace( eye, self );
+	else	// just assume everything else is fully visible
+	{
+		if( bulletTracePassed( eye, target.origin, false, self ) )
+			visible = 1.0;
+	}
+	
+	// make target less visible, the further away
+	visible = max( 0.0, visible - distance( self.origin, target.origin )/2048 );		// TODO make max visibility distance adjustable
+	
+	// show debugging line of sight
+	/#
+	if( level.dvar["zom_developer"] )
+		line( eye, target.origin, (1-visible,visible,0) );
+	#/
+	
+	// return the visible value
+	return visible;
+}	/* zSpot */
+
+/**
+* Makes the zombie move to the given origin
+*/
+zMove( origin )
+{
+	self botLookAt( origin );
+	self botMoveTo( origin );
+}	/* zMove */
+
+/**
+* Returns the most feasible target for the zombie
+*/
+zFindTarget()
+{
+	target = undefined;			// best target
+	targetValue = undefined;	// best target value
+
+	// check for players
+	players = level.players;
+	for( i=0; i<players.size; i++ )
+	{
+		player = players[i];
+		if( isDefined(player) )
+		{
+			visible = self zSpot( player );
+			if( !isDefined(targetValue) || visible > targetValue )
+			{
+				target = player;
+				targetValue = visible;
+			}
+		}
+	}
+	
+	// TODO aquire other targets as well
+	
+	return target;
+}	/* zFindTarget */
+
+/**
+* Returns the closest target for the zombie.
+*/
+zFindClosestTarget()
+{
+	target = undefined;			// closest target
+	targetDist = undefined;
+
+	// check for players
+	players = level.players;
+	for( i=0; i<players.size; i++ )
+	{
+		player = players[i];
+		if( isDefined(player) )
+		{
+			dist = distanceSquared( self.origin, player.origin );
+			if( !isDefined(targetDist) || targetDist > dist  )
+			{
+				target = player;
+				targetDist = dist;
+			}
+		}
+	}
+	
+	return target;
+}	/* zFindClosest */

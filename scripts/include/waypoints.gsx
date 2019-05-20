@@ -24,7 +24,8 @@ loadWaypoints()
 	// create the full filepath for the waypoint csv file
 	fileName =  "waypoints/"+ toLower(getDvar("mapname")) + "_wp.csv";
 	
-	if( isDefined( level.waypoints ) && level.waypoints.size > 0 )	// In case the map has loaded its own waypoints already
+	// In case the map has loaded its own waypoints already
+	if( isDefined( level.waypoints ) && level.waypoints.size > 0 )
 	{
 		if( !FS_TestFile( fileName ) )
 			thread dumpWp( fileName );
@@ -38,11 +39,13 @@ loadWaypoints()
 	level.waypointCount = 0;
 	level.waypointLoops = 0;
 
-/#	printLn("Getting waypoints from csv: "+fileName);		#/
+/#	printLn( "Getting waypoints from csv: " + fileName );		#/
 
-	// get the waypoint count, then get all the waypoint data
+	// get the waypoint count
 	level.waypointCount = int(tableLookup(fileName, 0, 0, 1));
-	for(i=0; i<level.waypointCount; i++)
+	
+	// get all waypoints
+	for( i=0; i<level.waypointCount; i++ )
 	{
 		// create a struct for each waypoint
 		waypoint = spawnStruct();
@@ -59,13 +62,13 @@ loadWaypoints()
 	}
 
 	// go through all waypoints and link them
-	for(i=0; i<level.waypointCount; i++)
+	for( i=0; i<level.waypointCount; i++ )
 	{
 		waypoint = level.waypoints[i]; 
 		
 		// get the children waypoint IDs and seperate them
-		strLnk = tableLookup(fileName, 0, i+1, 2);
-		tokens = strTok(strLnk, " ");
+		strLnk = tableLookup( fileName, 0, i+1, 2 );
+		tokens = strTok( strLnk, " " );
 		
 		// set the waypoints children count
 		waypoint.childCount = tokens.size;
@@ -86,6 +89,44 @@ loadWaypoints()
 }
 
 /**
+* Returns the ID of the waypoint closest to the given entity
+*
+*	@target: Entity to find the closest waypoint to
+*/
+getNearestEntityWp( target )
+{
+	// set initial values for the waypoint
+	nearest = undefined;
+	waypoint = undefined;
+
+	// loop through all waypoints
+	for( i=0; i<level.waypointCount; i++ )
+	{
+		// make sure the waypoint isn't obscured
+		if( bulletTracePassed( target.origin, level.waypoints[i].origin, false, target ) )
+		{
+			line( target.origin, level.waypoints[i].origin, (0,1,0) );
+			
+			// get the squared distance
+			dist = distanceSquared( target.origin, level.waypoints[i].origin );
+			
+			// check if the distance is closer than the currently closest
+			if( !isDefined(nearest) || dist < nearest )
+			{
+				// memorize the current waypoint
+				nearest = dist;
+				waypoint = i;
+			}
+		}
+		else
+			line( target.origin, level.waypoints[i].origin, (1,0,0) );
+	}
+
+	// return the ID of the closest waypoint
+	return waypoint;
+}	/* getNearestEntityWp */
+
+/**
 * Returns the ID of the waypoint closest to the given origin, -1 if none is found.
 *
 *	@origin: Origin to find the closest waypoint to
@@ -97,7 +138,7 @@ getNearestWp2(origin)
 	nearestDist = 9999999999;
 
 	// loop through all waypoints
-	for(i = 0; i < level.waypointCount; i++)
+	for( i=0; i<level.waypointCount; i++ )
 	{
 		// get the squared distance
 		dist = distanceSquared(origin, level.waypoints[i].origin);
