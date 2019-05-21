@@ -739,16 +739,7 @@ glowMessage(label, text, glowcolor, duration, speed, size, sound, height)
 	self notify("hud_announce_done");
 }
 
-welcomeMessage(label, text, glowcolor, duration, speed, size, sound, height)
-{
-	self endon("disconnect");
-	
-	if(!isDefined(height))
-	height = 64;
-	
-	showWelcomeMessage(label, text, glowcolor, duration, speed, size, height);
-	wait duration;
-}
+
 
 overlayMessage(label, text, glowcolor, size)
 {
@@ -840,33 +831,3 @@ showFinaleMessage(label, text, glowcolor, duration, speed, size)
 	
 }
 
-showWelcomeMessage(label, text, glowcolor, duration, speed, size, height)
-{
-	
-	self.welcome_message.elemType = "font";
-	self.welcome_message.font = "objective";
-	
-	if (!isdefined(size))
-		self.welcome_message.fontscale = 2;
-	else
-		self.welcome_message.fontscale = size;
-		
-	self.welcome_message.x = 0;
-	self.welcome_message.y = height;
-	self.welcome_message.glowAlpha = 1;
-	self.welcome_message.hideWhenInMenu = true;
-	self.welcome_message.archived = false;
-	self.welcome_message.alignX = "center";
-	self.welcome_message.alignY = "middle";
-	self.welcome_message.horzAlign = "center";
-	self.welcome_message.vertAlign = "top";
-	self.welcome_message.alpha = 1;
-	self.welcome_message.glowAlpha = 1;
-	self.welcome_message.glowColor = glowcolor;
-	self.welcome_message.label = label;
-	if (isdefined(text))
-	self.welcome_message setText(text);
-
-	self.welcome_message setPulseFX(speed, int((duration)*1000), 1000);
-	
-}

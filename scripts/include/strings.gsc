@@ -126,7 +126,9 @@ getFullClassName(){
 }
 
 
-/* Returns the approximate required time to display a string on a client, increasing the display time for every 4 characters of a string */
+/**
+*	Returns the approximate required time to display a string on a client, increasing the display time for every 4 characters of a string
+*/
 getTimeForString(stringCount, min){
 	if(!isDefined(min))
 		min = 0;
@@ -134,7 +136,7 @@ getTimeForString(stringCount, min){
 	stringCount -= 4;
 	while(stringCount > 0){
 		stringCount -= 4;
-		time += 0.4;
+		time += 0.1;
 	}
 	return time;
 }

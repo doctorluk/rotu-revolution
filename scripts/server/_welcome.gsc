@@ -15,13 +15,15 @@
 
 /***
 *
-*	TODO: Add file description
+* 	_welcome.gsc
+*	Handles the creation and showing of welcome messages to newly connected players
 *
 */
 
 #include scripts\include\hud;
 #include scripts\include\data;
 #include scripts\include\strings;
+
 init()
 {
 	loadSettings();
@@ -30,13 +32,13 @@ init()
 loadSettings()
 {
 	level.welcomeMessages = [];
-	index = 1;
-	get = getdvar("message_welcome"+index);
-	while (get!="")
+	i = 0;
+	message = getDvar( "message_welcome" + (i+1) );
+	while( message != "" )
 	{
-		level.welcomeMessages[index-1] = get;
-		index ++;
-		get = getdvar("message_welcome"+index);
+		level.welcomeMessages[i] = message;
+		i++;
+		message = getDvar( "message_welcome" + (i+1) );
 	}
 	
 }
@@ -44,21 +46,23 @@ loadSettings()
 onPlayerSpawn()
 {
 	self endon("disconnect");
-	if (!level.dvar["game_welcomemessages"])
-	return;
+	
+	if ( !level.dvar["game_welcomemessages"] )
+		return;
 	
 	wait 2;
 	
-	if (!isdefined(self.hasBeenWelcomed))
+	if ( !isDefined(self.hasBeenWelcomed) )
 	{
 		self.hasBeenWelcomed = true;
-		for (i=0; i<level.welcomeMessages.size; i++)
+		for ( i = 0; i < level.welcomeMessages.size; i++ )
 		{
 			duration = getTimeForString(level.welcomeMessages[i].size, 3);
-			self thread scripts\gamemodes\_hud::welcomeMessage(&"", level.welcomeMessages[i], (1,1,1), duration, 100, 1.4, undefined, 120);
+			self thread welcomeMessage(&"", level.welcomeMessages[i], (1,1,1), duration, 25, 1.4, undefined, 120);
 			wait duration;
 		}
 		if(isDefined(self.welcome_message))
 			self.welcome_message destroy();
 	}
 }
+
