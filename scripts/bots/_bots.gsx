@@ -37,6 +37,7 @@ init()
 	level.freezeBots = false;			// freeze all bots
 	level.bossIsOnFire = false;			// TODO move this to the boss zombie, if possible
 	level.silenceZombies = false;		// disable zombie sound
+	level.maxBoredom = 400;				// Limit at which lost zombies will aquire a target without seeing one 
 
 	// precache zombie weapons
 //	precacheItem( "dog_mp" );
@@ -2292,8 +2293,8 @@ zThink()
 	self endon( "kill_ai" );
 	self endon( "disconnect" );
 
-	bored = 0;				// time the zombie has no target
-	targetTime = undefined;	// time the target was last seen
+	bored = level.maxBoredom;	// make the zombie look for a target after being spawned
+	targetTime = undefined;		// time the target was last seen
 	
 	nextWaypoint = undefined;
 	
@@ -2360,7 +2361,7 @@ zThink()
 					lostTime = (getTime() - targetTime)/10;
 					
 					// loose the target, if it's lost longer than zInterest*zRage
-					if( lostTime > self.zInterest*self.zRage )
+					if( lostTime > self.zInterest * self.zRage )
 					{
 						targetTime = undefined;
 						self.zTarget = undefined;
@@ -2391,7 +2392,7 @@ zThink()
 			else
 			{
 				// aquire a random target, if idle for too long
-				if( randomInt(1000) <= bored )	// TODO adjustable, to make zombies bored faster/slower
+				if( bored >= level.maxBoredom )	// TODO adjustable, to make zombies bored faster/slower
 				{
 					if( isDefined(level.zomIdleBehavior) && level.zomIdleBehavior == "magic" )
 						self.zTarget = self zFindClosestTarget();
@@ -2410,7 +2411,7 @@ zThink()
 				
 				// increase bored every frame we have no target and no target origin
 				if( !isDefined(self.zTargetOrigin) )
-					bored++;
+					bored += randomint(10);
 			}
 		}	/* if( !isDefined(self.zTarget) ) */
 		else
@@ -2454,10 +2455,10 @@ zThink()
 					// get the distance to the next waypoint
 					wDist = distance( self.origin, level.waypoints[nextWaypoint].origin );
 					
-					// check if we have already arrive at the waypoint
+					// check if we have already arrived at the waypoint
 					if( wDist < 4 )
 					{
-						// set the waypoint as our current
+						// set the waypoint as our current one
 						self.zWaypoint = nextWaypoint;
 						// clear the nextWaypoint
 						nextWaypoint = undefined;
@@ -2561,17 +2562,18 @@ zMove( origin )
 zFindTarget()
 {
 	target = undefined;			// best target
-	targetValue = undefined;	// best target value
+	targetValue = 0.01;			// best target value
 
 	// check for players
 	players = level.players;
-	for( i=0; i<players.size; i++ )
+	for( i = 0; i < players.size; i++ )
 	{
 		player = players[i];
+		
 		if( isDefined(player) )
 		{
 			visible = self zSpot( player );
-			if( !isDefined(targetValue) || visible > targetValue )
+			if( visible > targetValue )
 			{
 				target = player;
 				targetValue = visible;
@@ -2594,7 +2596,7 @@ zFindClosestTarget()
 
 	// check for players
 	players = level.players;
-	for( i=0; i<players.size; i++ )
+	for( i = 0; i < players.size; i++ )
 	{
 		player = players[i];
 		if( isDefined(player) )
