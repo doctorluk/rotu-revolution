@@ -330,10 +330,13 @@ spawnZombie( type, spawnpoint, bot )
 	
 	// randomly pick movement speed based on run- and sprintChance
 	bot.zMovetype = "walk";
-	if( randomFloat(1) > bot.runChance )
-		bot.zMovetype = "run";
-	else if( randomFloat(1) > bot.sprintChance )
-		bot.zMovetype = "sprint";
+	if( isDefined(self.walkOnly) )
+	{
+		if( randomFloat(1) > bot.runChance )
+			bot.zMovetype = "run";
+		else if( randomFloat(1) > bot.sprintChance )
+			bot.zMovetype = "sprint";
+	}
 	
 	// spawn the bot out of sigth to prevent bugged spawn animation
 	bot spawn( (0,0,-10000), (0,0,0) );
@@ -2392,8 +2395,9 @@ zThink()
 			else
 			{
 				// aquire a random target, if idle for too long
-				if( bored >= level.maxBoredom )	// TODO adjustable, to make zombies bored faster/slower
+				if( bored >= level.maxBoredom )
 				{
+					// TODO find a better way
 					if( isDefined(level.zomIdleBehavior) && level.zomIdleBehavior == "magic" )
 						self.zTarget = self zFindClosestTarget();
 					else
@@ -2415,7 +2419,7 @@ zThink()
 			}
 		}	/* if( !isDefined(self.zTarget) ) */
 		else
-			bored = 0;	// reset bored time
+			bored = 0;	// reset bored time when we have a target
 		
 		// TODO check for barricades
 		
@@ -2433,6 +2437,8 @@ zThink()
 			{
 				// clear the target origin
 				self.zTargetOrigin = undefined;
+				
+				// make the bot stop
 				self botStop();
 			}
 			else
@@ -2501,6 +2507,9 @@ zMonitorLegs()
 		printLn( self, " lost a leg!" );
 	#/
 	
+	// stop the bot from sprinting
+	self botAction( "-sprint" );
+	
 	// put the zombie into prone/crawl stance and save it
 	self botAction( "+goprone" );
 	self.zMovetype = "crawl";
@@ -2552,6 +2561,17 @@ zSpot( target )
 */
 zMove( origin )
 {
+	// make the bot run
+	self botAction( "-ads" );
+	self botAction( "-sprint" );
+
+	// max the bot sprint or walk (going ads), depending on move type
+	if( self.zMovetype == "sprint" )
+		self botAction( "+sprint" );
+	else if( self.zMovetype == "walk" )
+		self botAction( "+ads" );
+
+	// make the bot move to the given origin
 	self botLookAt( origin );
 	self botMoveTo( origin );
 }	/* zMove */
@@ -2609,6 +2629,8 @@ zFindClosestTarget()
 			}
 		}
 	}
+	
+	// TODO possibly aquire other targets as well
 	
 	return target;
 }	/* zFindClosest */

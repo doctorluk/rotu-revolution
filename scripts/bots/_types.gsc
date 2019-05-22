@@ -331,7 +331,11 @@ loadZomType()
 	self.infectionChance = struct.infectionChance;
 	self.rewardMultiplier = struct.rewardMultiplier;
 
-	// apply walk only, if this is a walk only wave
+	// apply the move speed to the zombie
+	self setMoveSpeedScale( self.moveSpeed );
+
+	// random chance to prevent the bot from running
+	self.walkOnly = undefined;
 	if( randomFloat(1) > level.slowBots )
 		self.walkOnly = true;
 }	/* loadZomType */
