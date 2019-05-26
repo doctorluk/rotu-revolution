@@ -60,9 +60,14 @@ loadSettings()
 	/*
 	* ZOMBIE SETTINGS
 	*/
-	// Zombie debug mode
+	// Zombie ai debugging mode
 	dvarBool(	"zom",			"developer",			0);
 	
+	// Max zombie boredom, before they start to roam
+	dvarInt(	"zom",			"max_boredom",			400,	10,		4000 );
+	
+	// Max zombie sight range
+	dvarInt(	"zom",			"sight_range",			2000,	100,	10000 );
 	
 	/*
 	* ROTU GAMETYPE SETTINGS

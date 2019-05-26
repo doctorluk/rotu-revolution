@@ -27,6 +27,7 @@ loadWaypoints()
 	// In case the map has loaded its own waypoints already
 	if( isDefined( level.waypoints ) && level.waypoints.size > 0 )
 	{
+		// dump the waypoints for the lua script
 		if( !FS_TestFile( fileName ) )
 			thread dumpWp( fileName );
 		else
@@ -39,7 +40,9 @@ loadWaypoints()
 	level.waypointCount = 0;
 	level.waypointLoops = 0;
 
-/#	printLn( "Getting waypoints from csv: " + fileName );		#/
+	/#	
+	printLn( "Getting waypoints from csv: " + fileName );
+	#/
 
 	// get the waypoint count
 	level.waypointCount = int(tableLookup(fileName, 0, 0, 1));
@@ -78,15 +81,18 @@ loadWaypoints()
 			waypoint.children[j] = int(tokens[j]);
 	}
 
-	wait .05;
-
+	// dump the waypoints for the lua script
 	if( !FS_TestFile( fileName ) )
 		thread dumpWp( fileName );
 	else
 		loadWaypoints_Internal( getDvar( "fs_game" ) + "/" + fileName );
 
-	//thread drawWP();
-}
+	// draw waypoints for debugging
+	/#
+	if( getDvarInt("dev_draw_waypoints") > 0 )
+		thread drawWP();
+	#/
+}	/* loadWaypoints */
 
 /**
 * Returns the ID of the waypoint closest to the given entity
@@ -105,8 +111,6 @@ getNearestEntityWp( target )
 		// make sure the waypoint isn't obscured
 		if( bulletTracePassed( target.origin, level.waypoints[i].origin, false, target ) )
 		{
-			line( target.origin, level.waypoints[i].origin, (0,1,0) );
-			
 			// get the squared distance
 			dist = distanceSquared( target.origin, level.waypoints[i].origin );
 			
@@ -118,8 +122,6 @@ getNearestEntityWp( target )
 				waypoint = i;
 			}
 		}
-		else
-			line( target.origin, level.waypoints[i].origin, (1,0,0) );
 	}
 
 	// return the ID of the closest waypoint
@@ -131,8 +133,12 @@ getNearestEntityWp( target )
 *
 *	@origin: Origin to find the closest waypoint to
 */
-getNearestWp2(origin)
+getNearestWp2( origin )
 {
+	/#
+	printLn( "Called getNearestWp2, use getNearestWp from LUA for faster results!" );
+	#/
+
 	// set initial values for the waypoint
 	nearestWp = -1;
 	nearestDist = 9999999999;
@@ -154,9 +160,12 @@ getNearestWp2(origin)
 
 	// return the ID of the closest waypoint
 	return nearestWp;
-}
+}	/* getNearestWp2 */
 
-// 
+//
+// PATHFINDING
+//
+
 /**
 * Returns the A-Star path from one waypoint to another.
 *	Note: ASTAR PATHFINDING ALGORITHM: CREDITS GO TO PEZBOTS!
@@ -166,6 +175,10 @@ getNearestWp2(origin)
 */
 AStarSearch2(startWp, goalWp)
 {
+	/#
+	printLn( "Called AStarSearch2, use AStarSearch from LUA for faster results!" );
+	#/
+
 	// info regarding the A-Star Algorithm can be found here:
 	// https://en.wikipedia.org/wiki/A*_search_algorithm
 
@@ -363,29 +376,12 @@ PQExists(Q, n, QSize)
 }
 
 //
-// DEBUG
+// LUA Export
 //
 
 /**
-* Draws all waypoints and connections between waypoints for debugging.
+* Dumps all loaded waypoints into a csv file on the local filesystem, for lua A* to use
 */
-drawWP()
-{
-	for(;;)
-	{
-		for(i = 0; i < level.waypointCount; i++)
-		{
-			wp = level.waypoints[i];
-			line(wp.origin, wp.origin + (0,0,96), (0,1,0));
-			
-			for(j = 0; j < wp.childCount; j++)
-				line(wp.origin, level.waypoints[wp.child[j]].origin, (0,0,1));
-		}
-		
-		wait 0.05;
-	}
-}
-
 dumpWp( path )
 {
 	dump = [];
@@ -403,14 +399,20 @@ dumpWp( path )
 	
 	writeToFile( path, dump );
 	loadWaypoints_Internal( getDvar( "fs_game" ) + "/" + path );
-}
+}	/* dumpWp */
 
+/**
+* Returns the given Vector3 as a formated string
+*/
 dumpvec3( v )
 {
 	string = "" + v[ 0 ] + " " + v[ 1 ] + " " + v[ 2 ];
 	return string;
 }
 
+/**
+* Returns the given waypoint child array as a formated string
+*/
 dumpchildren( c )
 {
 	string = "";
@@ -422,12 +424,18 @@ dumpchildren( c )
 	return string;
 }
 
+/**
+* Write the given array into the given file handle
+*/
 writeArray( handle, array )
 {
 	for( i = 0; i < array.size; i++ )
 		FS_WriteLine( handle, array[ i ] );
 }
 
+/**
+* Writes the given string or array into the file at the given path
+*/
 writeToFile( path, w )
 {
 	file = FS_FOpen( path, "write" );
@@ -443,4 +451,28 @@ writeToFile( path, w )
 	FS_FClose( file );
 	
 	return true;
+}
+
+//
+// DEBUG
+//
+
+/**
+* Draws all waypoints and connections between waypoints for debugging.
+*/
+drawWP()
+{
+	for(;;)
+	{
+		for( i=0; i<level.waypointCount; i++ )
+		{
+			wp = level.waypoints[i];
+			line(wp.origin, wp.origin + (0,0,96), (0,1,0));
+			
+			for(j = 0; j < wp.childCount; j++)
+				line(wp.origin, level.waypoints[wp.child[j]].origin, (0,0,1));
+		}
+		
+		wait 0.05;
+	}
 }

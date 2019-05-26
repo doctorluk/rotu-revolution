@@ -37,7 +37,6 @@ init()
 	level.freezeBots = false;			// freeze all bots
 	level.bossIsOnFire = false;			// TODO move this to the boss zombie, if possible
 	level.silenceZombies = false;		// disable zombie sound
-	level.maxBoredom = 400;				// Limit at which lost zombies will aquire a target without seeing one 
 
 	// precache zombie weapons
 //	precacheItem( "dog_mp" );
@@ -70,6 +69,8 @@ init()
 	level.lefteyeFX = loadfx("zombies/eye_glow_le");
 	
 	level._effect["zom_explode"] = loadFX( "explosions/pyromaniac" );
+	
+	// blood and gore splatters
 	level._effect["zom_gib_expl"] = loadFx( "gibbing/zombie1_explode" );
 	level._effect["zom_gib_head"] = loadFx( "gibbing/zombie1_head" );
 	level._effect["zom_gib_larm"] = loadFx( "gibbing/zombie1_larm" );
@@ -80,21 +81,21 @@ init()
 	// init bot realated scripts
 	thread loadWaypoints();
 	thread scripts\bots\_types::init();
+	thread scripts\bots\_debug::init();
 
-	// waypoint debugging
-	level.botsLookingForWaypoints = 0;	// number of bots runnuing A* at the moment
+	// pathfinding debugging
+	// NOTE this is more or less obsolete with the lua plugin on 1.8
+	level.botsLookingForWaypoints = 0;			// number of bots runnuing A* at the moment
 	if( getDvar( "max_waypoint_bots" ) == "" )
-		setDvar( "max_waypoint_bots", 10 );
+		setDvar( "max_waypoint_bots", 10 );		// max number of bots running A* at the moment
 
 	// wait for reconnecting bots
 	wait 1;
 	
+	// create desired number of bots
 	thread loadBots( level.dvar["bot_count"] - level.botsLoaded );
 	
-	thread onMonkeyExplosion();
-	thread scripts\bots\_debug::init();
-
-	//thread drawWP();
+	thread onMonkeyExplosion();				// TODO rework this, possibly part of AI
 }	/* init */
 
 // LOADING BOTS
@@ -139,6 +140,7 @@ loadBot()
 	// put the bot into the bots array
 	level.bots[level.bots.size] = self;
 
+	// flag the bot as such and as not spawned
 	self.isBot = true;
 	self.hasSpawned = false;
 	
@@ -165,9 +167,11 @@ loadBot()
 */
 getAvailableBot()
 {
-	for(i=0; i<level.bots.size; i++)
+	// go through all bots
+	for( i=0; i<level.bots.size; i++ )
 	{
-		if(level.bots[i].hasSpawned == false)
+		// return the bot, if it's hasSpawned flag isn't set
+		if( level.bots[i].hasSpawned == false )
 			return level.bots[i];
 	}
 }	/* getAvailableBot */
@@ -266,7 +270,7 @@ rotateWithParent(){
 		self setPlayerAngles( self.parent.angles );
 		wait 0.05;
 	}
-}
+}	/* rotateWithParent */
 
 /**
 * Spawn a bot as the given type at the given spawnpoint
@@ -330,7 +334,7 @@ spawnZombie( type, spawnpoint, bot )
 	
 	// randomly pick movement speed based on run- and sprintChance
 	bot.zMovetype = "walk";
-	if( isDefined(self.walkOnly) )
+	if( !isDefined(self.walkOnly) )
 	{
 		if( randomFloat(1) > bot.runChance )
 			bot.zMovetype = "run";
@@ -440,10 +444,6 @@ Callback_BotDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWea
 	// don't damage clients that are immune to this type of damage
 	if( !self scripts\bots\_types::onDamage(self.type, sMeansOfDeath, sWeapon, iDamage, eAttacker) )
 		return;
-
-	// increase the alert level of the bot
-	if( isDefined(self.alertLevel) )
-		self.alertLevel += 200;
 
 	// Apply the player related damage calculations
 	if( isDefined(eAttacker) && isPlayer(eAttacker) && !eAttacker.isBot )
@@ -810,6 +810,9 @@ followTarget( target, offset )
 	}
 }	/* followTarget */
 
+/**
+* Applies fire effect to the bot, caused by the given attacker
+*/
 igniteBot( eAttacker )
 {
 	self.isOnFire = true;
@@ -820,7 +823,10 @@ igniteBot( eAttacker )
 		self thread scripts\bots\_types::createEffectEntity(level.incendiary_FX, "j_head", (0,0,-35)); // Prevent effect from being too far up above the head
 }	/* igniteBot */
 
-poisonBot(eAttacker)
+/**
+* Applies poison effect to the bot, caused by the given attacker
+*/
+poisonBot( eAttacker )
 {
 	self.isPoisoned = true;
 	self thread damageOverTime(eAttacker, (self.maxhealth * 0.05), 1, "poison");
@@ -830,6 +836,9 @@ poisonBot(eAttacker)
 		self thread scripts\bots\_types::createEffectEntity(level.poisoned_FX, "j_head", (0,0,-35)); // Prevent effect from being too far up above the head
 }	/* poisonBot */
 
+/**
+* Keeps damaging the bot with the given damage values
+*/
 damageOverTime(eAttacker, damage, time, type)
 {
 	self endon("disconnect");
@@ -846,6 +855,9 @@ damageOverTime(eAttacker, damage, time, type)
 	}
 }	/* damageOverTime */
 
+/**
+* Adds the given player to the assist tracking of the zombie
+*/
 addToAssist(player, damage)
 {
 	if(!isDefined(self.damagedBy))
@@ -2254,8 +2266,12 @@ checkForBarricade(targetposition)
 	return 0;
 }
 
+/**
+* Alerts all zombies based on the given values
+*/
 alertZombies(origin, distance, alertPower, ignoreEnt)
 {
+	// TODO rework this
 	for (i=0; i < level.bots.size; i++)
 	{
 		if (isdefined(ignoreEnt))
@@ -2277,7 +2293,7 @@ alertZombies(origin, distance, alertPower, ignoreEnt)
 			}
 		}
 	}
-}
+}	/* alertZombies */
 
 
 /**
@@ -2296,8 +2312,8 @@ zThink()
 	self endon( "kill_ai" );
 	self endon( "disconnect" );
 
-	bored = level.maxBoredom;	// make the zombie look for a target after being spawned
-	targetTime = undefined;		// time the target was last seen
+	bored = level.dvar["zom_max_boredom"];	// make the zombie look for a target after being spawned
+	targetTime = undefined;				// time the target was last seen
 	
 	nextWaypoint = undefined;
 	
@@ -2353,7 +2369,7 @@ zThink()
 					}
 				}
 			}
-			else // loose the target
+			else // loose the target, depending on interest and rage
 			{
 				// memorize the time the target was lost
 				if( !isDefined(targetTime) )
@@ -2395,7 +2411,7 @@ zThink()
 			else
 			{
 				// aquire a random target, if idle for too long
-				if( bored >= level.maxBoredom )
+				if( bored >= level.dvar["zom_max_boredom"] )
 				{
 					// TODO find a better way
 					if( isDefined(level.zomIdleBehavior) && level.zomIdleBehavior == "magic" )
@@ -2495,23 +2511,24 @@ zMonitorLegs()
 	self endon( "kill_ai" );
 	self endon( "disconnect" );
 	
-	// make sure the zombie isn't already crawling
+	// nothing to do, if the zombie is already crawling
 	if( self.zMovetype == "crawl" )
+		return;
+		
+	// nothing to do, if there are no damaged leg models
+	if( !isDefined(level.zom_models[self.body].legsOff) && !isDefined(level.zom_models[self.body].legsROff) && !isDefined(level.zom_models[self.body].legsLOff) )
 		return;
 	
 	// wait for the zombie to loose a leg
 	self waittill( "lost_leg" );
 	
-	/#
-	if( level.dvar["zom_developer"] )
-		printLn( self, " lost a leg!" );
-	#/
-	
-	// stop the bot from sprinting
+	// stop the bot from walking & sprinting
+	self botAction( "-ads" );
 	self botAction( "-sprint" );
 	
 	// put the zombie into prone/crawl stance and save it
 	self botAction( "+goprone" );
+
 	self.zMovetype = "crawl";
 }	/* zMonitorLegs */
 
@@ -2531,6 +2548,28 @@ zSpot( target )
 	// assume the target is not visible
 	visible = 0.0;
 	
+	// check if target is alive and targetable
+	if( !target.isObj )
+	{
+		if( !target.isAlive )
+			return visible;
+
+		if( !target.isTargetable )
+			return visible;
+	}
+
+	// check if the target is defined as visible by script
+	if( !target.visible )
+		return visible;
+	
+	// check if the target is even in front of the bot
+	fwdDir = anglesToForward( self getPlayerAngles() );
+	dirToTarget = vectorNormalize( target.origin-self.origin );
+	dot = vectorDot( fwdDir, dirToTarget );
+	if( dot < -0.2 )
+		return visible;
+		
+	
 	// get the zombies eye position
 	eye = self getTagOrigin( "tag_eye" );
 	
@@ -2539,17 +2578,18 @@ zSpot( target )
 		visible = target sightConeTrace( eye, self );
 	else	// just assume everything else is fully visible
 	{
+		// NOTE we can possibly use sightConeTrace for certain other objects as well, gotta try that out
 		if( bulletTracePassed( eye, target.origin, false, self ) )
 			visible = 1.0;
 	}
 	
 	// make target less visible, the further away
-	visible = max( 0.0, visible - distance( self.origin, target.origin )/2048 );		// TODO make max visibility distance adjustable
+	visible = max( 0.0, visible - distance( self.origin, target.origin )/level.dvar["zom_sight_range"] );
 	
 	// show debugging line of sight
 	/#
 	if( level.dvar["zom_developer"] )
-		line( eye, target.origin, (1-visible,visible,0) );
+		line( eye, target.origin, (1-visible,visible,0), false, 10 );
 	#/
 	
 	// return the visible value
@@ -2565,7 +2605,7 @@ zMove( origin )
 	self botAction( "-ads" );
 	self botAction( "-sprint" );
 
-	// max the bot sprint or walk (going ads), depending on move type
+	// make the bot sprint or walk (going ads), depending on move type
 	if( self.zMovetype == "sprint" )
 		self botAction( "+sprint" );
 	else if( self.zMovetype == "walk" )

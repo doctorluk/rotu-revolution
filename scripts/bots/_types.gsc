@@ -58,12 +58,12 @@ init()
 //	addZomModel( name, torso, headOff, torsoROff, torsoLOff, legs, legsROff, legsLOff, legsOff )
 //	addZomHead( head, models )
 
-	// BO2 Tranzit
+	// register BO2 Tranzit models
 	models = [];
 	models[models.size] = addZomModel( "zom_zombie1_torso", "zom_head_off", "zom_zombie1_torso_rarmoff", "zom_zombie1_torso_larmoff", "zom_zombie1_legs", "zom_zombie1_legs_rlegoff", "zom_zombie1_legs_llegoff", "zom_zombie1_legs_legsoff" );
 	models[models.size] = addZomModel( "zom_zombie2_torso", "zom_head_off", "zom_zombie2_torso_rarmoff", "zom_zombie2_torso_larmoff", "zom_zombie2_legs", "zom_zombie2_legs_rlegoff", "zom_zombie2_legs_llegoff", "zom_zombie2_legs_legsoff" );
 	
-	// register heads
+	// register with heads
 	addZomHead( "zom_head_a", models );
 	addZomHead( "zom_head_b", models );
 	addZomHead( "zom_head_c", models );
@@ -78,20 +78,20 @@ init()
 	addZomTypeModels( "fast", models );
 	addZomTypeModels( "tank", models );
 	
-	// quad 	TODO rework model
+	// register Quad model		TODO rework model
 	models = [];
 	models[models.size] = addZomModel( "bo_quad" );
 	
 	addZomTypeModels( "toxic", models );
 	
-	// doge		TODO rework model
+	// register Doge model		TODO rework model
 	models = [];
 	models[models.size] = addZomModel( "zombie_wolf" );
 	
 	addZomTypeModels( "dog", models );
 	addZomTypeModels( "helldog", models );
 	
-	// boss models
+	// register (Half-)Boss models
 	models = [];
 	models[models.size] = addZomModel( "zom_avagadro_body" );
 	
