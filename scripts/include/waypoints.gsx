@@ -21,6 +21,12 @@
 */
 loadWaypoints()
 {
+	// draw waypoints for debugging
+	/#
+	if( level.dvar["zom_developer"] )
+		thread drawWP();
+	#/
+
 	// create the full filepath for the waypoint csv file
 	fileName =  "waypoints/"+ toLower(getDvar("mapname")) + "_wp.csv";
 	
@@ -86,12 +92,6 @@ loadWaypoints()
 		thread dumpWp( fileName );
 	else
 		loadWaypoints_Internal( getDvar( "fs_game" ) + "/" + fileName );
-
-	// draw waypoints for debugging
-	/#
-	if( getDvarInt("dev_draw_waypoints") > 0 )
-		thread drawWP();
-	#/
 }	/* loadWaypoints */
 
 /**
@@ -462,15 +462,23 @@ writeToFile( path, w )
 */
 drawWP()
 {
+	while( !isDefined(level.waypointCount) )
+		wait 0.05;
+
 	for(;;)
 	{
 		for( i=0; i<level.waypointCount; i++ )
 		{
 			wp = level.waypoints[i];
-			line(wp.origin, wp.origin + (0,0,96), (0,1,0));
-			
-			for(j = 0; j < wp.childCount; j++)
-				line(wp.origin, level.waypoints[wp.child[j]].origin, (0,0,1));
+			line( wp.origin, wp.origin + (0,0,96), (0,1,0), false );
+		
+			for( j=0; j<wp.childCount; j++ )
+			{
+				// only draw connections to waypoints that are lower id
+				// NOTE this drastically reduces script load
+				if( wp.children[j] < i )
+					line( wp.origin, level.waypoints[wp.children[j]].origin, (0,0,1), false );
+			}
 		}
 		
 		wait 0.05;

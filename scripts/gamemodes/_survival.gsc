@@ -157,9 +157,9 @@ beginGame()
 	
 	level.waves = [];
 	level.waves = strTok(level.dvar["surv_waves"], ";");
-	say = "";
-	for(i = 0; i < level.waves.size; i++)
-		say += level.waves[i] + ",";
+//	say = "";
+//	for(i = 0; i < level.waves.size; i++)
+//		say += level.waves[i] + ",";
 	// iprintlnbold("Loading waves... -> " + getSubStr(say, 0, say.size - 1));
 	thread mainGametype();
 	//thread watchEnd();
@@ -198,8 +198,8 @@ mainGametype()
 	thread doWaveHud();
 	
 	level.weStartedAtLeastOneGame = false;
-	while(isDefined(level.waves[level.currentWave-1])){
-	
+	while( isDefined(level.waves[level.currentWave-1]) )
+	{
 		if(level.lastSpecialWave == "finale") // Whenever we had a finale, we end the game
 			break;
 		
@@ -251,7 +251,6 @@ mainGametype()
 			level.currentWave = level.forceWaveNumber;
 		else if( !level.freezeProgress )
 			level.currentWave++;
-		
 	}
 	
 	// IN CASE THERE WAS NO WAVE

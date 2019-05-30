@@ -45,9 +45,11 @@ startRegularWave(){
 	level.gameState = "running";
 	
 	// Spawn all zombies of the wave one after another
-	for(;level.spawnedInWave < level.waveSize;){
+	while( level.spawnedInWave < level.waveSize )
+	{
 		// Only allow spawning when the limit of alive zombies isn't hit
-		if(level.botsAlive < level.dif_zomMax && !level.spawningDisabled){
+		if(level.botsAlive < level.dif_zomMax && !level.spawningDisabled)
+		{
 			// TODO: This was for testing purposes. Keep testing and remove.
 			if(getDvar("priospawner") == "1")
 				spawntype = 5;
@@ -55,6 +57,7 @@ startRegularWave(){
 			if(isDefined(trySpawnZombie(undefined, spawntype)))
 				level.spawnedInWave++;
 		}
+		
 		wait level.dif_zomSpawnRate;
 	}
 	

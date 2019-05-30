@@ -146,25 +146,30 @@ canRestoreAmmo( weapon )
 	return true;
 }
 
+/**
+* Monitors the players weapon usage and keeps track of ammo
+*/
 watchWeaponUsage()
 {
-	self endon("death");
-	self endon("disconnect");
-	self endon("downed");
+	self endon( "death" );
+	self endon( "downed" );
+	self endon( "disconnect" );
 	//level endon ("game_ended");
 	
 	self.firingWeapon = false;
 	
 	while(1)
 	{
-		self waittill ("begin_firing");
+		self waittill( "begin_firing" );
 		
 		weap = self getCurrentWeap();
+		
+		self thread alertTillEndFiring( weap );
 		
 		self.hasDoneCombat = true;
 		self.firingWeapon = true;	
 
-		self waittill("end_firing");
+		self waittill( "end_firing" );
 		
 		if ( weap == self.primary )
 		{
@@ -184,53 +189,51 @@ watchWeaponUsage()
 		
 		self.firingWeapon = false;
 	}
-}
+}	/* watchWeaponUsage */
 
-alertTillEndFiring()
+/**
+* Alerts all zombies until the player stops firing
+*/
+alertTillEndFiring( weap )
 {
-	self endon("death");
-	self endon("disconnect");
-	self endon("end_firing");
+	self endon( "death");
+	self endon( "end_firing" );
+	self endon( "disconnect" );
 	
-	while(1)
+	for(;;)
 	{
-		curWeapon = self getCurrentWeapon();
-		
-		if (curWeapon == "none")
-			return;
-		
-		if (weaponIsBoltAction(curWeapon))
-			scripts\bots\_bots::alertZombies(self.origin, 1024, 200, undefined);
-		else if (weaponIsSemiAuto(curWeapon))
-			scripts\bots\_bots::alertZombies(self.origin, 1024, 100, undefined);
+		// TODO possibly make the values dvars as well as adding different weapon type alertness
+		// alert depending on weapon type
+		if( isSilenced(weap) )
+			self scripts\bots\_bots::alertZombies( self.origin, 768, 100, undefined );
 		else
-			scripts\bots\_bots::alertZombies(self.origin, 1024, 100, undefined);
-			
-		wait .5;
+			self scripts\bots\_bots::alertZombies( self.origin, 1024, 100, undefined );
 		
+		// wait for the next shot
+		self waittill( "weapon_fired" );
 	}
-}
+}	/* alertTillEndFiring */
 
 watchWeaponSwitching()
 {
-	self endon("death");
-	self endon("disconnect");
+	self endon( "death" );
+	self endon( "disconnect" );
 
 	lastWeapon = self getCurrentWeap();
 	while(1)
 	{
-		self waittill("weapon_change", weapon);
+		self waittill( "weapon_change", weapon );
 		
-		if(weapon == "none")
+		if( weapon == "none" )
 			continue;
 		
 		weapon = level.weaponKeyC2S[weapon];
-		if(lastWeapon != weapon)
+		if( lastWeapon != weapon )
 			self thread rotateActionslotWeapons(weapon);
 		
 		lastWeapon = weapon;
 	}
-}
+}	/* watchWeaponSwitching */
 
 /* Look if the current weapon is in your actionslot.
 When switching the weapon, the actionslot should be replaced with another actionslot item in order
