@@ -2354,6 +2354,10 @@ zThink()
 						self.zTargetWaypoint = waypoint;
 					}
 				}
+				
+				tDist = distance( self.zTarget.origin, self.origin );
+				if( tDist < getDvarInt("player_meleeRange") )
+					self zAttack( self.zTarget );
 			}
 			else // loose the target, depending on interest and rage
 			{
@@ -2408,7 +2412,21 @@ zThink()
 		else
 			bored = 0;	// reset bored time when we have a target
 		
-		// TODO check for barricades
+		// check for barricades
+		barricade = self zBarricadeCheck();
+		if( isDefined(barricade) )
+		{
+			if( barricade.hp > 0 )
+				self zAttack( barricade );
+			
+			// warp through barricades
+			if( isDefined(barricade) )
+			{
+				printLn( "TODO, barricade warping!" );
+				wait 0.05;
+				continue;
+			}
+		}	/* isDefined(barricade) */
 		
 		//
 		// WAYPOINTING & MOVEMENT
@@ -2489,6 +2507,100 @@ zThink()
 		wait 0.05;
 	}	/* for(;;) */
 }	/* zThink */
+
+/**
+* Attacks the given target until it's out of range
+*/
+zAttack( target )
+{
+	self endon( "death" );
+	self endon( "killed" );
+	self endon( "kill_ai" );
+	self endon( "disconnect" );
+		
+	// get the melee range
+	range = getDvarInt( "player_meleeRange" );
+
+	for(;;)
+	{
+		// check if the target is still alive and defined
+		if( !isDefined(target) || (isPlayer(target) && !isAlive(target)) || (!isPlayer(target) && target.hp <= 0) )
+			break;
+		
+		// check if the target is still in range
+		tDist = distance( self.origin, target.origin );
+		if( tDist > range )
+			break;
+		
+		self botLookAt( target.origin );
+		self botAction( "+melee" );
+		self thread zSound( "attack", randomFloat(0.5) );
+		
+		wait 0.05;
+		
+		self botAction( "-melee" );
+		
+		// apply damage to non players
+		if( !isPlayer(target) )
+		{
+			target thread scripts\players\_barricades::doBarricadeDamage( self.damage*level.dif_zomDamMod );
+		}
+		
+		// check if the target is still alive
+		if( !isDefined(target) || isPlayer(target) && !isAlive(target) || !isPlayer(target) && target.hp <= 0 )
+			break;
+		
+		wait 0.5 + randomFloat( 1.5 );
+	}
+}	/* zAttack */
+
+/**
+* Plays the given zombie sound after the given delay
+*/
+zSound( sound, delay )
+{
+	self endon( "death" );
+	
+	if( isDefined(delay) )
+		wait delay;
+	
+	self playSound( self.soundType + "_" + sound );
+}	/* zSound */
+
+/**
+* Checks if the zombie is close to a barricade
+*/
+zBarricadeCheck()
+{
+	// get the zombies forward vector
+	fwdDir = anglesToForward( self getPlayerAngles() );
+	
+	// go through all static barricades
+	for( i=0; i<level.barricades.size; i++ )
+	{
+		ent = level.barricades[i];
+		if( isDefined(ent) && self isTouching(ent) )
+		{
+			dirToTarget = vectorNormalize( ent.origin-self.origin );
+			dot = vectorDot( fwdDir, dirToTarget );
+			if( dot > 0 && dot < 1 )
+				return ent;
+		}
+	}
+	
+	// go through all dynamic barricades
+	for( i=0; i<level.dynamic_barricades.size; i++ )
+	{
+		ent = level.dynamic_barricades[i];
+		if( isDefined(ent) && distance(self.origin, ent.origin) < 48 && ent.hp > 0 )
+		{
+			dirToTarget = vectorNormalize( ent.origin-self.origin );
+			dot = vectorDot( fwdDir, dirToTarget );
+			if (dot > 0 && dot < 1)
+				return ent;
+		}
+	}
+}	/* zBarricadeCheck */
 
 /**
 * Displays debugging data for the zombie.

@@ -37,21 +37,21 @@ init()
 
 	// register all zombie types
 //	addZomType( name,		animType,	soundType,	moveSpeed,	meleeSpeed,	damage,	maxHealth,	runChance,	sprintChance,	infectionChance,	rewardMultiplier )
-	addZomType( "zombie",	"zombie",	"zombie",	0.8,		1.6,		30,		200,		0.0,		0.0,			0.075,				1.0 );
-	addZomType( "burning",	"zombie",	"zombie",	0.8,		1.6,		30, 	200,		0.8,		1.0,			0.0,				0.8 );
-	addZomType( "napalm",	"zombie",	"zombie",	0.8,		1.6,		100,	100,		0.8,		1.0,			0.0,				0.75 );
-	addZomType( "scary",	"zombie",	"zombie",	0.9,		1.6,		30,		200,		0.8,		0.3,			0.01,				0.8 );
-	addZomType( "toxic",	"quad",		"zombie",	0.4,		1.4,		30,		180,		0.6,		0.5,			0.15,				1.0 );
-	addZomType( "fat",		"zombie",	"zombie",	0.8,		1.4,		40,		275,		0.8,		0.2,			0.05,				1.2 );
-	addZomType( "fast",		"zombie",	"zombie",	1.0,		0.8,		30,		150,		0.7,		1.0,			0.075,				0.8 );
-	addZomType( "tank",		"zombie",	"zombie",	0.8,		2.0,		35,		800,		0.8,		0.4,			0.05,				1.35 );
+	addZomType( "zombie",	"zombie",	"zom",		0.8,		1.6,		30,		200,		0.0,		0.0,			0.075,				1.0 );
+	addZomType( "burning",	"zombie",	"zom",		0.8,		1.6,		30, 	200,		0.8,		1.0,			0.0,				0.8 );
+	addZomType( "napalm",	"zombie",	"zom",		0.8,		1.6,		100,	100,		0.8,		1.0,			0.0,				0.75 );
+	addZomType( "scary",	"zombie",	"zom",		0.9,		1.6,		30,		200,		0.8,		0.3,			0.01,				0.8 );
+	addZomType( "toxic",	"quad",		"zom",		0.4,		1.4,		30,		180,		0.6,		0.5,			0.15,				1.0 );
+	addZomType( "fat",		"zombie",	"zom",		0.8,		1.4,		40,		275,		0.8,		0.2,			0.05,				1.2 );
+	addZomType( "fast",		"zombie",	"zom",		1.0,		0.8,		30,		150,		0.7,		1.0,			0.075,				0.8 );
+	addZomType( "tank",		"zombie",	"zom",		0.8,		2.0,		35,		800,		0.8,		0.4,			0.05,				1.35 );
 	addZomType( "dog",		"dog",		"dog",		1.0,		2.5,		30,		125,		0.8,		1.0,			0.08,				0.5 );
 	addZomType( "helldog",	"dog",		"dog",		1.0,		2.5,		20,		150,		0.8,		1.0,			0.08,				0.5 );
 	
 	// bosses
 	// maxHealth was meant to be calculated like this: 5000 + (2000 * level.activePlayers)	--> this is actually pretty overkill!
-	addZomType( "halfboss", "zombie",	"zombie",	0.8,		2.0,		70,		5000,		0.8,		0.6,			0.0,				3.0 );
-	addZomType( "boss",		"zombie",	"zombie", 	1.0,		3.0,		80,		10000,		1.0,		0.0,			0.0,				3.0 );
+	addZomType( "halfboss", "zombie",	"zom",		0.8,		2.0,		70,		5000,		0.8,		0.6,			0.0,				3.0 );
+	addZomType( "boss",		"zombie",	"zom", 		1.0,		3.0,		80,		10000,		1.0,		0.0,			0.0,				3.0 );
 	// TODO more boss zombies!!!
 	
 	// register zombie models
