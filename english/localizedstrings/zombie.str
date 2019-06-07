@@ -203,6 +203,9 @@ LANG_ENGLISH        "Guns'n'Rifles, ole! &&1%"
 REFERENCE           INFECTED
 LANG_ENGLISH        "You have become infected! Cure yourself!"
 
+REFERENCE			PLAYER_N_INFECTED
+LANG_ENGLISH		"^1&&1 ^1 has been infected!"
+
 REFERENCE			DAMMOD
 LANG_ENGLISH		"^1Damage Modifier: &&1"
 

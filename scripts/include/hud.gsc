@@ -428,7 +428,7 @@ updateHealthHud(delta)
 */
 updateArmorHud()
 {
-	if (self.health / self.maxhealth >= 0.65 && !self.isZombie)
+	if (self.health / self.maxhealth >= 0.65)
 	{
 		// Alpha = 0 when Health is < 65%, else it raises linearly from alpha 0 at 65% to alpha 0.7 at 100%
 		alpha = (self.health - self.maxhealth * 0.65) / (0.35 * self.maxhealth); 

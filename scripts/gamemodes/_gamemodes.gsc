@@ -514,18 +514,6 @@ endMap(endReasontext, win)
 	// Mute running wave music
 	scripts\server\_environment::stopAmbient(3);
 	
-	// Zombified players should return to humans to get properly reset
-	for(i = 0; i < level.players.size; i++)
-	{
-		if(isReallyPlaying(level.players[i]))
-		{
-			if(level.players[i].isZombie)
-			{
-				level.players[i] suicide();
-			}
-		}
-	}
-	
 	// Wait for the ambient sound to disappear
 	wait 3;
 	

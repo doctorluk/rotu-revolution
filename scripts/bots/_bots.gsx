@@ -197,7 +197,6 @@ spawnPartner(spawnpoint, bot)
 	bot.psoffsettime = 0;
 	bot.statusicon = "";
 	bot.untargetable = true;
-	bot.isZombie = false;
 	bot.wasInfluencedByMonkeyBomb = false;
 	bot.influencedByMonkeyBomb = undefined;
 	bot.suicided = undefined;
@@ -310,13 +309,13 @@ spawnZombie( type, spawnpoint, bot )
 	bot.suicided = undefined;		// flag to check if a bot suicided, to control death effects
 	bot.isOnFire = false;			// burned by a player
 	bot.isPoisoned = false;			// poisoned by player
+	bot.untargetable = false;		// allow turret tracking
 	
+	// reset damage tracking
 	bot.damagedBy = [];				// damage tracking for assists
 	bot.damagePerLoc = [];			// damage tracking for gibbing
 	
-	bot.isZombie = false;			// infected player tracking
-	bot.untargetable = false;		// allow turret tracking
-
+	// reset misc values
 	bot.damageMod = 1;				// damage modifier for spawn protection
 
 	// reset AI values
@@ -343,7 +342,7 @@ spawnZombie( type, spawnpoint, bot )
 			bot.zMovetype = "sprint";
 	}
 	
-	// spawn the bot out of sigth to prevent looking at the sky
+	// spawn the bot out of sigth to prevent 'looking at the sky' bug
 	bot spawn( (spawnpoint.origin[0],spawnpoint.origin[1],-10000), (0,0,0) );
 	
 	// apply a zombie model
@@ -384,6 +383,7 @@ spawnZombie( type, spawnpoint, bot )
 	
 	// start zombie AI thread
 	bot thread zThink();
+	bot thread zGroan();
 
 	return bot;
 }	/* spawnZombie */
@@ -1270,52 +1270,6 @@ monkeyOverride(){
 	}
 }
 
-freezeBotOnLC(){
-	self endon("death");
-	self endon("disconnect");
-	level waittill("last_chance_start");
-	// self notify("stop_main");
-	
-	self.lastMemorizedPos = undefined;
-	self.playIdleSound = false;
-	self zomGoIdle();
-	level waittill("last_chance_succeeded");
-	self.playIdleSound = true;
-	wait 3;
-	
-	// self thread zomMain();
-	if(isAlive(self) && isDefined(self getClosestTarget())) // Giving the zombie a new target, preventing "onSight"-checks in case the zombie is stuck inside a wall
-		self zomSetTarget(self getClosestTarget().origin);
-}
-
-freezeBot(){
-	self endon("death");
-	self endon("disconnect");
-	while(1){
-		while(1){
-			if(level.freezeBots)
-				break;
-			else
-				wait 0.5;
-		}
-		self notify("kill_main");
-		self.lastMemorizedPos = undefined;
-		self.playIdleSound = false;
-		self zomGoIdle();
-		
-		while(level.freezeBots){
-			wait 0.05;
-		}
-			
-		self.playIdleSound = true;
-		
-		
-		if(isDefined(self getClosestTarget())) // Giving the zombie a new target, preventing "onSight"-checks in case the zombie is stuck inside a wall
-			self zomSetTarget(self getClosestTarget().origin);
-		self thread zomMain();
-	}
-}
-
 zomMain()
 {
 	self endon("disconnect");
@@ -2011,19 +1965,6 @@ bossAttack()
 
 }
 
-infection(chance)
-{
-	if (self.infected)
-	return;
-	
-	chance = self.infectionMP * chance;
-	if (randomfloat(1)<chance)
-	{
-		self thread scripts\players\_infection::goInfected();
-	}
-	
-}
-
 moveToPoint(origin, speed)
 {
 	self botLookAt( origin );
@@ -2190,41 +2131,7 @@ zomDoDamage(meleeRange)
 
 }
 
-zomGroan()
-{
-	self endon("death");
-	self endon("disconnect");
-	
-	soundtype = "";
-	
-	if (self.soundType == "dog")
-		soundtype = "dog";
-	else if(self.soundType == "zombie")
-		soundtype = "zom";
-	
-	for (;;)
-	{
-		wait 3 + randomfloat(3);
-		
-		//self zombieSound(randomfloat(.5), "zom_run", 0);
-		if (self.isDoingMelee == false && self.playIdleSound)
-		{
-			if (self.alertLevel == 0 && soundtype == "dog")
-			{
-				self zomSound(randomfloat(.5), soundtype + "_" + "idle");
-			}
-			else if (self.alertLevel < 200)
-			{
-				if(soundtype == "zom")
-					self zomSound(randomfloat(.5), soundtype + "_" + "walk");
-			}
-			else if(soundtype == "zom")
-			{
-				self zomSound(randomfloat(.5), "zom_run");
-			}
-		}
-	}
-}
+
 
 zomSound(delay, sound)
 {
@@ -2330,6 +2237,15 @@ zThink()
 	// main thinking loop, updates the zombie target every tick
 	for(;;)
 	{
+		//
+		// FREEZING
+		//
+		if( level.freezeBots )
+		{
+			wait 0.05;
+			continue;
+		}
+	
 		//
 		// TARGET AQUISITION & TRACKING
 		//
@@ -2532,6 +2448,8 @@ zAttack( target )
 		if( tDist > range )
 			break;
 		
+		// TODO make explosive zombies blow up
+		
 		self botLookAt( target.origin );
 		self botAction( "+melee" );
 		self thread zSound( "attack", randomFloat(0.5) );
@@ -2539,6 +2457,8 @@ zAttack( target )
 		wait 0.05;
 		
 		self botAction( "-melee" );
+		
+		// TODO wait a little before applying damage
 		
 		// apply damage to non players
 		if( !isPlayer(target) )
@@ -2550,6 +2470,9 @@ zAttack( target )
 		if( !isDefined(target) || isPlayer(target) && !isAlive(target) || !isPlayer(target) && target.hp <= 0 )
 			break;
 		
+		// TODO wait for the animation to finish
+		
+		// TODO take melee speed into account
 		wait 0.5 + randomFloat( 1.5 );
 	}
 }	/* zAttack */
@@ -2564,7 +2487,8 @@ zSound( sound, delay )
 	if( isDefined(delay) )
 		wait delay;
 	
-	self playSound( self.soundType + "_" + sound );
+	if( !level.silenceZombies )
+		self playSound( self.soundType + "_" + sound );
 }	/* zSound */
 
 /**
@@ -2603,7 +2527,7 @@ zBarricadeCheck()
 }	/* zBarricadeCheck */
 
 /**
-* Displays debugging data for the zombie.
+* Displays debugging data for the zombie
 */
 zDebugThink()
 {
@@ -2612,6 +2536,7 @@ zDebugThink()
 	self endon( "kill_ai" );
 	self endon( "disconnect" );
 	
+	/#
 	// update the developer info untill the bot dies or ai is killed
 	for(;;)
 	{
@@ -2632,14 +2557,15 @@ zDebugThink()
 	//		ttext = ttext + ", " + self.zTargetOrigin;
 		
 		// draw the target text
-	/#	print3D( origin, ttext, (1.0,1.0,1.0), 1.0, 0.6, 4 );	#/
+		print3D( origin, ttext, (1.0,1.0,1.0), 1.0, 0.6, 4 );	// NOTE for some reason this is not drawing the full string
 		
 		// prepare and draw the interest text
 		itext = "I: "+self.zInterest+" R: "+self.zRage;
-	/#	print3D( origin-(0,0,8), itext, (1.0,1.0,1.0), 1.0, 0.6, 4 );	#/
+		print3D( origin-(0,0,8), itext, (1.0,1.0,1.0), 1.0, 0.6, 4 );
 		
 		wait 0.05;
 	}
+	#/
 }	/* zDebugThink */
 
 /**
@@ -2862,3 +2788,51 @@ alertZombies( origin, alertDist, alertPower, ignoreBot )
 	}
 }	/* alertZombies */
 
+/**
+* Plays zombie idle sounds
+*/
+zGroan()
+{
+	self endon( "death" );
+	self endon( "kill_ai" );
+	self endon( "disconnect" );
+	
+	for(;;)
+	{
+		wait 3 + randomFloat( 3 );
+		
+		if( !level.freezeBots )
+		{
+			// play sounds depending on type
+			if( self.soundType == "dog" )
+			{
+				self zSound( "idle", randomFloat(0.5) );
+			}
+			else
+			{
+				// play sound depending on move type
+				if( self.zMovetype == "sprint" )
+					self zSound( "run", randomFloat(0.5) );
+				else
+					self zSound( "walk", randomFloat(0.5) );
+			}
+		}
+	}
+}	/* zGroan */
+
+/**
+* Infects the player with the given chance
+*/
+infection( chance )
+{
+	// nothing to do, if already infected
+	if( self.infected )
+		return;
+	
+	// get the personal chance, based on class multiplier
+	chance = self.infectionMP * chance;
+	
+	// infect with the chance at random
+	if( randomFloat(1) < chance )
+		self thread scripts\players\_infection::goInfected();
+}	/* infection */

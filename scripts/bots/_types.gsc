@@ -1084,7 +1084,7 @@ bossCatchFire(){
 			p = level.players[i];
 			if(!isReallyPlaying(p)) continue; // Ignore not-playing players
 			
-			if(distance(self.origin, p.origin) <= range && (p.fireCatchCount < time * 4) && !p.isDown && !p.isZombie){
+			if(distance(self.origin, p.origin) <= range && (p.fireCatchCount < time * 4) && !p.isDown){
 				p.fireCatchCount++;
 			}
 			else 

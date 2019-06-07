@@ -73,8 +73,12 @@ antiAFK(){
 		
 		wait 0.05;
 		
-		// Ignore players that are down or zombified
-		if(self.isDown || self.isZombie){ wait 1; continue; }
+		// Ignore players that are down
+		if( self.isDown )
+		{
+			wait 1;
+			continue;
+		}
 		
 		// Big inactivity check
 		if(oldangles != self getPlayerAngles() || // Check if his perspective changed

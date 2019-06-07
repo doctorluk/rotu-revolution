@@ -110,7 +110,7 @@ reviveActivePlayers(){
 			player = level.players[i];
 			if(!isReallyPlaying(player))
 				continue;
-			if (player.isDown && !player.isZombie) {
+			if (player.isDown) {
 				player thread scripts\players\_players::revive();
 				revives++;
 			}

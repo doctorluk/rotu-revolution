@@ -53,7 +53,8 @@ lastChanceMain()
 	// Add timer display and wait 10 seconds
 	scripts\gamemodes\_hud::timer(10, &"LAST_CHANCE_TIMER", (1, 0, 0), undefined, 120);
 	
-	// Post Last Chance
+	// Unfreeze bot ai
+	level.freezeBots = false;
 	level.silenceZombies = false;
 	
 	// If at least one has payed, the Last Chance commences and resurrects him, then we clean it up
@@ -161,6 +162,9 @@ prepareLastChance()
 		level.bossOverlay.alpha = 0;
 	}
 	
+	// freeze all bots to prevent them from wandering
+	level.freezeBots = true;
+	
 	// At this point we basically commited to starting the Last Chance, so we notify the game about that
 	level notify("last_chance_start");
 	
@@ -169,8 +173,8 @@ prepareLastChance()
 	{
 		player = level.players[i];
 		
-		// Ignore spectators and zombified players
-		if(!isReallyPlaying(player) || player.isZombie)
+		// Ignore spectators
+		if(!isReallyPlaying(player))
 			continue;
 		player closeMenu();
 		player closeInGameMenu();
@@ -196,7 +200,7 @@ startLastChancePlayers()
 	{
 		player = level.players[i];
 		
-		if(!isReallyPlaying(player) || player.isZombie)
+		if(!isReallyPlaying(player))
 			continue;
 			
 		player thread lcHud();
@@ -247,14 +251,14 @@ postLastChance()
 				continue;
 			
 			// Last check if he should be revived
-			if(player.isDown && !player.isBot && !player.isZombie)
+			if(player.isDown && !player.isBot)
 			{
 				player thread reviveEffects();
 				player thread scripts\players\_players::revive();
 			}
 		}
 		// Players who have not payed are being infected
-		else if(isReallyPlaying(player) && !player.isZombie)
+		else if(isReallyPlaying(player))
 			player thread scripts\players\_infection::goInfected();
 	}
 	
@@ -413,7 +417,7 @@ isLegitLCTarget(player)
 		return false;
 	}
 	
-	if(!player.isActive || player.sessionstate != "playing" || player.isZombie)
+	if(!player.isActive || player.sessionstate != "playing")
 		return false;
 		
 	return true;

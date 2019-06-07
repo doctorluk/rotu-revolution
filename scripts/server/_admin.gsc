@@ -263,7 +263,7 @@ revivecommand(args)
 	{
 		if (players[i] getEntityNumber() == int(args[0]))
 		{
-			if(!players[i].isAlive && !players[i].isZombie && players[i].isActive)
+			if(!players[i].isAlive && players[i].isActive)
 			{
 				players[i] scripts\players\_players::revive();
 				iprintln("^3"+players[i].name + "^7 has been revived by an admin.");
@@ -283,7 +283,7 @@ reset(args)
 	{
 		if (players[i] getEntityNumber() == int(args[0]))
 		{
-			if(!players[i].isZombie && players[i].isActive)
+			if(players[i].isActive)
 			{
 				iprintln("Resetting the position of " + players[i].name);
 				if (level.playerspawns == "")

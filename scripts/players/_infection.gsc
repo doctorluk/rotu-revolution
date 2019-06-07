@@ -15,7 +15,8 @@
 
 /***
 *
-*	TODO: Add file description
+*	_infection.gsc
+*	Handles player infection, infection damage and curing.
 *
 */
 
@@ -23,60 +24,85 @@
 #include scripts\include\entities;
 #include scripts\include\useful;
 
+/**
+* Precaches all assets for infection
+*/
 init()
 {
-	precacheShellShock("infection");
-	precacheHeadIcon("icon_infection");
-	precacheModel("ch_tombstone3");
+	precacheShellShock( "infection" );
+	precacheHeadIcon( "icon_infection" );
+	
+	precacheString( &"ZOMBIE_INFECTED" );
+	precacheString( &"ZOMBIE_PLAYER_INFECTED" );
 }	/* init */
 
+/**
+* Cures the players infection, resetting him to normal state
+*/
 cureInfection()
 {
+	// reset the infection flag
 	self.infected = false;
-	self notify("infection_cured");
-	if (isdefined(self.infection_overlay))
-	self.infection_overlay destroy();
+	
+	// kill infection logic
+	self notify( "infection_cured" );
+	
+	// delete the hud overlay
+	if( isDefined(self.infection_overlay) )
+		self.infection_overlay destroy();
+	
+	// disable the headicon and the usable
 	self.headicon = "";
-	level scripts\players\_usables::removeUsable(self);	
+	level scripts\players\_usables::removeUsable( self );	
 }	/* cureInfection */
 
+/**
+* Starts the infection on the given player
+*/
 goInfected()
 {
-	self endon("infection_cured");
-	self endon("disconnect");
-	self endon("death");
+	self endon( "infection_cured" );
+	self endon( "disconnect" );
+	self endon( "death" );
 
+	// don't run the logic twice, or when godmode is enabled
 	if( self.infected || level.godmode )
 		return;
 	
+	// notify the script that the player is infected
 	self notify( "infected" );
 
+	// add an usable to heal the player
 	if( !self.isDown )
 		level scripts\players\_usables::addUsable( self, "infected", &"USE_CURE", 96 );
 
+	// set the players headicon to let medics see he needs help
 	self.headicon = "icon_infection";
 	self.headiconteam = "allies";
 	
+	// create a hud overlay
 	self.infection_overlay = createHealthOverlay( (0,1,0) );
 	self.infection_overlay.alpha = .5;
 	self.infected = true;
-	iPrintLn("^1" + self.name + "^1 has been infected!");		// TODO: Make this a localized string!
+	
+	// print a message that the player has been infected
+	iPrintLn( &"ZOMBIE_PLAYER_INFECTED", self );
 	self glowMessage( &"ZOMBIE_INFECTED", "", (1, 0, 0), 6, 50, 2 );
 	
-	wait level.dvar["zom_infectiontime"];
+	// calculate the time for the infection to kick in
 	time = 1 + randomInt( int(level.dvar["zom_infectiontime"]*.5) );
 	
-	self.infection_overlay fadeovertime( time );
-	self.infection_overlay.alpha = 1;
+	// fade the hud overlay in
+	self.infection_overlay fadeOverTime( time );
+	self.infection_overlay.alpha = 0.8;
 
-	//self thread infectionTweaks(time);
+	// self thread infectionTweaks(time);
 
-	//playerFilmTweaks
+	// wait for the infection to kick in
 	wait time;
 	
-	// TODO merge these into one infectedThink, also make the overlay pulse whenever taking damage
-	self thread startDamaging();
-	self thread waitGoZombie();
+	// start the main logic of the infection
+	self thread infectedThink();
 }	/* goInfected */
 
 /*infectionTweaks(time)
@@ -102,176 +128,43 @@ goInfected()
 	}
 }*/
 
-startDamaging()
+/**
+* Main infection logic, damages the player until he goes down
+*/
+infectedThink()
 {
 	self endon( "infection_cured" );
 	self endon( "disconnect" );
+	self endon( "downed" );
 	self endon( "death" );
-	self endon( "zombify" );
 
 	interval = 3;
 	damage = 4;
+
 	while(1)
 	{
-		self damageEnt(
-			self, // eInflictor = the entity that causes the damage (e.g. a claymore)
-			self, // eAttacker = the player that is attacking
-			damage, // iDamage = the amount of damage to do
-			"MOD_EXPLOSIVE", // sMeansOfDeath = string specifying the method of death (e.g. "MOD_PROJECTILE_SPLASH")
-			"none", // sWeapon = string specifying the weapon used (e.g. "claymore_mp")
-			self.origin, // damagepos = the position damage is coming from
-			//(0,self GetPlayerAngles()[1],0) // damagedir = the direction damage is moving in      
-			(0,0,0)
-			);
+		// damage the player
+		self damageEnt( self, self, damage, "MOD_EXPLOSIVE", "none", self.origin, (0,0,0) );
+		
+		// apply shell shock effect
 		self shellShock( "infection", 1 );
+		
+		// pulse the HUD overlay to full opacity
+		self.infection_overlay fadeOverTime( 0.2 );
+		self.infection_overlay.alpha = 1.0;
+		
+		// wait for the pulse
+		wait 0.2;
+		
+		// pulse the HUD overlay back to semi opaque
+		self.infection_overlay fadeOverTime( 0.2 );
+		self.infection_overlay.alpha = 0.8;
+		
+		// wait the rest of the interval
+		wait interval-0.2;
+		
+		// decrease the intervall time
 		if( interval > 1 )
 			interval = interval - .1;
-		
-		wait interval;
 	}
-}	/* startDamaging */
-
-waitGoZombie()
-{
-	self endon( "infection_cured" );
-	self endon( "disconnect" );
-	self endon( "death" );
-	self endon( "revived" );
-
-	while( !self.isDown )
-	{
-		wait 0.2;
-		if( self.isDown )
-			wait 3;
-	}
-
-	self thread playerGoZombie();
-}	/* waitGoZombie */
-
-/**
-* Turns the player into a zombie
-*/
-playerGoZombie()
-{
-	self endon( "disconnect" );
-	self endon( "death" );
-	
-	if( self.sessionteam == "spectator" )
-		return;
-	
-	self.tombEnt = spawn( "script_model", self.origin );
-	self.tombEnt setModel( "ch_tombstone3" );
-	self.tombEnt.origin = self.origin;
-	self.tombEnt.angles = self.angles;
-	self.tombEnt.targetname = "tombstone";
-	self.tombEnt.player = self;
-	
-	//self.isDown = false;
-	self.infected = false;
-	level scripts\players\_usables::removeUsable(self);
-	self.isZombie = true;
-	self.sprinting = true;
-	self notify( "zombify" );
-	
-	self.type = "tank";
-	self playerSetPermanentTweaks(0, 0, ".2 .1 .1", "1 0 0", 0.25, 1.4, 1.2);
-	self.headicon = "";
-	if( isDefined(self.infection_overlay) )
-		self.infection_overlay destroy();
-	
-	self scripts\bots\_types::loadZomType();
-	self.maxHealth = int(self.maxHealth * level.dif_zomHPMod);
-	self.health = self.maxHealth;
-	
-	self.isDoingMelee = false;
-	
-	self.alertLevel = 0; // Has this zombie been alerted? 
-	self.myWaypoint = undefined;
-	self.underway = false;
-	self.quake = false;
-	
-	self takeallweapons();
-	
-	self spawn(self.origin, self.angles);
-	
-	self detachall();
-	// self setmodel("skeleton");
-	self.stats["timesZombie"]++;
-	self setclientdvar("cg_thirdperson", 1);
-	
-	wait 0.05;
-	
-	self scripts\bots\_types::loadZomModel();
-	self scripts\bots\_types::loadZomWeapon();
-	// self detachall();
-	// self setmodel("skeleton");
-	
-	
-	self FreezeControls(true);
-	
-	// TODO uhhhhh...bot controls can't influence players (I think)...what to do?
-	
-	self.linkObj = spawn("script_origin", self.origin);
-	self.linkObj.origin = self.origin;
-	self.linkObj.angles = self.angles;
-	
-	self updateHealthHud(1);
-	
-	wait 0.05;
-	
-	self linkto(self.linkObj);
-	
-	self scripts\bots\_bots::zomGoIdle();
-	
-	self thread scripts\bots\_bots::zomMain();
-	
-	ent = self getClosestTarget();
-	if( isDefined(ent) )
-		self scripts\bots\_bots::zomSetTarget(ent.origin);
-}	/* playerGoZombie */
-
-cleanupZombie()
-{
-	self endon( "disconnect" );
-
-	wait 1;
-
-	self TakeAllWeapons();
-	self.isZombie = false;
-	self.sprinting = undefined;
-	self detachAll();
-	
-	self setModel(self.myBody);
-	if( self.myHead != "" )
-		self attach(self.myHead);
-	
-	self setClientDvar( "cg_thirdperson", 0 );
-	self permanentTweaksOff();
-	
-	if( isReallyPlaying(self) )
-	{
-		if (isdefined(self.tombEnt))
-		{
-			self setorigin(self.tombEnt.origin, self.tombEnt.angles);
-			self.tombEnt delete();
-		}
-		else
-		{
-			self setorigin(self.origin, self.angles);
-			self iprintlnbold("You're bugged, but don't worry");
-		}
-		
-		self thread scripts\players\_players::revive();
-		self.sessionstate = "playing";
-	}
-	else
-	{
-		// iprintlnbold("Cleaning your zombie stuff...");
-		// self scripts\players\_players::cleanup();
-		return;
-	}
-
-	self thread scripts\players\_weapons::watchThrowable();
-	self thread scripts\players\_weapons::watchMonkey();
-	self thread scripts\players\_claymore::init();
-}
+}	/* infectedThink */

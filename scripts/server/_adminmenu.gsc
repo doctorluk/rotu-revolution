@@ -431,9 +431,6 @@ showPlayerInfo()
 teamString(player)
 {
 	if(player.team=="allies") {
-		if (player.isZombie)
-		return "Zombies";
-		else
 		return "Survivors";
 	}
 	else

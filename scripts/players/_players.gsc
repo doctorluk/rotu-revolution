@@ -312,7 +312,6 @@ joinSpectator()
 			self.carryObj delete();
 		
 		self.isActive = false;
-		self.isZombie = false;
 		
 		// Notify locally and globally that this player is now spectating
 		self notify("join_spectator");
@@ -454,7 +453,6 @@ spawnPlayer(forceSpawn)
 	self.inTrance = false;
 	self.trance = "";
 	self.isDown = false;
-	self.isZombie = false;
 	self.isBot = false;
 	self.isBusy = false;
 	self.hasParachute = false;
@@ -606,22 +604,18 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 	{
 		if( eAttacker.damage )
 			iDamage = int(eAttacker.damage*level.dif_zomDamMod);
+		
+		eAttacker scripts\bots\_types::onAttack( eAttacker.type, self );
+		if( level.dvar["zom_infection"] )
+			self scripts\bots\_bots::infection( self.infectionChance );
 	}
 	
 	// Check for damage between regular and zombified players
 	if(isDefined(eAttacker) && isPlayer(eAttacker) && eAttacker.team == self.team)
 	{
-		// Run damage to a zombified player through the bot damage callback
-		if (self.isZombie)
-		{
-			self scripts\bots\_bots::Callback_BotDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, psOffsetTime);
-			updateHealthHud(self.health / self.maxhealth);
-			return;
-		}
 		// Prevent further processing if friendly fire is on or the attacker is not zombifed
-		else if (!level.dvar["game_friendlyfire"] && eAttacker != self)
+		if (!level.dvar["game_friendlyfire"] && eAttacker != self)
 		{
-			if (!eAttacker.isZombie)
 			return;
 		}
 	}
@@ -730,11 +724,6 @@ onPlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHit
 	self endon("disconnect");
 	
 	// Make sure the player resets entirely
-	if (self.isZombie)
-	{
-		self thread scripts\players\_infection::cleanupZombie();
-		return;
-	}
 	self cleanup();
 	
 	self endon("spawned"); // ??
@@ -756,7 +745,7 @@ onPlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHit
 	body = self clonePlayer(deathAnimDuration);
 
 	if (self isOnLadder() || self isMantling())
-		body startRagDoll();
+		body startRagdoll();
 
 	thread delayStartRagdoll(body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath);
 }
