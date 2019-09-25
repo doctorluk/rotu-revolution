@@ -607,7 +607,7 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 		
 		eAttacker scripts\bots\_types::onAttack( eAttacker.type, self );
 		if( level.dvar["zom_infection"] )
-			self scripts\bots\_bots::infection( self.infectionChance );
+			self scripts\bots\_bots::infection( eAttacker.infectionChance );
 	}
 	
 	// Check for damage between regular and zombified players

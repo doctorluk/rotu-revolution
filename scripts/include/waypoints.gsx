@@ -19,7 +19,7 @@
 /**
 * Loads the levels waypoints from a csv file and convertes them for the gamemode.
 */
-loadWaypoints()
+loadWaypoints2313()
 {
 	// draw waypoints for debugging
 	/#
@@ -37,7 +37,7 @@ loadWaypoints()
 		if( !FS_TestFile( fileName ) )
 			thread dumpWp( fileName );
 		else
-			loadWaypoints_Internal( getDvar( "fs_game" ) + "/" + fileName );
+			LoadWaypointsInternal( getDvar( "fs_game" ) + "/" + fileName );
 		
 		return;
 	}
@@ -91,7 +91,7 @@ loadWaypoints()
 	if( !FS_TestFile( fileName ) )
 		thread dumpWp( fileName );
 	else
-		loadWaypoints_Internal( getDvar( "fs_game" ) + "/" + fileName );
+		LoadWaypointsInternal( getDvar( "fs_game" ) + "/" + fileName );
 }	/* loadWaypoints */
 
 /**
@@ -133,7 +133,7 @@ getNearestEntityWp( target )
 *
 *	@origin: Origin to find the closest waypoint to
 */
-getNearestWp2( origin )
+getNearestWp( origin )
 {
 	/#
 	printLn( "Called getNearestWp2, use getNearestWp from LUA for faster results!" );
@@ -160,7 +160,7 @@ getNearestWp2( origin )
 
 	// return the ID of the closest waypoint
 	return nearestWp;
-}	/* getNearestWp2 */
+}	/* getNearestWp */
 
 //
 // PATHFINDING
@@ -398,7 +398,7 @@ dumpWp( path )
 	}
 	
 	writeToFile( path, dump );
-	loadWaypoints_Internal( getDvar( "fs_game" ) + "/" + path );
+	LoadWaypointsInternal( getDvar( "fs_game" ) + "/" + path );
 }	/* dumpWp */
 
 /**

@@ -101,9 +101,9 @@ strToVec(string){
 
 	vector = (0,0,0);
 	stringArr = strTok(string, ","); // Split string by ","-characters, results in (x(xx)? | y(yy)? | z(zz?))
-	x = atof(GetSubStr(stringArr[0], 1, stringArr[0].size)); // we have (x or (xx or (xxx now, so we need to cut from 0 (this is "(") until the end...
-	y = atof(stringArr[1]);
-	z = atof(GetSubStr(stringArr[2], 0, stringArr[2].size - 1)); // we have z) or zz) or zzz), so we need to cut from end-1 to end which cuts out ")"
+	x = float(GetSubStr(stringArr[0], 1, stringArr[0].size)); // we have (x or (xx or (xxx now, so we need to cut from 0 (this is "(") until the end...
+	y = float(stringArr[1]);
+	z = float(GetSubStr(stringArr[2], 0, stringArr[2].size - 1)); // we have z) or zz) or zzz), so we need to cut from end-1 to end which cuts out ")"
 	
 	vector = (x,y,z);
 	

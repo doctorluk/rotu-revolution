@@ -391,7 +391,7 @@ echo _________________________________________________________________
 echo.
 echo  Connecting to server %serverip%...
 echo.
-set commandline=+connect %serverip%
+set commandline=+set developer 1 +connect %serverip%
 goto START_GAME_CUSTOM
 
 :START_GAME_CUSTOM

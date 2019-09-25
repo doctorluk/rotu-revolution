@@ -19,7 +19,7 @@
 *
 */
 
-#include scripts\include\waypoints;
+#include scripts\include\pathfinding;
 #include scripts\include\entities;
 #include scripts\include\physics;
 #include scripts\include\hud;
@@ -79,12 +79,13 @@ init()
 	level._effect["zom_gib_rleg"] = loadFx( "gibbing/zombie1_rleg" );
 	
 	// init bot realated scripts
-	thread loadWaypoints();
+	thread initPathfinding();
 	thread scripts\bots\_types::init();
 	thread scripts\bots\_debug::init();
 
 	// pathfinding debugging
 	// NOTE this is more or less obsolete with the lua plugin on 1.8
+	// TODO move this into the pathfinding.GSC for people not using 1.8
 	level.botsLookingForWaypoints = 0;			// number of bots runnuing A* at the moment
 	if( getDvar( "max_waypoint_bots" ) == "" )
 		setDvar( "max_waypoint_bots", 10 );		// max number of bots running A* at the moment
@@ -96,9 +97,39 @@ init()
 	thread loadBots( level.dvar["bot_count"] - level.botsLoaded );
 	
 	thread onMonkeyExplosion();				// TODO rework this, possibly part of AI
+	
+	/#
+	if( getDvarInt("dev_granular_spawning") > 0 )
+		thread debugSpawning();
+	#/
 }	/* init */
 
 // LOADING BOTS
+
+/**
+* Triggers to spawn a zombie, whenever the debug dvar is set
+*/
+debugSpawning()
+{
+	// set the dvar to be empty
+	setDvar( "dev_spawn_zombie", "" );
+	
+	// wait for the dvar to have a value
+	while( getDvar("dev_spawn_zombie") == "" )
+		wait 0.05;
+	
+	// get the desired number of zombies from the dvar and trigger the developer notify
+	number = max(1, getDvarInt("dev_spawn_zombie"));
+	for( i=0; i<number; i++ )
+	{
+		level notify( "DEV_spawn_zombie" );
+		
+		wait 0.25;
+	}
+	
+	// restart the debugging thread
+	thread debugSpawning();
+}	/* debugSpawning */
 
 /**
 * Creates the given amount of bots
@@ -291,13 +322,13 @@ spawnZombie( type, spawnpoint, bot )
 			return;
 	}
 
-	// apply the zombie type and mark as used
+	// apply the zombie type and mark it as used
 	bot.type = type;
 	bot.hasSpawned = true;
 
 	// apply cod sessionstate and killcam variables
 	bot.sessionstate = "playing";
-	bot.spectatorclient = -1;		// TODO is this really needed?
+	bot.spectatorclient = -1;
 	bot.killcamentity = -1;
 	bot.archivetime = 0;
 	bot.psoffsettime = 0;
@@ -315,18 +346,15 @@ spawnZombie( type, spawnpoint, bot )
 	bot.damagedBy = [];				// damage tracking for assists
 	bot.damagePerLoc = [];			// damage tracking for gibbing
 	
-	// reset misc values
-	bot.damageMod = 1;				// damage modifier for spawn protection
-
-	// reset AI values
+	// reset AI values, see zThink for variable descriptions
 	bot.zRage = 0;
 	bot.zInterest = 0;
-	bot.zWaypoint = undefined;
 	bot.zOnGrid = false;
 	bot.zTarget = undefined;
+	bot.zTargetNode = undefined;
 	bot.zTargetOrigin = undefined;
-	bot.zTargetWaypoint = undefined;
 	bot.zTargetOverride = false;
+	bot.zCurrentNode = undefined;
 
 	// apply the selected types data
 	bot scripts\bots\_types::loadZomType();
@@ -336,9 +364,9 @@ spawnZombie( type, spawnpoint, bot )
 	bot.zMovetype = "walk";
 	if( !isDefined(self.walkOnly) )
 	{
-		if( randomFloat(1) > bot.runChance )
+		if( randomFloat(1) < bot.runChance )
 			bot.zMovetype = "run";
-		else if( randomFloat(1) > bot.sprintChance )
+		else if( randomFloat(1) < bot.sprintChance )
 			bot.zMovetype = "sprint";
 	}
 	
@@ -360,6 +388,8 @@ spawnZombie( type, spawnpoint, bot )
 	
 	// increase bots alive counter
 	level.botsAlive++;
+	
+	// increase the halfboss counter
 	if( bot.type == "halfboss" )
 		level.bossBulletCount++;
 	
@@ -372,11 +402,13 @@ spawnZombie( type, spawnpoint, bot )
 		bot.damageMod = 0;
 		bot thread endSpawnProtection( level.dvar["zom_spawnprot_time"], level.dvar["zom_spawnprot_decrease"] );
 	}
+	else
+		bot.damageMod = 1;
 	
 	// apply effects to the zombie
 	bot scripts\bots\_types::onSpawn( type );
 	
-	// 'spawn' the bot at the given spawnpoint
+	// teleport the bot to the given spawnpoint
 	bot setOrigin( spawnpoint.origin );
 	if( isDefined(spawnpoint.angles) )
 		bot setPlayerAngles( spawnpoint.angles );
@@ -871,23 +903,30 @@ damageOverTime(eAttacker, damage, time, type)
 /**
 * Adds the given player to the assist tracking of the zombie
 */
-addToAssist(player, damage)
+addToAssist( player, damage )
 {
-	if(!isDefined(self.damagedBy))
+	// check if the required array is defined	NOTE edge case, which should not happen
+	if( !isDefined(self.damagedBy) )
 		return;
 	
-	for (i=0; i<self.damagedBy.size; i++)
+	// check if the player is already in the array
+	for( i=0; i<self.damagedBy.size; i++ )
 	{
-		if (self.damagedBy[i].player == player)
+		// add the damage done to the table
+		if( self.damagedBy[i].player == player )
 		{
 			self.damagedBy[i].damage += damage;
 			return;
 		}
 	}
-	struct = spawnstruct();
+	
+	// create a new struct with the player and the damge done
+	struct = spawnStruct();
+	struct.player = player;	// save the player
+	struct.damage = damage;	// save the damage
+
+	// add the struct to the array to use it later
 	self.damagedBy[self.damagedBy.size] = struct;
-	struct.player = player;
-	struct.damage = damage;
 }	/* addToAssist */
 
 /**
@@ -1082,7 +1121,7 @@ doSplatter( attacker, sMeansOfDeath, sWeapon, sHitLoc )
 						// play apropriate exploding effect
 						self zomExplodeBody();
 						
-						// let the script know we exploded the whole zombie
+						// let the script know we exploded the whole zombie, no ragdoll required
 						return true;
 					}
 				}
@@ -1203,6 +1242,8 @@ giveAssists( killer )
 }	/* giveAssists */
 
 onMonkeyExplosion(){
+	printLn( "TODO: Monkey Bomb tracking..." );
+/*	NOTE this is mainly for reference, we want to make this part of the main AI
 	self endon("death");
 	self endon("disconnect");
 	while(1){
@@ -1223,15 +1264,18 @@ onMonkeyExplosion(){
 			if(!foundMonkey){
 				bot.targetedMonkey = undefined;
 				bot.targetedMonkeyEntIndex = undefined;
-				if(isAlive(bot) && isDefined(bot getClosestTarget())) // Giving the zombie a new target, preventing "onSight"-checks in case the zombie is stuck inside a wall
-					bot zomSetTarget(bot getClosestTarget().origin);
+			//	if(isAlive(bot) && isDefined(bot getClosestTarget())) // Giving the zombie a new target, preventing "onSight"-checks in case the zombie is stuck inside a wall
+				//	bot zomSetTarget(bot getClosestTarget().origin);
 			}
 		}
 
 	}
+*/
 }
 
 monkeyOverride(){
+	printLn( "TODO: Monkey Bomb tracking..." );
+/*	NOTE this is mainly for reference, we want to make this part of the main AI
 	self endon("death");
 	self endon("disconnect");
 	while(1){
@@ -1257,375 +1301,16 @@ monkeyOverride(){
 				}
 			}
 			if(isDefined(nearestEnt)){
-				self zomSetTarget(nearestEnt.origin);
+			//	self zomSetTarget(nearestEnt.origin);
 				self.targetedMonkey = true;
 				self.targetedMonkeyEntIndex = nearestEnt.index;
 				self.sprinting = true;
 				if (distance(nearestEnt.origin, self.origin) < (self.meleeRange - 40)){
-					self zomGoIdle();
+//					self zomGoIdle();
 				}
 			}
 			wait .05;
 		}
-	}
-}
-
-zomMain()
-{
-	self endon("disconnect");
-	self endon("death");
-	self endon("kill_main");
-	
-	self.lastTargetWp = -2;
-	self.nextWp = -2;
-	//self.intervalScale = 1;
-	update = 0;
-	
-	while (1)
-	{
-		switch (self.status)
-		{
-			case "idle":
-				zomWaitToBeTriggered();
-				switch(level.zomIdleBehavior)
-				{
-					case "magic":
-						if (update==5) {
-							if (level.zomTarget != "")
-							{
-								if (level.zomTarget == "player_closest")
-								{
-									ent = self getClosestTarget();
-									if (isdefined(ent))
-									{
-										self zomSetTarget(ent.origin);
-									}
-								}
-								else
-								self zomSetTarget(getRandomEntity(level.zomTarget).origin);
-							}
-							else
-							{
-								ent = self getClosestTarget();
-								if (isdefined(ent))
-								self zomSetTarget(ent.origin);
-							}
-							update = 0;
-						}
-						else
-							update++;
-					break;
-				}
-				break;
-			case "triggered":
-				if (update==10){
-					self.bestTarget = zomGetBestTarget();
-					update = 0;
-				}
-				else 
-					update++;
-				if (isdefined(self.bestTarget))
-					if(self.bestTarget.isTargetable && self.bestTarget.visible)
-					{
-						self.lastMemorizedPos = self.bestTarget.origin;
-						if (!checkForBarricade(self.bestTarget.origin))
-						{
-							if (distance(self.bestTarget.origin, self.origin) < self.meleeRange)
-							{
-								self thread zomMoveLockon(self.bestTarget, self.meleeTime, self.meleeSpeed);
-								switch(self.type){
-									case "napalm": self zomExplode(); break;
-									case "boss": self bossAttack(); break;
-									default: self zomMelee(); break;
-								}
-								//doWait = false;
-							}
-							else
-							{
-								zomMovement();
-								self zomMoveTowards(self.bestTarget.origin);
-								//doWait = false;
-							}
-						}
-						else
-							self zomMelee();
-					}
-					else
-						self zomGoSearch();
-				else
-					self zomGoSearch();
-				break;
-			
-			case "searching":
-			zomWaitToBeTriggered();
-				if (isdefined(self.lastMemorizedPos))
-				{
-					if (!checkForBarricade(self.lastMemorizedPos))
-					{
-						if (distance(self.lastMemorizedPos, self.origin) > 48)
-						{
-							zomMovement();
-							self zomMoveTowards(self.lastMemorizedPos);
-							//doWait = false;
-						}
-						else
-							self.lastMemorizedPos = undefined;
-					}
-					else
-						self zomMelee();
-				}
-				else
-					zomGoIdle();
-					
-				break;
-			}
-		//if (doWait)
-		wait level.zomInterval;
-	}
-}
-
-zomGetBestTarget()
-{
-	if (!isdefined(self.currentTarget))
-	{
-		for (i=0; i<level.players.size; i++)
-		{
-			player = level.players[i];
-			if (zomSpot(player))
-			{
-				self.currentTarget = player;
-				return player;
-			}
-			wait 0.05;
-		}
-		/*for (i=0; i<level.zomTargets.size; i++)
-		{
-			obj = level.zomTargets[i];
-			if (zomSpot(obj))
-			{
-				self.currentTarget = obj;
-				return obj;
-			}
-		}*/
-	}
-	else
-	{
-		if (!zomSpot(self.currentTarget))
-		{
-			self.currentTarget = undefined;
-			return undefined;
-		}
-		
-		
-		targetdis = distancesquared(self.origin, self.currentTarget.origin) - level.zomPreference;
-		for (i=0; i<level.players.size; i++)
-		{
-			player = level.players[i];
-			if (distancesquared(self.origin, player.origin) < targetdis)
-			{
-				if (zomSpot(player))
-				{
-					self.currentTarget = player;
-					return player;
-				}
-			}
-		}
-		/*for (i=0; i<level.zomTargets.size; i++)
-		{
-			obj = level.zomTargets.size[i];
-			if (distancesquared(self.origin, obj.origin) - obj.zomPreference < targetdis)
-			{
-				if (zomSpot(obj))
-				{
-					self.currentTarget = obj;
-					return obj;
-				}
-			}
-		}*/
-		return self.currentTarget;
-		
-	}
-}
-
-zomMovement()
-{
-	self.cur_speed = 0;
-	
-	if ((self.alertLevel >= 200 && (!self.walkOnly || self.quake)) || self.sprinting) //GO RUNNING... AAHH
-	{
-		self botAction( "+sprint" );
-	//	self setanim("sprint");
-	//	self.cur_speed = self.runSpeed;
-		if (self.quake)
-		{
-			Earthquake(0.25, .3, self.origin, 380);
-		}
-		
-		if (level.dvar["zom_dominoeffect"])
-			thread alertZombies(self.origin, 480, 5, self); 
-	}
-	else
-	{
-		self botAction( "-sprint" );
-	//	self setanim("walk");
-	//	self.cur_speed = self.walkSpeed;
-		if (self.quake)
-		{
-			Earthquake(0.17, .3, self.origin, 320);
-		}
-	}
-}
-
-
-zomGoIdle()
-{
-//	self setanim("stand");
-	self botStop();
-	self.cur_speed = 0;
-	self.alertLevel = 0;
-	self.status = "idle";
-	//iprintlnbold("IDLE!");
-}
-
-zomGoTriggered()
-{
-	self.status = "triggered";
-	//self.update = 10;
-	self.bestTarget = zomGetBestTarget();
-	//iprintlnbold("TRIGGERED!");
-}
-
-zomGoSearch()
-{
-	self.status = "searching";
-	//iprintlnbold("SEARCHING!");
-}
-
-zomWaitToBeTriggered()
-{
-	for (i=0; i<level.players.size; i++)
-	{
-		player = level.players[i];
-		if(self zomSpot(player))
-		{
-			self zomGoTriggered();
-			break;
-		}
-	}
-}
-
-zomSpot(target)
-{
-  if (!target.isObj)
-  {
-	  if (!target.isAlive)
-	  return false;
-	  
-	  if (!target.isTargetable)
-	  return false;
-  }
-  
-  if (!target.visible)
-	return false;
-  
-  distance = distance(self.origin, target.origin);
-  
-  if (distance > level.zombieSight)
-  return false;
-  
-  /*switch (target getStance())
-  {
-	case "stand":
-	if (distance < 256)
-	return 1;
-	break;
-	case "crouch":
-	if (distance < 148)
-	return 1;
-	break;
-	case "prone":
-	if (distance < 96)
-	return 1;
-	break;
-  }*/
-  
-  /*speed = Length(target GetVelocity());
-  
-  if (speed > 80 && distance < 256)
-  return 1;
-  if (speed > 160 && distance < 416)
-  return 1;
-  if (speed > 240 && distance < 672)
-  return 1;*/
-  
-  dot = 1.0;
-  
-  //if nearest target hasn't attacked me, check to see if it's in front of me
-   fwdDir = anglestoforward(self getplayerangles());
-   dirToTarget = vectorNormalize(target.origin-self.origin);
-   dot = vectorDot(fwdDir, dirToTarget);
-  
-
-  //try see through smoke
-  /*if(!SmokeTrace(self GetEyePos(), self.bestTarget GetEyePos()))
-  {
-    return false;
-  }*/
-  
-  //in front of us and is being obvious
-  if(dot > -0.2)
-  {
-    //do a ray to see if we can see the target
-	if (!target.isObj)
-	{
-		visTrace = bullettrace(self.origin + (0,0,68), target getPlayerHeight(), false, self);
-	}
-	else
-	{
-	 visTrace = bullettrace(self.origin + (0,0,68), target.origin +(0,0,20), false, self);
-	}
-	if(visTrace["fraction"] == 1)
-	{
-		   //line(self.origin + (0,0,68), visTrace["position"], (0,1.0,0));
-		return true;
-	}
-	else
-	{
-		if (isdefined(visTrace["entity"]))
-		if (visTrace["entity"] == target)
-		return true;
-		//line(self.origin + (0,0,68), visTrace["position"], (1,0,0));            
-		return false;
-	}
-
-  }
-  
-  return false;
-}
-
-zomGoToClosestWaypoint(){
-	self endon("death");
-	self zomMovement();
-	self zomMoveTowards(level.waypoints[getNearestWp(self.origin)].origin);
-	wait 0.5;
-	self zomGoSearch();
-	self thread zomMain();
-}
-
-setAnim(animation)
-{
-	printLn( "ERROR: setAnim called, use botAction instead" );
-/*	if (isdefined(self.animation[animation]))
-	{
-		self.animWeapon = self.animation[animation];
-		self TakeAllWeapons();
-		self.pers["weapon"] = self.animWeapon;
-		self giveweapon(self.pers["weapon"]);
-		self givemaxammo(self.pers["weapon"]);
-		//self SetWeaponAmmoClip(self.pers["weapon"], 30);
-		//self SetWeaponAmmoStock(self.pers["weapon"], 0);
-		self setspawnweapon(self.pers["weapon"]);
-		self switchtoweapon(self.pers["weapon"]);
 	}
 */
 }
@@ -1641,203 +1326,11 @@ getPlayerHeight()
 		case "prone":
 		return self.origin + (0,0,22);
 	  }
-}
+}	/* getPlayerHeight */
 
-zomMoveTowards(target_position)
-{
-	self endon("disconnect");
-	self endon("death");
-	self notify("zomMoveTowards");
-	self endon("zomMoveTowards");
-	
-	//self thread pushOutOfPlayers();
-	
-	if (!isdefined(self.myWaypoint))
-	{
-		self.myWaypoint = getNearestWp(self.origin);
-	}
-	
-	targetWp = getNearestWp(target_position);
-	
-	nextWp = self.nextWp;
-	
-	direct = false;
-	//
-	//if (distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[targetWp].origin, self.origin) || targetWp == self.myWaypoint)
-	if (self.underway)
-	{
-	
-	//if (targetWp == self.myWaypoint)
-	//
-		//if (distancesquared(target_position, self.origin) >= distancesquared(level.waypoints[nextWp].origin, self.origin))
-		//direct = true;
-		
-		if (targetWp == self.myWaypoint) //|| distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[nextWp].origin, self.origin)
-		{
-			direct = true;
-			self.underway = false;
-			self.myWaypoint = undefined;
-		}
-		else
-		{
-			if (!isdefined(nextWp))
-			return ;
-			if (targetWp == nextWp)
-			{
-
-				if (distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[nextWp].origin, self.origin))
-				{
-					direct = true;
-					self.underway = false;
-					self.myWaypoint = undefined;
-				}
-			}
-		}
-	}
-	else
-	{
-		//if (self.lastTargetWp != targetWp || self.myWaypoint == nextWp)
-		if (targetWp == self.myWaypoint)
-		{
-			//iprintln(level.waypoints[getNearestWp(self.origin)].origin+":"+level.waypoints[getNearestWp(target_position)].origin);
-			direct = true;
-			self.underway = false;
-			self.myWaypoint = undefined;
-		}
-		else
-		{
-			//time = GetTime();
-			/* This way may not be the safest and most reliable */
-			if(level.waypointLoops > 100000 && level.dvar["dev_antilagmonitor"]){
-				// logPrint("DEBUG: Caught > 200000 loops in level.waypointLoops!\n");
-				// logPrint("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
-				// iprintln("Caught > 200000 loops, mitigating load to more frames...");
-				// iprintln("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
-				wait 0.05;
-				if(isDefined(target_position))
-					self thread zomMoveTowards(target_position);
-				return;
-			}
-			if(level.botsLookingForWaypoints > getDvarInt("max_waypoint_bots")){
-				if(getDvarInt("debug_max_waypoint_bots"))
-					iprintln("Caught > " + getDvarInt("max_waypoint_bots") + " bots looking for waypoints!");
-				wait 0.05;
-				if(isDefined(target_position))
-					self thread zomMoveTowards(target_position);
-				return;
-			}
-			level.botsLookingForWaypoints++;
-			nextWp = AStarSearch(self.myWaypoint, targetWp);
-			//newtime = GetTime()-time;
-			//iprintlnbold("MILISEC:" + newtime);
-			self.nextWp = nextWp;
-			self.underway = true;
-		}
-	}
-	
-	//self.lastTargetWp = targetWp;
-	
-	//TARGET SET! MOVING!
-	//line(self.origin, target_position, (0,0,1));
-	if (direct)
-	{
-		moveToPoint(target_position, self.cur_speed);
-		/*lineCol = (1,0,0);
-		line(level.waypoints[self.myWaypoint].origin, target_position, lineCol);*/
-	}
-	else
-	{
-		/*lineCol = (1,0,0);
-		line(level.waypoints[self.myWaypoint].origin, level.waypoints[nextWp].origin, lineCol);*/
-		if (isdefined(nextWp))
-		{
-			moveToPoint(level.waypoints[nextWp].origin, self.cur_speed);
-			if (distance(level.waypoints[nextWp].origin, self.origin) <  64)
-			{
-				self.underway = false;
-				self.myWaypoint = nextWp;
-				//if (self.myWaypoint != nextWp)
-				//nextWp = AStarSearch(self.myWaypoint, targetWp);
-				//else
-				//break;
-			}
-		}
-		/*else
-		
-			self zomGoIdle();
-		*/
-		
-	}
-}
-
-zomMoveLockon(player, time, speed)
-{
-	intervals = int(time / level.zomInterval);
-	for (i=0; i<intervals; i++)
-	{
-		if(!isDefined(player))
-			break;
-		dis = distance(self.origin, player.origin);
-		if (dis > 48)
-		{
-			pushOutDir = VectorNormalize((self.origin[0], self.origin[1], 0)-(player.origin[0], player.origin[1], 0));
-			self moveToPoint(player.origin + pushOutDir * 32, speed);
-			self pushOutOfPlayers();
-		}
-		targetDirection = vectorToAngles(VectorNormalize(player.origin - self.origin));		
-	//	self SetPlayerAngles(targetDirection);
-		self botLookAt( player.origin );
-		wait level.zomInterval;
-	}
-}
-
-pushOutOfPlayers() // ON SELF
-{
-  //push out of other players
-  //players = level.players;
-  players = getentarray("player", "classname");
-  for(i = 0; i < players.size; i++)
-  {
-    player = players[i];
-    
-    if(player == self || !isalive(player))
-      continue;
-    self thread pushout(player.origin);
-
-  }
-  for (i=0; i <level.dynamic_barricades.size; i++)
-  {
-	if (isdefined(level.dynamic_barricades[i]))
-	{
-		if (level.dynamic_barricades[i].hp > 0)
-		self thread pushout(level.dynamic_barricades[i].origin);
-	}
-  }
-   /*for (i=0; i <level.barricades.size; i++)
-  {
-	if (isdefined(level.barricades[i]))
-	{
-		if (level.barricades[i].hp > 0)
-		self thread pushout(level.barricades[i].parts[0].startPosition);
-	}
-  }*/
-}
-
-pushout(org)
-{
-	printLn( "ERROR, LinkObj removed, pushout not supported!" );
-/*	linkObj = self.linkObj;
-    distance = distance(org, linkObj.origin);
-    minDistance = 28;
-    if(distance < minDistance) //push out
-    {
-      pushOutDir = VectorNormalize((linkObj.origin[0], linkObj.origin[1], 0)-(org[0], org[1], 0));
-      pushoutPos = linkObj.origin + (pushOutDir * (minDistance-distance));
-      linkObj.origin = (pushoutPos[0], pushoutPos[1], self.origin[2]);
-    }
+/**
+* Explodes the zombie and damages nearby entities
 */
-}
-
 zomExplode()
 {
 	self endon("disconnect");
@@ -1963,34 +1456,6 @@ bossAttack()
 	else
 		self zomMelee();
 
-}
-
-moveToPoint(origin, speed)
-{
-	self botLookAt( origin );
-	self botMoveTo( origin );
-	/*
-	dis = distance(self.linkObj.origin, origin);
-	if (dis < speed)
-	speed = dis;
-	else
-	speed = speed * level.zomSpeedScale;
-	targetDirection = vectorToAngles(VectorNormalize(origin - self.linkObj.origin));
-	step = anglesToForward(targetDirection) * speed ;
-					
-	self SetPlayerAngles(targetDirection);
-	
-	//self.mover zomMove(step, time);
-	//wait time * 0.05;
-	//self.mover dropToGround();
-	newPos = self.linkObj.origin + step + (0,0,40);
-	dropNewPos = dropPlayer(newPos, 200);
-	if (isdefined(dropNewPos))
-	{
-		newPos = (dropNewPos[0], dropNewPos[1], self compareZ(origin[2], dropNewPos[2]));
-	}
-	self.linkObj moveto(newPos, level.zomInterval , 0, 0);
-	*/
 }
 
 compareZ(z1, z2)
@@ -2131,8 +1596,6 @@ zomDoDamage(meleeRange)
 
 }
 
-
-
 zomSound(delay, sound)
 {
 	if (delay > 0) {
@@ -2143,49 +1606,6 @@ zomSound(delay, sound)
 		return;
 	if (isalive(self))
 	self playSound(sound);
-}
-
-zomSetTarget(target)
-{
-	//wait .5;
-	//self.targetPosition = getentarray(target, "targetname")[0].origin;
-	//self.alertLevel = 1;
-	self zomGoSearch();
-	self.lastMemorizedPos = target;
-}
-
-
-checkForBarricade(targetposition)
-{
-	for (i=0; i<level.barricades.size; i++)
-	{
-		ent = level.barricades[i];
-		if (isDefined(ent) && self istouching(ent) && ent.hp > 0)
-		{
-			fwdDir = vectorNormalize(targetposition-self.origin);
-			dirToTarget = vectorNormalize(ent.origin-self.origin);
-			dot = vectorDot(fwdDir, dirToTarget);
-			if (dot > 0 && dot < 1)
-			{
-				return 1;
-			}
-		}
-	}
-	for (i=0; i<level.dynamic_barricades.size; i++)
-	{
-		ent = level.dynamic_barricades[i];
-		if (isDefined(ent) && distance(self.origin, ent.origin) < 48 && ent.hp > 0)
-		{
-			fwdDir = vectorNormalize(targetposition-self.origin);
-			dirToTarget = vectorNormalize(ent.origin-self.origin);
-			dot = vectorDot(fwdDir, dirToTarget);
-			if (dot > 0 && dot < 1)
-			{
-				return 1;
-			}
-		}
-	}
-	return 0;
 }
 
 /**
@@ -2207,18 +1627,18 @@ zThink()
 	bored = randomInt(level.dvar["zom_max_boredom"]);	// bored value, makes the zombie look for a random target when full
 	targetTime = undefined;								// time the target was last seen
 	
+	nextNode = undefined;
 	moveDirect = false;
-	nextWaypoint = undefined;
 
 	/**
 	* AI variables
 	*	zTarget, Entity|Struct current target
+	*	zTargetNode, Integer id of the last valid target nav node
 	*	zTargetOrigin, Vector3 last known target origin
-	*	zTargetWaypoint, Integer id of the last valid target waypoint
 	*	zTargetOverride, Bool if the current target is forced, e.g Money Bomb
 	*	zInterest, Integer interest value in the current target
 	*	zRage, Integer value of the current anger
-	*	zWaypoint, Integer id of the current waypoint
+	*	zCurrentNode, Integer id of the current nav Node
 	*	zOnGrid, Bool true if moving with waypoints
 	*	zMovetype, String movetype, crawl, walk, run, sprint
 	*/
@@ -2230,16 +1650,17 @@ zThink()
 		self thread zDebugThink();
 	#/
 	
-	// get the current waypoint, if needed
-	if( !isDefined(self.zWaypoint) )
-		self.zWaypoint = getNearestEntityWp( self );
+	// get the current nav node, if needed
+	if( !isDefined(self.zCurrentNode) )
+		self.zCurrentNode = GetNavNode( self.origin );
 	
-	// main thinking loop, updates the zombie target every tick
+	// main thinking loop, updates the zombie every server frame
 	for(;;)
 	{
 		//
 		// FREEZING
 		//
+		// this is set by game end etc. and completely freezes all bots
 		if( level.freezeBots )
 		{
 			wait 0.05;
@@ -2258,16 +1679,16 @@ zThink()
 				// update the last known target origin
 				self.zTargetOrigin = self.zTarget.origin;
 				
-				// try to get the waypoint closest to the target
-				waypoint = getNearestEntityWp( self.zTarget );
+				// try to get the nav node closest to the target
+				nnode = GetNavNode( self.zTargetOrigin );
 				
-				if( isDefined(waypoint) )
+				if( isDefined(nnode) )
 				{
-					// update the current target waypoint, if required
-					if( !isDefined(self.zTargetWaypoint) || self.zTargetWaypoint != waypoint )
+					// update the current target nav node, if required
+					if( !isDefined(self.zTargetNode) || self.zTargetNode != nnode )
 					{
-						// update the target waypoint
-						self.zTargetWaypoint = waypoint;
+						// update the target nav node
+						self.zTargetNode = nnode;
 					}
 				}
 				
@@ -2301,6 +1722,7 @@ zThink()
 		}	/* if( isDefined(self.zTarget) ) */
 		
 		// attempt to aquire a target, if we don't have one
+		// NOTE this is not an ELSE, as we could have lost the target in the previous code block
 		if( !isDefined(self.zTarget) )
 		{
 			// try to get a suitable target
@@ -2309,43 +1731,43 @@ zThink()
 			{
 				self.zTarget = target;
 				self.zInterest = int(100* self zSpot());	// set a base interest value depending on the targets visibility
+				bored = 0;		// reset bored time when we aquire a target
 			}
 			else if( !isDefined(self.zTargetOrigin) )
 			{
 				// aquire a random target, if idle for too long
 				if( bored >= level.dvar["zom_max_boredom"] )
 				{
-					// get a random waypoint as target origin
-					self.zTargetWaypoint = randomInt(level.waypointCount);
-					self.zTargetOrigin = level.waypoints[self.zTargetWaypoint].origin;
-					bored = 0;
+					// get a random nav node as target origin
+					self.zTargetNode = getRandomNavNode();
+					self.zTargetOrigin = getNavNodeOrigin( self.zTargetNode );
+					bored = 0;		// reset bored time
 				}
 				
-				// increase bored every frame we have no target and no target origin
+				// increase bored every frame the zombie has no target and no target origin
 				bored += randomInt(10);
 			}
 		}	/* if( !isDefined(self.zTarget) ) */
-		else
-			bored = 0;	// reset bored time when we have a target
 		
-		// check for barricades
+		// check for barricades blocking the zombie
 		barricade = self zBarricadeCheck();
 		if( isDefined(barricade) )
 		{
+			// check if the barricade is up
 			if( barricade.hp > 0 )
 				self zAttack( barricade );
 			
 			// warp through barricades
-			if( isDefined(barricade) )
+			if( isDefined(barricade) )		// could have destroyed it with our attack
 			{
-				printLn( "TODO, barricade warping!" );
+				printLn( "TODO, barricade warping!" );	// TODO zombie is stuck until this is sorted!
 				wait 0.05;
 				continue;
 			}
 		}	/* isDefined(barricade) */
 		
 		//
-		// WAYPOINTING & MOVEMENT
+		// PATHFINDING & MOVEMENT
 		//
 		// check if we have anywhere to go
 		if( isDefined(self.zTargetOrigin) )
@@ -2364,44 +1786,46 @@ zThink()
 			}
 			else
 			{
-				// make sure we have a target waypoint
-				if( !isDefined(self.zTargetWaypoint) )
+				// make sure we have a target nav node
+				if( !isDefined(self.zTargetNode) )
 				{
-					waypoint = getNearestWp(self.zTargetOrigin);
-					if( waypoint > -1 )
-						self.zTargetWaypoint = waypoint;
+					nnode = GetNavNode( self.zTargetOrigin );
+					if( nnode > -1 )
+						self.zTargetNode = nnode;
 				}
 				
 				// get the AStarPath to the next waypoint
-				if( !isDefined(nextWaypoint) && isDefined(self.zTargetWaypoint) )
-					nextWaypoint = AStarSearch( self.zWaypoint, self.zTargetWaypoint );
+				if( !isDefined(nextNode) && isDefined(self.zTargetNode) )
+					nextNode = AStarSearch( self.zCurrentNode, self.zTargetNode );
 				
 				// get the distance to the next waypoint if possible
 				wDist = undefined;
-				if( isDefined(nextWaypoint) && nextWaypoint > -1 )
+				if( isDefined(nextNode) && nextNode > -1 )
 				{
+					// TODO rework this for navmeshing
 					// get the distance to the next waypoint
-					wDist = distance( self.origin, level.waypoints[nextWaypoint].origin );
+					wDist = distance( self.origin, level.waypoints[nextNode].origin );
 					
 					// check if we have already arrived at the waypoint
 					if( wDist < 4 )
 					{
 						// set the waypoint as our current one
-						self.zWaypoint = nextWaypoint;
+						self.zCurrentNode = nextNode;
 						
 						// clear the nextWaypoint
-						nextWaypoint = undefined;
+						nextNode = undefined;
 					}
 				}
 				
 				// get back to the waypoint grid if needed
+				// TODO rework this for nav meshing
 				if( !self.zOnGrid && !moveDirect )
 				{
-					mdist = distance( self.origin, level.waypoints[self.zWaypoint].origin );
+					mdist = distance( self.origin, level.waypoints[self.zCurrentNode].origin );
 					if( mDist < 4 )
 						self.zOnGrid = true;
 					else
-						self zMove( level.waypoints[self.zWaypoint].origin );
+						self zMove( level.waypoints[self.zCurrentNode].origin );
 				}
 				else
 				{
@@ -2413,8 +1837,8 @@ zThink()
 						self.zOnGrid = false;
 					}
 					else
-						if( isDefined(nextWaypoint) )	// move to the next waypoint
-							self zMove( level.waypoints[nextWaypoint].origin );
+						if( isDefined(nextNode) )	// move to the next waypoint
+							self zMove( level.waypoints[nextNode].origin );
 				}
 			}
 		}
@@ -2458,11 +1882,13 @@ zAttack( target )
 		
 		self botAction( "-melee" );
 		
-		// TODO wait a little before applying damage
+		// wait a little before applying damage
+		wait 0.75;	// NOTE time taken from the default weapon file, might want to adjust
 		
-		// apply damage to non players
+		// apply damage to non player targets
 		if( !isPlayer(target) )
 		{
+			// TODO use damage entity instead
 			target thread scripts\players\_barricades::doBarricadeDamage( self.damage*level.dif_zomDamMod );
 		}
 		
@@ -2763,7 +2189,7 @@ alertZombies( origin, alertDist, alertPower, ignoreBot )
 		if( dist <= alertDist && isAlive(zombie) )
 		{
 			// override the target if this one can be spotted and the zombie isn't enraged considerable
-			if( isDefined(self) && zombie zSpot(self) > 0.0 && zombie.zRage < 3 )
+			if( isDefined(self) && zombie zSpot(self) > 0.0 && zombie.zRage < 3 && !zombie.zTargetOverride )
 			{
 				tdist = 0.0;		// distance to the current target
 				

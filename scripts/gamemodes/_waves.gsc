@@ -47,6 +47,11 @@ startRegularWave(){
 	// Spawn all zombies of the wave one after another
 	while( level.spawnedInWave < level.waveSize )
 	{
+		/#	// halt spawning for debugging purposes
+		if( getDvarInt("dev_granular_spawning") > 0 )
+			level waittill( "DEV_spawn_zombie" );
+		#/
+		
 		// Only allow spawning when the limit of alive zombies isn't hit
 		if(level.botsAlive < level.dif_zomMax && !level.spawningDisabled)
 		{

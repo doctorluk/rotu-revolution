@@ -14,20 +14,6 @@
 */
 
 /**
-*	Converts the string to float.
-*
-*	@string: string to be converted
-*/
-float(string)
-{
-	// set a helper dvar
-	setDvar("2float", string);
-	
-	// return the float value retrieved from the dvar
-	return getDvarFloat("2float");
-}
-
-/**
 * Sets the given dvar if it's empty
 */
 setDvarIfUninitialized( dvar, value )
