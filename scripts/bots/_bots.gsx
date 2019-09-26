@@ -1776,7 +1776,7 @@ zThink()
 			tDist = distance( self.origin, self.zTargetOrigin );
 			
 			// check if we have arrived
-			if( tDist < 4 )
+			if( tDist < 1 )
 			{
 				// clear the target origin
 				self.zTargetOrigin = undefined;
@@ -1822,7 +1822,7 @@ zThink()
 				if( !self.zOnGrid && !moveDirect )
 				{
 					mdist = distance( self.origin, level.waypoints[self.zCurrentNode].origin );
-					if( mDist < 4 )
+					if( mDist < 1 )
 						self.zOnGrid = true;
 					else
 						self zMove( level.waypoints[self.zCurrentNode].origin );
