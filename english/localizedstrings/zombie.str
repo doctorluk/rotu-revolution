@@ -250,3 +250,11 @@ LANG_ENGLISH		"Difficulty has been ^1INCREASED^7!"
 
 REFERENCE			SHOP_COSTS_INCREASED
 LANG_ENGLISH		"Shop Item costs increased by &&1%!"
+
+REFERENCE			N_PLACED_OBSTACLE
+LANG_ENGLISH		"&&1 ^7placed an ^2obstacle^7."
+
+REFERENCE			CANT_PLACE_OBSTACLE
+LANG_ENGLISH		"^1Can not place obstacle here!"
+
+ENDMARKER

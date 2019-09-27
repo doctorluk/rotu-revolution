@@ -1692,6 +1692,7 @@ zThink()
 					}
 				}
 				
+				// attack the target, if it's within melee range
 				tDist = distance( self.zTarget.origin, self.origin );
 				if( tDist < getDvarInt("player_meleeRange") )
 					self zAttack( self.zTarget );
@@ -1753,23 +1754,27 @@ zThink()
 		barricade = self zBarricadeCheck();
 		if( isDefined(barricade) )
 		{
+			printLn( "barricade found" );
+		
 			// check if the barricade is up
 			if( barricade.hp > 0 )
-				self zAttack( barricade );
-			
-			// warp through barricades
-			if( isDefined(barricade) )		// could have destroyed it with our attack
 			{
-				printLn( "TODO, barricade warping!" );	// TODO zombie is stuck until this is sorted!
-				wait 0.05;
-				continue;
+				printLn( "attacking barricade" );
+				self zAttack( barricade );
+			}
+			
+			// warp through map barricades
+			if( isDefined(barricade) && isDefined(barricade.bar_type) && barricade.bar_type == 0 )
+			{
+				printLn( "traversing barricade" );
+				self zTraverseBarricade( barricade );
 			}
 		}	/* isDefined(barricade) */
 		
 		//
 		// PATHFINDING & MOVEMENT
 		//
-		// check if we have anywhere to go
+		// attempt to go to our target location
 		if( isDefined(self.zTargetOrigin) )
 		{
 			// get the distance to our target origin
@@ -1807,7 +1812,7 @@ zThink()
 					wDist = distance( self.origin, level.waypoints[nextNode].origin );
 					
 					// check if we have already arrived at the waypoint
-					if( wDist < 4 )
+					if( wDist < 1 )
 					{
 						// set the waypoint as our current one
 						self.zCurrentNode = nextNode;
@@ -1849,7 +1854,7 @@ zThink()
 }	/* zThink */
 
 /**
-* Attacks the given target until it's out of range
+* Attacks the given target until it's out of range or dead
 */
 zAttack( target )
 {
@@ -1857,7 +1862,7 @@ zAttack( target )
 	self endon( "killed" );
 	self endon( "kill_ai" );
 	self endon( "disconnect" );
-		
+	
 	// get the melee range
 	range = getDvarInt( "player_meleeRange" );
 
@@ -1868,9 +1873,13 @@ zAttack( target )
 			break;
 		
 		// check if the target is still in range
-		tDist = distance( self.origin, target.origin );
-		if( tDist > range )
-			break;
+		if( !self isTouching(target) ) {
+			tDist = distance( self.origin, target.origin );
+			if( tDist > range ) {
+				printLn( "target out of range" );
+				break;
+			}
+		}
 		
 		// TODO make explosive zombies blow up
 		
@@ -1931,10 +1940,8 @@ zBarricadeCheck()
 		ent = level.barricades[i];
 		if( isDefined(ent) && self isTouching(ent) )
 		{
-			dirToTarget = vectorNormalize( ent.origin-self.origin );
-			dot = vectorDot( fwdDir, dirToTarget );
-			if( dot > 0 && dot < 1 )
-				return ent;
+			// NOTE we need all static barricades for the AI, to warp through
+			return ent;
 		}
 	}
 	
@@ -1951,6 +1958,33 @@ zBarricadeCheck()
 		}
 	}
 }	/* zBarricadeCheck */
+
+/**
+* Makes the zombie traverse the given barricade
+*/
+zTraverseBarricade( barricade )
+{
+	// spawn a helper, to move the bot with
+	if( !isDefined(self.mover) )
+	{
+		self.mover = spawn( "script_origin", self.origin );
+		self.mover setContents( 0 );
+	}
+	
+	// attach the bot to it's mover entity
+	self.mover.origin = self.origin;
+	self linkTo( self.mover );
+	
+	angles = self getPlayerAngles();
+	while( self isTouching(barricade) )
+	{
+		self.mover.origin = self.mover.origin + anglesToForward( (0,0,angles[2]) );
+		wait 0.05;
+	}
+	
+	self unlink();
+	self.mover delete();
+}	/* zTraverseBarricade */
 
 /**
 * Displays debugging data for the zombie

@@ -33,7 +33,7 @@ init()
 	precacheHeadIcon( "icon_infection" );
 	
 	precacheString( &"ZOMBIE_INFECTED" );
-	precacheString( &"ZOMBIE_PLAYER_INFECTED" );
+	precacheString( &"ZOMBIE_PLAYER_N_INFECTED" );
 }	/* init */
 
 /**
@@ -86,7 +86,7 @@ goInfected()
 	self.infected = true;
 	
 	// print a message that the player has been infected
-	iPrintLn( &"ZOMBIE_PLAYER_INFECTED", self );
+	iPrintLn( &"ZOMBIE_PLAYER_N_INFECTED", self );
 	self glowMessage( &"ZOMBIE_INFECTED", "", (1, 0, 0), 6, 50, 2 );
 	
 	// calculate the time for the infection to kick in
