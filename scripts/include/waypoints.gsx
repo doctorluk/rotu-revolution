@@ -17,6 +17,14 @@
 #include scripts\include\data;
 
 /**
+*
+*	TODO transfer what we need into a pathfinding.gsc file and delete this one
+*
+**/
+
+
+
+/**
 * Loads the levels waypoints from a csv file and convertes them for the gamemode.
 */
 loadWaypoints2313()

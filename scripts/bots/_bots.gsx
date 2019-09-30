@@ -1645,7 +1645,8 @@ zThink()
 	
 	// start sub ai threads
 	self thread zMonitorLegs();			// monitor legs being shot off
-	/#
+
+	/#	// developer sub threads
 	if( level.dvar["zom_developer"] )
 		self thread zDebugThink();
 	#/
@@ -1975,13 +1976,19 @@ zTraverseBarricade( barricade )
 	self.mover.origin = self.origin;
 	self linkTo( self.mover );
 	
+	// TODO make the bot look over/through the barricade
+	
+	// TODO play a traversing animation and move the bot along with it
+	
+	// HACK push the bot through the barricade
 	angles = self getPlayerAngles();
 	while( self isTouching(barricade) )
 	{
-		self.mover.origin = self.mover.origin + anglesToForward( (0,0,angles[2]) );
+		self.mover.origin = self.mover.origin + anglesToForward( (0,angles[1],0) )*1.7;
 		wait 0.05;
 	}
 	
+	// delete the mover entity
 	self unlink();
 	self.mover delete();
 }	/* zTraverseBarricade */
@@ -1997,7 +2004,7 @@ zDebugThink()
 	self endon( "disconnect" );
 	
 	/#
-	// update the developer info untill the bot dies or ai is killed
+	// update the developer info until the bot dies or ai is killed
 	for(;;)
 	{
 		// update the text origin
@@ -2019,7 +2026,7 @@ zDebugThink()
 		// draw the target text
 		print3D( origin, ttext, (1.0,1.0,1.0), 1.0, 0.6, 4 );	// NOTE for some reason this is not drawing the full string
 		
-		// prepare and draw the interest text
+		// prepare and draw the interest/rage text
 		itext = "I: "+self.zInterest+" R: "+self.zRage;
 		print3D( origin-(0,0,8), itext, (1.0,1.0,1.0), 1.0, 0.6, 4 );
 		
@@ -2140,6 +2147,14 @@ zMove( origin )
 		self botAction( "+sprint" );
 	else if( self.zMovetype == "walk" )
 		self botAction( "+ads" );
+
+	// check if we can actually reach the target, or try to navigate around
+	/#
+	// run a trace 17u above the origins (we can hop up 16u)
+	trace = bulletTrace( self.origin+(0,0,17), origin+(0,0,17), false, undefined );
+	// draw a line for the check
+	line( self.origin+(0,0,17), origin+(0,0,17), (1-trace["fraction"],trace["fraction"],0), false );
+	#/
 
 	// make the bot move to the given origin
 	self botLookAt( origin );
