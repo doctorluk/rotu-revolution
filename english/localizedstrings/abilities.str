@@ -3,13 +3,16 @@
 REFERENCE			TITLE
 LANG_ENGLISH        "ROLE ABILITIES"
 
-REFERENCE			ABILITY1
+REFERENCE			ABILITY_ACTIVE
+LANG_ENGLISH        "Active-Use Ability"
+
+REFERENCE			ABILITY_PRIMARY
 LANG_ENGLISH        "Primary Abilities"
 
-REFERENCE			ABILITY2
+REFERENCE			ABILITY_SECONDARY
 LANG_ENGLISH        "Secondary Abilities"
 
-REFERENCE			ABILITY3
+REFERENCE			ABILITY_SELECTABLE
 LANG_ENGLISH        "Selectable Ability"
 
 ///////////////
@@ -17,6 +20,19 @@ LANG_ENGLISH        "Selectable Ability"
 ///////////////
 
 	//PRIMARY
+
+			// USABLE ABILITY//
+REFERENCE			SOLDIER_PR_AB_U
+LANG_ENGLISH        "Rampage"
+
+REFERENCE			SOLDIER_PR_AB_UD
+LANG_ENGLISH        "Rampage (^3lvl 15^7)"
+
+REFERENCE			DES_SOLDIER_PR_AB_U
+LANG_ENGLISH		"The Soldier shoots and reloads faster for a certain amount of time."
+
+REFERENCE			DES_SOLDIER_PR_AB_UD
+LANG_ENGLISH		"The Soldier shoots and reloads faster for a certain amount of time. ^3Unlocked at Soldier rank 15."
 	
 		// ABILITY 1 //
 REFERENCE			SOLDIER_PR_AB1
@@ -28,34 +44,20 @@ LANG_ENGLISH        "Strong Bullet (^3lvl 5^7)"
 REFERENCE			DES_SOLDIER_PR_AB1
 LANG_ENGLISH		"The Soldier equips himself with special bullets that can penetrate any object and hit the Zombies."
 
-REFERENCE			DES_SOLDIERD_PR_AB1
+REFERENCE			DES_SOLDIER_PR_AB1D
 LANG_ENGLISH		"The Soldier equips himself with special bullets that can penetrate any object and hit the Zombies. ^3Unlocked at Soldier rank 5."
 
-			// ABILITY 2 //
+		// ABILITY 2 //
 REFERENCE			SOLDIER_PR_AB2
-LANG_ENGLISH        "Rampage"
-
-REFERENCE			SOLDIER_PR_AB2D
-LANG_ENGLISH        "Rampage (^3lvl 15^7)"
-
-REFERENCE			DES_SOLDIER_PR_AB2
-LANG_ENGLISH		"The Soldier shoots and reloads faster for a certain amount of time."
-
-REFERENCE			DES_SOLDIERD_PR_AB2
-LANG_ENGLISH		"The Soldier shoots and reloads faster for a certain amount of time. ^3Unlocked at Soldier rank 15."
-
-
-		// ABILITY 3 //
-REFERENCE			SOLDIER_PR_AB3
 LANG_ENGLISH     	"Rocket Control"
 
-REFERENCE			SOLDIER_PR_AB3D
+REFERENCE			SOLDIER_PR_AB2D
 LANG_ENGLISH      	"Rocket Control (^3lvl 25^7)"
 
-REFERENCE			DES_SOLDIER_PR_AB3
+REFERENCE			DES_SOLDIER_PR_AB2
 LANG_ENGLISH		"In his hands, rockets become precise as f***. His rockets always travel 100% straight with no spread!"
 
-REFERENCE			DES_SOLDIERD_PR_AB3
+REFERENCE			DES_SOLDIER_PR_AB2D
 LANG_ENGLISH		"In his hands, rockets become precise as f***. His rockets always travel 100% straight with no spread! ^3Unlocked at Soldier rank 25."
 
 	//PASSIVE
@@ -113,6 +115,22 @@ LANG_ENGLISH		"The Soldier is the only one with enough will power to resist the 
 ///////////////
 
 	//PRIMARY
+	
+	
+		// USABLE ABILITY //
+REFERENCE			SPECIALIST_PR_AB_U
+LANG_ENGLISH        "Fake Death"
+
+REFERENCE			SPECIALIST_PR_AB_UD
+LANG_ENGLISH        "Fake Death (^3lvl 15^7)"
+
+
+REFERENCE			DES_SPECIALIST_PR_AB_U
+LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him."
+
+REFERENCE			DES_SPECIALIST_PR_AB_UD
+LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him. ^3Unlocked at Assassin rank^3 15."
+
 		// ABILITY 1 //
 REFERENCE			SPECIALIST_PR_AB1
 LANG_ENGLISH        "Crossbow"
@@ -126,32 +144,19 @@ LANG_ENGLISH		"The Assassin carries a deadly Crossbow with him."
 REFERENCE			DES_SPECIALIST_PR_AB1D
 LANG_ENGLISH		"The Assassin carries a deadly Crossbow with him. ^3Unlocked at Assassin rank 5."
 
+
 		// ABILITY 2 //
 REFERENCE			SPECIALIST_PR_AB2
-LANG_ENGLISH        "Fake Death"
-
-REFERENCE			SPECIALIST_PR_AB2D
-LANG_ENGLISH        "Fake Death (^3lvl 15^7)"
-
-
-REFERENCE			DES_SPECIALIST_PR_AB2
-LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him."
-
-REFERENCE			DES_SPECIALIST_PR_AB2D
-LANG_ENGLISH		"The Assassin is able to fake his death which will cause Zombies to ignore him. ^3Unlocked at Assassin rank^3 15."
-
-		// ABILITY 3 //
-REFERENCE			SPECIALIST_PR_AB3
 LANG_ENGLISH        "Quick Escape"
 
-REFERENCE			SPECIALIST_PR_AB3D
+REFERENCE			SPECIALIST_PR_AB2D
 LANG_ENGLISH        "Quick Escape (^3lvl 25^7)"
 
 
-REFERENCE			DES_SPECIALIST_PR_AB3
+REFERENCE			DES_SPECIALIST_PR_AB2
 LANG_ENGLISH		"When the Assassin's health gets below 25% he becomes invisible to the Zombies and gets a small speed boost, after a few seconds the effect will wear off."
 
-REFERENCE			DES_SPECIALIST_PR_AB3D
+REFERENCE			DES_SPECIALIST_PR_AB2D
 LANG_ENGLISH		"When the Assassin's health gets below 25% he becomes invisible to the Zombies and gets a small speed boost, after a few seconds the effect will wear off.  ^3Unlocked at Assassin rank ^325."
 
 	//PASSIVE
@@ -210,6 +215,23 @@ LANG_ENGLISH		"The Assassin replaces his normal Crossbow with a deadly Explosive
 ///////////////
 
 	//PRIMARY
+	
+	
+		// USABLE ABILITY //
+REFERENCE			MEDIC_PR_AB_U
+LANG_ENGLISH        "Healing Aura"
+
+REFERENCE			MEDIC_PR_AB_UD
+LANG_ENGLISH        "Healing Aura (^3lvl 15^7)"
+
+
+REFERENCE			DES_MEDIC_PR_AB_U
+LANG_ENGLISH		"The Medic can summon a powerful healing aura which will heal everyone around."
+
+REFERENCE			DES_MEDIC_PR_AB_UD
+LANG_ENGLISH		"The Medic can summon a powerful healing aura which will heal everyone around. ^3Unlocked at Medic rank^3 15."
+
+
 		// ABILITY 1 //
 REFERENCE			MEDIC_PR_AB1
 LANG_ENGLISH        "Medkit"
@@ -218,36 +240,22 @@ REFERENCE			MEDIC_PR_AB1D
 LANG_ENGLISH        "Medkit (^3lvl 5^7)"
 
 REFERENCE			DES_MEDIC_PR_AB1
-LANG_ENGLISH		"The Medic equips himself with a medkit. When placed it regularly heals allied players nearby!"
+LANG_ENGLISH		"The Medic equips himself with a medkit. When placed, it regularly heals allied players nearby!"
 
 REFERENCE			DES_MEDIC_PR_AB1D
-LANG_ENGLISH		"The Medic equips himself with a medkit. When placed it regularly heals allied players nearby! ^3Unlocked at Medic rank 5."
+LANG_ENGLISH		"The Medic equips himself with a medkit. When placed, it regularly heals allied players nearby! ^3Unlocked at Medic rank 5."
 
 		// ABILITY 2 //
 REFERENCE			MEDIC_PR_AB2
-LANG_ENGLISH        "Healing Aura"
-
-REFERENCE			MEDIC_PR_AB2D
-LANG_ENGLISH        "Healing Aura (^3lvl 15^7)"
-
-
-REFERENCE			DES_MEDIC_PR_AB2
-LANG_ENGLISH		"The Medic can summon a powerful healing aura which will heal everyone around."
-
-REFERENCE			DES_MEDIC_PR_AB2D
-LANG_ENGLISH		"The Medic can summon a powerful healing aura which will heal everyone around. ^3Unlocked at Medic rank^3 15."
-
-		// ABILITY 3 //
-REFERENCE			MEDIC_PR_AB3
 LANG_ENGLISH        "Health Transfusion"
 
-REFERENCE			MEDIC_PR_AB3D
+REFERENCE			MEDIC_PR_AB2D
 LANG_ENGLISH        "Health Transfusion (^3lvl 25^7)"
 
-REFERENCE			DES_MEDIC_PR_AB3
+REFERENCE			DES_MEDIC_PR_AB2
 LANG_ENGLISH		"The Medic has a chance of 20% to steal health from a Zombie and gets healed by ^23%^7 of his missing health every second."
 
-REFERENCE			DES_MEDIC_PR_AB3D
+REFERENCE			DES_MEDIC_PR_AB2D
 LANG_ENGLISH		"The Medic has a chance of 20% to steal health from a Zombie and gets healed by ^23%^7 of his missing health every second. ^3Unlocked at Medic rank ^325."
 
 	//PASSIVE
@@ -305,6 +313,22 @@ LANG_ENGLISH		"Bullets fed into the Medic's clips have been dipped into poisonou
 ///////////////
 
 	//PRIMARY
+	
+	
+		// USABLE ABILITY //
+REFERENCE			ENGINEER_PR_AB_U
+LANG_ENGLISH        "Augmented Turrets"
+
+REFERENCE			ENGINEER_PR_AB_UD
+LANG_ENGLISH        "Augmented Turrets (^3lvl 15^7)"
+
+
+REFERENCE			DES_ENGINEER_PR_AB_U
+LANG_ENGLISH		"All turrets that have been placed by the Engineer are getting a BOOST! GL Turrets are shooting twice as fast, while Sentry Turrets shoot twice the amount!"
+
+REFERENCE			DES_ENGINEER_PR_AB_UD
+LANG_ENGLISH		"All turrets that have been placed by the Engineer are getting a BOOST! GL Turrets are shooting twice as fast, while Sentry Turrets shoot twice the amount! ^3Unlocked at Engineer rank^3 15."
+
 		// ABILITY 1 //
 REFERENCE			ENGINEER_PR_AB1
 LANG_ENGLISH        "Ammo Box"
@@ -320,30 +344,16 @@ LANG_ENGLISH		"The Engineer brings along an Ammobox to support him and his allie
 
 		// ABILITY 2 //
 REFERENCE			ENGINEER_PR_AB2
-LANG_ENGLISH        "Augmented Turrets"
-
-REFERENCE			ENGINEER_PR_AB2D
-LANG_ENGLISH        "Augmented Turrets (^3lvl 15^7)"
-
-
-REFERENCE			DES_ENGINEER_PR_AB2
-LANG_ENGLISH		"All turrets that have been placed by the Engineer are getting a BOOST! GL Turrets are shooting twice as fast, while Sentry Turrets shoot twice the amount!"
-
-REFERENCE			DES_ENGINEER_PR_AB2D
-LANG_ENGLISH		"All turrets that have been placed by the Engineer are getting a BOOST! GL Turrets are shooting twice as fast, while Sentry Turrets shoot twice the amount! ^3Unlocked at Engineer rank^3 15."
-
-		// ABILITY 3 //
-REFERENCE			ENGINEER_PR_AB3
 LANG_ENGLISH        "Turret Engineering"
 
-REFERENCE			ENGINEER_PR_AB3D
+REFERENCE			ENGINEER_PR_AB2D
 LANG_ENGLISH        "Turret Engineering (^3lvl 25^7)"
 
 
-REFERENCE			DES_ENGINEER_PR_AB3
+REFERENCE			DES_ENGINEER_PR_AB2
 LANG_ENGLISH		"His knowledge expanded while fighting Zombies. Especially the Turrets got him interested. Turrets now stay on the field 40% longer."
 
-REFERENCE			DES_ENGINEER_PR_AB3D
+REFERENCE			DES_ENGINEER_PR_AB2D
 LANG_ENGLISH		"His knowledge expanded while fighting Zombies. Especially the Turrets got him interested. Turrets now stay on the field 40% longer."
 
 	//PASSIVE
@@ -401,6 +411,22 @@ LANG_ENGLISH		"The Enginneer's bullets have a chance of 5% to set their target o
 ///////////////
 
 	//PRIMARY
+	
+	
+		// USABLE ABILITY //
+REFERENCE			ARMORED_PR_AB_U
+LANG_ENGLISH        "Invincibility"
+
+REFERENCE			ARMORED_PR_AB_UD
+LANG_ENGLISH        "Invincibility (^3lvl 15^7)"
+
+
+REFERENCE			DES_ARMORED_PR_AB_U
+LANG_ENGLISH		"The Armored can become invincible for a few seconds."
+
+REFERENCE			DES_ARMORED_PR_AB_UD
+LANG_ENGLISH		"The Armored can become invincible for a few seconds. ^3Unlocked at Armored rank^3 15."
+
 		// ABILITY 1 //
 REFERENCE			ARMORED_PR_AB1
 LANG_ENGLISH        "Melee Warrior"
@@ -416,30 +442,16 @@ LANG_ENGLISH		"The Armored isn't afraid of melee combat. He will even keep fight
 
 		// ABILITY 2 //
 REFERENCE			ARMORED_PR_AB2
-LANG_ENGLISH        "Invincibility"
-
-REFERENCE			ARMORED_PR_AB2D
-LANG_ENGLISH        "Invincibility (^3lvl 15^7)"
-
-
-REFERENCE			DES_ARMORED_PR_AB2
-LANG_ENGLISH		"The Armored can become invincible for a few seconds."
-
-REFERENCE			DES_ARMORED_PR_AB2D
-LANG_ENGLISH		"The Armored can become invincible for a few seconds. ^3Unlocked at Armored rank^3 15."
-
-		// ABILITY 3 //
-REFERENCE			ARMORED_PR_AB3
 LANG_ENGLISH        "Heavily Armored"
 
-REFERENCE			ARMORED_PR_AB3D
+REFERENCE			ARMORED_PR_AB2D
 LANG_ENGLISH        "Heavily Armored (^3lvl 5^7)"
 
 
-REFERENCE			DES_ARMORED_PR_AB3
+REFERENCE			DES_ARMORED_PR_AB2
 LANG_ENGLISH		"As long as the Armored's health is above 65%, the damage he receives is halved."
 
-REFERENCE			DES_ARMORED_PR_AB3D
+REFERENCE			DES_ARMORED_PR_AB2D
 LANG_ENGLISH		"As long as the Armored's health is above 65%, the damage he receives is halved ^3Unlocked at Armored rank 25."
 
 	//PASSIVE

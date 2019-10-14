@@ -38,7 +38,12 @@
 #define WIDESCREEN_OFFSET			0 0
 #define RANK stat(dvarint(ui_class_rank))+1+dvarint(ui_class_ranks)*(29-stat(dvarint(ui_class_rank)))
 
-
+#define RANK_ABILITY_USABLE_AT 15
+#define RANK_ABILITY_PRIMARY_AT_1 5
+#define RANK_ABILITY_PRIMARY_AT_2 25
+#define RANK_ABILITY_SECONDARY_AT_1 10
+#define RANK_ABILITY_SECONDARY_AT_2 20
+#define RANK_ABILITY_SECONDARY_AT_3 30
 
 {
 	menuDef
@@ -103,7 +108,7 @@
 			textalignx 		5
 			textaligny 		0  
 			origin			WIDESCREEN_OFFSET
-			visible			when ( dvarstring(ui_description) != "0" && (dvarstring(ui_description) == "PR_AB2" || dvarstring(ui_description) == "PR_AB2D") ); decoration	autowrapped
+			visible			when ( dvarstring(ui_description) != "0" && (dvarstring(ui_description) == "PR_AB_U" || dvarstring(ui_description) == "PR_AB_UD") ); decoration	autowrapped
 			// visible			when ( dvarstring(ui_description) != "0" ); decoration	autowrapped
 		}
 		
@@ -237,64 +242,85 @@
 		#undef CHOICE_X_SPACING		
 		#define CHOICE_X_SPACING		206 // - 44
 			
+			
+		// Ability Lists
+		/*
+			// Defined ranks for unlocking certain abilites
+			RANK_ABILITY_USABLE_AT
+			RANK_ABILITY_PRIMARY_AT_1
+			RANK_ABILITY_PRIMARY_AT_2
+			RANK_ABILITY_SECONDARY_AT_1
+			RANK_ABILITY_SECONDARY_AT_2
+			RANK_ABILITY_SECONDARY_AT_3
+		*/
 		
-		/* =================================== default classes ================================= */		
-		CHOICE_SECTION_TITLE( 1, "@ABILITIES_ABILITY1" )
+		// F-Ability
+		// TITLE
+		CHOICE_SECTION_TITLE( 1, "@ABILITIES_ABILITY_ACTIVE" )
+		// ABILITY BUTTON
 		CHOICE_BUTTON_BG( 2, 1 ) 
 		CHOICE_HIGHLIGHT( 2, 1 ) 
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 2, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB1", ;, INFO_FOCUS_ACTION("PR_AB1");, INFO_FOCUS_RESET, when ( (RANK >= 5) ) )
-		CHOICE_DBUTTON_VIS_NOHI( 2, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB1", when ( (RANK < 5) ) )
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 2, "", ;, INFO_FOCUS_ACTION("PR_AB1D");, INFO_FOCUS_RESET, when ( (RANK < 5) ) )
-		CHOICE_NEWICON_VIS( 2, "specialty_locked", when ( (RANK < 5) ));
-		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (6) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 5) ); )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 2, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB_U", ;, INFO_FOCUS_ACTION("PR_AB_U");, INFO_FOCUS_RESET, when ( (RANK >= RANK_ABILITY_USABLE_AT) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 2, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB_U", when ( (RANK < RANK_ABILITY_USABLE_AT) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 2, "", ;, INFO_FOCUS_ACTION("PR_AB_UD");, INFO_FOCUS_RESET, when ( (RANK < RANK_ABILITY_USABLE_AT) ) )
+		CHOICE_NEWICON_VIS( 2, "specialty_locked", when ( (RANK < RANK_ABILITY_USABLE_AT) ));
 		
-		
-		CHOICE_BUTTON_BG( 3, 1 ) 
-		CHOICE_HIGHLIGHT( 3, 1 ) 
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 3, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB2", ;, INFO_FOCUS_ACTION("PR_AB2");, INFO_FOCUS_RESET, when ( (RANK >= 15) ) )
-		CHOICE_DBUTTON_VIS_NOHI( 3, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB2", when ( (RANK < 15) ) )
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 3, "", ;, INFO_FOCUS_ACTION("PR_AB2D");, INFO_FOCUS_RESET, when ( (RANK < 15) ) )
-		CHOICE_NEWICON_VIS( 3, "specialty_locked", when ( (RANK < 15) ));
-		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y+6) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 15) ); )
-		
-		CHOICE_BUTTON_BG( 4, 1 ) 
-		CHOICE_HIGHLIGHT( 4, 1 ) 
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 4, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB3", ;, INFO_FOCUS_ACTION("PR_AB3" );, INFO_FOCUS_RESET, when ( (RANK >= 25) ) )
-		CHOICE_DBUTTON_VIS_NOHI( 4, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB3", when ( (RANK < 25) ) )
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 4, "", ;, INFO_FOCUS_ACTION("PR_AB3D");, INFO_FOCUS_RESET, when ( (RANK < 25) ) )
-		CHOICE_NEWICON_VIS( 4, "specialty_locked", when ( (RANK < 25) ));
-		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y*2+9) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 25) ); )
-		//CHOICE_BUTTON(2, "@ZOMBIE_SHOW", CAC_SETUP_ACTION1)
-		
-		CHOICE_SECTION_TITLE( 6, "@ABILITIES_ABILITY2" )
+		// Primary Ability 1
+		// TITLE		
+		CHOICE_SECTION_TITLE( 6, "@ABILITIES_ABILITY_PRIMARY" )
+		// ABILITY BUTTON
 		CHOICE_BUTTON_BG( 7, 1 ) 
 		CHOICE_HIGHLIGHT( 7, 1 ) 
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 7, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB1", ;, INFO_FOCUS_ACTION("PS_AB1");, INFO_FOCUS_RESET, 1 )
-		
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 7, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB1", ;, INFO_FOCUS_ACTION("PR_AB1");, INFO_FOCUS_RESET, when ( (RANK >= RANK_ABILITY_PRIMARY_AT_1) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 7, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB1", when ( (RANK < RANK_ABILITY_PRIMARY_AT_1) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 7, "", ;, INFO_FOCUS_ACTION("PR_AB1D");, INFO_FOCUS_RESET, when ( (RANK < RANK_ABILITY_PRIMARY_AT_1) ) )
+		CHOICE_NEWICON_VIS( 7, "specialty_locked", when ( (RANK < RANK_ABILITY_PRIMARY_AT_1) ));
+
+		// Primary Ability 2
+		// ABILITY BUTTON
 		CHOICE_BUTTON_BG( 8, 1 ) 
 		CHOICE_HIGHLIGHT( 8, 1 ) 
-		//CHOICE_BUTTON_FOCUS_VIS_ADV( 8, "@ZOMBIE_"+dvarstring(ui_loadout_class)+"_PS_AB2", scriptmenuresponse "PS_AB2";, INFO_FOCUS_ACTION("PS_AB2");, ;, when ( (RANK >= 10) ), when (1) )
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 8, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB2", ;, INFO_FOCUS_ACTION("PS_AB2");, INFO_FOCUS_RESET, when ( (RANK >= 10) ) )
-		CHOICE_DBUTTON_VIS_NOHI( 8, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB2", when ( (RANK < 10) ) )
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 8, "", ;, INFO_FOCUS_ACTION("PS_AB2D");, INFO_FOCUS_RESET, when ( (RANK < 10) ) )
-		CHOICE_NEWICON_VIS( 8, "specialty_locked", when ( (RANK < 10) ));
-		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y+6) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 10) ); )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 8, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB2", ;, INFO_FOCUS_ACTION("PR_AB2");, INFO_FOCUS_RESET, when ( (RANK >= RANK_ABILITY_PRIMARY_AT_2) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 8, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PR_AB2", when ( (RANK < RANK_ABILITY_PRIMARY_AT_2) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 8, "", ;, INFO_FOCUS_ACTION("PR_AB2D");, INFO_FOCUS_RESET, when ( (RANK < RANK_ABILITY_PRIMARY_AT_2) ) )
+		CHOICE_NEWICON_VIS( 8, "specialty_locked", when ( (RANK < RANK_ABILITY_PRIMARY_AT_2) ));
+	
+	
+		// SECONDARY Ability 1
+		// TITLE	
+		CHOICE_SECTION_TITLE( 11, "@ABILITIES_ABILITY_SECONDARY" )
+		CHOICE_BUTTON_BG( 12, 1 ) 
+		CHOICE_HIGHLIGHT( 12, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 12, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB1", ;, INFO_FOCUS_ACTION("PS_AB1");, INFO_FOCUS_RESET, 1 )
 		
-		CHOICE_BUTTON_BG( 9, 1 ) 
-		CHOICE_HIGHLIGHT( 9, 1 ) 
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 9, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB3", ;, INFO_FOCUS_ACTION("PS_AB3" );, INFO_FOCUS_RESET, when ( (RANK >= 20) ) )
-		CHOICE_DBUTTON_VIS_NOHI( 9, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB3", when ( (RANK < 20) ) )
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 9, "", ;, INFO_FOCUS_ACTION("PS_AB3D");, INFO_FOCUS_RESET, when ( (RANK < 20) ) )
-		CHOICE_NEWICON_VIS( 9, "specialty_locked", when ( (RANK < 20) ));
-		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y*2+9) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 20) ); )
 		
-		CHOICE_BUTTON_BG( 10, 1 ) 
-		CHOICE_HIGHLIGHT( 10, 1 ) 
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 10, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB4", ;, INFO_FOCUS_ACTION("PS_AB4" );, INFO_FOCUS_RESET, when ( (RANK >= 30) ) )
-		CHOICE_DBUTTON_VIS_NOHI( 10, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB4", when ( (RANK < 30) ) )
-		CHOICE_BUTTON_FOCUS_VIS_NOHI( 10, "", ;, INFO_FOCUS_ACTION("PS_AB4D");, INFO_FOCUS_RESET, when ( (RANK < 30) ) )
-		CHOICE_NEWICON_VIS( 10, "specialty_locked", when ( (RANK < 30) ));
-		//PREPROC_SHADER_DRAW_ALIGNED( (CHOICE_X_START+3) (CHOICE_SIZE_Y*2+9) (CHOICE_SIZE_Y*2) CHOICE_SIZE_Y CHOICE_HORIZONTAL_ALIGN CHOICE_VERTICAL_ALIGN, 0 0, "specialty_locked", 1 1 1 1, 0, 2, 1 1 1 1 visible when ( (RANK < 30) ); )
+		// SECONDARY Ability 2
+		// ABILITY BUTTON
+		CHOICE_BUTTON_BG( 13, 1 ) 
+		CHOICE_HIGHLIGHT( 13, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 13, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB2", ;, INFO_FOCUS_ACTION("PS_AB2");, INFO_FOCUS_RESET, when ( (RANK >= RANK_ABILITY_SECONDARY_AT_1) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 13, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB2", when ( (RANK < RANK_ABILITY_SECONDARY_AT_1) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 13, "", ;, INFO_FOCUS_ACTION("PS_AB2D");, INFO_FOCUS_RESET, when ( (RANK < RANK_ABILITY_SECONDARY_AT_1) ) )
+		CHOICE_NEWICON_VIS( 13, "specialty_locked", when ( (RANK < RANK_ABILITY_SECONDARY_AT_1) ));
+
+		// SECONDARY Ability 3
+		// ABILITY BUTTON
+		CHOICE_BUTTON_BG( 14, 1 ) 
+		CHOICE_HIGHLIGHT( 14, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 14, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB3", ;, INFO_FOCUS_ACTION("PS_AB3" );, INFO_FOCUS_RESET, when ( (RANK >= RANK_ABILITY_SECONDARY_AT_2) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 14, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB3", when ( (RANK < RANK_ABILITY_SECONDARY_AT_2) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 14, "", ;, INFO_FOCUS_ACTION("PS_AB3D");, INFO_FOCUS_RESET, when ( (RANK < RANK_ABILITY_SECONDARY_AT_2) ) )
+		CHOICE_NEWICON_VIS( 14, "specialty_locked", when ( (RANK < RANK_ABILITY_SECONDARY_AT_2) ));
+
+		// SECONDARY Ability 4
+		// ABILITY BUTTON
+		CHOICE_BUTTON_BG( 15, 1 ) 
+		CHOICE_HIGHLIGHT( 15, 1 ) 
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 15, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB4", ;, INFO_FOCUS_ACTION("PS_AB4" );, INFO_FOCUS_RESET, when ( (RANK >= RANK_ABILITY_SECONDARY_AT_3) ) )
+		CHOICE_DBUTTON_VIS_NOHI( 15, "@ABILITIES_"+dvarstring(ui_loadout_class)+"_PS_AB4", when ( (RANK < RANK_ABILITY_SECONDARY_AT_3) ) )
+		CHOICE_BUTTON_FOCUS_VIS_NOHI( 15, "", ;, INFO_FOCUS_ACTION("PS_AB4D");, INFO_FOCUS_RESET, when ( (RANK < RANK_ABILITY_SECONDARY_AT_3) ) )
+		CHOICE_NEWICON_VIS( 15, "specialty_locked", when ( (RANK < RANK_ABILITY_SECONDARY_AT_3) ));
+
 		
 		// CHOICE_SECTION_TITLE( 11, "@ABILITIES_ABILITY2" )
 		// CHOICE_BUTTON(12, dvarstring(ui_secondary_ability), CAC_SETUP_ACTION1)
@@ -303,7 +329,7 @@
 		//CHOICE_BUTTON(13, "@ZOMBIE_ACCEPT", scriptmenuresponse done;)
 		
 		/* CHOOSABLE ABILITIES */
-		
+		/*
 		CHOICE_SECTION_TITLE( 11, "@ABILITIES_ABILITY3" )
 		CHOICE_BUTTON_BG( 12, 1 ) 
 		CHOICE_HIGHLIGHT( 12, 1 ) 
@@ -317,7 +343,7 @@
 		CHOICE_BUTTON_BG( 15, 1 ) 
 		CHOICE_HIGHLIGHT( 15, 1 ) 
 		CHOICE_BUTTON_FOCUS_VIS_NOHI( 15, "@ABILITIES_COMMON_CM_AB4", ;, INFO_FOCUS_ACTION("CM_AB4");, INFO_FOCUS_RESET, 1 )
-
+*/
 		// #include "ui_mp/player_info_class.inc"
 		#include "ui/safearea.menu"
 	}
@@ -326,7 +352,7 @@
 	#include "ui/choices_setup_popmenu.menu"
 	
 
-	
+	/*
 	menuDef	{
 		#undef	NEW_X_OFFSET
 		#define NEW_X_OFFSET -176
@@ -372,7 +398,7 @@
 		
 		
 	}
-	
+	*/
 	/*menuDef	{
 		IMPROVED_POPUP_SETUP_ONOPEN( "ability_passive", 3, (CHOICE_X_START) + 32, (CHOICE_Y_START) + 22, ;, ;, 0 )
 		CHOICE_BUTTON_BG( 1, 1 ) 
