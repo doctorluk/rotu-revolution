@@ -1760,16 +1760,16 @@ zThink()
 			// check if the barricade is up
 			if( barricade.hp > 0 )
 			{
-				printLn( "attacking barricade" );
+			//	printLn( "attacking barricade" );
 				self zAttack( barricade );
 			}
 			
 			// warp through map barricades
-			if( isDefined(barricade) && isDefined(barricade.bar_type) && barricade.bar_type == 0 )
-			{
-				printLn( "traversing barricade" );
-				self zTraverseBarricade( barricade );
-			}
+		//	if( isDefined(barricade) && isDefined(barricade.bar_type) && barricade.bar_type == 0 )
+		//	{
+			//	printLn( "traversing barricade" );
+			//	self zTraverseBarricade( barricade );
+		//	}
 		}	/* isDefined(barricade) */
 		
 		//
@@ -1961,10 +1961,12 @@ zBarricadeCheck()
 }	/* zBarricadeCheck */
 
 /**
-* Makes the zombie traverse the given barricade
+* Makes the zombie traverse an obstacle in front of him
 */
-zTraverseBarricade( barricade )
+zTraverseObstacle( to )
 {
+	printLn( self, " traversing obstacle" );
+
 	// spawn a helper, to move the bot with
 	if( !isDefined(self.mover) )
 	{
@@ -1982,16 +1984,28 @@ zTraverseBarricade( barricade )
 	
 	// HACK push the bot through the barricade
 	angles = self getPlayerAngles();
-	while( self isTouching(barricade) )
+	origin = self.origin+(0,0,17);
+	
+	target = PlayerPhysicsTrace( to, origin );
+	time = (distance(origin,target)/5);
+	
+	self.mover moveTo( target, time );
+	wait time+0.05;
+	
+	/*
+	while( distance( origin, target ) > 4 )
 	{
 		self.mover.origin = self.mover.origin + anglesToForward( (0,angles[1],0) )*1.7;
 		wait 0.05;
+		origin = self.origin+(0,0,17);
+		if( bulletTracePassed( origin, to, false, undefined ) )
+			error_zone--;
 	}
-	
+	*/
 	// delete the mover entity
 	self unlink();
 	self.mover delete();
-}	/* zTraverseBarricade */
+}	/* zTraverseObstacle */
 
 /**
 * Displays debugging data for the zombie
@@ -2149,12 +2163,35 @@ zMove( origin )
 		self botAction( "+ads" );
 
 	// check if we can actually reach the target, or try to navigate around
-	/#
 	// run a trace 17u above the origins (we can hop up 16u)
 	trace = bulletTrace( self.origin+(0,0,17), origin+(0,0,17), false, undefined );
-	// draw a line for the check
+	
+	/#			// draw a line for the check
 	line( self.origin+(0,0,17), origin+(0,0,17), (1-trace["fraction"],trace["fraction"],0), false );
 	#/
+	
+	// only take further actions if the trace did not pass
+	if( trace["fraction"] < 1 )
+	{
+		/#		// draw a line where the obstuction is detected
+		line( trace["position"]+(0,0,17), trace["position"]-(0,0,17), (1,1,0), false );
+		#/
+	
+		if( distance(self.origin+(0,0,17), trace["position"]) < 64 )
+		{
+			// when positive, that the zombie is following waypoints, push him through the obstacle
+			if( self.zOnGrid )
+			{
+				self zTraverseObstacle( origin );
+			}
+			else
+				printLn( "ERROR: Path obstructed, bot not on grid." );
+		}
+		else
+		{
+			printLn( "obstruction in " + distance(self.origin+(0,0,17), trace["position"]) + " units" );
+		}
+	}
 
 	// make the bot move to the given origin
 	self botLookAt( origin );

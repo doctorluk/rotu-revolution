@@ -232,6 +232,7 @@ writeToFile( fname, content )
 */
 debugPathfinding()
 {
+	/#
 	setDvarIfUninitialized( "dev_pfind_distance", 800 );
 	setDvarIfUninitialized( "dev_pfind_color", "1 1 1" );
 
@@ -276,13 +277,11 @@ debugPathfinding()
 							verts[x] = true;
 						}
 						
-						/#
 						// draw the connection to the next vertex, or the first
 						if( isDefined(poly.verts[j+1]) )
 							line( origin, level.navVerts[poly.verts[j+1]], color, frames );
 						else
 							line( origin, level.navVerts[poly.verts[0]], color, frames );
-						#/
 					}
 				} else {
 					// draw the connections to other waypoints
@@ -297,4 +296,5 @@ debugPathfinding()
 	}
 
 	thread debugPathfinding();
+	#/
 }	/* debugPathfinding */
