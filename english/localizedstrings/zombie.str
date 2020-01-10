@@ -247,3 +247,8 @@ LANG_ENGLISH		"Difficulty has been ^1INCREASED^7!"
 
 REFERENCE			SHOP_COSTS_INCREASED
 LANG_ENGLISH		"Shop Item costs increased by &&1%!"
+
+REFERENCE			PLAYER_N_LASTSTAND
+LANG_ENGLISH		"&&1 ^7is down!"
+
+ENDMARKER
