@@ -91,6 +91,8 @@ precache()
 	precacheShellShock("general_shock");
 
 	precacheShader("overlay_armored");
+	
+	precacheString( &"ZOMBIE_PLAYER_N_LASTSTAND" );
 }
 
 /**
@@ -629,13 +631,16 @@ onPlayerDamage(eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, 
 	if (self.isDown /*|| self.god || level.godmode */ || (self.spawnProtectionTime + (level.dvar["game_player_spawnprotection_time"] * 1000) > getTime() && level.dvar["game_player_spawnprotection"]))
 		return;
 
-	// ??
-	if(!isDefined(vDir))
+	// disable knockback for damage without a proper direction
+	if( !isDefined(vDir) )
 		iDFlags |= level.iDFLAGS_NO_KNOCKBACK;
-	// ??
-	if(!(iDFlags & level.iDFLAGS_NO_PROTECTION))
+	
+	// do damage to the player, unless he was protected against it
+	// NOTE I have no idea when the damage flag "no protection" isn't set and when it is, this may need some research
+	if( !(iDFlags & level.iDFLAGS_NO_PROTECTION) )
 	{
-		if(sWeapon == "ak74u_acog_mp" || sWeapon == "barrett_acog_mp" || sWeapon == "at4_mp" || sWeapon == "rpg_mp" || issubstr(sMeansOfDeath, "GRENADE"))	// TODO: What were these weapons, what are they now?
+		// don't damage players by grenades or explosive weapons
+		if( (isDefined(level.weaponKeyC2S[sWeapon]) && scripts\players\_weapons::isExplosive(level.weaponKeyC2S[sWeapon])) || issubstr(sMeansOfDeath, "GRENADE") )
 			return;
 		
 		// Reduce damage by Armored Damage reduction (10%)
@@ -736,21 +741,22 @@ onPlayerKilled(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHit
 	if(self.sessionteam == "spectator")
 		return;
 
-	// TODO: Is this needed at all?
-	if(sHitLoc == "head" && sMeansOfDeath != "MOD_MELEE")
+	// Make sure headshots are counted correctly
+	if( sHitLoc == "head" && sMeansOfDeath != "MOD_MELEE" )
 		sMeansOfDeath = "MOD_HEAD_SHOT";
-	if (level.dvar["zom_orbituary"])
+	
+	// print a message to the notifications, if desired
+	if( level.dvar["zom_orbituary"] )
 		obituary(self, attacker, sWeapon, sMeansOfDeath);
-	//
 	
 	self.sessionstate = "dead";
 	
 	body = self clonePlayer(deathAnimDuration);
 
-	if (self isOnLadder() || self isMantling())
+	if( self isOnLadder() || self isMantling() )
 		body startRagDoll();
 
-	thread delayStartRagdoll(body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath);
+	thread delayStartRagdoll( body, sHitLoc, vDir, sWeapon, eInflictor, sMeansOfDeath );
 }
 
 /**
@@ -777,18 +783,18 @@ Callback_PlayerLastStand(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, 
 	self.isTargetable = false;
 	
 	// Save the currently held weapons to restore later when he's revived
-	self.lastStandWeapons = self getweaponslist();
+	self.lastStandWeapons = self getWeapList();
 	self.lastStandAmmoStock = [];
 	self.lastStandAmmoClip = [];
-	for(i = 0; i < self.lastStandWeapons.size; i++)
+	for( i=0; i<self.lastStandWeapons.size; i++ )
 	{
-		self.lastStandAmmoClip[i] = self getWeaponAmmoClip(self.lastStandWeapons[i]);
-		self.lastStandAmmoStock[i] = self getWeaponAmmoStock(self.lastStandWeapons[i]);
+		self.lastStandAmmoClip[i] = self getWeapAmmoClip(self.lastStandWeapons[i]);
+		self.lastStandAmmoStock[i] = self getWeapAmmoStock(self.lastStandWeapons[i]);
 	}
-	self.lastStandWeapon = self GetCurrentWeapon();
+	self.lastStandWeapon = self getCurrentWeap();
 	
 	// Remove Hud-elements that are no longer needed
-	self setclientdvars("ui_hintstring", "", "ui_specialtext", "^1Special Unavailable");
+	self setClientDvars("ui_hintstring", "", "ui_specialtext", "^1Special Unavailable");
 	self.hinttext.alpha = 0;
 	self.health = 10;
 	self updateHealthHud(0);
@@ -796,7 +802,7 @@ Callback_PlayerLastStand(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, 
 	
 	// Reset any Specials
 	self scripts\players\_abilities::stopActiveAbility();
-	self setclientdvar("ui_specialrecharge", 0);
+	self setClientDvar( "ui_specialrecharge", 0 );
 	
 	// Save this event in the player's stats
 	self.deaths++;
@@ -804,12 +810,10 @@ Callback_PlayerLastStand(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, 
 	self.isAlive = false;
 	self.stats["lastDowntime"] = getTime();
 	
-	// Give the player a secondary weapon to shoot with while being down
-	weaponslist = self getWeaponslist();
-	for(i = 0; i < weaponslist.size; i++)
+	// go through the players weapons and remove everything but his secondary
+	for(i = 0; i < self.lastStandWeapons.size; i++)
 	{
-		weapon = level.weaponKeyC2S[weaponslist[i]];
-		self iprintln( weapon );
+		weapon = self.lastStandWeapons[i];
 		if( weapon == self.secondary )
 			self switchToWeap(weapon);
 		else
@@ -817,11 +821,15 @@ Callback_PlayerLastStand(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, 
 	}
 	
 	// Notify other players that this player is down
-	iPrintln(self.name + " ^7is down!");
-	self playsound("self_down");
-	self setStatusIcon("icon_down");
-	level scripts\players\_usables::addUsable(self, "revive", &"USE_REVIVE", 96);
+	iPrintln( &"ZOMBIE_PLAYER_N_LASTSTAND", self );
+	self playSound( "self_down" );
 	self thread compassBlinkMe();
+	
+	// update the players status icon
+	self setStatusIcon( "icon_down" );
+	
+	// add the player as an usable object, to be revived
+	level scripts\players\_usables::addUsable( self, "revive", &"USE_REVIVE", 96 );
 }
 
 /**
@@ -871,20 +879,20 @@ cleanup()
 			
 			if (self.primary != "none")
 			{
-				self.persData.primaryAmmoClip = self getweaponammoclip(self.primary);
-				self.persData.primaryAmmoStock = self getweaponammostock(self.primary);
+				self.persData.primaryAmmoClip = self getWeapAmmoClip(self.primary);
+				self.persData.primaryAmmoStock = self getWeapAmmoStock(self.primary);
 			}
 			
 			if (self.secondary != "none")
 			{
-				self.persData.secondaryAmmoClip = self getweaponammoclip(self.secondary);
-				self.persData.secondaryAmmoStock = self getweaponammostock(self.secondary);
+				self.persData.secondaryAmmoClip = self getWeapAmmoClip(self.secondary);
+				self.persData.secondaryAmmoStock = self getWeapAmmoStock(self.secondary);
 			}
 			
 			if (self.extra != "none")
 			{
-				self.persData.extraAmmoClip = self getweaponammoclip(self.extra);
-				self.persData.extraAmmoStock = self getweaponammostock(self.extra);
+				self.persData.extraAmmoClip = self getWeapAmmoClip(self.extra);
+				self.persData.extraAmmoStock = self getWeapAmmoStock(self.extra);
 			}
 		}
 	}
@@ -937,11 +945,12 @@ compassBlinkMe()
 */
 restoreAmmo()
 {
-	weapons = self getWeaponslist();
+	// go through all weapons the player is holding
+	weapons = self getWeaponsList();		// NOTE it's less calls to convert once to script for canRestoreAmmo
 	for(i = 0; i < weapons.size; i++)
 	{
 		// Ignore all weapons that are not allowed to refill their ammo, e.g. special weapons
-		if (self scripts\players\_weapons::canRestoreAmmo(weapons[i]))
+		if( self scripts\players\_weapons::canRestoreAmmo( level.weaponKeyC2S[weapons[i]] ) )
 		{
 			self giveMaxAmmo(weapons[i]);
 			self setWeaponAmmoClip(weapons[i], weaponClipSize(weapons[i]));
@@ -957,18 +966,30 @@ restoreAmmo()
 */
 hasFullAmmo()
 {
-	weapons = self getWeaponslist();
-	for(i = 0; i < weapons.size; i++)
+	// go through all weapons and return fals on the first one that's empty
+	weapons = self getWeapList();
+	for( i=0; i<weapons.size; i++ )
 	{
-		// We need to run a different check for weapons that do not have stock ammo, like C4
-		if(isWeaponClipOnly(weapons[i]))
+		// make sure we don't check for special things
+		if( self scripts\players\_weapons::canRestoreAmmo(weapons[i]) )
 		{
-			if(self GetAmmoCount(weapons[i]) != WeaponMaxAmmo(weapons[i]))
-				return false;
+			// run a check, depending on weapon type
+			if( isWeapClipOnly(weapons[i]) )
+			{
+				// simple check for "clipOnly" weapons
+				if( self getWeapAmmoCount(weapons[i]) != weapMaxAmmo(weapons[i]) )
+					return false;
+			}
+			else
+			{
+				// check stock and clip ammo if we have both
+				if( self getFractionWeapMaxAmmo(weapons[i]) != 1 || weapClipSize(weapons[i]) != self getWeapAmmoClip(weapons[i]) )
+					return false;
+			}
 		}
-		else if (self scripts\players\_weapons::canRestoreAmmo(weapons[i]) && (self GetFractionMaxAmmo(weapons[i]) != 1 || weaponClipSize(weapons[i]) != self GetWeaponAmmoClip(weapons[i])))
-			return false;
 	}
+	
+	// if we get here, all weapons have full ammo
 	return true;
 }
 
@@ -979,10 +1000,11 @@ hasFullAmmo()
 */
 hasLowAmmo()
 {
-	if(scripts\players\_weapons::canRestoreAmmo(self getCurrentWeapon()))
+	weapon = self getCurrentWeap();
+	if( scripts\players\_weapons::canRestoreAmmo(weapon) )
 	{
-		max = self getFractionMaxAmmo(self getCurrentWeapon());
-		if(max <= 0.3)
+		max = self getFractionWeapMaxAmmo( weapon );
+		if( max <= 0.3 )
 			return true;
 	}
 	
@@ -1659,22 +1681,24 @@ revive(by)
 	weapons = self.lastStandWeapons;
 	ammoClip = self.lastStandAmmoClip;
 	ammoStock = self.lastStandAmmoStock;
-	keptWeapons = self getWeaponsList();
+	
+	// get the weapons and ammo the player has kept during last stand
+	keptWeapons = self getWeapList();
 	keptAmmoStock = [];
 	keptAmmoClip = [];
 	for(i = 0; i < keptWeapons.size; i++)
 	{
-		keptAmmoClip[i] = self getWeaponAmmoClip(keptWeapons[i]);
-		keptAmmoStock[i] = self getWeaponAmmoStock(keptWeapons[i]);
+		keptAmmoClip[i] = self getWeapAmmoClip(keptWeapons[i]);
+		keptAmmoStock[i] = self getWeapAmmoStock(keptWeapons[i]);
 	}
 	
 	// Remove the weapons he had during last-stand (being down)
-	self takeallweapons();
+	self takeAllWeapons();
 
-	// ??
-	if (self.lastStandWeapon == "none")
+	// make sure the player switches back to a weapon, if he had none during last stand
+	if( self.lastStandWeapon == "none" )
 	{
-		if (weapons.size == 0 && keptWeapons.size != 0)
+		if( weapons.size == 0 && keptWeapons.size != 0 )
 			self.lastStandWeapon = keptWeapons[0];
 		else 
 			self.lastStandWeapon = weapons[0];
@@ -1686,23 +1710,22 @@ revive(by)
 	// Return his previously held weapons
 	for(i = 0; i < keptWeapons.size; i++)
 	{
-		self giveweapon(keptWeapons[i]);
-		self setWeaponAmmoClip(keptWeapons[i], keptAmmoClip[i]);
-		self setWeaponAmmoStock(keptWeapons[i],  keptAmmoStock[i]);
+		self giveWeap(keptWeapons[i]);
+		self setWeapAmmoClip(keptWeapons[i], keptAmmoClip[i]);
+		self setWeapAmmoStock(keptWeapons[i],  keptAmmoStock[i]);
 	}
 	
 	for(i = 0; i < weapons.size; i++)
 	{
-		if (!self hasWeapon(weapons[i]))
+		if (!self hasWeap(weapons[i]))
 		{
-			self giveWeapon(weapons[i]);
-			self setWeaponAmmoClip(weapons[i], ammoClip[i]);
-			self setWeaponAmmoStock(weapons[i],  ammoStock[i]);
+			self giveWeap(weapons[i]);
+			self setWeapAmmoClip(weapons[i], ammoClip[i]);
+			self setWeapAmmoStock(weapons[i],  ammoStock[i]);
 		}
 	}
 	
-	self setspawnweapon(self.lastStandWeapon);
-	self switchtoweapon(self.lastStandWeapon);
+	self setSpawnWeap(self.lastStandWeapon);
 	
 	// Remove anything related to being down and make him targetable by Bots again
 	self setDown(false);
@@ -1753,7 +1776,7 @@ revive(by)
 	}
 	
 	wait 0.05;
-	self switchToWeapon(self.lastStandWeapon);
+	self switchToWeap( self.lastStandWeapon );
 }
 
 /**

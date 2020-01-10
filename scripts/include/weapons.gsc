@@ -101,7 +101,7 @@ setWeapAmmoClip(weap, ammo)
 }
 
 /**
-* Returns the current ammount of ammo in the players weapon stock.
+* Returns the current amount of ammo in the players weapon stock.
 */
 getWeapAmmoStock(weap)
 {
@@ -109,11 +109,24 @@ getWeapAmmoStock(weap)
 }
 
 /**
-* Returns the current ammount of ammo in the players weapon clip.
+* Returns the current amount of ammo in the players weapon clip.
 */
 getWeapAmmoClip(weap)
 {
 	return self getWeaponAmmoClip(level.weaponKeyS2C[weap]);
+}
+
+/**
+* Returns the players current amount of ammo for this weapon
+*/
+getWeapAmmoCount(weap)
+{
+	return self getAmmoCount(level.weaponKeyS2C[weap]);
+}
+
+getFractionWeapMaxAmmo(weap)
+{
+	return self getFractionMaxAmmo(level.weaponKeyS2C[weap]);
 }
 
 /**
@@ -125,11 +138,31 @@ getCurrentWeap()
 }
 
 /**
+* Returns a list of the players current weapons
+*/ 
+getWeapList()
+{
+	weapons = self getWeaponsList();
+	for( i=0; i<weapons.size; i++ )
+		weapons[i] = level.weaponKeyC2S[weapons[i]];
+	
+	return weapons;
+}
+
+/**
 * Returns true if the player has the given weapon, false otherwise.
 */
 hasWeap(weap)
 {
 	return self hasWeapon(level.weaponKeyS2C[weap]);
+}
+
+/**
+* Returns true if the weapon is clip only, false otherwise
+*/
+isWeapClipOnly(weap)
+{
+	return isWeaponClipOnly(level.weaponKeyS2C[weap]);
 }
 
 /**
@@ -141,7 +174,7 @@ weapClipSize(weap)
 }
 
 /**
-* Returns the ammount of max ammo of the given weapon.
+* Returns the amount of max ammo of the given weapon.
 */
 weapMaxAmmo(weap)
 {
