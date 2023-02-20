@@ -184,10 +184,9 @@ spawnJoinQueue()
 	// Array containing all players that are actually spawned by the queue
 	spawners = [];
 	
-	for(i = 0; i < level.joinQueue.size; i++)
+	for(i = 0; i < level.joinQueue.size; i++) // TODO: Apply Viking's suggestions
 	{
 		player = level.joinQueue[i];
-		level.joinQueue = removeFromArray(level.joinQueue, player);
 		
 		// Better double-check if a player inside the queue has already spawned
 		// TODO: THIS SHOULD NEVER HAPPEN!
@@ -200,6 +199,11 @@ spawnJoinQueue()
 			
 		player thread spawnPlayer(true);
 		spawners[spawners.size] = player;
+	}
+	
+	for(i = 0; i < level.joinQueue.size; i++)
+	{
+		level.joinQueue[i] = undefined;
 	}
 	
 	// Put out some names in the bottom left corner to inform people who has been spawned by the queue
