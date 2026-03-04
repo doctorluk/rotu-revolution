@@ -114,204 +114,135 @@ getNearestWp(origin)
 	return nearestWp;
 }
 
-// 
+//
 /**
 * Returns the A-Star path from one waypoint to another.
-*	Note: ASTAR PATHFINDING ALGORITHM: CREDITS GO TO PEZBOTS!
+*	Returns the ID of the first waypoint step toward goalWp, or -1 on failure.
 *
 *	@startWp: ID of the starting waypoint
-*	@goalWp: ID of the target waypoint
+*	@goalWp:  ID of the target waypoint
+*
+* Rewritten from the original PezBots-based version with the following improvements:
+*   - O(1) open/closed checks via boolean arrays indexed by waypoint ID
+*     (replaces the O(N) PQExists linear scans)
+*   - O(1) g/f-cost access via flat arrays (replaces spawnStruct per node)
+*   - O(1) removal from open set via swap-with-last (replaces O(N) left-shift)
+*   - Bug fix: better paths to already-queued open nodes are updated in-place
+*     instead of being silently dropped
+*   - Path reconstruction via flat parentId[] array (replaces struct pointer chain)
+*   - level.waypointLoops tracks actual work done for the throttle in zomMoveTowards
 */
 AStarSearch(startWp, goalWp)
 {
-	// info regarding the A-Star Algorithm can be found here:
-	// https://en.wikipedia.org/wiki/A*_search_algorithm
+	// O(1)-lookup arrays indexed by waypoint ID (GSC sparse integer arrays)
+	inOpen   = [];   // inOpen[id]   == true  → node is in the open set
+	inClosed = [];   // inClosed[id] == true  → node has been fully expanded
+	gCost    = [];   // gCost[id]             → accumulated path cost from start
+	fCost    = [];   // fCost[id]             → g + h (priority)
+	parentId = [];   // parentId[id]          → predecessor waypoint ID (-1 = none)
 
-	pQOpen = [];
-	pQSize = 0;
-	closedList = [];
-	listSize = 0;
+	openIds  = [];   // IDs of nodes currently in the open set
+	openSize = 0;
 
-	s = spawnStruct();
-	s.g = 0; //start node
-	s.h = distance(level.waypoints[startWp].origin, level.waypoints[goalWp].origin);
-	s.f = s.g + s.h;
-	s.wpIdx = startWp;
-	s.parent = spawnStruct();
-	s.parent.wpIdx = -1;
+	// initialize start node
+	gCost[startWp]    = 0;
+	fCost[startWp]    = distance(level.waypoints[startWp].origin, level.waypoints[goalWp].origin);
+	parentId[startWp] = -1;
+	inOpen[startWp]   = true;
+	openIds[0]        = startWp;
+	openSize          = 1;
 
-	//push s on Open
-	pQOpen[pQSize] = spawnStruct();
-	pQOpen[pQSize] = s; //push s on Open
-	pQSize++;
-
-	// while Open is not empty  
-	while(!PQIsEmpty(pQOpen, pQSize))
+	while(openSize > 0)
 	{
-		// pop node n from Open  // n has the lowest f
-		n = pQOpen[0];
-		highestPriority = 9999999999;
-		bestNode = -1;
-		for(i=0; i<pQSize; i++)
+		// --- POP: find and remove the node with the lowest f-cost ---
+		// O(N) linear scan — acceptable for N < 300; a min-heap would give O(log N)
+		// but requires swap-by-reference which GSC does not support natively.
+		bestIdx = 0;
+		bestF   = fCost[openIds[0]];
+		for(i = 1; i < openSize; i++)
 		{
-			if(pQOpen[i].f < highestPriority)
+			if(fCost[openIds[i]] < bestF)
 			{
-				bestNode = i;
-				highestPriority = pQOpen[i].f;
+				bestF   = fCost[openIds[i]];
+				bestIdx = i;
 			}
 		}
-    
-		if(bestNode != -1)
+		nId = openIds[bestIdx];
+
+		// O(1) remove: overwrite slot with the last element, shrink size
+		openIds[bestIdx] = openIds[openSize - 1];
+		openSize--;
+		inOpen[nId]   = false;
+		inClosed[nId] = true;
+
+		// track work done for the throttle guard in zomMoveTowards
+		level.waypointLoops += level.waypoints[nId].childCount;
+
+		// --- GOAL REACHED: trace parentId[] back to find the first step ---
+		if(nId == goalWp)
 		{
-			n = pQOpen[bestNode];
-			//remove node from queue    
-			for(i=bestNode; i<pQSize-1; i++)
-			{
-				pQOpen[i] = pQOpen[i+1];
-			}
-			pQSize--;
+			cur = goalWp;
+			while(parentId[cur] != startWp && parentId[cur] != -1)
+				cur = parentId[cur];
+			return cur;
 		}
-		else
+
+		// --- EXPAND CHILDREN ---
+		wp = level.waypoints[nId];
+		for(i = 0; i < wp.childCount; i++)
 		{
-			return -1;
-		}
-		
-		// if n is a goal node; construct path, return success
-		if(n.wpIdx == goalWp)
-		{
-			x = n;
-			for(z=0; z<1000; z++)
+			cId = wp.children[i];
+
+			if(inClosed[cId])   // O(1) — was O(N) PQExists scan
+				continue;
+
+			newg = gCost[nId] + distance(wp.origin, level.waypoints[cId].origin);
+
+			if(inOpen[cId])     // O(1) — was O(N) PQExists scan
 			{
-				parent = x.parent;
-				if(parent.parent.wpIdx == -1)
-					return x.wpIdx;
-				
-				// line(level.waypoints[x.wpIdx].origin, level.waypoints[parent.wpIdx].origin, (0,1,0));
-				x = parent;
-			}
-			
-			return -1;      
-		}
-		
-		// for each successor nc of n
-		for(i=0; i<level.waypoints[n.wpIdx].childCount; i++)
-		{
-			//newg = n.g + cost(n,nc)
-			newg = n.g + distance(level.waypoints[n.wpIdx].origin, level.waypoints[level.waypoints[n.wpIdx].children[i]].origin);
-      
-			//if nc is in Open or Closed, and nc.g <= newg then skip
-			if(PQExists(pQOpen, level.waypoints[n.wpIdx].children[i], pQSize))
-			{
-				//find nc in open
-				nc = spawnStruct();
-				for(p=0; p<pQSize; p++)
+				// node already queued — update if this path is strictly better
+				// (bug fix: old code dropped the better path here)
+				if(newg < gCost[cId])
 				{
-					if(pQOpen[p].wpIdx == level.waypoints[n.wpIdx].children[i])
-					{
-						nc = pQOpen[p];
-						break;
-					}
-				}
-				
-				if(nc.g <= newg)
-				{
-					continue;
+					gCost[cId]    = newg;
+					fCost[cId]    = newg + distance(level.waypoints[cId].origin, level.waypoints[goalWp].origin);
+					parentId[cId] = nId;
+					// node stays in openIds; updated fCost is picked up on next pop
 				}
 			}
-			else if(PQExists(closedList, level.waypoints[n.wpIdx].children[i], listSize))
+			else
 			{
-				//find nc in closed list
-				nc = spawnStruct();
-				for(p=0; p<listSize; p++)
-				{
-					if(closedList[p].wpIdx == level.waypoints[n.wpIdx].children[i])
-					{
-						nc = closedList[p];
-						break;
-					}
-				}
-				
-				if(nc.g <= newg)
-				{
-					continue;
-				}
+				// new node — add to open set
+				gCost[cId]        = newg;
+				fCost[cId]        = newg + distance(level.waypoints[cId].origin, level.waypoints[goalWp].origin);
+				parentId[cId]     = nId;
+				inOpen[cId]       = true;
+				openIds[openSize] = cId;
+				openSize++;
 			}
-			
-			nc = spawnStruct();
-			nc.parent = n;
-			nc.g = newg;
-			nc.h = distance(level.waypoints[level.waypoints[n.wpIdx].children[i]].origin, level.waypoints[goalWp].origin);
-			nc.f = nc.g + nc.h;
-			nc.wpIdx = level.waypoints[n.wpIdx].children[i];
-			
-			//if nc is in Closed,
-			if(PQExists(closedList, nc.wpIdx, listSize))
-			{
-				//remove it from Closed
-				deleted = false;
-				for(p=0; p<listSize; p++)
-				{
-					if(closedList[p].wpIdx == nc.wpIdx)
-					{
-						for(x=p; x<listSize-1; x++)
-							closedList[x] = closedList[x+1];
-						
-						deleted = true;
-						break;
-					}
-					
-					if(deleted)
-						break;
-				}
-				listSize--;
-			}
-			
-			// if nc is not yet in Open, 
-			if(!PQExists(pQOpen, nc.wpIdx, pQSize))
-			{
-				//push nc on Open
-				pQOpen[pQSize] = nc;
-				pQSize++;
-			}
-		}
-		
-		// Done with children, push n onto Closed
-		if(!PQExists(closedList, n.wpIdx, listSize))
-		{
-			closedList[listSize] = n;
-			listSize++;
 		}
 	}
+
+	return -1;   // no path found
 }
 
 
 /**
-* Returns true if the open list is empty
-*
-*	@Q: Open List
-*	@QSize: Size of Open List
+* @deprecated No longer used internally — AStarSearch now uses O(1) boolean arrays.
+*             Kept for API compatibility with any external callers.
 */
 PQIsEmpty(Q, QSize)
 {
-	if(QSize <= 0)
-	{
-		return true;
-	}
-
-	return false;
+	return QSize <= 0;
 }
 
-
 /**
-* Returns true if n exists in the array Q
-*
-*	@Q: Array of waypoints
-*	@n: Waypoint
-*	@QSize: Size of array Q
+* @deprecated No longer used internally — AStarSearch now uses O(1) boolean arrays.
+*             Kept for API compatibility with any external callers.
 */
 PQExists(Q, n, QSize)
 {
-	for(i=0; i<QSize; i++)
+	for(i = 0; i < QSize; i++)
 	{
 		if(Q[i].wpIdx == n)
 			return true;
