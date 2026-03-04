@@ -324,9 +324,11 @@ spawnZombie(type, spawnpoint, bot)
 
 	bot.damagedBy = [];
 	
-	bot.alertLevel = 0; // Has this zombie been alerted? 
+	bot.alertLevel = 0; // Has this zombie been alerted?
 	bot.myWaypoint = undefined;
 	bot.underway = false;
+	bot.cachedTargetWp     = undefined;
+	bot.cachedTargetOrigin = undefined;
 	bot.canTeleport = true;
 	bot.quake = false;
 	bot.isOnFire = false;
@@ -919,181 +921,215 @@ freezeBot(){
 }
 
 
+/**
+ * Main zombie AI loop.
+ *
+ * Improvements over the old version:
+ *   - 0.05 s loop for more responsive decisions
+ *   - movement steps every 0.2 s (original cadence, no speed change)
+ *   - visibility re-check every 0.1 s with cached result (saves bulletTrace calls)
+ *   - target re-acquisition every 0.5 s without wait-in-scan-loop
+ *   - interest/persistence: zombie searches the last known player position
+ *   - safe speed defaults in case loadZomStats properties are missing
+ */
 zomMain()
 {
 	self endon("disconnect");
 	self endon("death");
 	self endon("kill_main");
-	
-	self.lastTargetWp = -2;
-	self.nextWp = -2;
-	//self.intervalScale = 1;
-	update = 0;
-	
-	while (1)
+
+	// safe defaults for properties that loadZomStats should set
+	if(!isDefined(self.meleeRange))
+		self.meleeRange = 80;
+	if(!isDefined(self.meleeTime))
 	{
-		switch (self.status)
+		if(isDefined(self.meleeSpeed))	self.meleeTime = self.meleeSpeed;
+		else							self.meleeTime = 1.6;
+	}
+	if(!isDefined(self.walkSpeed))
+	{
+		if(isDefined(self.moveSpeed))	self.walkSpeed = int(100 * self.moveSpeed);
+		else							self.walkSpeed = 80;
+	}
+	if(!isDefined(self.runSpeed))
+	{
+		if(isDefined(self.moveSpeed))	self.runSpeed = int(250 * self.moveSpeed);
+		else							self.runSpeed = 200;
+	}
+
+	// local AI state – avoids polluting self with transient values
+	interest      = 0;		// persistence ticks remaining after losing sight (0-100)
+	targetTimer   = 0;		// ticks until next full target re-scan  (10 ticks = 0.5 s)
+	visTimer      = 0;		// ticks until next visibility re-check   (2 ticks = 0.1 s)
+	moveTimer     = 0;		// ticks until next movement step         (4 ticks = 0.2 s)
+	cachedVisible = false;
+	target        = undefined;
+
+	for(;;)
+	{
+		// --- FREEZE CHECK ---
+		if(level.freezeBots)
 		{
-			case "idle":
-				zomWaitToBeTriggered();
-				switch(level.zomIdleBehavior)
+			wait 0.05;
+			continue;
+		}
+
+		//
+		// TARGET ACQUISITION — every 0.5 s (10 ticks)
+		//
+		if(targetTimer <= 0)
+		{
+			target      = zomGetBestTarget();
+			targetTimer = 10;
+		}
+		else
+			targetTimer--;
+
+		//
+		// VISIBILITY CACHE — re-check every 0.1 s (2 ticks)
+		//
+		if(visTimer <= 0)
+		{
+			cachedVisible = isDefined(target) && zomSpot(target);
+			visTimer = 2;
+		}
+		else
+			visTimer--;
+
+		//
+		// BEHAVIOR & MOVEMENT — every 0.2 s (4 ticks, original cadence)
+		//
+		if(moveTimer <= 0)
+		{
+			// external alerts (alertZombies → zomGoSearch) raise interest as a hint
+			if((self.status == "searching" || self.status == "triggered") && interest < 30)
+				interest = 30;
+
+			if(cachedVisible)
+			{
+				// TARGET VISIBLE — pursue and attack
+				self.lastMemorizedPos = target.origin;
+				interest              = min(100, interest + 25);
+				self.alertLevel       = min(200, self.alertLevel + 10);
+				self.status           = "triggered";
+
+				if(checkForBarricade(target.origin))
 				{
-					case "magic":
-						if (update==5) {
-							if (level.zomTarget != "")
-							{
-								if (level.zomTarget == "player_closest")
-								{
-									ent = self getClosestTarget();
-									if (isdefined(ent))
-									{
-										self zomSetTarget(ent.origin);
-									}
-								}
-								else
-								self zomSetTarget(getRandomEntity(level.zomTarget).origin);
-							}
-							else
-							{
-								ent = self getClosestTarget();
-								if (isdefined(ent))
-								self zomSetTarget(ent.origin);
-							}
-							update = 0;
-						}
-						else
-							update++;
-					break;
+					self zomMelee();
 				}
-				break;
-			case "triggered":
-				if (update==10){
-					self.bestTarget = zomGetBestTarget();
-					update = 0;
-				}
-				else 
-					update++;
-				if (isdefined(self.bestTarget))
-					if(self.bestTarget.isTargetable && self.bestTarget.visible)
-					{
-						self.lastMemorizedPos = self.bestTarget.origin;
-						if (!checkForBarricade(self.bestTarget.origin))
-						{
-							if (distance(self.bestTarget.origin, self.origin) < self.meleeRange)
-							{
-								self thread zomMoveLockon(self.bestTarget, self.meleeTime, self.meleeSpeed);
-								switch(self.type){
-									case "napalm": self zomExplode(); break;
-									case "boss": self bossAttack(); break;
-									default: self zomMelee(); break;
-								}
-								//doWait = false;
-							}
-							else
-							{
-								zomMovement();
-								self zomMoveTowards(self.bestTarget.origin);
-								//doWait = false;
-							}
-						}
-						else
-							self zomMelee();
-					}
-					else
-						self zomGoSearch();
-				else
-					self zomGoSearch();
-				break;
-			
-			case "searching":
-			zomWaitToBeTriggered();
-				if (isdefined(self.lastMemorizedPos))
+				else if(distance(target.origin, self.origin) < self.meleeRange)
 				{
-					if (!checkForBarricade(self.lastMemorizedPos))
+					self thread zomMoveLockon(target, self.meleeTime, self.meleeSpeed);
+					switch(self.type)
 					{
-						if (distance(self.lastMemorizedPos, self.origin) > 48)
-						{
-							zomMovement();
-							self zomMoveTowards(self.lastMemorizedPos);
-							//doWait = false;
-						}
-						else
-							self.lastMemorizedPos = undefined;
+						case "napalm": self zomExplode(); break;
+						case "boss":   self bossAttack(); break;
+						default:       self zomMelee(); break;
 					}
-					else
-						self zomMelee();
 				}
 				else
-					zomGoIdle();
-					
-				break;
+				{
+					zomMovement();
+					self zomMoveTowards(target.origin);
+				}
 			}
-		//if (doWait)
-		wait level.zomInterval;
+			else if(interest > 0 && isDefined(self.lastMemorizedPos))
+			{
+				// TARGET LOST — search last known position
+				interest        -= 5;
+				self.alertLevel  = max(0, self.alertLevel - 3);
+				self.status      = "searching";
+
+				if(checkForBarricade(self.lastMemorizedPos))
+					self zomMelee();
+				else if(distance(self.lastMemorizedPos, self.origin) > 48)
+				{
+					zomMovement();
+					self zomMoveTowards(self.lastMemorizedPos);
+				}
+				else
+					self.lastMemorizedPos = undefined;
+			}
+			else
+			{
+				// NO TARGET — idle, with passive vision scan
+				interest        = 0;
+				self.alertLevel = max(0, self.alertLevel - 10);
+				zomGoIdle();
+
+				if(!isDefined(target))
+				{
+					for(i = 0; i < level.players.size; i++)
+					{
+						if(zomSpot(level.players[i]))
+						{
+							target             = level.players[i];
+							self.currentTarget = target;
+							targetTimer        = 0;
+							break;
+						}
+					}
+				}
+			}
+
+			moveTimer = 4;
+		}
+		else
+			moveTimer--;
+
+		wait 0.05;
 	}
 }
 
+/**
+ * Returns the best available target for this zombie.
+ *
+ * Improvements over the old version:
+ *   - no wait 0.05 between player checks
+ *   - distancesquared pre-filter before the expensive bulletTrace in zomSpot()
+ *   - returns current target immediately if still valid (avoids unnecessary full scan)
+ *   - preference hysteresis via level.zomPreference
+ */
 zomGetBestTarget()
 {
-	if (!isdefined(self.currentTarget))
+	sightSq = level.zombieSight * level.zombieSight;
+
+	if(isDefined(self.currentTarget))
 	{
-		for (i=0; i<level.players.size; i++)
-		{
-			player = level.players[i];
-			if (zomSpot(player))
-			{
-				self.currentTarget = player;
-				return player;
-			}
-			wait 0.05;
-		}
-		/*for (i=0; i<level.zomTargets.size; i++)
-		{
-			obj = level.zomTargets[i];
-			if (zomSpot(obj))
-			{
-				self.currentTarget = obj;
-				return obj;
-			}
-		}*/
-	}
-	else
-	{
-		if (!zomSpot(self.currentTarget))
+		// check if current target is still valid
+		if(!zomSpot(self.currentTarget))
 		{
 			self.currentTarget = undefined;
 			return undefined;
 		}
-		
-		
-		targetdis = distancesquared(self.origin, self.currentTarget.origin) - level.zomPreference;
-		for (i=0; i<level.players.size; i++)
+
+		// still visible — check whether a significantly closer player exists
+		bestDistSq = distancesquared(self.origin, self.currentTarget.origin) - level.zomPreference;
+		for(i = 0; i < level.players.size; i++)
 		{
-			player = level.players[i];
-			if (distancesquared(self.origin, player.origin) < targetdis)
+			p = level.players[i];
+			dSq = distancesquared(self.origin, p.origin);
+			if(dSq < bestDistSq && dSq < sightSq && zomSpot(p))
 			{
-				if (zomSpot(player))
-				{
-					self.currentTarget = player;
-					return player;
-				}
+				self.currentTarget = p;
+				bestDistSq         = dSq;
 			}
 		}
-		/*for (i=0; i<level.zomTargets.size; i++)
-		{
-			obj = level.zomTargets.size[i];
-			if (distancesquared(self.origin, obj.origin) - obj.zomPreference < targetdis)
-			{
-				if (zomSpot(obj))
-				{
-					self.currentTarget = obj;
-					return obj;
-				}
-			}
-		}*/
 		return self.currentTarget;
-		
 	}
+
+	// no current target — full scan with distancesquared pre-filter (no wait between checks)
+	for(i = 0; i < level.players.size; i++)
+	{
+		p = level.players[i];
+		if(distancesquared(self.origin, p.origin) < sightSq && zomSpot(p))
+		{
+			self.currentTarget = p;
+			return p;
+		}
+	}
+
+	return undefined;
 }
 
 zomMovement()
@@ -1110,7 +1146,7 @@ zomMovement()
 		}
 		
 		if (level.dvar["zom_dominoeffect"])
-			thread alertZombies(self.origin, 480, 5, self); 
+			alertZombies(self.origin, 480, 5, self);
 	}
 	else
 	{
@@ -1160,93 +1196,51 @@ zomWaitToBeTriggered()
 	}
 }
 
+/**
+ * Returns true if the given target is visible from this zombie.
+ *
+ * Optimization: uses distancesquared (avoids sqrt) for the range check
+ * before the more expensive bulletTrace.
+ */
 zomSpot(target)
 {
-  if (!target.isObj)
-  {
-	  if (!target.isAlive)
-	  return false;
-	  
-	  if (!target.isTargetable)
-	  return false;
-  }
-  
-  if (!target.visible)
-	return false;
-  
-  distance = distance(self.origin, target.origin);
-  
-  if (distance > level.zombieSight)
-  return false;
-  
-  /*switch (target getStance())
-  {
-	case "stand":
-	if (distance < 256)
-	return 1;
-	break;
-	case "crouch":
-	if (distance < 148)
-	return 1;
-	break;
-	case "prone":
-	if (distance < 96)
-	return 1;
-	break;
-  }*/
-  
-  /*speed = Length(target GetVelocity());
-  
-  if (speed > 80 && distance < 256)
-  return 1;
-  if (speed > 160 && distance < 416)
-  return 1;
-  if (speed > 240 && distance < 672)
-  return 1;*/
-  
-  dot = 1.0;
-  
-  //if nearest target hasn't attacked me, check to see if it's in front of me
-   fwdDir = anglestoforward(self getplayerangles());
-   dirToTarget = vectorNormalize(target.origin-self.origin);
-   dot = vectorDot(fwdDir, dirToTarget);
-  
+	if(!target.isObj)
+	{
+		if(!target.isAlive)
+			return false;
 
-  //try see through smoke
-  /*if(!SmokeTrace(self GetEyePos(), self.bestTarget GetEyePos()))
-  {
-    return false;
-  }*/
-  
-  //in front of us and is being obvious
-  if(dot > -0.2)
-  {
-    //do a ray to see if we can see the target
-	if (!target.isObj)
-	{
-		visTrace = bullettrace(self.origin + (0,0,68), target getPlayerHeight(), false, self);
+		if(!target.isTargetable)
+			return false;
 	}
-	else
-	{
-	 visTrace = bullettrace(self.origin + (0,0,68), target.origin +(0,0,20), false, self);
-	}
-	if(visTrace["fraction"] == 1)
-	{
-		   //line(self.origin + (0,0,68), visTrace["position"], (0,1.0,0));
-		return true;
-	}
-	else
-	{
-		if (isdefined(visTrace["entity"]))
-		if (visTrace["entity"] == target)
-		return true;
-		//line(self.origin + (0,0,68), visTrace["position"], (1,0,0));            
+
+	if(!target.visible)
 		return false;
-	}
 
-  }
-  
-  return false;
+	// distancesquared avoids sqrt — pre-filter before bulletTrace
+	if(distancesquared(self.origin, target.origin) > level.zombieSight * level.zombieSight)
+		return false;
+
+	// dot product check: is the target roughly in front of us?
+	fwdDir     = anglestoforward(self getplayerangles());
+	dirToTarget = vectorNormalize(target.origin - self.origin);
+	dot         = vectorDot(fwdDir, dirToTarget);
+
+	if(dot <= -0.2)
+		return false;
+
+	// line-of-sight trace
+	if(!target.isObj)
+		visTrace = bullettrace(self.origin + (0,0,68), target getPlayerHeight(), false, self);
+	else
+		visTrace = bullettrace(self.origin + (0,0,68), target.origin + (0,0,20), false, self);
+
+	if(visTrace["fraction"] == 1)
+		return true;
+
+	if(isDefined(visTrace["entity"]) && visTrace["entity"] == target)
+		return true;
+
+	return false;
 }
 
 zomGoToClosestWaypoint(){
@@ -1287,52 +1281,59 @@ getPlayerHeight()
 	  }
 }
 
+/**
+ * Moves this zombie towards the given target position using the waypoint graph.
+ *
+ * Optimization: caches the nearest waypoint to target_position and only
+ * re-runs the O(W) getNearestWp() scan when the target moves more than 64 units.
+ * Also removes the thread-spawn retry on throttle — the main loop retries instead.
+ */
 zomMoveTowards(target_position)
 {
 	self endon("disconnect");
 	self endon("death");
 	self notify("zomMoveTowards");
 	self endon("zomMoveTowards");
-	
-	//self thread pushOutOfPlayers();
-	
-	if (!isdefined(self.myWaypoint))
-	{
+
+	if(!isDefined(self.myWaypoint))
 		self.myWaypoint = getNearestWp(self.origin);
-	}
-	
-	targetWp = getNearestWp(target_position);
-	
-	nextWp = self.nextWp;
-	
-	direct = false;
-	//
-	//if (distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[targetWp].origin, self.origin) || targetWp == self.myWaypoint)
-	if (self.underway)
+
+	// --- CACHED TARGET WAYPOINT ---
+	// Only re-run the expensive getNearestWp() scan when the target has moved
+	// significantly (> 64 units) since the last computation.
+	if(!isDefined(self.cachedTargetWp) ||
+	   !isDefined(self.cachedTargetOrigin) ||
+	   distancesquared(target_position, self.cachedTargetOrigin) > 64*64)
 	{
-	
-	//if (targetWp == self.myWaypoint)
-	//
-		//if (distancesquared(target_position, self.origin) >= distancesquared(level.waypoints[nextWp].origin, self.origin))
-		//direct = true;
-		
-		if (targetWp == self.myWaypoint) //|| distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[nextWp].origin, self.origin)
+		self.cachedTargetWp     = getNearestWp(target_position);
+		self.cachedTargetOrigin = target_position;
+		// target moved — current A* path is stale
+		self.nextWp   = -2;
+		self.underway = false;
+	}
+	targetWp = self.cachedTargetWp;
+	nextWp   = self.nextWp;
+	direct   = false;
+
+	if(self.underway)
+	{
+		if(targetWp == self.myWaypoint)
 		{
-			direct = true;
-			self.underway = false;
+			direct          = true;
+			self.underway   = false;
 			self.myWaypoint = undefined;
 		}
 		else
 		{
-			if (!isdefined(nextWp))
-			return ;
-			if (targetWp == nextWp)
-			{
+			if(!isDefined(nextWp) || nextWp == -2)
+				return;
 
-				if (distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[nextWp].origin, self.origin))
+			if(targetWp == nextWp)
+			{
+				if(distancesquared(target_position, self.origin) <= distancesquared(level.waypoints[nextWp].origin, self.origin))
 				{
-					direct = true;
-					self.underway = false;
+					direct          = true;
+					self.underway   = false;
 					self.myWaypoint = undefined;
 				}
 			}
@@ -1340,77 +1341,44 @@ zomMoveTowards(target_position)
 	}
 	else
 	{
-		//if (self.lastTargetWp != targetWp || self.myWaypoint == nextWp)
-		if (targetWp == self.myWaypoint)
+		if(targetWp == self.myWaypoint)
 		{
-			//iprintln(level.waypoints[getNearestWp(self.origin)].origin+":"+level.waypoints[getNearestWp(target_position)].origin);
-			direct = true;
-			self.underway = false;
+			direct          = true;
+			self.underway   = false;
 			self.myWaypoint = undefined;
 		}
 		else
 		{
-			//time = GetTime();
-			/* This way may not be the safest and most reliable */
-			if(level.waypointLoops > 100000 && level.dvar["dev_antilagmonitor"]){
-				// logPrint("DEBUG: Caught > 200000 loops in level.waypointLoops!\n");
-				// logPrint("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
-				// iprintln("Caught > 200000 loops, mitigating load to more frames...");
-				// iprintln("DEBUG: Caught " + level.waypointLoops + " loops in level.waypointLoops!\n");
-				wait 0.05;
-				if(isDefined(target_position))
-					self thread zomMoveTowards(target_position);
+			// throttle: skip this movement step if A* is overloaded;
+			// the main loop will call us again next step (no orphan thread spawned)
+			if(level.waypointLoops > 100000 && level.dvar["dev_antilagmonitor"])
 				return;
-			}
-			if(level.botsLookingForWaypoints > getDvarInt("max_waypoint_bots")){
-				if(getDvarInt("debug_max_waypoint_bots"))
-					iprintln("Caught > " + getDvarInt("max_waypoint_bots") + " bots looking for waypoints!");
-				wait 0.05;
-				if(isDefined(target_position))
-					self thread zomMoveTowards(target_position);
+
+			if(level.botsLookingForWaypoints > getDvarInt("max_waypoint_bots"))
 				return;
-			}
+
 			level.botsLookingForWaypoints++;
-			nextWp = AStarSearch(self.myWaypoint, targetWp);
-			//newtime = GetTime()-time;
-			//iprintlnbold("MILISEC:" + newtime);
-			self.nextWp = nextWp;
+			nextWp        = AStarSearch(self.myWaypoint, targetWp);
+			self.nextWp   = nextWp;
 			self.underway = true;
 		}
 	}
-	
-	//self.lastTargetWp = targetWp;
-	
-	//TARGET SET! MOVING!
-	//line(self.origin, target_position, (0,0,1));
-	if (direct)
+
+	if(direct)
 	{
 		moveToPoint(target_position, self.cur_speed);
-		/*lineCol = (1,0,0);
-		line(level.waypoints[self.myWaypoint].origin, target_position, lineCol);*/
 	}
 	else
 	{
-		/*lineCol = (1,0,0);
-		line(level.waypoints[self.myWaypoint].origin, level.waypoints[nextWp].origin, lineCol);*/
-		if (isdefined(nextWp))
+		if(isDefined(nextWp) && nextWp != -2)
 		{
 			moveToPoint(level.waypoints[nextWp].origin, self.cur_speed);
-			if (distance(level.waypoints[nextWp].origin, self.origin) <  64)
+			if(distance(level.waypoints[nextWp].origin, self.origin) < 64)
 			{
-				self.underway = false;
+				self.underway   = false;
 				self.myWaypoint = nextWp;
-				//if (self.myWaypoint != nextWp)
-				//nextWp = AStarSearch(self.myWaypoint, targetWp);
-				//else
-				//break;
 			}
 		}
-		/*else
-		
-			self zomGoIdle();
-		*/
-		
 	}
 }
 
@@ -1434,36 +1402,28 @@ zomMoveLockon(player, time, speed)
 	}
 }
 
-pushOutOfPlayers() // ON SELF
+/**
+ * Pushes this zombie out of overlapping players and dynamic barricades.
+ *
+ * Fixes:
+ *   - uses level.players (cached array) instead of getentarray() (engine query)
+ *   - calls pushout() directly instead of spawning a thread per entity
+ */
+pushOutOfPlayers()
 {
-  //push out of other players
-  //players = level.players;
-  players = getentarray("player", "classname");
-  for(i = 0; i < players.size; i++)
-  {
-    player = players[i];
-    
-    if(player == self || !isalive(player))
-      continue;
-    self thread pushout(player.origin);
-
-  }
-  for (i=0; i <level.dynamic_barricades.size; i++)
-  {
-	if (isdefined(level.dynamic_barricades[i]))
+	for(i = 0; i < level.players.size; i++)
 	{
-		if (level.dynamic_barricades[i].hp > 0)
-		self thread pushout(level.dynamic_barricades[i].origin);
+		p = level.players[i];
+		if(p == self || !isAlive(p))
+			continue;
+		pushout(p.origin);
 	}
-  }
-   /*for (i=0; i <level.barricades.size; i++)
-  {
-	if (isdefined(level.barricades[i]))
+	for(i = 0; i < level.dynamic_barricades.size; i++)
 	{
-		if (level.barricades[i].hp > 0)
-		self thread pushout(level.barricades[i].parts[0].startPosition);
+		b = level.dynamic_barricades[i];
+		if(isDefined(b) && b.hp > 0)
+			pushout(b.origin);
 	}
-  }*/
 }
 
 pushout(org)
